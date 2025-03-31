@@ -5,15 +5,13 @@
 ### **核心方法**
 1. **最小-最大归一化（Min-Max Normalization）**  
 
-
-
+![image](https://github.com/user-attachments/assets/da9492b1-3e01-48ff-8974-d1176bc5a907)
 
    将数据线性缩放到 [0, 1] 区间，适合数据分布无明显边界的情况（如像素值）。
 
 2. **均值方差归一化（Z-Score 标准化）**  
 
-
-
+![image](https://github.com/user-attachments/assets/e087a5bd-5534-4725-aac3-70520136a6a8)
 
    将数据转换为均值为 0、标准差为 1 的分布，适合数据符合正态分布的情况。
 
@@ -160,7 +158,7 @@
 ![image](https://github.com/user-attachments/assets/2c355415-a851-48cd-a11b-36869f5a4332)
 
 
-     其中，![image](https://github.com/user-attachments/assets/c5511bd8-bf2b-4ad8-9656-c103a223da21)和![image](https://github.com/user-attachments/assets/e4bfcac5-4127-427f-9a66-cf7738476ea7)是可学习的参数，用于保留网络的表达能力。
+   其中，![image](https://github.com/user-attachments/assets/c5511bd8-bf2b-4ad8-9656-c103a223da21)和![image](https://github.com/user-attachments/assets/e4bfcac5-4127-427f-9a66-cf7738476ea7)是可学习的参数，用于保留网络的表达能力。
 
 ---
 
@@ -223,17 +221,17 @@
 
 ### **注意事项**
 1. **参数初始化**  
-   - 初始化缩放参数 \( \gamma \) 为1，平移参数 \( \beta \) 为0，确保初始阶段归一化不改变数据分布。
+   - 初始化缩放参数![image](https://github.com/user-attachments/assets/c493e797-97e6-4fb4-9e3c-2a753f3d3d35)为1，平移参数![image](https://github.com/user-attachments/assets/16727d0c-3308-4896-884d-6dd86beb19f1)为0，确保初始阶段归一化不改变数据分布。
 
 2. **与残差连接的协同**  
    - LayerNorm通常与残差连接（Residual Connection）配合使用，顺序一般为：
 
 ![image](https://github.com/user-attachments/assets/8ba6cfc6-8344-4747-bdb8-77aa39a067bb)
      
-     这种设计（如Transformer）能进一步稳定梯度传播。
+   这种设计（如Transformer）能进一步稳定梯度传播。
 
 3. **计算开销**  
-   - 对特征维度计算均值和方差，计算复杂度为 \( O(d) \)，在特征维度较大时可能影响速度。
+   - 对特征维度计算均值和方差，计算复杂度为![image](https://github.com/user-attachments/assets/756103dd-f784-4687-af72-4147ef13b393)，在特征维度较大时可能影响速度。
 
 ---
 
