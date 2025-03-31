@@ -61,6 +61,9 @@
 
 ---
 
+
+
+
 # 为什么将像素值从 [0, 255] 缩放到 [0, 1]，可以减少计算量并加速神经网络收敛？
 将像素值从 [0, 255] 缩放到 [0, 1] 的核心目的是通过统一数据范围和分布，改善神经网络训练的效率和稳定性。以下是具体原因和底层机制：
 
@@ -128,3 +131,117 @@
 4. **硬件友好性**：适配浮点运算优化，降低数值异常风险。
 
 虽然单次计算量变化不大，但通过改善训练动态（如减少迭代次数、允许更大学习率），显著降低了整体训练成本。
+
+
+
+# layer norm是什么
+**Layer Normalization（层归一化）** 是一种用于神经网络中的标准化技术，旨在通过调整每一层神经元的输出分布来加速模型训练、提升稳定性和泛化能力。它主要应用于**序列模型**（如Transformer、RNN）和**小批量训练**场景，与Batch Normalization（批归一化）形成互补。
+
+---
+
+### **核心原理**
+1. **操作对象**  
+   LayerNorm对**单个样本**在某一层所有神经元（或特征）的输出进行归一化，而非像BatchNorm那样对一个批次（Batch）内的样本做归一化。  
+   - **输入**：某一层的输出张量，形状为 `[batch_size, features]`（全连接层）或 `[batch_size, seq_len, features]`（序列模型）。  
+   - **归一化维度**：在**特征维度**（即每个样本的所有特征）上计算均值和方差。
+
+2. **计算步骤**  
+   对于一个样本在某一层的输出向量 \( \mathbf{x} \in \mathbb{R}^d \)（\(d\) 为特征数）：  
+   - **计算均值与方差**：  
+
+![image](https://github.com/user-attachments/assets/19f60a2a-a091-4807-8257-62a277e7c75f)
+
+   - **归一化**：  
+
+![image](https://github.com/user-attachments/assets/88a59781-1d03-48d7-bb43-5c04aa5ddeb7)
+
+   - **缩放与平移**：  
+
+![image](https://github.com/user-attachments/assets/2c355415-a851-48cd-a11b-36869f5a4332)
+
+
+     其中，![image](https://github.com/user-attachments/assets/c5511bd8-bf2b-4ad8-9656-c103a223da21)和![image](https://github.com/user-attachments/assets/e4bfcac5-4127-427f-9a66-cf7738476ea7)是可学习的参数，用于保留网络的表达能力。
+
+---
+
+### **与BatchNorm的关键区别**
+| **特性**       | **LayerNorm**                            | **BatchNorm**                            |
+|----------------|------------------------------------------|------------------------------------------|
+| **归一化维度** | 特征维度（单个样本的所有特征）           | 批次维度（所有样本的同一特征）           |
+| **依赖场景**   | 不依赖批量大小，适合动态结构或小批量训练 | 依赖大批量数据，批量较小时性能下降       |
+| **适用模型**   | RNN、Transformer等序列模型               | CNN、全连接网络等固定结构模型            |
+| **训练/推理**  | 无需在推理时维护移动平均统计量           | 推理时需使用训练阶段统计的移动平均值     |
+
+---
+
+### **核心作用**
+1. **稳定训练动态**  
+   - 缓解内部协变量偏移（Internal Covariate Shift），使每一层的输入分布更稳定。
+   - 在RNN中，不同时间步的输入分布差异较大，LayerNorm能显著提升训练效率。
+
+2. **减少对批大小的依赖**  
+   - BatchNorm在批大小较小时（如批大小为1）效果差，而LayerNorm完全不受批大小影响。
+
+3. **适配序列模型**  
+   - 在Transformer中，LayerNorm被用于每个子层（自注意力、前馈网络）的输出后，使模型更易于优化。
+   - 处理变长序列时，LayerNorm对每个样本独立处理，无需对齐序列长度。
+
+4. **增强泛化能力**  
+   - 通过抑制某些特征的极端值，降低模型对噪声的敏感性。
+
+---
+
+### **应用场景**
+1. **Transformer模型**  
+   - 每个编码器/解码器层的输出后接LayerNorm（如BERT、GPT）。
+   - 示例代码（PyTorch）：
+     ```python
+     class TransformerLayer(nn.Module):
+         def __init__(self, d_model):
+             super().__init__()
+             self.attention = MultiHeadAttention(d_model)
+             self.norm1 = nn.LayerNorm(d_model)
+             self.ffn = PositionwiseFFN(d_model)
+             self.norm2 = nn.LayerNorm(d_model)
+         
+         def forward(self, x):
+             # 自注意力 + 残差连接 + LayerNorm
+             x = self.norm1(x + self.attention(x))
+             # 前馈网络 + 残差连接 + LayerNorm
+             x = self.norm2(x + self.ffn(x))
+             return x
+     ```
+
+2. **循环神经网络（RNN）**  
+   - 在LSTM或GRU的隐藏状态后添加LayerNorm，缓解梯度消失/爆炸。
+   - 实验表明，LayerNorm可提升RNN在长序列任务（如语言建模）中的表现。
+
+3. **小批量或在线学习**  
+   - 当数据需逐样本处理（如强化学习）时，LayerNorm是唯一可行的标准化方法。
+
+---
+
+### **注意事项**
+1. **参数初始化**  
+   - 初始化缩放参数 \( \gamma \) 为1，平移参数 \( \beta \) 为0，确保初始阶段归一化不改变数据分布。
+
+2. **与残差连接的协同**  
+   - LayerNorm通常与残差连接（Residual Connection）配合使用，顺序一般为：
+
+![image](https://github.com/user-attachments/assets/8ba6cfc6-8344-4747-bdb8-77aa39a067bb)
+     
+     这种设计（如Transformer）能进一步稳定梯度传播。
+
+3. **计算开销**  
+   - 对特征维度计算均值和方差，计算复杂度为 \( O(d) \)，在特征维度较大时可能影响速度。
+
+---
+
+### **数学直观解释**
+假设某一层的输出特征因某些神经元激活值过大或过小，导致后续层难以有效学习。LayerNorm通过以下两步解决问题：
+1. **去中心化与缩放**：将特征强制调整为均值为0、方差为1的标准分布，消除极端值影响。
+2. **可学习变换**：通过![image](https://github.com/user-attachments/assets/415beae7-775f-4581-be95-d7be9efef470)和![image](https://github.com/user-attachments/assets/a82b322b-eefc-4614-a6dd-821d118b3e8f)重新赋予模型调整分布的能力，避免丢失非线性特性。
+
+---
+
+**总结**：LayerNorm通过标准化每个样本的特征分布，解决了BatchNorm在序列模型和小批量场景下的局限性，是Transformer、RNN等模型的核心组件之一。其设计平衡了稳定性与灵活性，成为现代深度学习中的基础技术。
