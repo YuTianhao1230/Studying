@@ -144,7 +144,7 @@
    - **归一化维度**：在**特征维度**（即每个样本的所有特征）上计算均值和方差。
 
 2. **计算步骤**  
-   对于一个样本在某一层的输出向量 \( \mathbf{x} \in \mathbb{R}^d \)（\(d\) 为特征数）：  
+   对于一个样本在某一层的输出向量 ![image](https://github.com/user-attachments/assets/80176298-16d4-44a7-8ea0-17a0e7bf4b6f)（\(d\) 为特征数）：  
    - **计算均值与方差**：  
 
 ![image](https://github.com/user-attachments/assets/19f60a2a-a091-4807-8257-62a277e7c75f)
