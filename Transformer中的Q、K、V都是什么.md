@@ -1,4 +1,4 @@
-在Transformer模型中，**Q（Query）、K（Key）、V（Value）** 是自注意力机制（Self-Attention）的三个核心向量，它们共同决定了模型如何关注输入序列中的不同位置，从而捕捉长距离依赖和上下文信息。以下是它们的详细解释：
+![image](https://github.com/user-attachments/assets/e6240d4b-b61a-4cbd-929c-ce1a690aad09)在Transformer模型中，**Q（Query）、K（Key）、V（Value）** 是自注意力机制（Self-Attention）的三个核心向量，它们共同决定了模型如何关注输入序列中的不同位置，从而捕捉长距离依赖和上下文信息。以下是它们的详细解释：
 
 ---
 
@@ -34,9 +34,10 @@
 ### **3. 自注意力计算过程**
 通过Q、K、V计算自注意力的步骤如下：
 1. **计算注意力分数**：  
-   $$
-   \text{Attention Scores} = \text{Softmax}\left( \frac{Q \cdot K^T}{\sqrt{D}} \right)
-   $$  
+
+![image](https://github.com/user-attachments/assets/8b9fba1f-3b4c-48d3-adfe-e5fe9483d5b1)
+
+
    - **点积**（\( Q \cdot K^T \)）：衡量每个Query和Key的相似度。  
    - **缩放因子**（\( \sqrt{D} \)）：防止点积结果过大导致Softmax梯度消失。  
    - **Softmax**：将分数归一化为概率分布，表示每个位置的重要性权重。
