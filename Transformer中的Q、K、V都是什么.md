@@ -1,17 +1,18 @@
-![image](https://github.com/user-attachments/assets/e6240d4b-b61a-4cbd-929c-ce1a690aad09)在Transformer模型中，**Q（Query）、K（Key）、V（Value）** 是自注意力机制（Self-Attention）的三个核心向量，它们共同决定了模型如何关注输入序列中的不同位置，从而捕捉长距离依赖和上下文信息。以下是它们的详细解释：
+在Transformer模型中，**Q（Query）、K（Key）、V（Value）** 是自注意力机制（Self-Attention）的三个核心向量，它们共同决定了模型如何关注输入序列中的不同位置，从而捕捉长距离依赖和上下文信息。以下是它们的详细解释：
 
 ---
 
 ### **1. Q、K、V的由来**
 - **输入**：自注意力机制的输入是一组向量（例如，词嵌入向量或图像块的嵌入向量），假设输入序列长度为 \( N \)，每个向量的维度为 \( D \)，则输入矩阵为  
-  $$ X \in \mathbb{R}^{N \times D} $$
+
+![image](https://github.com/user-attachments/assets/b171b328-2b01-4e20-a575-c48dbb1d1b08)
 
 - **生成方式**：通过三个独立的线性变换（全连接层），将输入向量映射为Q、K、V：  
-  $$
-  Q = X \cdot W_Q, \quad K = X \cdot W_K, \quad V = X \cdot W_V
-  $$  
+
+![image](https://github.com/user-attachments/assets/3c16842e-83fb-4d37-9b42-8fa3d3e7898d)
+
   其中：  
-  - \( W_Q, W_K, W_V \in \mathbb{R}^{D \times D} \) 是可训练的权重矩阵。  
+  - ![image](https://github.com/user-attachments/assets/b36c87dd-3989-4d0d-a993-e3d929064088)是可训练的权重矩阵。  
   - 每个输入的向量都会被独立映射为对应的Q、K、V向量。
 
 ---
@@ -43,9 +44,9 @@
    - **Softmax**：将分数归一化为概率分布，表示每个位置的重要性权重。
 
 2. **聚合Value信息**：  
-   $$
-   \text{Output} = \text{Attention Scores} \cdot V
-   $$  
+
+![image](https://github.com/user-attachments/assets/3d0750a8-87ca-442d-ad2b-ce71595440d1)
+  
    - 用注意力权重对Value向量加权求和，得到最终的输出向量。
 
 ---
