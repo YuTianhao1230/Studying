@@ -155,8 +155,7 @@
 
    - **缩放与平移**：  
 
-![image](https://github.com/user-attachments/assets/2c355415-a851-48cd-a11b-36869f5a4332)
-
+![image](https://github.com/user-attachments/assets/4c18e13f-2432-41cc-aa7e-0ccc9508261c)
 
    其中，![image](https://github.com/user-attachments/assets/c5511bd8-bf2b-4ad8-9656-c103a223da21)和![image](https://github.com/user-attachments/assets/e4bfcac5-4127-427f-9a66-cf7738476ea7)是可学习的参数，用于保留网络的表达能力。
 
