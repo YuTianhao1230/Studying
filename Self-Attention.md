@@ -12,7 +12,7 @@
 ---
 
 ### **2. 计算过程**
-自注意力通过**查询（Query）、键（Key）、值（Value）**三元组实现信息交互，具体步骤如下：
+自注意力通过**查询（Query）、键（Key）、值（Value）三元组**实现信息交互，具体步骤如下：
 
 #### **Step 1：生成Q, K, V向量**
 对输入序列的每个元素（如词向量），通过线性变换生成三个向量：  
@@ -28,7 +28,7 @@
 • ![image](https://github.com/user-attachments/assets/2455f9fd-64b9-47e5-8ed5-aec75d3c2ea5)：可学习的权重矩阵。
 
 #### **Step 2：计算注意力分数**
-通过**点积（Dot-Product）**衡量Query与Key的相似度，得到注意力分数矩阵：  
+通过点积（Dot-Product）衡量Query与Key的相似度，得到注意力分数矩阵：  
 
 ![image](https://github.com/user-attachments/assets/2a2883ff-279f-4cf5-a937-4b24ce8deedf)
   
