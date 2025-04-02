@@ -1,0 +1,37 @@
+# 创建项目的流程
+1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
+2、可以使用dockerfile快速配置环境（可以不用）
+3、git需要下载，使用git命令从github抓取项目（例如git clone https://github.com/VITA-Group/TransGAN.git）
+4、确保 Python 和 Pip 已安装（python3 --version、pip3 --version；如果没安装就sudo apt update、sudo apt install python3 python3-pip python3-venv）
+5、创建虚拟环境
+
+# 创建虚拟环境
+1、cd到项目路径（例如cd TransGAN）
+2、在项目路径下创建虚拟环境 python3 -m venv 环境名（例如python3 -m venv TransGAN）
+3、激活虚拟环境（例如source TransGAN/bin/activate）
+
+
+
+
+
+# 常用指令
+nvidia-smi：查看显卡情况
+pip list：查看当前环境中已安装的包
+pwd：输出你当前所在的完整绝对路径
+ls：：查看目录内容
+ls -l：更详细的目录内容
+ls -a：查看所有文件，包括隐藏文件（.开头的文件）
+
+
+# 一些网址
+Github 生成SSH秘钥（详细教程）  https://blog.csdn.net/qq_35495339/article/details/92847819
+Docker命令大全        https://www.runoob.com/docker/docker-run-command.html
+Docker使用教程        https://www.cnblogs.com/zha0gongz1/p/12227485.html
+vscode通过ssh连接远程服务器+免密登录（图文）  https://blog.csdn.net/savet/article/details/131683156
+
+
+
+
+
+
+
