@@ -1,5 +1,6 @@
 # 创建项目的流程
 ### 1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
+docker run -it --gpus all --name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
 
 ### 2、可以使用dockerfile快速配置环境（可以不用）
 
