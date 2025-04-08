@@ -5,6 +5,9 @@ docker run -it --gpus all --name ythceshi2 ubuntu（这段指令用来创建一�
 ### 2、可以使用dockerfile快速配置环境（可以不用）
 
 ### 3、git需要下载，使用git命令从github抓取项目（例如git clone https://github.com/VITA-Group/TransGAN.git）
+git下载执行以下两行代码：
+apt update
+apt install git
 
 ### 4、确保 Python 和 Pip 已安装（python3 --version、pip3 --version；如果没安装就sudo apt update、sudo apt install python3 python3-pip python3-venv）
 
