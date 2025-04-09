@@ -4,6 +4,9 @@ ubuntu版本选20.04，版本不影响项目运行
 https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local
 ![image](https://github.com/user-attachments/assets/b3123201-44dd-404a-823d-c99fa3621596)
 
+export PATH=$PATH:/usr/local/cuda-11.3/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64
+
 ### 2、下载anaconda
 这里需要先把wget下载好
 超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
