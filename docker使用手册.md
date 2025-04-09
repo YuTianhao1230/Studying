@@ -1,3 +1,14 @@
+# 创建docker的流程
+### 1、下载ubuntu
+ubuntu版本选20.04，版本不影响项目运行
+https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local
+![image](https://github.com/user-attachments/assets/b3123201-44dd-404a-823d-c99fa3621596)
+
+### 2、下载anaconda
+这里需要先把wget下载好
+超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
+
+
 # 创建项目的流程
 ### 1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
 docker run -it --gpus all --name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
@@ -53,6 +64,8 @@ Docker命令大全        https://www.runoob.com/docker/docker-run-command.html
 Docker使用教程        https://www.cnblogs.com/zha0gongz1/p/12227485.html
 
 vscode通过ssh连接远程服务器+免密登录（图文）  https://blog.csdn.net/savet/article/details/131683156
+
+如何在Ubuntu 20.04安装wget命令      https://www.myfreax.com/how-to-install-wget-command-on-ubuntu-20-04/
 
 
 
