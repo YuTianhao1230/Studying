@@ -1,5 +1,5 @@
 # 创建docker的流程
-### 1、下载ubuntu
+### 1、下载CUDA
 ubuntu版本选20.04，版本不影响项目运行
 https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local
 ![image](https://github.com/user-attachments/assets/b3123201-44dd-404a-823d-c99fa3621596)
@@ -68,7 +68,7 @@ vscode通过ssh连接远程服务器+免密登录（图文）  https://blog.csdn
 
 如何在Ubuntu 20.04安装wget命令      https://www.myfreax.com/how-to-install-wget-command-on-ubuntu-20-04/
 
-
+Ubuntu20.04系统配置Pytorch环境(GPU版)      https://blog.csdn.net/m0_55127902/article/details/135677560
 
 
 
