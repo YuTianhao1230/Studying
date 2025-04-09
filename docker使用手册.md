@@ -8,6 +8,7 @@ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target
 这里需要先把wget下载好
 超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
 
+### 3、用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
 
 # 创建项目的流程
 ### 1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
