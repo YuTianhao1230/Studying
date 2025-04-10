@@ -14,6 +14,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64
 
 ### 3、用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
 
+###　3、配置ｐｙｔｒｏｃｈ环境
+pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
+
+
 # 创建项目的流程
 ### 1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
 docker run -it --gpus all --name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
