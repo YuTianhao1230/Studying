@@ -317,3 +317,44 @@ QKV机制是Transformer的核心创新，通过动态计算权重，使模型能
 • **设计权衡**：分离位置编码与自注意力机制，提供了灵活性和高效性，但也需要针对任务优化位置编码策略。
 
 因此，自注意力不考虑位置并非缺陷，而是其设计的一部分，通过与其他模块（如位置编码）配合，最终实现强大的序列建模能力。
+
+
+
+# 一些论文中的思路
+
+## Attention Distillation: A Unified Approach to Visual Characteristics Transfer，2025CVPR
+
+这篇文章主要是做style transfer和appearance transfer，大框架是Diffusion Model。它的关键假设是KV特征代表图像的视觉外观。
+
+![image](https://github.com/user-attachments/assets/f5647bbd-a332-43ee-be0f-a909835ff6f7)
+
+![image](https://github.com/user-attachments/assets/9d9e425d-365b-47a9-b969-57659af66be6)
+
+首先根据来自target的Q重新聚合来自reference的KV特征（Ks和Vs）的视觉信息，这与KV注入相同。我们将这种注意力输出视为理想的风格化。我们可以使用所提出的AD loss通过梯度下降来优化随机潜在噪声，从而在输出中产生生动的纹理或风格再现。随着不断优化，Q和Ks之间的差距逐渐缩小，使得注意力越来越准确，最终，特征被正确聚合以产生期望的视觉细节。
+
+![image](https://github.com/user-attachments/assets/268c1a4c-0441-4e77-b76b-d68044b8214b)
+
+利用AD loss提取的纹理和风格，我们可以使用内容损失进一步将合成内容与另一个参考图像对齐。这种优化允许在保留目标内容的同时合成变换一个图像的视觉元素的图像，从而实现诸如风格转移、外观转移等任务。
+
+特别地，在target查询Q和reference查询Qc之间计算的L1损失公式化内容损失：
+
+![image](https://github.com/user-attachments/assets/93695459-a325-42a9-a35b-d19750eca6b5)
+
+![image](https://github.com/user-attachments/assets/ab3f51a4-b7d0-4e3a-baf9-f393d7b380fc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
