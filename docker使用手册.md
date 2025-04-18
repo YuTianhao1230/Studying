@@ -79,6 +79,7 @@ vscode通过ssh连接远程服务器+免密登录（图文）  https://blog.csdn
 
 Ubuntu20.04系统配置Pytorch环境(GPU版)      https://blog.csdn.net/m0_55127902/article/details/135677560
 
+（已解决）vscode终端的虚拟环境显示两个环境名    https://blog.csdn.net/weixin_57253447/article/details/145852724
 
 
 
