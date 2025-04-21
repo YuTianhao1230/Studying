@@ -30,18 +30,87 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 
 ![image](https://github.com/user-attachments/assets/c6677361-d0eb-41c0-a6ad-0c3ab4e95c20)
 
-1. **自编码器（Autoencoder）**：
-   • 编码器将输入图像压缩为潜在表示，解码器重建图像。
-   • 训练目标：最小化重建误差，保留关键特征（如形状、颜色）。
+**架构图核心流程**
+1. 输入与输出  
+   • 输入：原始图像x（像素空间）和条件信息（如文本、语义图、图像表示等）。  
 
-2. **扩散模型（Diffusion Model）**：
-   • **噪声预测网络**（通常为U-Net）：在潜在空间中预测每一步的噪声。
-   • **条件机制**（可选）：通过交叉注意力（Cross-Attention）等机制融入文本、标签等条件信息。
+   • 输出：去噪后的生成图像![image](https://github.com/user-attachments/assets/a523bb74-ca11-4ab3-9a52-fb96fc9456be)（像素空间）。
 
-3. **条件控制**：
-   • 例如，在文本到图像生成中，文本提示（prompt）通过CLIP等模型编码为嵌入向量，指导扩散过程生成相关图像。
 
----
+2. 核心模块  
+   • 像素空间（Pixel Space）：原始高分辨率图像（如512×512×3）。  
+
+   • 潜在空间（Latent Space）：通过预训练自编码器压缩的低维表示（如64×64×4）。  
+
+   • 去噪 U-Net（Denoising U-Net）：在潜在空间中逐步去噪的核心网络，结合条件控制。  
+
+   • 条件输入（Conditioning）：通过交叉注意力（cross-attention）或拼接（concat）整合多模态信息。
+
+**分步骤流程解析**
+**1. 编码阶段（像素空间 → 潜在空间）**
+   • 输入：原始图像x通过编码器![image](https://github.com/user-attachments/assets/caff44fd-7319-4d26-a995-a167e5e88c14)压缩为低维潜在表示![image](https://github.com/user-attachments/assets/3d9b1456-83a9-4787-bbed-4dfa8ac52ee0)。  
+
+   • 目的：消除人眼不可感知的冗余细节（如高频噪声），保留语义信息，降低后续扩散过程的计算量。
+
+
+**2. 扩散过程（潜在空间加噪）**
+   • 噪声注入：在潜在空间z中，通过多步前向扩散过程逐步添加噪声，生成带噪声的潜在表示![image](https://github.com/user-attachments/assets/80348d2c-8504-4b1a-bf16-32a50e583e12)。  
+
+![image](https://github.com/user-attachments/assets/bfae4fe4-72ec-4926-82dd-6ee887682471)
+
+   • 时间步t：控制噪声强度（t=0为原始数据，t=T为纯噪声）。
+
+
+**3. 去噪阶段（U-Net + 条件控制）**
+   • 输入：带噪声的潜在表示![image](https://github.com/user-attachments/assets/f3990d34-e1d1-4e43-b4d7-b4bf7dd62b1c)和条件信息（文本、语义图等）。  
+
+   • 去噪 U-Net：  
+
+     ◦ 结构：多层 U 型网络，包含跳跃连接（skip connection）保留多尺度特征。  
+
+     ◦ 条件融合：  
+
+       ◦ 交叉注意力（Cross-Attention）：将条件信息（如文本编码![image](https://github.com/user-attachments/assets/b226bcca-e2ad-44b6-b405-35e17262d219)）通过QKV机制注入 U-Net。  
+
+![image](https://github.com/user-attachments/assets/d52d02be-4248-4167-ae94-dbf0038eee2c)
+
+       ◦ 拼接（Concat）：直接将条件信息与潜在表示拼接（用于简单条件，如类别标签）。  
+
+   • 输出：逐步去噪后的潜在表示![image](https://github.com/user-attachments/assets/d5f8f543-a860-4786-b83d-061b35bfe351)。
+
+
+**4. 解码阶段（潜在空间 → 像素空间）**
+   • 解码器D：将去噪后的潜在表示![image](https://github.com/user-attachments/assets/e26a239b-5e8f-4c67-aac0-958f35ff3f93)解码为像素空间的生成图像![image](https://github.com/user-attachments/assets/057f3ade-2470-48c9-99e1-f82e707fea4c)。  
+
+   • 保真度：得益于潜在空间的语义保留，生成图像细节丰富且分辨率高（如1024×1024）。
+
+**图中关键细节**
+1. 条件控制机制  
+   • 交叉注意力层（紫色模块）：  
+
+     ◦ 输入：条件信息（文本、语义图等）通过![image](https://github.com/user-attachments/assets/243a05cd-b90d-48fa-aba7-214498cfe29d)编码为键值对(K, V)，与 U-Net 的查询（Q）交互。  
+
+     ◦ 动态权重：注意力权重决定条件信息对去噪过程的控制强度。  
+
+   • 拼接操作（绿色模块）：直接合并条件向量与潜在表示（适用于低维条件）。
+
+2. 跳跃连接（Skip Connection）  
+   • 作用：将编码器中的多尺度特征传递到解码器，帮助恢复细节（如边缘、纹理）。  
+
+   • 颜色标识：图中粉色箭头表示跳跃连接路径。
+
+3. 时间步嵌入（Time Embedding）  
+   • 输入：时间步t通过正弦位置编码，控制 U-Net 在不同去噪阶段的去噪策略。
+
+**技术优势**
+1. 高效性  
+   • 潜在空间维度远低于像素空间（如 64×64 vs. 512×512），计算量减少 10 倍以上。  
+
+2. 多模态支持  
+   • 通过交叉注意力灵活整合文本、布局、图像等条件，支持复杂生成任务（如文本到图像）。  
+
+3. 生成质量  
+   • 扩散过程在潜在空间中保留语义信息，解码器恢复细节，避免像素级噪声干扰。
 
 ### **核心公式**
 
