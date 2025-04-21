@@ -42,32 +42,17 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 **符号解析**
 | 符号             | 含义                                                                 |
 |----------------------|--------------------------------------------------------------------------|
-| \(\mathbb{E}\)        | 期望值，表示对\(x\)、\(\epsilon\)、\(t\)的联合分布取平均。               |
-| \(x\)                | 原始数据（如图像），经过自编码器压缩到潜在空间后的表示。                 |
-| \(\epsilon \sim \mathcal{N}(0,1)\) | 标准正态分布采样的随机噪声。                                             |
-| \(t\)                | 时间步（扩散过程的阶段），控制噪声添加的强度。                           |
-| \(x_t\)              | 数据在时间步\(t\)时的噪声版本（潜在空间中的加噪状态）。                  |
-| \(\epsilon_{\theta}(x_t, t)\) | 神经网络的预测噪声，参数为\(\theta\)，输入是\(x_t\)和\(t\)。             |
-| \(\| \cdot \|_2^2\)  | L2范数的平方，衡量预测噪声与真实噪声的差异。                              |
-
-**公式的物理意义**
-1. 扩散过程背景  
-   扩散模型通过前向过程（逐步加噪）和反向过程（逐步去噪）生成数据。  
-   • 前向过程：从原始数据\(x_0\)开始，逐步添加噪声，直到数据完全变为噪声\(x_T\)。  
-
-   • 反向过程：训练模型\(\epsilon_\theta\)预测每一步添加的噪声，从而从\(x_T\)逐步恢复出原始数据\(x_0\)。
-
-
-2. 损失函数的作用  
-   目标是最小化预测噪声\(\epsilon_\theta\)与真实添加噪声\(\epsilon\)的均方误差（L2损失）。  
-   • 直观理解：模型需学会“逆向工程”扩散过程，准确推断每一步如何去除噪声。  
-
-   • 数学本质：通过优化\(\theta\)，使\(\epsilon_\theta(x_t, t)\)逼近\(\epsilon\)，从而建模数据分布\(p(x)\)。
-
+| ![image](https://github.com/user-attachments/assets/98be7a15-422d-4842-abfb-eb6618dd0066)        | 期望值，表示对![image](https://github.com/user-attachments/assets/5018f694-b825-43cf-91fc-eb526d6bc0b9)的联合分布取平均。               |
+| x                | 原始数据（如图像），经过自编码器压缩到潜在空间后的表示。                 |
+| ![image](https://github.com/user-attachments/assets/0793bcd0-0804-42c7-a96d-2becfa45eda6) | 标准正态分布采样的随机噪声。                                             |
+| t                | 时间步（扩散过程的阶段），控制噪声添加的强度。                           |
+| ![image](https://github.com/user-attachments/assets/9c7c5fef-45de-47ee-9b69-3ee147b99526)              | 数据在时间步t时的噪声版本（潜在空间中的加噪状态）。                  |
+| ![image](https://github.com/user-attachments/assets/6a6c9d9a-19a2-4191-808a-ca639ed60285) | 神经网络的预测噪声，参数为![image](https://github.com/user-attachments/assets/9c58f70a-91a1-476e-a882-9556287e0ed3)，输入是![image](https://github.com/user-attachments/assets/35f98ef7-db00-4727-988a-f59bff760e40)和t。             |
+| ![image](https://github.com/user-attachments/assets/a38b4e39-e666-4075-a9b9-f52a5437a165)  | L2范数的平方，衡量预测噪声与真实噪声的差异。                              |
 
 **与潜在扩散模型（LDM）的关联**
 1. 潜在空间的高效性  
-   • \(x_t\)并非原始像素空间的数据，而是自编码器压缩后的低维潜在表示（如64×64维度）。  
+   • ![image](https://github.com/user-attachments/assets/0636495b-8a31-4545-a1ae-4db9edb4b7fc)并非原始像素空间的数据，而是自编码器压缩后的低维潜在表示（如64×64维度）。  
 
    • 在潜在空间中操作，避免了像素级冗余计算（如高频噪声建模），显著降低计算成本。
 
@@ -80,19 +65,6 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
      ◦ 早期\(t\)（大噪声）：关注全局结构恢复。  
 
      ◦ 后期\(t\)（小噪声）：细化局部细节。
-
-**训练流程**
-1. 数据加噪  
-   对潜在表示\(z = \mathcal{E}(x)\)（自编码器输出）按时间步\(t\)添加噪声，得到\(z_t\)：  
-   \[
-   z_t = \sqrt{\alpha_t} z + \sqrt{1 - \alpha_t} \epsilon \quad (\alpha_t \text{为噪声调度系数})
-   \]
-
-2. 噪声预测  
-   将\(z_t\)和\(t\)输入UNet网络\(\epsilon_\theta\)，输出预测噪声\(\epsilon_\theta(z_t, t)\)。
-
-3. 参数优化  
-   通过梯度下降最小化\(L_{DM}\)，使预测噪声逼近真实噪声。
 
 **实际效果**
 • 高质量生成：通过逐级去噪，模型能生成细节丰富的图像（如1024×1024分辨率）。  
