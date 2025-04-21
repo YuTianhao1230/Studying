@@ -32,12 +32,13 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 
 **架构图核心流程**
 1. 输入与输出  
+
    • 输入：原始图像x（像素空间）和条件信息（如文本、语义图、图像表示等）。  
 
    • 输出：去噪后的生成图像![image](https://github.com/user-attachments/assets/a523bb74-ca11-4ab3-9a52-fb96fc9456be)（像素空间）。
 
 
-2. 核心模块  
+3. 核心模块  
    • 像素空间（Pixel Space）：原始高分辨率图像（如512×512×3）。  
 
    • 潜在空间（Latent Space）：通过预训练自编码器压缩的低维表示（如64×64×4）。  
