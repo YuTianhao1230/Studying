@@ -55,7 +55,9 @@ apt install git
 # 常用指令
 nvidia-smi：查看显卡情况
 
-pip list：查看当前环境中已安装的包
+conda list：查看当前环境中已安装的包
+
+conda env list：查看所有环境
 
 pwd：输出你当前所在的完整绝对路径
 
