@@ -163,3 +163,11 @@ for epoch in range(num_epochs):
 
 print("--- Training complete ---")
 ```
+
+
+
+
+
+## 参考网址
+
+PyTorch入门必学：DataLoader（数据迭代器）参数解析与用法合集      https://blog.csdn.net/qq_41813454/article/details/134903615
