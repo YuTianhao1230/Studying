@@ -1,0 +1,9 @@
+一、🌱📚 DataLoader的参数说明 📚🌱
+dataset (必需): 用于加载数据的数据集，通常是torch.utils.data.Dataset的子类实例。
+batch_size (可选): 每个批次的数据样本数。默认值为1。
+shuffle (可选): 是否在每个周期开始时打乱数据。默认为False。
+sampler (可选): 定义从数据集中抽取样本的策略。如果指定，则忽略shuffle参数。
+batch_sampler (可选): 与sampler类似，但一次返回一个批次的索引。不能与batch_size、shuffle和sampler同时使用。
+num_workers (可选): 用于数据加载的子进程数量。默认为0，意味着数据将在主进程中加载。
+collate_fn (可选): 如何将多个数据样本整合成一个批次。通常不需要指定。
+drop_last (可选): 如果数据集大小不能被批次大小整除，是否丢弃最后一个不完整的批次。默认为False。
