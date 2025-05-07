@@ -1,6 +1,6 @@
-好的，我们来详细看一下 `DataLoader` 的常用参数以及如何使用它。这里主要以 PyTorch 为例，因为它是 `DataLoader` 概念非常突出的框架。
+#  DataLoader的常用参数以及如何使用它。
 
-`torch.utils.data.DataLoader` 的构造函数有很多参数，我们来介绍一些最常用和重要的：
+这里主要以 PyTorch 为例，因为它是 `DataLoader` 概念非常突出的框架。`torch.utils.data.DataLoader` 的构造函数有很多参数，我们来介绍一些最常用和重要的：
 
 1.  **`dataset` (必须)**：
     *   **作用**：这是 `DataLoader` 要加载的数据集对象。这个对象通常是你自定义的 `torch.utils.data.Dataset` 类的实例，或者 PyTorch 内置的一些数据集 (如 `torchvision.datasets.MNIST`)。
