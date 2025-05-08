@@ -55,7 +55,9 @@ apt install git
 # 常用指令
 nvidia-smi：查看显卡情况
 
-top:查看显卡情况
+top：查看显卡情况
+
+Ctrl + C：终止当前运行的程序
 
 conda list：查看当前环境中已安装的包
 
