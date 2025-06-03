@@ -1,6 +1,6 @@
 ![image](https://github.com/user-attachments/assets/b2102a11-e58d-4368-9a0b-26e47def1639)
 
-* CLIP (Contrastive Language-Image Pre-training) 是什么？
+# CLIP (Contrastive Language-Image Pre-training) 是什么？
 
 CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过**对比学习 (Contrastive Learning)** 的方式，从大量的“图像-文本对”数据中学习视觉概念。
 
@@ -62,7 +62,7 @@ CLIP 的出现对多模态领域产生了深远的影响，主要体现在以下
 5.  **推动多模态理解和推理的研究：** CLIP 展示了通过大规模数据和对比学习可以达到的多模态理解深度，激励了研究者们探索更深层次的视觉-语言对齐、常识推理和组合泛化等问题。
 
 
-* 基于 CNN (ResNet-based) 的 CLIP 图像编码器
+# 基于 CNN (ResNet-based) 的 CLIP 图像编码器
 
 *   **背景：** 在 ViT 出现并流行之前，卷积神经网络 (CNN) 是计算机视觉领域的主导架构，尤其以 ResNet (Residual Network) 及其变体在图像识别任务上表现出色。因此，CLIP 的早期或某些版本采用了基于 ResNet 改进的 CNN 作为其图像编码器。
 
@@ -83,7 +83,7 @@ CLIP 的出现对多模态领域产生了深远的影响，主要体现在以下
     *   **全局感受野受限：** 尽管深层 CNN 可以通过堆叠卷积层来扩大感受野，但其捕获长距离依赖关系的能力可能不如 Transformer 直接。
     *   **模型容量和可扩展性：** 在超大规模数据集上，ViT 通常展现出更好的可扩展性和更高的模型容量上限。
 
-* 基于 ViT (Vision Transformer) 的 CLIP 图像编码器
+# 基于 ViT (Vision Transformer) 的 CLIP 图像编码器
 
 *   **背景：** Vision Transformer (ViT) 将 Transformer 架构成功应用于计算机视觉领域，展示了其在图像识别任务上的强大潜力，尤其是在大规模数据集上进行预训练时。CLIP 也迅速采纳并推广了 ViT 作为其图像编码器的重要选项。
 
