@@ -54,6 +54,7 @@ apt install git
 
 # 常用指令
 nvidia-smi：查看显卡情况
+watch -n 1 nvidia-smi：查看实时显卡情况
 
 top：查看显卡情况
 
