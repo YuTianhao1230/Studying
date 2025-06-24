@@ -37,7 +37,7 @@ x1 = 'abcde'
     ```
     char_list = list(x1)  
     char_list.reverse()  
-    x4 = "".join(char_list)  
+    x4 = "".join(char_list)
     ```
 
 
