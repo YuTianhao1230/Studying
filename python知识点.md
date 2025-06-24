@@ -23,3 +23,19 @@ ord(c) 返回字符 c 的 ASCII 码值。例如，ord('5') 是 53。
 ord('0') 返回字符 '0' 的 ASCII 码值，是 48。
 
 所以 ord('5') - ord('0') 等于 53 - 48 = 5。
+
+# 字符串反转方法
+x1 = 'abcde'
+
+1、使用join和reversed方法：x2 = ''.join(reversed(x1))
+
+2、使用切片：x3 = x1[::-1]
+
+3、转换成列表，使用列表的反转方法，然后再反转回字符串：
+char_list = list(x1)
+char_list.reverse()
+x4 = "".join(char_list)
+
+
+
+
