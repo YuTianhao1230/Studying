@@ -34,9 +34,11 @@ x1 = 'abcde'
     ```x3 = x1[::-1]```
 
 3、转换成列表，使用列表的反转方法，然后再反转回字符串：
-    ```char_list = list(x1)
+    ```
+    char_list = list(x1)
     char_list.reverse()
-    x4 = "".join(char_list)```
+    x4 = "".join(char_list)
+    ```
 
 
 
