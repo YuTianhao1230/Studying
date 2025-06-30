@@ -1,4 +1,4 @@
-`Counter` 是 Python 标准库 `collections` 模块中一个非常有用的工具，专门用于**计数 (counting)**。
+`Counter` 是 Python 标准库 `collections` 模块中一个非常有用的工具，专门用于** 计数 (counting) **。
 
 你可以把 `Counter` 想象成一个**“增强版的字典”**，它的键（key）是你要计数的元素，值（value）是该元素出现的次数。
 
@@ -39,7 +39,7 @@ print(word_counts)
 
 ---
 
-###如何创建 `Counter` 对象？
+### 如何创建 `Counter` 对象？
 
 有多种方式可以初始化一个 `Counter` 对象：
 
