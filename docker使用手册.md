@@ -79,6 +79,8 @@ conda remove --name ENV_NAME --all：删除环境ENV_NAME
 conda config --set auto_activate_base false	# 默认不进入base环境
 conda config --set auto_activate_base true	# 默认进入base环境
 
+#解压（数据集）
+unzip 压缩包 -d "解压路径"
 
 # 一些网址
 Github 生成SSH秘钥（详细教程）  https://blog.csdn.net/qq_35495339/article/details/92847819
