@@ -75,11 +75,11 @@ ls -a：查看所有文件，包括隐藏文件（.开头的文件）
 
 conda remove --name ENV_NAME --all：删除环境ENV_NAME
 
-#修改默认配置
-conda config --set auto_activate_base false	# 默认不进入base环境
-conda config --set auto_activate_base true	# 默认进入base环境
+#修改默认配置/
+conda config --set auto_activate_base false	# 默认不进入base环境\
+conda config --set auto_activate_base true	# 默认进入base环境\
 
-#安装requirements的环境
+#安装requirements的环境/
 pip install -r requirements.txt
 
 #解压（数据集）
