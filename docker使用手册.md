@@ -1,6 +1,6 @@
 # 创建docker的流程
 ### 1、下载CUDA
-ubuntu版本选20.04，版本不影响项目运行
+ubuntu版本选20.04，版本不影响项目运行\
 https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local
 ![image](https://github.com/user-attachments/assets/b3123201-44dd-404a-823d-c99fa3621596)
 
@@ -9,7 +9,7 @@ export PATH=$PATH:/usr/local/cuda-11.3/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64
 
 ### 2、下载anaconda
-这里需要先把wget下载好
+这里需要先把wget下载好\
 超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
 
 ### 3、用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
@@ -26,8 +26,8 @@ docker run -it --gpus all --name ythceshi2 ubuntu（这段指令用来创建一�
 ### 2、可以使用dockerfile快速配置环境（可以不用）
 
 ### 3、git需要下载，使用git命令从github抓取项目（例如git clone https://github.com/VITA-Group/TransGAN.git）
-git下载执行以下两行代码：
-apt update
+git下载执行以下两行代码：\
+apt update\
 apt install git
 
 ### 4、确保 Python 和 Pip 已安装（python3 --version、pip3 --version；如果没安装就sudo apt update、sudo apt install python3 python3-pip python3-venv）
@@ -82,7 +82,7 @@ conda config --set auto_activate_base true	# 默认进入base环境
 #安装requirements的环境\
 pip install -r requirements.txt
 
-#解压（数据集）
+#解压（数据集）\
 unzip 压缩包 -d "解压路径"
 
 # 一些网址
