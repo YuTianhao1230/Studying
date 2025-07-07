@@ -79,6 +79,9 @@ conda remove --name ENV_NAME --all：删除环境ENV_NAME
 conda config --set auto_activate_base false	# 默认不进入base环境
 conda config --set auto_activate_base true	# 默认进入base环境
 
+#安装requirements的环境
+pip install -r requirements.txt
+
 #解压（数据集）
 unzip 压缩包 -d "解压路径"
 
