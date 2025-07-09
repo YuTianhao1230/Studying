@@ -85,6 +85,10 @@ pip install -r requirements.txt
 #解压（数据集）\
 unzip 压缩包 -d "解压路径"
 
+#从宿主机往docker传输文件
+docker cp <宿主机源路径> <容器名或ID>:<容器内目标路径>/
+#例如docker cp /home/cjy2024/cvspace/ILSVRC2012_img_train.tar ythceshi3:/root/TTP
+
 # 一些网址
 Github 生成SSH秘钥（详细教程）  https://blog.csdn.net/qq_35495339/article/details/92847819
 
