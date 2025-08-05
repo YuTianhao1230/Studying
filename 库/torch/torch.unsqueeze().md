@@ -76,6 +76,25 @@ print(f"\nx.unsqueeze(-1): {x_unsqueezed_neg1}")
 print(f"新形状: {x_unsqueezed_neg1.shape}")
 # torch.Size([3, 1])，和 dim=1 结果一样
 ```
+```
+以上所有的输出：
+原始张量 x: tensor([1, 2, 3])
+原始形状: torch.Size([3])
+
+x.unsqueeze(0): tensor([[1, 2, 3]])
+新形状: torch.Size([1, 3])
+
+x.unsqueeze(1): tensor([[1],
+        [2],
+        [3]])
+新形状: torch.Size([3, 1])
+
+x.unsqueeze(-1): tensor([[1],
+        [2],
+        [3]])
+新形状: torch.Size([3, 1])
+
+```
 
 ---
 
