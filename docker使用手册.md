@@ -13,6 +13,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64
 超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
 
 ### 3、用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
+conda create --name <env_name> python=<version>
 
 ### 4、配置pytorch环境
 
