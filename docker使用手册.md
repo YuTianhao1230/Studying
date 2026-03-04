@@ -60,6 +60,9 @@ watch -n 1 nvidia-smi：查看实时显卡情况
 
 top：查看显卡情况
 
+ps aux | grep python：查看运行中的python程序
+pkill -9 -f eval.py：强制结束所有命令行中包含 "eval.py" 的进程。
+
 Ctrl + C：终止当前运行的程序
 
 conda list：查看当前环境中已安装的包
