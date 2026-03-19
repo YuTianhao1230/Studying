@@ -6,7 +6,7 @@
 
 ### 1. 为什么需要 ZeRO？（背景）
 
-在传统的**数据并行（DP）**中，每个 GPU 都会维护一份完整的模型副本。这包括：
+在传统的 **数据并行（DP）** 中，每个 GPU 都会维护一份完整的模型副本。这包括：
 1.  **模型参数 (Parameters)**
 2.  **梯度 (Gradients)**
 3.  **优化器状态 (Optimizer States)**：例如 Adam 优化器中的动量（Momentum）和方差（Variance）。
