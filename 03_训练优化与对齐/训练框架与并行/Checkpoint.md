@@ -1,0 +1,120 @@
+# Checkpoint
+
+## 一句话解释
+
+Checkpoint 是模型训练或运行过程中保存下来的状态快照，最常见的是模型权重，也可能包括优化器状态、学习率调度器、随机种子和训练进度。
+
+## 为什么需要 Checkpoint
+
+训练大模型成本很高，可能跑几小时、几天甚至几周。
+
+Checkpoint 用来解决：
+
+- 训练中断后恢复。
+- 保存不同训练阶段的模型。
+- 选择验证集效果最好的版本。
+- 对比不同 step 的模型能力。
+- 支持模型发布、回滚和复现。
+
+## Checkpoint 里通常有什么
+
+常见内容：
+
+- model weights：模型参数。
+- optimizer state：优化器状态，例如 Adam 的一阶/二阶矩。
+- lr scheduler state：学习率调度器状态。
+- global step：当前训练步数。
+- epoch：当前训练轮数。
+- random state：随机数状态。
+- tokenizer / config：模型配置和 tokenizer 信息。
+- adapter weights：LoRA 等微调参数。
+
+## 只保存权重够不够
+
+看目标。
+
+如果只是推理：
+
+```text
+模型权重 + config + tokenizer 通常够用。
+```
+
+如果要断点恢复训练：
+
+```text
+还需要 optimizer state、scheduler state、global step、随机状态等。
+```
+
+否则恢复后训练曲线可能不连续，甚至效果不同。
+
+## Best Checkpoint 和 Last Checkpoint
+
+### Last Checkpoint
+
+最后一次保存的 checkpoint。
+
+适合：
+
+- 断点续训。
+- 保存训练最新状态。
+
+### Best Checkpoint
+
+验证集指标最好的 checkpoint。
+
+适合：
+
+- 模型发布。
+- 效果对比。
+
+注意：如果验证集被反复选择，可能产生对验证集过拟合。
+
+## Checkpoint 和模型版本的关系
+
+Checkpoint 是文件级产物，模型版本是管理层概念。
+
+一个模型版本通常应该记录：
+
+- base model。
+- checkpoint 路径。
+- 训练数据版本。
+- 训练代码 commit。
+- 训练参数。
+- tokenizer 版本。
+- 评测结果。
+- 发布时间。
+
+## 常见问题
+
+### Checkpoint 太多怎么办？
+
+可以保留：
+
+- latest。
+- best。
+- 固定间隔 checkpoint。
+- 关键实验 checkpoint。
+
+同时清理无价值中间版本。
+
+### LoRA checkpoint 为什么不能单独推理？
+
+LoRA checkpoint 通常只保存 adapter 参数，需要和 base model 一起加载。
+
+### 加载 checkpoint 报 shape mismatch 怎么办？
+
+可能原因：
+
+- base model 不一致。
+- tokenizer 词表变了。
+- 模型结构配置不一致。
+- LoRA target module 不一致。
+
+## 面试可能怎么问
+
+1. checkpoint 是什么？
+2. 断点续训需要保存哪些状态？
+3. best checkpoint 和 last checkpoint 有什么区别？
+4. LoRA checkpoint 如何用于推理？
+5. 如何做 checkpoint 版本管理？
+
