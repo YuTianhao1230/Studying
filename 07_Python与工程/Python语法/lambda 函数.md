@@ -1,4 +1,12 @@
-### 1. `lambda` 是什么？
+# lambda 函数
+
+## 知识点解析
+
+### 概述
+
+1.
+
+### `lambda` 是什么？
 
 `lambda` 是一种用来创建**匿名函数**（anonymous function）的关键字。
 
@@ -8,9 +16,7 @@
 
 把它想象成一个“一次性”的、用完就扔的迷你函数。
 
----
-
-### 2. `lambda` 的语法
+### `lambda` 的语法
 
 它的结构非常简单：
 
@@ -45,9 +51,7 @@ result = add_lambda(3, 5)  # result is 8
 ```
 在这个例子里，`add_lambda` 只是一个变量名，它指向了 `lambda` 创建的那个匿名函数对象。
 
----
-
-### 3. `lambda` 怎么用？（核心应用场景）
+### `lambda` 怎么用？（核心应用场景）
 
 `lambda` 的威力并不在于像上面那样给它命名后使用，而是在于**将它作为参数传递给其他高阶函数**（Higher-order Functions），比如 `sorted()`, `map()`, `filter()` 等。
 
@@ -60,14 +64,14 @@ result = add_lambda(3, 5)  # result is 8
 ```python
 students = [('Alice', 25), ('Bob', 20), ('Charlie', 22)]
 
-# 不使用 lambda，需要先定义一个函数
+### 不使用 lambda，需要先定义一个函数
 def get_age(student_tuple):
     return student_tuple[1]
 
 sorted_students = sorted(students, key=get_age)
 print(sorted_students)  # [('Bob', 20), ('Charlie', 22), ('Alice', 25)]
 
-# 使用 lambda，代码更紧凑
+### 使用 lambda，代码更紧凑
 sorted_students_lambda = sorted(students, key=lambda student: student[1])
 print(sorted_students_lambda) # [('Bob', 20), ('Charlie', 22), ('Alice', 25)]
 ```
@@ -82,7 +86,7 @@ print(sorted_students_lambda) # [('Bob', 20), ('Charlie', 22), ('Alice', 25)]
 ```python
 numbers = [1, 2, 3, 4, 5]
 
-# 使用 map 和 lambda
+### 使用 map 和 lambda
 squared_numbers_iterator = map(lambda x: x * x, numbers)
 squared_numbers_list = list(squared_numbers_iterator) # map返回的是迭代器，需要转为列表
 
@@ -98,7 +102,7 @@ print(squared_numbers_list) # [1, 4, 9, 16, 25]
 ```python
 numbers = [1, 2, 3, 4, 5, 6, 7, 8]
 
-# 使用 filter 和 lambda
+### 使用 filter 和 lambda
 even_numbers_iterator = filter(lambda x: x % 2 == 0, numbers)
 even_numbers_list = list(even_numbers_iterator)
 
@@ -106,9 +110,7 @@ print(even_numbers_list) # [2, 4, 6, 8]
 ```
 > **提示**：同样，列表推导式在这里也很好用：`evens = [x for x in numbers if x % 2 == 0]`。
 
----
-
-### 4. `lambda` 的限制与最佳实践
+### `lambda` 的限制与最佳实践
 
 *   **只能有一个表达式**：这是它最大的限制。你不能在 `lambda` 中写多行逻辑。但你可以使用三元运算符来实现简单的条件判断。
     ```python
@@ -129,3 +131,45 @@ print(even_numbers_list) # [2, 4, 6, 8]
 | **返回值** | 使用 `return` 语句显式返回 | **表达式的结果被隐式返回** |
 | **用途** | 复杂的、需要复用的逻辑 | 简单的、一次性的功能，常作为高阶函数的参数 |
 | **最佳场景** | 定义程序的核心功能模块 | `sorted`, `map`, `filter` 的 `key` 或 `function` 参数 |
+
+## 面试应对
+
+### 不使用 lambda，需要先定义一个函数 是什么？
+
+回答思路：先给定义，再说明它在 Python 与算法工程 中解决的问题，最后补一句工程边界。
+
+回答模板：
+
+不使用 lambda，需要先定义一个函数 的核心含义是：`lambda` 是一种用来创建**匿名函数**（anonymous function）的关键字。 它出现的背景是为了解决具体任务中的效果、效率、稳定性或工程复杂度问题。`lambda` 的威力并不在于像上面那样给它命名后使用，而是在于**将它作为参数传递给其他高阶函数**（Higher-order Functions），比如 `sorted()`, `map()`, `filter()` 等。 机制上，在这个例子里，`add_lambda` 只是一个变量名，它指向了 `lambda` 创建的那个匿名函数对象。 使用时还要注意边界：不使用 lambda，需要先定义一个函数 的收益和限制需要结合效果、效率、成本、稳定性和实现复杂度综合评估。
+
+### 不使用 lambda，需要先定义一个函数 解决什么问题？
+
+回答思路：从背景痛点切入，说明什么条件下值得用，以及不适合的情况。
+
+回答模板：
+
+不使用 lambda，需要先定义一个函数 的核心含义是：`lambda` 是一种用来创建**匿名函数**（anonymous function）的关键字。 它出现的背景是为了解决具体任务中的效果、效率、稳定性或工程复杂度问题。`lambda` 的威力并不在于像上面那样给它命名后使用，而是在于**将它作为参数传递给其他高阶函数**（Higher-order Functions），比如 `sorted()`, `map()`, `filter()` 等。 机制上，在这个例子里，`add_lambda` 只是一个变量名，它指向了 `lambda` 创建的那个匿名函数对象。 使用时还要注意边界：不使用 lambda，需要先定义一个函数 的收益和限制需要结合效果、效率、成本、稳定性和实现复杂度综合评估。
+
+### 不使用 lambda，需要先定义一个函数 的核心机制是什么？
+
+回答思路：拆关键模块和执行流程，说明它如何影响效果、效率或稳定性。
+
+回答模板：
+
+lambda 函数 的机制要从输入、处理过程和输出结果三层理解。`lambda` 是什么？ 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
+
+### 不使用 lambda，需要先定义一个函数 有哪些优劣和限制？
+
+回答思路：优点从效果、效率、稳定性讲；限制从数据、成本、复杂度和适用边界讲。
+
+回答模板：
+
+不使用 lambda，需要先定义一个函数 的价值要和限制一起看。优势上，不使用 lambda，需要先定义一个函数 的收益和限制需要结合效果、效率、成本、稳定性和实现复杂度综合评估。 但它也可能带来额外成本，例如数据依赖、实现复杂度、调参难度、稳定性风险或线上维护成本。真实项目里不能只看理论收益，而要通过 ablation、分桶评测、bad case 分析和成本指标确认净收益。
+
+### 项目中如何验证 不使用 lambda，需要先定义一个函数 有效？
+
+回答思路：按实验闭环回答，覆盖指标、对照实验、bad case、成本和回归验证。
+
+回答模板：
+
+lambda 函数 的机制要从输入、处理过程和输出结果三层理解。`lambda` 是什么？ 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。

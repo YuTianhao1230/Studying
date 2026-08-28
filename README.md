@@ -55,11 +55,11 @@ Studying/
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
 | Transformer、注意力、MoE、RAG、CoT、Prompt | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、损失函数 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
-| 评测、LLM Judge、Benchmark 污染、Hive/Spark、Feature Store、数据质量、实验排查、AI 安全伦理 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
-| CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
-| Python 语法、刷题、常用库、PyTorch API、Applied ML Coding | [07_Python与工程/](<07_Python与工程/>) |
+| VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
+| Python 语法、刷题、常用库、PyTorch API、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [08_程序分析与代码智能/](<08_程序分析与代码智能/>) |
 | 面试复习体系和综合面试题 | [09_面试体系/](<09_面试体系/>) |
 | Agent、Workflow、Skills、MCP、Tool Call、Memory、Context Engineering、AI Coding | [10_Agent/](<10_Agent/>) |
@@ -70,6 +70,8 @@ Studying/
 - [09_面试体系/AI算法工程师/README.md](<09_面试体系/AI算法工程师/README.md>)：系统复习主入口。
 - [02_大模型/应用与问题/NLP与大语言模型.md](<02_大模型/应用与问题/NLP与大语言模型.md>)：NLP 与 LLM 复习入口。
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
+- [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
+- [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
 - [05_推理部署与系统/推理工程/模型部署与推理工程.md](<05_推理部署与系统/推理工程/模型部署与推理工程.md>)：部署与推理工程入口。
 - [05_推理部署与系统/推理工程/推理框架总览.md](<05_推理部署与系统/推理工程/推理框架总览.md>)：推理框架和工程术语入口。
 - [10_Agent/README.md](<10_Agent/README.md>)：Agent、Workflow、Skills、MCP、生产级 Agent、AI Coding 专题入口。
@@ -79,34 +81,34 @@ Studying/
 
 ## 分类说明
 
-### 01_机器学习基础
+### 机器学习基础
 
 放数学、传统机器学习、深度学习基础概念。
 
 - `数学与机器学习/`：数学基础、机器学习基础、统计推断、因果推断、余弦相似度等。
 - `深度学习基础/`：MLP、Normalization、正则化、feature map、高阶特征等。
 
-### 02_大模型
+### 大模型
 
 放模型结构、生成范式、注意力机制以及大模型应用层问题。
 
 - `基础架构/`：Transformer、Self-Attention、Autoregressive Model、Dense Model、MoE、GQA、MLA、RMSNorm、RoPE 等。
 - `应用与问题/`：RAG、CoT、Prompt 调优、模型幻觉、NLP 与大语言模型综述等。
 
-### 03_训练优化与对齐
+### 训练优化与对齐
 
 放训练工程、分布式优化、后训练、对齐算法和训练稳定性。
 
 - `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
 - `后训练与对齐/`：SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
 - `损失函数与激活函数/`：分类损失、回归损失、激活函数、GeLU。
-- `训练稳定性/`：梯度爆炸、梯度消失等。
+- `训练稳定性/`：梯度爆炸、梯度消失、Loss 异常、NaN、发散和收敛排查等。
 
-### 04_评测实验与数据质量
+### 评测实验与数据质量
 
-放模型评测、LLM Judge、Benchmark 污染、Hive/Spark、Feature Store、实验设计、数据治理、问题排查和 AI 产品判断。Agent 评测脚手架相关内容统一放入 `10_Agent/`。
+放模型评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、实验设计、数据治理、问题排查和 AI 产品判断。Agent 评测脚手架相关内容统一放入 `10_Agent/`。
 
-### 05_推理部署与系统
+### 推理部署与系统
 
 放推理工程、Serving、系统设计和工程工具。
 
@@ -114,25 +116,25 @@ Studying/
 - `系统设计/`：AI 系统设计、MLOps 与模型生产化。Agent 调度与编排相关概念统一放入 `10_Agent/`。
 - `工程工具/`：Docker 使用手册。
 
-### 06_视觉多模态与生成模型
+### 视觉多模态与生成模型
 
 放计算机视觉、多模态模型和生成模型。
 
 - `视觉基础/`：Bicubic Interpolation、OCR 与文档理解。
-- `多模态模型/`：CLIP、BLIP、Video Understanding、Multimodal Grounding。
+- `多模态模型/`：VLM、Vision Instruction Tuning、CLIP、BLIP、Video Understanding、Multimodal Grounding。
 - `生成模型/`：UNet、Latent Diffusion Models。
 
-### 07_Python与工程
+### Python 与工程
 
 放 Python 语言、刷题模板、工程库和 PyTorch API。
 
 - `Python语法/`：字典、内置函数、异常、列表推导式、lambda、collections、Counter、pairwise 等。
 - `算法刷题/`：回溯、并查集、刷题技巧、下一个排列。
 - `常用库/`：argparse、Dataloader、re、tqdm、可视化。
-- `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding。
+- `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding、Beam Search。
 - `常用函数/`：detach、enumerate、torch.inference_mode、折叠注释。
 
-### 08_程序分析与代码智能
+### 程序分析与代码智能
 
 放程序分析理论、安全漏洞分析、代码大模型和工具。
 
@@ -141,15 +143,15 @@ Studying/
 - `代码智能模型/`：CodeBERT、GraphCodeBERT、CodeT5、CodeT5+、UniXcoder、大模型和静态分析。
 - `分析工具/`：CodeQL、Joern。
 
-### 09_面试体系
+### 面试体系
 
 放面试复习框架和综合面试题。
 
-### 10_Agent
+### Agent
 
 放 Agent、Workflow、AI Coding、Skills、MCP、Tool Call、SubAgent、Memory、Context Engineering、Computer Use、Guardrails、Trajectory、Harness、Hermes、生产级 Agent 案例和 Agent Eval 等相关内容。
 
-### 11_搜索推荐广告
+### 搜索推荐广告
 
 放搜索、推荐、广告、召回、排序、重排、CTR/CVR 预估、排序指标和 A/B 测试等业务算法内容。
 

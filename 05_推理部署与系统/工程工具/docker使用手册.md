@@ -1,5 +1,12 @@
-# 创建docker的流程
-### 1、下载CUDA
+# docker使用手册
+
+## 知识点解析
+
+### 概述
+
+创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04。
+
+### 下载CUDA
 ubuntu版本选20.04，版本不影响项目运行\
 https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local
 ![image](https://github.com/user-attachments/assets/b3123201-44dd-404a-823d-c99fa3621596)
@@ -8,39 +15,38 @@ export PATH=$PATH:/usr/local/cuda-11.3/bin
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64
 
-### 2、下载anaconda
+### 下载anaconda
 这里需要先把wget下载好\
 超详细Ubuntu安装Anaconda步骤+Anconda常用命令    https://blog.csdn.net/KRISNAT/article/details/124041869
 
-### 3、用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
+### 用conda创建虚拟环境，之后只需进入环境后cd到目标文件夹即可，无需配置解释器。
 conda create --name <env_name> python=<version>
 
-### 4、配置pytorch环境
+### 配置pytorch环境
 
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
 
-
-# 创建项目的流程
-### 1、使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
+### 创建项目的流程
+### 使用docker时，首先需要选中一个镜像image，来创建一个容器（docker run -it --name=”自定义”）
 docker run -it --gpus all --shm-size=16g --name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
 
-### 2、可以使用dockerfile快速配置环境（可以不用）
+### 可以使用dockerfile快速配置环境（可以不用）
 
-### 3、git需要下载，使用git命令从github抓取项目（例如git clone https://github.com/VITA-Group/TransGAN.git）
+### git需要下载，使用git命令从github抓取项目（例如git clone https://github.com/VITA-Group/TransGAN.git）
 git下载执行以下两行代码：\
 apt update\
 apt install git
 
-### 4、确保 Python 和 Pip 已安装（python3 --version、pip3 --version；如果没安装就sudo apt update、sudo apt install python3 python3-pip python3-venv）
+### 确保 Python 和 Pip 已安装（python3 --version、pip3 --version；如果没安装就sudo apt update、sudo apt install python3 python3-pip python3-venv）
 
-### 5、创建虚拟环境
+### 创建虚拟环境
 1.cd到项目路径（例如cd TransGAN）
 
 2.在项目路径下创建虚拟环境 python3 -m venv 环境名（例如python3 -m venv TransGAN）
 
 3.激活虚拟环境（例如source TransGAN/bin/activate）
 
-### 6、配置解释器
+### 配置解释器
 1.确保项目文件夹已在 VS Code 中打开： 你的 VS Code 窗口应该已经连接到你的 Linux 服务器，并且打开了你的项目文件夹。
 
 2.打开命令面板： 按 Ctrl+Shift+P (或者 F1)。
@@ -49,11 +55,7 @@ apt install git
 
 4.选择虚拟环境： VS Code 会显示一个列表，列出它在你的服务器上检测到的所有 Python 环境。（一般在虚拟环境文件夹的bin里面的一个python文件）
 
-
-
-
-
-# 常用指令
+### 常用指令
 nvidia-smi：查看显卡情况
 
 watch -n 1 nvidia-smi：查看实时显卡情况
@@ -93,7 +95,7 @@ unzip 压缩包 -d "解压路径"
 docker cp <宿主机源路径> <容器名或ID>:<容器内目标路径>\
 #例如docker cp /home/cjy2024/cvspace/ILSVRC2012_img_train.tar ythceshi3:/root/TTP
 
-# 一些网址
+### 一些网址
 Github 生成SSH秘钥（详细教程）  https://blog.csdn.net/qq_35495339/article/details/92847819
 
 Docker命令大全        https://www.runoob.com/docker/docker-run-command.html
@@ -108,6 +110,44 @@ Ubuntu20.04系统配置Pytorch环境(GPU版)      https://blog.csdn.net/m0_55127
 
 （已解决）vscode终端的虚拟环境显示两个环境名    https://blog.csdn.net/weixin_57253447/article/details/145852724
 
+## 面试应对
 
+### 创建docker的流程 是什么？
 
+回答思路：先给定义，再说明它在 推理部署和系统工程 中解决的问题，最后补一句工程边界。
 
+回答模板：
+
+创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
+
+### 创建docker的流程 解决什么问题？
+
+回答思路：从背景痛点切入，说明什么条件下值得用，以及不适合的情况。
+
+回答模板：
+
+创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
+
+### 创建docker的流程 的核心机制是什么？
+
+回答思路：拆关键模块和执行流程，说明它如何影响效果、效率或稳定性。
+
+回答模板：
+
+docker使用手册 的机制要从输入、处理过程和输出结果三层理解。下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local export PATH=$PATH:/usr/loca。 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
+
+### 创建docker的流程 有哪些优劣和限制？
+
+回答思路：优点从效果、效率、稳定性讲；限制从数据、成本、复杂度和适用边界讲。
+
+回答模板：
+
+创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
+
+### 项目中如何验证 创建docker的流程 有效？
+
+回答思路：按实验闭环回答，覆盖指标、对照实验、bad case、成本和回归验证。
+
+回答模板：
+
+docker使用手册 的机制要从输入、处理过程和输出结果三层理解。下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local export PATH=$PATH:/usr/loca。 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。

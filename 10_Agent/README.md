@@ -5,27 +5,28 @@
 ## 推荐阅读路径
 
 1. [基础概念/Agent.md](<基础概念/Agent.md>)
-2. [基础概念/Workflow.md](<基础概念/Workflow.md>)
-3. [基础概念/Planning与ReAct.md](<基础概念/Planning与ReAct.md>)
-4. [基础概念/Tool_Call与Function_Calling.md](<基础概念/Tool_Call与Function_Calling.md>)
-5. [基础概念/MCP.md](<基础概念/MCP.md>)
-6. [基础概念/Skill.md](<基础概念/Skill.md>)
-7. [基础概念/SubAgent与Multi_Agent.md](<基础概念/SubAgent与Multi_Agent.md>)
-8. [基础概念/Memory.md](<基础概念/Memory.md>)
-9. [基础概念/Context_Engineering.md](<基础概念/Context_Engineering.md>)
-10. [基础概念/Computer_Use.md](<基础概念/Computer_Use.md>)
-11. [基础概念/Guardrails与Human_in_the_Loop.md](<基础概念/Guardrails与Human_in_the_Loop.md>)
-12. [基础概念/Trajectory与Observability.md](<基础概念/Trajectory与Observability.md>)
-13. [基础概念/Agent_Eval.md](<基础概念/Agent_Eval.md>)
-14. [基础概念/Agentic_RAG.md](<基础概念/Agentic_RAG.md>)
-15. [基础概念/Code_Execution_with_Tools.md](<基础概念/Code_Execution_with_Tools.md>)
-16. [基础概念/Harness.md](<基础概念/Harness.md>)
-17. [基础概念/Hermes.md](<基础概念/Hermes.md>)
-18. [基础概念/生产级Agent案例.md](<基础概念/生产级Agent案例.md>)
-19. [Skills/Agent_Skills设计与维护.md](<Skills/Agent_Skills设计与维护.md>)
-20. [AI_Coding/Vibe_Coding面试与实践.md](<AI_Coding/Vibe_Coding面试与实践.md>)
-21. [AI_Coding/全栈_AI_Coding最佳实践工作流.md](<AI_Coding/全栈_AI_Coding最佳实践工作流.md>)
-22. [资料索引/Agent学习资料索引.md](<资料索引/Agent学习资料索引.md>)
+2. [基础概念/Agent开发完整流程.md](<基础概念/Agent开发完整流程.md>)
+3. [基础概念/Workflow.md](<基础概念/Workflow.md>)
+4. [基础概念/Planning与ReAct.md](<基础概念/Planning与ReAct.md>)
+5. [基础概念/Tool_Call与Function_Calling.md](<基础概念/Tool_Call与Function_Calling.md>)
+6. [基础概念/MCP.md](<基础概念/MCP.md>)
+7. [基础概念/Skill.md](<基础概念/Skill.md>)
+8. [基础概念/SubAgent与Multi_Agent.md](<基础概念/SubAgent与Multi_Agent.md>)
+9. [基础概念/Memory.md](<基础概念/Memory.md>)
+10. [基础概念/Context_Engineering.md](<基础概念/Context_Engineering.md>)
+11. [基础概念/Computer_Use.md](<基础概念/Computer_Use.md>)
+12. [基础概念/Guardrails与Human_in_the_Loop.md](<基础概念/Guardrails与Human_in_the_Loop.md>)
+13. [基础概念/Trajectory与Observability.md](<基础概念/Trajectory与Observability.md>)
+14. [基础概念/Agent_Eval.md](<基础概念/Agent_Eval.md>)
+15. [基础概念/Agentic_RAG.md](<基础概念/Agentic_RAG.md>)
+16. [基础概念/Code_Execution_with_Tools.md](<基础概念/Code_Execution_with_Tools.md>)
+17. [基础概念/Harness.md](<基础概念/Harness.md>)
+18. [基础概念/Hermes.md](<基础概念/Hermes.md>)
+19. [基础概念/生产级Agent案例.md](<基础概念/生产级Agent案例.md>)
+20. [Skills/Agent_Skills设计与维护.md](<Skills/Agent_Skills设计与维护.md>)
+21. [AI_Coding/Vibe_Coding面试与实践.md](<AI_Coding/Vibe_Coding面试与实践.md>)
+22. [AI_Coding/全栈_AI_Coding最佳实践工作流.md](<AI_Coding/全栈_AI_Coding最佳实践工作流.md>)
+23. [资料索引/Agent学习资料索引.md](<资料索引/Agent学习资料索引.md>)
 
 ## 分类说明
 
@@ -34,6 +35,7 @@
 放 Agent 工程链路里容易反复出现的底层概念。
 
 - Agent：以 LLM 为决策核心、能观察环境并调用工具完成目标的系统。
+- Agent 开发完整流程：从任务边界、Workflow、Agent Loop、Tool Call、MCP、Context、Memory、Guardrails、Eval 到上线迭代的完整链路。
 - Workflow：预定义的多步骤 LLM/工具编排流程。
 - Planning 与 ReAct：Agent 拆解任务、行动、观察、反思的执行模式。
 - Tool Call / Function Calling：模型通过结构化参数请求外部工具执行动作。

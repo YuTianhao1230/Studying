@@ -1,4 +1,4 @@
-# Agent 学习资料索引
+# Agent学习资料索引
 
 这个文件记录 Agent、AI Coding、Skills、MCP、OpenClaw/Clawdbot 等相关资料来源和阅读状态。
 

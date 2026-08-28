@@ -1,10 +1,12 @@
-# Applied ML Coding
+# Applied_ML_Coding
 
-## 一句话解释
+## 知识点解析
+
+### 概述
 
 Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。
 
-## 为什么重要
+### 为什么重要
 
 大厂 MLE 面试越来越常见两类编码题：
 
@@ -13,9 +15,9 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 
 后者考察你是否真的理解模型、训练、评测和数据处理，而不是只会调库。
 
-## 高频题型
+### 高频题型
 
-### 1. Attention from Scratch
+#### Attention from Scratch
 
 需要能写：
 
@@ -32,7 +34,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 数值稳定性。
 - 时间和空间复杂度。
 
-### 2. Sampling
+#### Sampling
 
 常见：
 
@@ -49,7 +51,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 随机采样。
 - 终止条件。
 
-### 3. Training Loop
+#### Training Loop
 
 需要能写：
 
@@ -68,7 +70,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 梯度清零。
 - mixed precision。
 
-### 4. Metrics
+#### Metrics
 
 常见手写：
 
@@ -79,7 +81,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - NDCG。
 - MRR。
 
-### 5. RAG Utility
+#### RAG Utility
 
 常见：
 
@@ -89,7 +91,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - rerank。
 - citation mapping。
 
-### 6. Eval Harness
+#### Eval Harness
 
 常见：
 
@@ -99,7 +101,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 计算指标。
 - 保存 bad case。
 
-## 面试写代码的原则
+### 面试写代码的原则
 
 - 先写清楚输入输出。
 - 明确 shape。
@@ -108,7 +110,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 能解释复杂度。
 - 不要过度封装。
 
-## 常见误区
+### 常见误区
 
 - 只背公式，写不出 shape 正确的代码。
 - softmax 没做数值稳定。
@@ -117,7 +119,7 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 指标实现没有处理极端样本。
 - 写了函数但没有最小测试。
 
-## 准备清单
+### 准备清单
 
 - 用 NumPy 手写 softmax、cross entropy、AUC。
 - 用 PyTorch 手写 scaled dot-product attention。
@@ -126,20 +128,44 @@ Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，�
 - 写一个 JSONL eval harness。
 - 写一个 RAG chunking + retrieval demo。
 
-## 面试可能怎么问
+## 面试应对
 
-1. 手写 scaled dot-product attention。
-   - 回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
-   - 回答模板：这个问题在 Applied ML Coding 场景下，核心是说明它解决什么实际工程问题，以及如何落地。完整回答需要覆盖目标、执行方式、失败风险和验证指标。
-2. 实现 top-k sampling。
-   - 回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
-   - 回答模板：这个问题在 Applied ML Coding 场景下，核心是说明它解决什么实际工程问题，以及如何落地。完整回答需要覆盖目标、执行方式、失败风险和验证指标。
-3. 写一个支持 gradient accumulation 的训练循环。
-   - 回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
-   - 回答模板：这个问题在 Applied ML Coding 场景下，核心是说明它解决什么实际工程问题，以及如何落地。完整回答需要覆盖目标、执行方式、失败风险和验证指标。
-4. 实现 AUC 或 NDCG。
-   - 回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
-   - 回答模板：这个问题在 Applied ML Coding 场景下，核心是说明它解决什么实际工程问题，以及如何落地。完整回答需要覆盖目标、执行方式、失败风险和验证指标。
-5. 写一个简单的模型评测脚手架。
-   - 回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
-   - 回答模板：这个问题在 Applied ML Coding 场景下，核心是说明它解决什么实际工程问题，以及如何落地。完整回答需要覆盖目标、执行方式、失败风险和验证指标。
+### 手写 scaled dot-product attention。
+
+回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+
+回答模板：
+
+Applied_ML_Coding 的核心含义是：Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。 面试回答时我会先给定义，再说明它解决的背景问题，接着讲核心机制和适用场景，最后补充限制与工程风险。这样回答比只背一句概念更完整。
+
+### 实现 top-k sampling。
+
+回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+
+回答模板：
+
+Applied_ML_Coding 的核心含义是：Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。 面试回答时我会先给定义，再说明它解决的背景问题，接着讲核心机制和适用场景，最后补充限制与工程风险。这样回答比只背一句概念更完整。
+
+### 写一个支持 gradient accumulation 的训练循环。
+
+回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+
+回答模板：
+
+Applied_ML_Coding 的核心含义是：Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。 面试回答时我会先给定义，再说明它解决的背景问题，接着讲核心机制和适用场景，最后补充限制与工程风险。这样回答比只背一句概念更完整。
+
+### 实现 AUC 或 NDCG。
+
+回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+
+回答模板：
+
+Applied_ML_Coding 的核心含义是：Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。 面试回答时我会先给定义，再说明它解决的背景问题，接着讲核心机制和适用场景，最后补充限制与工程风险。这样回答比只背一句概念更完整。
+
+### 写一个简单的模型评测脚手架。
+
+回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+
+回答模板：
+
+Applied_ML_Coding 的核心含义是：Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。 面试回答时我会先给定义，再说明它解决的背景问题，接着讲核心机制和适用场景，最后补充限制与工程风险。这样回答比只背一句概念更完整。
