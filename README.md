@@ -40,6 +40,12 @@ Studying/
 ├── 09_面试体系/
 │   ├── AI算法工程师/
 │   └── 综合面试题/
+├── 10_Agent/
+│   ├── 基础概念/
+│   ├── Skills/
+│   ├── AI_Coding/
+│   └── 资料索引/
+├── 11_搜索推荐广告/
 └── README.md
 ```
 
@@ -47,15 +53,17 @@ Studying/
 
 | 想查什么 | 入口 |
 | --- | --- |
-| 数学、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
+| 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
 | Transformer、注意力、MoE、RAG、CoT、Prompt | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、LoRA、DPO、PPO、GRPO、Checkpoint、损失函数 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
-| 评测、Harness、数据质量、实验排查、AI 安全伦理 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
-| 推理框架、Serving、KV Cache、Batching、量化、算子、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
-| CLIP、BLIP、UNet、Latent Diffusion、图像插值 | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
-| Python 语法、刷题、常用库、PyTorch API | [07_Python与工程/](<07_Python与工程/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、损失函数 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| 评测、LLM Judge、Benchmark 污染、Hive/Spark、Feature Store、数据质量、实验排查、AI 安全伦理 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
+| 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
+| CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
+| Python 语法、刷题、常用库、PyTorch API、Applied ML Coding | [07_Python与工程/](<07_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [08_程序分析与代码智能/](<08_程序分析与代码智能/>) |
 | 面试复习体系和综合面试题 | [09_面试体系/](<09_面试体系/>) |
+| Agent、Workflow、Skills、MCP、Tool Call、Memory、Context Engineering、AI Coding | [10_Agent/](<10_Agent/>) |
+| 搜索、推荐、广告、召回、排序、CTR、A/B 测试 | [11_搜索推荐广告/](<11_搜索推荐广告/>) |
 
 ## 重点入口
 
@@ -64,6 +72,10 @@ Studying/
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
 - [05_推理部署与系统/推理工程/模型部署与推理工程.md](<05_推理部署与系统/推理工程/模型部署与推理工程.md>)：部署与推理工程入口。
 - [05_推理部署与系统/推理工程/推理框架总览.md](<05_推理部署与系统/推理工程/推理框架总览.md>)：推理框架和工程术语入口。
+- [10_Agent/README.md](<10_Agent/README.md>)：Agent、Workflow、Skills、MCP、生产级 Agent、AI Coding 专题入口。
+- [09_面试体系/AI算法工程师/大厂算法工程师JD能力矩阵.md](<09_面试体系/AI算法工程师/大厂算法工程师JD能力矩阵.md>)：从大厂 JD 反推的能力地图和补齐路线。
+- [11_搜索推荐广告/README.md](<11_搜索推荐广告/README.md>)：搜索推荐广告专题入口。
+- [05_推理部署与系统/系统设计/MLOps与模型生产化.md](<05_推理部署与系统/系统设计/MLOps与模型生产化.md>)：模型上线、监控、灰度和回滚入口。
 
 ## 分类说明
 
@@ -71,7 +83,7 @@ Studying/
 
 放数学、传统机器学习、深度学习基础概念。
 
-- `数学与机器学习/`：数学基础、机器学习基础、余弦相似度等。
+- `数学与机器学习/`：数学基础、机器学习基础、统计推断、因果推断、余弦相似度等。
 - `深度学习基础/`：MLP、Normalization、正则化、feature map、高阶特征等。
 
 ### 02_大模型
@@ -85,29 +97,29 @@ Studying/
 
 放训练工程、分布式优化、后训练、对齐算法和训练稳定性。
 
-- `训练框架与并行/`：DeepSpeed、ZeRO、Mixed Precision Training、Checkpoint 等训练工程概念。
-- `后训练与对齐/`：LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
+- `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
+- `后训练与对齐/`：SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
 - `损失函数与激活函数/`：分类损失、回归损失、激活函数、GeLU。
 - `训练稳定性/`：梯度爆炸、梯度消失等。
 
 ### 04_评测实验与数据质量
 
-放模型评测、实验设计、Harness、数据治理、问题排查和 AI 产品判断。
+放模型评测、LLM Judge、Benchmark 污染、Hive/Spark、Feature Store、实验设计、数据治理、问题排查和 AI 产品判断。Agent 评测脚手架相关内容统一放入 `10_Agent/`。
 
 ### 05_推理部署与系统
 
 放推理工程、Serving、系统设计和工程工具。
 
-- `推理工程/`：模型部署、推理框架、Serving、KV Cache、Batching、量化、算子、vLLM、ms-swift 等工程概念。
-- `系统设计/`：AI 系统设计、Hermes 等任务调度与服务编排概念。
+- `推理工程/`：模型部署、推理框架、Serving、KV Cache、Batching、量化、Speculative Decoding、TensorRT-LLM、CUDA Graph、CUDA/Triton、算子、vLLM、ms-swift 等工程概念。
+- `系统设计/`：AI 系统设计、MLOps 与模型生产化。Agent 调度与编排相关概念统一放入 `10_Agent/`。
 - `工程工具/`：Docker 使用手册。
 
 ### 06_视觉多模态与生成模型
 
 放计算机视觉、多模态模型和生成模型。
 
-- `视觉基础/`：Bicubic Interpolation。
-- `多模态模型/`：CLIP、BLIP。
+- `视觉基础/`：Bicubic Interpolation、OCR 与文档理解。
+- `多模态模型/`：CLIP、BLIP、Video Understanding、Multimodal Grounding。
 - `生成模型/`：UNet、Latent Diffusion Models。
 
 ### 07_Python与工程
@@ -117,7 +129,7 @@ Studying/
 - `Python语法/`：字典、内置函数、异常、列表推导式、lambda、collections、Counter、pairwise 等。
 - `算法刷题/`：回溯、并查集、刷题技巧、下一个排列。
 - `常用库/`：argparse、Dataloader、re、tqdm、可视化。
-- `PyTorch/`：torch、torchvision、torch.unsqueeze。
+- `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding。
 - `常用函数/`：detach、enumerate、torch.inference_mode、折叠注释。
 
 ### 08_程序分析与代码智能
@@ -133,9 +145,17 @@ Studying/
 
 放面试复习框架和综合面试题。
 
+### 10_Agent
+
+放 Agent、Workflow、AI Coding、Skills、MCP、Tool Call、SubAgent、Memory、Context Engineering、Computer Use、Guardrails、Trajectory、Harness、Hermes、生产级 Agent 案例和 Agent Eval 等相关内容。
+
+### 11_搜索推荐广告
+
+放搜索、推荐、广告、召回、排序、重排、CTR/CVR 预估、排序指标和 A/B 测试等业务算法内容。
+
 ## 后续维护规则
 
 1. 新笔记优先放入最具体的二级目录，不直接放根目录。
 2. 如果一篇笔记横跨多个领域，按主要用途归类，必要时在 README 的重点入口处加链接。
-3. 系统性复习材料放 `09_面试体系/`，单个概念解释放到它最贴近的知识域，不再单独维护“名词解释”目录。
+3. 系统性复习材料放 `09_面试体系/`；Agent 相关概念、工具链和实践方法放 `10_Agent/`。
 4. 工程实践类内容优先放到实际使用场景对应目录，例如推理部署放 `05_推理部署与系统/`，Python API 放 `07_Python与工程/`。

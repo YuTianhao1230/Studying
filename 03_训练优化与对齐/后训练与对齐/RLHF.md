@@ -1,0 +1,72 @@
+# RLHF
+
+## 一句话解释
+
+RLHF，Reinforcement Learning from Human Feedback，是用人类偏好训练奖励模型，再用强化学习优化语言模型，使模型输出更符合人类偏好。
+
+## 典型流程
+
+```text
+预训练模型
+  -> SFT 得到初始助手模型
+  -> 收集多答案偏好排序
+  -> 训练 Reward Model
+  -> 用 PPO 等算法优化策略模型
+  -> 评测与安全对齐
+```
+
+## 为什么需要 RLHF
+
+SFT 能让模型学会回答格式，但不一定能优化这些偏好：
+
+- 有帮助。
+- 真实可靠。
+- 遵循指令。
+- 不胡说。
+- 不输出危险内容。
+- 风格自然。
+
+RLHF 试图把这些偏好转成可优化的奖励信号。
+
+## Reward Model
+
+Reward Model 输入 prompt 和 answer，输出一个分数，表示该回答有多符合偏好。
+
+训练数据通常来自：
+
+- 同一 prompt 的多个候选回答。
+- 人类标注排序。
+- 成对偏好数据。
+
+## PPO 阶段
+
+PPO 把语言模型看成策略模型，通过 Reward Model 给出的奖励进行优化。
+
+实践中会加入 KL 约束，避免模型偏离 SFT 模型太远：
+
+```text
+reward = preference_reward - beta * KL(policy || reference_policy)
+```
+
+## 常见风险
+
+- Reward Hacking：模型学会钻奖励模型漏洞。
+- Reward Collapse：奖励信号失真导致输出质量崩坏。
+- 标注偏差：人类偏好不一致。
+- 成本高：需要大量采样和训练。
+- 稳定性差：PPO 对超参数敏感。
+
+## 和 DPO 的区别
+
+- RLHF + PPO：显式训练 Reward Model，再强化学习优化。
+- DPO：直接用偏好对优化策略，不单独训练 Reward Model。
+
+DPO 更简单稳定，但表达能力和可控性取决于数据和目标设计。
+
+## 面试可能怎么问
+
+1. RLHF 的三阶段是什么？
+2. Reward Model 如何训练？
+3. PPO 阶段为什么需要 KL 约束？
+4. Reward Hacking 是什么？
+5. RLHF 和 DPO 有什么区别？
