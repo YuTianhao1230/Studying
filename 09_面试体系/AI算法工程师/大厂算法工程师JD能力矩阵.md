@@ -36,7 +36,7 @@
 | 评测体系 | Evals、graders、benchmark、diagnostics、failure analysis | 能设计自动化评测、bad case、trajectory 归因 | [模型评测与实验设计](<../../04_评测实验与数据质量/模型评测与实验设计.md>)、[LLM Judge](<../../04_评测实验与数据质量/LLM_Judge.md>)、[数据泄漏与 Benchmark 污染](<../../04_评测实验与数据质量/数据泄漏与Benchmark污染.md>)、[Agent Eval](<../../10_Agent/基础概念/Agent_Eval.md>)、[Harness](<../../10_Agent/基础概念/Harness.md>)、[Trajectory](<../../10_Agent/基础概念/Trajectory与Observability.md>) |
 | 多模态 | VLM、CLIP、BLIP、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)、[CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>)、[BLIP](<../../06_视觉多模态与生成模型/多模态模型/BLIP.md>)、[Video Understanding](<../../06_视觉多模态与生成模型/多模态模型/Video_Understanding.md>)、[OCR 与文档理解](<../../06_视觉多模态与生成模型/视觉基础/OCR与文档理解.md>)、[Multimodal Grounding](<../../06_视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>) |
 | 数据工程 | 数据清洗、合成数据、Hive、Spark、Feature Store、Data Quality | 能搭数据管线、做数据版本和质量控制 | [数据工程与数据质量](<../../04_评测实验与数据质量/数据工程与数据质量.md>)、[训练数据构造与合成数据](<../../04_评测实验与数据质量/训练数据构造与合成数据.md>)、[Hive、Spark 与 Feature Store](<../../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>) |
-| 训练系统 | Distributed Training、FSDP、DeepSpeed、Megatron、JAX | 能解释并行策略、显存优化、吞吐瓶颈 | [训练优化与大模型训练](<../../03_训练优化与对齐/训练优化与大模型训练.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[Megatron-LM](<../../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)、[Loss 异常与收敛排查](<../../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>) |
+| 训练系统 | PyTorch、TensorFlow、JAX、Distributed Training、FSDP、DeepSpeed、Megatron | 能解释框架选型、训练循环、并行策略、显存优化、吞吐瓶颈 | [深度学习框架选型](<../../07_Python与工程/深度学习框架/深度学习框架选型.md>)、[PyTorch 训练工程基础](<../../07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)、[TensorFlow 与 Keras 基础](<../../07_Python与工程/深度学习框架/TensorFlow与Keras基础.md>)、[Hugging Face 生态基础](<../../07_Python与工程/深度学习框架/Hugging_Face生态基础.md>)、[训练脚手架与高级封装](<../../07_Python与工程/深度学习框架/训练脚手架与高级封装.md>)、[训练优化与大模型训练](<../../03_训练优化与对齐/训练优化与大模型训练.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[Megatron-LM](<../../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)、[Loss 异常与收敛排查](<../../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>) |
 | 推理部署 | vLLM、TensorRT-LLM、Quantization、Dynamic Batching、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../../05_推理部署与系统/推理工程/模型部署与推理工程.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、[TensorRT-LLM](<../../05_推理部署与系统/推理工程/TensorRT_LLM.md>)、[Batching](<../../05_推理部署与系统/推理工程/Batching.md>)、[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[量化](<../../05_推理部署与系统/推理工程/量化.md>)、[CUDA Graph](<../../05_推理部署与系统/推理工程/CUDA_Graph.md>) |
 | 系统工程 | Linux、C++、Python、服务化、监控、回滚、CI/CD | 能把模型稳定上线并排障 | [MLOps 与模型生产化](<../../05_推理部署与系统/系统设计/MLOps与模型生产化.md>)、[Serving](<../../05_推理部署与系统/推理工程/Serving.md>)、[CUDA 与 Triton 基础](<../../05_推理部署与系统/推理工程/CUDA与Triton基础.md>)、[编程与算法工程能力](<../../07_Python与工程/编程与算法工程能力.md>) |
 | 编码能力 | 数据结构算法、Applied ML Coding、Attention from scratch | 能写可运行、可测试、复杂度清楚的代码 | [Applied ML Coding](<../../07_Python与工程/PyTorch/Applied_ML_Coding.md>)、[Beam Search](<../../07_Python与工程/PyTorch/Beam_Search.md>)、[算法刷题](<../../07_Python与工程/算法刷题/刷题技巧.md>) |
@@ -239,6 +239,11 @@
 本轮已根据 JD 缺口补充：
 
 - [统计推断与因果推断基础](<../../01_机器学习基础/数学与机器学习/统计推断与因果推断基础.md>)
+- [深度学习框架选型](<../../07_Python与工程/深度学习框架/深度学习框架选型.md>)
+- [PyTorch 训练工程基础](<../../07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)
+- [TensorFlow 与 Keras 基础](<../../07_Python与工程/深度学习框架/TensorFlow与Keras基础.md>)
+- [Hugging Face 生态基础](<../../07_Python与工程/深度学习框架/Hugging_Face生态基础.md>)
+- [训练脚手架与高级封装](<../../07_Python与工程/深度学习框架/训练脚手架与高级封装.md>)
 - [Hive、Spark 与 Feature Store](<../../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>)
 - [训练数据构造与合成数据](<../../04_评测实验与数据质量/训练数据构造与合成数据.md>)
 - [FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)

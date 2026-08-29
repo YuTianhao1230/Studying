@@ -31,6 +31,7 @@ Studying/
 │   ├── 算法刷题/
 │   ├── 常用库/
 │   ├── PyTorch/
+│   ├── 深度学习框架/
 │   └── 常用函数/
 ├── 08_程序分析与代码智能/
 │   ├── 静态分析基础/
@@ -54,12 +55,12 @@ Studying/
 | 想查什么 | 入口 |
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
-| Transformer、注意力、MoE、RAG、CoT、Prompt | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| Transformer、注意力、MoE、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
 | VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
-| Python 语法、刷题、常用库、PyTorch API、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
+| Python 语法、刷题、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [08_程序分析与代码智能/](<08_程序分析与代码智能/>) |
 | 面试复习体系和综合面试题 | [09_面试体系/](<09_面试体系/>) |
 | Agent、Workflow、Skills、MCP、Tool Call、Memory、Context Engineering、AI Coding | [10_Agent/](<10_Agent/>) |
@@ -68,10 +69,14 @@ Studying/
 ## 重点入口
 
 - [09_面试体系/AI算法工程师/README.md](<09_面试体系/AI算法工程师/README.md>)：系统复习主入口。
+- [02_大模型/大模型发展历史与SOTA迭代框架.md](<02_大模型/大模型发展历史与SOTA迭代框架.md>)：大模型从 Transformer 到 Agent 的历史演进和 SOTA 迭代框架。
 - [02_大模型/应用与问题/NLP与大语言模型.md](<02_大模型/应用与问题/NLP与大语言模型.md>)：NLP 与 LLM 复习入口。
+- [03_训练优化与对齐/模型训练学习手册_预训练到后训练.md](<03_训练优化与对齐/模型训练学习手册_预训练到后训练.md>)：从预训练、SFT、DPO、GRPO/RLVR 到评测部署的模型训练路线总纲。
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
 - [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
+- [07_Python与工程/深度学习框架/深度学习框架选型.md](<07_Python与工程/深度学习框架/深度学习框架选型.md>)：PyTorch、TensorFlow/Keras、JAX、Hugging Face 等框架怎么选。
+- [07_Python与工程/深度学习框架/PyTorch训练工程基础.md](<07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)：PyTorch 训练循环、autograd、DataLoader、checkpoint 和 OOM 排查。
 - [05_推理部署与系统/推理工程/模型部署与推理工程.md](<05_推理部署与系统/推理工程/模型部署与推理工程.md>)：部署与推理工程入口。
 - [05_推理部署与系统/推理工程/推理框架总览.md](<05_推理部署与系统/推理工程/推理框架总览.md>)：推理框架和工程术语入口。
 - [10_Agent/README.md](<10_Agent/README.md>)：Agent、Workflow、Skills、MCP、生产级 Agent、AI Coding 专题入口。
@@ -90,14 +95,14 @@ Studying/
 
 ### 大模型
 
-放模型结构、生成范式、注意力机制以及大模型应用层问题。
+放模型结构、生成范式、注意力机制、大模型发展历史以及大模型应用层问题。
 
 - `基础架构/`：Transformer、Self-Attention、Autoregressive Model、Dense Model、MoE、GQA、MLA、RMSNorm、RoPE 等。
 - `应用与问题/`：RAG、CoT、Prompt 调优、模型幻觉、NLP 与大语言模型综述等。
 
 ### 训练优化与对齐
 
-放训练工程、分布式优化、后训练、对齐算法和训练稳定性。
+放模型训练路线、训练工程、分布式优化、后训练、对齐算法和训练稳定性。
 
 - `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
 - `后训练与对齐/`：SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
@@ -126,11 +131,12 @@ Studying/
 
 ### Python 与工程
 
-放 Python 语言、刷题模板、工程库和 PyTorch API。
+放 Python 语言、刷题模板、工程库、深度学习框架基础和 PyTorch API。
 
 - `Python语法/`：字典、内置函数、异常、列表推导式、lambda、collections、Counter、pairwise 等。
 - `算法刷题/`：回溯、并查集、刷题技巧、下一个排列。
 - `常用库/`：argparse、Dataloader、re、tqdm、可视化。
+- `深度学习框架/`：PyTorch、TensorFlow/Keras、JAX、Hugging Face、Trainer、Accelerate、Lightning 等框架选型和训练脚手架基础。
 - `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding、Beam Search。
 - `常用函数/`：detach、enumerate、torch.inference_mode、折叠注释。
 
