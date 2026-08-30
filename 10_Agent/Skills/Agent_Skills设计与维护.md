@@ -177,29 +177,28 @@ Agent 犯错
 - 没有负例，无法验证边界。
 - 大量内容常驻上下文，降低其他能力。
 - 用 LLM 一次性生成 Skill，不做迭代和评测。
-
 ## 面试应对
 
-### Agent_Skills设计与维护 是什么？
+### Agent Skill 是什么？
 
-回答思路：先给清晰定义，再说明它解决的问题和适用边界。
-
-回答模板：
-
-Agent_Skills设计与维护 是一个需要从定义、机制、场景和限制一起理解的知识点。资料来源：Designing, Refining and Maintaining Agent Skills at Perplexity
-
-### Agent_Skills设计与维护 的核心机制是什么？
-
-回答思路：拆关键步骤和影响因素回答。
+回答思路：先定位概念，再说明它解决的具体问题。
 
 回答模板：
 
-Agent_Skills设计与维护 的核心机制是：Skill 不是普通代码文档，而是给 Agent 注入的“可调用上下文”。写 Skill 的目标不是把所有知识写全，而是在正确时机给模型提供它原本容易做错、漏做或不稳定执行的关键约束。
+Agent Skill 是把特定领域的操作流程、工具使用规范、约束和示例封装成可复用能力的机制。它让 Agent 在遇到某类任务时读取对应指导，而不是每次从零推理。
 
-### Agent_Skills设计与维护 有哪些使用场景和注意事项？
+### Skill 应该怎么设计？
 
-回答思路：先讲场景，再讲风险和边界。
+回答思路：按关键组件或流程拆解，不停留在名词解释。
 
 回答模板：
 
-Agent_Skills设计与维护 常见使用场景包括：资料来源：Designing, Refining and Maintaining Agent Skills at Perplexity 使用时要注意：资料来源：Designing, Refining and Maintaining Agent Skills at Perplexity
+好的 Skill 应该明确触发条件、任务边界、工具调用顺序、输入输出格式、失败处理和安全约束。复杂资料应放到 references 中按需读取，避免一次性塞入过多上下文。
+
+### 维护 Skill 要注意什么？
+
+回答思路：结合工程落地讲适用边界和风险。
+
+回答模板：
+
+维护重点是版本化、可验证和避免过期。工具接口变化、流程变化或常见错误出现后，应及时更新 Skill，并通过真实任务回放确认它能稳定指导 Agent 行为。

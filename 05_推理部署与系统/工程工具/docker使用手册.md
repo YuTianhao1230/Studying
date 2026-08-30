@@ -109,29 +109,28 @@ vscode通过ssh连接远程服务器+免密登录（图文）  https://blog.csdn
 Ubuntu20.04系统配置Pytorch环境(GPU版)      https://blog.csdn.net/m0_55127902/article/details/135677560
 
 （已解决）vscode终端的虚拟环境显示两个环境名    https://blog.csdn.net/weixin_57253447/article/details/145852724
-
 ## 面试应对
 
-### docker使用手册 是什么？
+### Docker 解决什么问题？
 
-回答思路：先给清晰定义，再说明它解决的问题和适用边界。
-
-回答模板：
-
-docker使用手册 是一个需要从定义、机制、场景和限制一起理解的知识点。创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。 docker run it gpus all shm size=16g name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
-
-### docker使用手册 的核心机制是什么？
-
-回答思路：拆关键步骤和影响因素回答。
+回答思路：先定位概念，再说明它解决的具体问题。
 
 回答模板：
 
-docker使用手册 的核心机制是：创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。
+Docker 用容器把应用运行环境、依赖和启动方式封装起来，减少“本地能跑、线上不能跑”的环境差异。它常用于模型服务部署、实验环境复现和 CI/CD。
 
-### docker使用手册 有哪些使用场景和注意事项？
+### 镜像和容器有什么区别？
 
-回答思路：先讲场景，再讲风险和边界。
+回答思路：按关键组件或流程拆解，不停留在名词解释。
 
 回答模板：
 
-docker使用手册 常见使用场景包括：docker run it gpus all shm size=16g name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker） git下载执行以下两行代码：\ apt update\ apt install git 使用时要注意：创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。
+镜像是静态模板，包含文件系统、依赖和启动配置；容器是镜像运行后的实例。一个镜像可以启动多个容器，容器运行中的状态不应该作为长期依赖，重要数据应挂载到外部卷或对象存储。
+
+### 使用 Docker 有哪些坑？
+
+回答思路：结合工程落地讲适用边界和风险。
+
+回答模板：
+
+常见问题包括镜像过大、依赖版本不固定、把密钥写进镜像、GPU runtime 配置错误、端口和挂载路径不清楚。训练或推理场景还要关注 CUDA、驱动、PyTorch 和系统库版本匹配。

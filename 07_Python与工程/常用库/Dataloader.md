@@ -169,29 +169,28 @@ print("--- Training complete ---")
 ### 参考网址
 
 PyTorch入门必学：DataLoader（数据迭代器）参数解析与用法合集      https://blog.csdn.net/qq_41813454/article/details/134903615
-
 ## 面试应对
 
 ### Dataloader 是什么？
 
-回答思路：先说明它在代码里解决什么问题，再讲典型用法。
+回答思路：先说明它解决的具体编程问题，再给一个典型使用场景。
 
 回答模板：
 
-这里主要以 PyTorch 为例，因为它是 DataLoader 概念非常突出的框架。torch.utils.data.DataLoader 的构造函数有很多参数，我们来介绍一些最常用和重要的： dataset (必须) ： 作用 ：这是 DataLoader 要加载的数据集对象。这个对象通常是你自定义的 torch.utils.data.Dataset 类的实例，或者 PyTorch 内置的一些数据集 (如 torchvision.datasets.MNIST )。 它的价值在于让代码表达更清楚，或者让张量、数据、控制流、日志和调试过程更可靠。
+DataLoader 通常指 PyTorch 中负责批量读取数据、shuffle、并行加载和 collate 的组件。
 
-### Dataloader 怎么用？
+### Dataloader 适合什么场景？
 
-回答思路：按输入、调用方式、返回结果和副作用回答。
+回答思路：结合训练脚本、数据处理或算法题说明使用边界。
 
 回答模板：
 
-这里主要以 PyTorch 为例，因为它是 DataLoader 概念非常突出的框架。torch.utils.data.DataLoader 的构造函数有很多参数，我们来介绍一些最常用和重要的： dataset (必须) ： 作用 ：这是 DataLoader 要加载的数据集对象。这个对象通常是你自定义的 torch.utils.data.Dataset 类的实例，或者 PyTorch 内置的一些数据集 (如 torchvision.datasets.MNIST )。类型 ： Dataset 对象。 使用时要确认输入类型、返回值、是否修改原对象、是否影响梯度，以及在循环或大数据场景下是否有性能开销。
+它影响训练吞吐和数据正确性。常见问题包括 `num_workers` 不合适、随机种子不可复现、collate 处理变长样本错误，以及 CPU 数据加载跟不上 GPU。
 
 ### Dataloader 常见坑是什么？
 
-回答思路：从类型、维度、副作用、性能和可读性回答。
+回答思路：从类型、返回值、副作用、性能和可读性检查。
 
 回答模板：
 
-这里主要以 PyTorch 为例，因为它是 DataLoader 概念非常突出的框架。torch.utils.data.DataLoader 的构造函数有很多参数，我们来介绍一些最常用和重要的： dataset (必须) ： 作用 ：这是 DataLoader 要加载的数据集对象。这个对象通常是你自定义的 torch.utils.data.Dataset 类的实例，或者 PyTorch 内置的一些数据集 (如 torchvision.datasets.MNIST )。类型 ： Dataset 对象。 写工程代码时，最重要的是用小例子验证行为，并通过断言、日志或单元测试固定边界条件。
+使用 Dataloader 时，我会重点确认输入类型、返回值语义、是否修改原对象，以及在循环或大数据场景下是否有额外开销。对于工程代码，还要保证命名和结构清晰，必要时用小例子或单元测试固定边界行为。

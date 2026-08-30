@@ -1,4 +1,4 @@
-# Reward Collapse
+# Reward Collapse 奖励坍缩
 
 ## 知识点解析
 

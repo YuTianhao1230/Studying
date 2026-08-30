@@ -1,4 +1,4 @@
-# GRPO
+# GRPO 组相对策略优化
 
 ## 知识点解析
 
@@ -57,7 +57,7 @@ GRPO 的主要优势有三点。第一，不需要 Critic，显存和计算成�
 
 ### 相关概念
 
-[PPO](<PPO.md>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO.md>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF.md>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR 与 Agentic RL](<RLVR与Agentic_RL.md>) 是 GRPO 常见的应用场景，尤其适合数学、代码和工具调用任务。[Reward Model 与 Grader](<Reward_Model与Grader.md>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
+[PPO](<PPO 近端策略优化.md>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
 
 ## 面试应对
 

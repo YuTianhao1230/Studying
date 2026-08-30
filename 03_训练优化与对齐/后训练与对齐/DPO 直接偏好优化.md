@@ -1,4 +1,4 @@
-# DPO
+# DPO 直接偏好优化
 
 ## 知识点解析
 
@@ -145,40 +145,40 @@ DPO 发现，奖励函数与最优策略之间存在一种数学上的解析关�
 
 ### DPO 是什么？它解决了 RLHF 的什么问题？
 
-回答思路：面试官想听你能否把 DPO 放在后训练链路里理解。回答时先定义 DPO，再说明 RLHF/PPO 的复杂性，最后讲 DPO 如何用偏好数据直接优化。
+回答思路：把 DPO 放在 SFT 之后的偏好对齐阶段，突出“不训练 Reward Model、不跑 PPO”。
 
 回答模板：
 
-DPO 是 Direct Preference Optimization，是一种用 `(prompt, chosen, rejected)` 偏好数据直接优化语言模型的对齐方法。它主要解决传统 RLHF 中 Reward Model 和 PPO 流程复杂、训练不稳定、成本高的问题。DPO 不单独训练奖励模型，也不做复杂 rollout，而是通过损失函数让当前模型相对参考模型更偏向 chosen、更远离 rejected。因此它更简单、更稳定，适合 SFT 后用离线偏好数据做对齐。
+DPO 是 Direct Preference Optimization，是一种直接用偏好数据优化语言模型的后训练方法。它的数据通常是 `(prompt, chosen, rejected)`，目标是让模型更倾向于 chosen、远离 rejected。相比传统 RLHF 需要训练 Reward Model 再用 PPO 优化，DPO 把偏好学习转化成一个更直接的监督式优化目标，因此流程更简单、训练更稳定、工程成本更低。
 
 ### DPO 的作用机制是什么？
 
-回答思路：重点讲 policy model、reference model、chosen/rejected 和相对偏好，不需要死背公式，但要说清楚 KL 约束思想。
+回答思路：讲当前模型、参考模型、chosen/rejected 和 KL 约束思想。
 
 回答模板：
 
-DPO 训练时有当前模型和一个固定的参考模型。对于同一个 prompt，它会比较 chosen 和 rejected 两个回答，让当前模型相对参考模型更提高 chosen 的概率，同时降低 rejected 的概率。参考模型的作用是提供一个锚点，防止模型为了追求偏好而偏离原始分布太远。直观上，DPO 是把偏好学习变成一个直接的分类式优化问题。
+DPO 训练时会保留一个固定的 reference model，同时优化当前 policy model。对于同一个 prompt，DPO 比较 chosen 和 rejected 在当前模型和参考模型下的相对概率变化，让当前模型相对参考模型更偏向 chosen。reference model 起到锚点作用，避免模型为了追求偏好而偏离原始语言分布太远。直观上，DPO 是把 RLHF 中隐含的最优 policy 形式直接写成可训练损失。
 
 ### DPO 和 PPO/RLHF 有什么区别？
 
-回答思路：从流程、数据、稳定性、成本和探索能力对比。
+回答思路：从流程复杂度、数据依赖、稳定性和探索能力对比。
 
 回答模板：
 
-RLHF + PPO 通常需要先训练 Reward Model，再让模型通过 PPO 根据 reward 进行优化，流程复杂且对超参数敏感。DPO 直接使用 chosen/rejected 偏好对，不需要 Reward Model，也不需要 PPO rollout，训练更简单稳定。但 PPO 可以在训练中继续探索新的回答，而 DPO 更依赖已有离线偏好数据，所以 DPO 的上限很大程度取决于偏好数据质量。
+PPO 式 RLHF 通常需要先训练 Reward Model，再通过在线采样和强化学习更新模型，优点是可以继续探索新回答，但训练复杂、显存和调参成本高。DPO 直接使用离线偏好对，不需要 Reward Model 和 PPO rollout，训练更像普通监督学习，稳定性更好。但 DPO 更依赖偏好数据质量，如果 chosen/rejected 构造不好，模型也会学到错误偏好。
 
 ### DPO 中 rejected 应该怎么选？
 
-回答思路：面试官想听数据构造经验。回答时强调 hard negative、同源性、目标错误类型和长度偏见。
+回答思路：强调 hard negative、同源分布、长度控制和错误类型覆盖。
 
 回答模板：
 
-DPO 的 rejected 不能随便选一个很烂的答案，最好是 hard negative，也就是看起来接近正确但在关键点上出错的回答。比如代码任务里，rejected 可以是主体逻辑对但漏掉边界条件的代码；事实问答里，可以是表达流畅但关键事实错的回答。chosen 和 rejected 最好来自同一模型或同一分布，长度也要相近，避免模型学到无关偏差。
+DPO 的 rejected 最好不是随便找一个明显很差的答案，而是和 chosen 接近、但在关键点上有缺陷的 hard negative。比如代码任务可以选逻辑主体正确但边界条件错的答案，数学任务可以选推理步骤类似但最终计算错的答案。chosen 和 rejected 的长度、风格和来源最好接近，否则模型可能学到“长答案更好”或“某种格式更好”这类伪相关偏差。
 
-### DPO 有哪些风险？怎么验证训练是否有效？
+### DPO 有哪些风险？
 
-回答思路：从数据质量、长度偏见、过拟合、能力退化和评测闭环回答。
+回答思路：从数据偏差、过优化、参考模型选择和评测回归回答。
 
 回答模板：
 
-DPO 最大风险是偏好数据质量差，比如 chosen/rejected 标反、差异不明确、长度分布不一致，都会让模型学错偏好。另一个风险是过拟合离线偏好数据，导致通用能力或安全能力退化。验证时不能只看 DPO loss，要看独立评测集、分桶指标、bad case、通用能力保持和人工偏好胜率，必要时还要检查模型输出是否变得冗长或模板化。
+DPO 的主要风险来自偏好数据。如果偏好标注不一致、chosen 本身质量不高，或者 rejected 太弱，模型会学到浅层偏好而不是能力提升。beta 设置过大也可能让模型偏离参考分布，出现回答变短、过度迎合或通用能力下降。实际训练后要同时看偏好胜率、通用能力、安全性、长度分布和 bad case，不能只看一个 reward 或 win rate。

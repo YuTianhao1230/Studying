@@ -1,4 +1,4 @@
-# Reward_Model与Grader
+# Reward Model 与 Grader 奖励模型与评分器
 
 ## 知识点解析
 

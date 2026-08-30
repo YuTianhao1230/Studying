@@ -40,6 +40,7 @@ Studying/
 │   └── 分析工具/
 ├── 09_面试体系/
 │   ├── AI算法工程师/
+│   ├── 项目闭环与训练排查/
 │   └── 综合面试题/
 ├── 10_Agent/
 │   ├── 基础概念/
@@ -62,16 +63,22 @@ Studying/
 | VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
 | Python 语法、刷题、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [08_程序分析与代码智能/](<08_程序分析与代码智能/>) |
-| 面试复习体系和综合面试题 | [09_面试体系/](<09_面试体系/>) |
+| 面试复习体系、项目闭环复盘、训练排查和综合面试题 | [09_面试体系/](<09_面试体系/>) |
 | Agent、Workflow、Skills、MCP、Tool Call、Memory、Context Engineering、AI Coding | [10_Agent/](<10_Agent/>) |
 | 搜索、推荐、广告、召回、排序、CTR、A/B 测试 | [11_搜索推荐广告/](<11_搜索推荐广告/>) |
 
 ## 重点入口
 
+- [学习路线总览.md](<学习路线总览.md>)：跨目录复习路线，按模型训练、后训练、项目闭环、推理部署、多模态、Agent 和 Coding 组织。
 - [09_面试体系/AI算法工程师/README.md](<09_面试体系/AI算法工程师/README.md>)：系统复习主入口。
+- [09_面试体系/项目闭环与训练排查/README.md](<09_面试体系/项目闭环与训练排查/README.md>)：真实项目复盘、训练工程、数据质量和训练问题排查入口。
+- [09_面试体系/项目闭环与训练排查/项目面试追问总表.md](<09_面试体系/项目闭环与训练排查/项目面试追问总表.md>)：HR 和用人领导视角的项目深挖问题总表。
+- [09_面试体系/项目闭环与训练排查/用人领导视角能力地图.md](<09_面试体系/项目闭环与训练排查/用人领导视角能力地图.md>)：从招聘视角反推项目经历需要证明的能力。
+- [09_面试体系/项目闭环与训练排查/简历项目表达与STAR故事库.md](<09_面试体系/项目闭环与训练排查/简历项目表达与STAR故事库.md>)：项目简历 bullet、30 秒介绍、2 分钟介绍和 STAR 故事库。
 - [02_大模型/大模型发展历史与SOTA迭代框架.md](<02_大模型/大模型发展历史与SOTA迭代框架.md>)：大模型从 Transformer 到 Agent 的历史演进和 SOTA 迭代框架。
 - [02_大模型/应用与问题/NLP与大语言模型.md](<02_大模型/应用与问题/NLP与大语言模型.md>)：NLP 与 LLM 复习入口。
 - [03_训练优化与对齐/模型训练学习手册_预训练到后训练.md](<03_训练优化与对齐/模型训练学习手册_预训练到后训练.md>)：从预训练、SFT、DPO、GRPO/RLVR 到评测部署的模型训练路线总纲。
+- [03_训练优化与对齐/后训练与对齐/README.md](<03_训练优化与对齐/后训练与对齐/README.md>)：后训练与对齐目录索引，按“英文缩写或术语 + 中文翻译”组织核心名词。
 - [03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md](<03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)：后训练从 SFT、RLHF、DPO 到 RLVR/GRPO 的发展史和横向对比。
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
@@ -106,7 +113,7 @@ Studying/
 放模型训练路线、训练工程、分布式优化、后训练、对齐算法和训练稳定性。
 
 - `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
-- `后训练与对齐/`：后训练发展史、SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
+- `后训练与对齐/`：后训练发展史、Post-training 后训练、SFT 监督微调、RLHF 基于人类反馈的强化学习、DPO 直接偏好优化、PPO 近端策略优化、GRPO 组相对策略优化、RLVR 可验证奖励强化学习、Agentic RL 智能体强化学习、Reward Model 与 Grader、LoRA、Knowledge Distillation、Reward Collapse。
 - `损失函数与激活函数/`：分类损失、回归损失、激活函数、GeLU。
 - `训练稳定性/`：梯度爆炸、梯度消失、Loss 异常、NaN、发散和收敛排查等。
 
@@ -152,7 +159,7 @@ Studying/
 
 ### 面试体系
 
-放面试复习框架和综合面试题。
+放面试复习框架、项目闭环复盘、训练排查和综合面试题。
 
 ### Agent
 
