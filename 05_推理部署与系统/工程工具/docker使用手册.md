@@ -112,42 +112,26 @@ Ubuntu20.04系统配置Pytorch环境(GPU版)      https://blog.csdn.net/m0_55127
 
 ## 面试应对
 
-### 创建docker的流程 是什么？
+### docker使用手册 是什么？
 
-回答思路：先给定义，再说明它在 推理部署和系统工程 中解决的问题，最后补一句工程边界。
-
-回答模板：
-
-创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
-
-### 创建docker的流程 解决什么问题？
-
-回答思路：从背景痛点切入，说明什么条件下值得用，以及不适合的情况。
+回答思路：先给清晰定义，再说明它解决的问题和适用边界。
 
 回答模板：
 
-创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
+docker使用手册 是一个需要从定义、机制、场景和限制一起理解的知识点。创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。 docker run it gpus all shm size=16g name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker）
 
-### 创建docker的流程 的核心机制是什么？
+### docker使用手册 的核心机制是什么？
 
-回答思路：拆关键模块和执行流程，说明它如何影响效果、效率或稳定性。
-
-回答模板：
-
-docker使用手册 的机制要从输入、处理过程和输出结果三层理解。下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local export PATH=$PATH:/usr/loca。 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
-
-### 创建docker的流程 有哪些优劣和限制？
-
-回答思路：优点从效果、效率、稳定性讲；限制从数据、成本、复杂度和适用边界讲。
+回答思路：拆关键步骤和影响因素回答。
 
 回答模板：
 
-创建docker的流程 的机制可以从输入、处理过程和输出结果三层理解。export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.3/lib64 更完整地说，先要明确它接收什么信息，再看中间如何变换、选择、约束或优化，最后看输出如何影响模型效果或系统行为。工程上还要关注边界条件，因为机制本身成立，不代表在数据质量差、配置错误或成本不可接受时仍然有效。
+docker使用手册 的核心机制是：创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。
 
-### 项目中如何验证 创建docker的流程 有效？
+### docker使用手册 有哪些使用场景和注意事项？
 
-回答思路：按实验闭环回答，覆盖指标、对照实验、bad case、成本和回归验证。
+回答思路：先讲场景，再讲风险和边界。
 
 回答模板：
 
-docker使用手册 的机制要从输入、处理过程和输出结果三层理解。下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda-11.3.0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=runfile_local export PATH=$PATH:/usr/loca。 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
+docker使用手册 常见使用场景包括：docker run it gpus all shm size=16g name ythceshi2 ubuntu（这段指令用来创建一个基于Ubuntu的可以使用gpu的名为ythceshi2的docker） git下载执行以下两行代码：\ apt update\ apt install git 使用时要注意：创建docker的流程 1、下载CUDA ubuntu版本选20.04，版本不影响项目运行\ https://developer.nvidia.com/cuda 11.3.0 download archive?target os=Linux&target arch=x86 64&Distribution=Ubuntu&target version=20.04。

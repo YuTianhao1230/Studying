@@ -127,42 +127,26 @@ CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。�
 
 ## 面试应对
 
-### CLIP (Contrastive Language-Image Pre-training) 是什么？ 是什么？
+### CLIP 是什么？
 
-回答思路：先给定义，再说明它在 视觉多模态与生成模型 中解决的问题，最后补一句工程边界。
-
-回答模板：
-
-CLIP (Contrastive Language-Image Pre-training) 是什么？ 的核心含义是：CLIP (Contrastive Language-Image Pre-training) 是什么？ 是一个需要放在具体任务和工程链路中理解的概念。 它出现的背景是为了解决具体任务中的效果、效率、稳定性或工程复杂度问题。CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过**对比学习 (Contrastive Learning)** 的方式，从大量的“图像-文本对”数据中学习视觉概念。 机制上，简单来说，CLIP 包含两个主要的编码器： 使用时还要注意边界：CLIP (Contrastive Language-Image Pre-training) 是什么？
-
-### CLIP (Contrastive Language-Image Pre-training) 是什么？ 解决什么问题？
-
-回答思路：从背景痛点切入，说明什么条件下值得用，以及不适合的情况。
+回答思路：先说明处理的模态和任务，再讲输入输出。
 
 回答模板：
 
-CLIP (Contrastive Language-Image Pre-training) 是什么？ 的核心含义是：CLIP (Contrastive Language-Image Pre-training) 是什么？ 是一个需要放在具体任务和工程链路中理解的概念。 它出现的背景是为了解决具体任务中的效果、效率、稳定性或工程复杂度问题。CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过**对比学习 (Contrastive Learning)** 的方式，从大量的“图像-文本对”数据中学习视觉概念。 机制上，简单来说，CLIP 包含两个主要的编码器： 使用时还要注意边界：CLIP (Contrastive Language-Image Pre-training) 是什么？
+CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过 对比学习 (Contrastive Learning) 的方式，从大量的“图像-文本对”数据中学习视觉概念。简单来说，CLIP 包含两个主要的编码器： 图像编码器 (Image Encoder)： 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision Transformer (ViT)。 它通常用于图像、文本、视频或区域级信息之间的表示、对齐、理解或生成。
 
-### CLIP (Contrastive Language-Image Pre-training) 是什么？ 的核心机制是什么？
+### CLIP 的核心机制是什么？
 
-回答思路：拆关键模块和执行流程，说明它如何影响效果、效率或稳定性。
-
-回答模板：
-
-CLIP 的机制要从输入、处理过程和输出结果三层理解。CLIP (Contrastive Language-Image Pre-training) 是什么？ 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
-
-### CLIP (Contrastive Language-Image Pre-training) 是什么？ 有哪些优劣和限制？
-
-回答思路：优点从效果、效率、稳定性讲；限制从数据、成本、复杂度和适用边界讲。
+回答思路：围绕编码、融合、对齐、生成或时序建模回答。
 
 回答模板：
 
-CLIP (Contrastive Language-Image Pre-training) 是什么？ 的价值要和限制一起看。优势上，CLIP (Contrastive Language-Image Pre-training) 是什么？ 但它也可能带来额外成本，例如数据依赖、实现复杂度、调参难度、稳定性风险或线上维护成本。真实项目里不能只看理论收益，而要通过 ablation、分桶评测、bad case 分析和成本指标确认净收益。
+CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过 对比学习 (Contrastive Learning) 的方式，从大量的“图像-文本对”数据中学习视觉概念。简单来说，CLIP 包含两个主要的编码器： 图像编码器 (Image Encoder)： 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision Transformer (ViT)。它负责将输入的图像转换成一个向量表示（图像嵌入）。 关键是说明不同模态的信息如何进入模型、如何交互，以及最终如何服务分类、检索、问答、生成或定位任务。
 
-### 项目中如何验证 CLIP (Contrastive Language-Image Pre-training) 是什么？ 有效？
+### CLIP 的场景和限制是什么？
 
-回答思路：按实验闭环回答，覆盖指标、对照实验、bad case、成本和回归验证。
+回答思路：从数据、标注、评测和计算成本回答。
 
 回答模板：
 
-CLIP 的机制要从输入、处理过程和输出结果三层理解。CLIP (Contrastive Language-Image Pre-training) 是什么？ 面试里我会进一步说明关键步骤如何连接，以及这些步骤为什么会影响效果、效率或稳定性；同时也要说明机制成立的前提，比如数据质量、参数配置和计算成本。
+CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过 对比学习 (Contrastive Learning) 的方式，从大量的“图像-文本对”数据中学习视觉概念。简单来说，CLIP 包含两个主要的编码器： 图像编码器 (Image Encoder)： 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision Transformer (ViT)。 CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。它的核心思想是通过 对比学习 (Contrastive Learning) 的方式，从大量的“图像-文本对”数据中学习视觉概念。简单来说，CLIP 包含两个主要的编码器： 图像编码器 (Image Encoder)： 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision Transformer (ViT)。它负责将输入的图像转换成一个向量表示（图像嵌入）。 多模态任务尤其要注意数据质量、模态对齐、标注噪声和评测指标是否能反映真实体验。

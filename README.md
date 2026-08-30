@@ -56,7 +56,7 @@ Studying/
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
 | Transformer、注意力、MoE、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
 | VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
@@ -72,6 +72,7 @@ Studying/
 - [02_大模型/大模型发展历史与SOTA迭代框架.md](<02_大模型/大模型发展历史与SOTA迭代框架.md>)：大模型从 Transformer 到 Agent 的历史演进和 SOTA 迭代框架。
 - [02_大模型/应用与问题/NLP与大语言模型.md](<02_大模型/应用与问题/NLP与大语言模型.md>)：NLP 与 LLM 复习入口。
 - [03_训练优化与对齐/模型训练学习手册_预训练到后训练.md](<03_训练优化与对齐/模型训练学习手册_预训练到后训练.md>)：从预训练、SFT、DPO、GRPO/RLVR 到评测部署的模型训练路线总纲。
+- [03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md](<03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)：后训练从 SFT、RLHF、DPO 到 RLVR/GRPO 的发展史和横向对比。
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
 - [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
@@ -105,7 +106,7 @@ Studying/
 放模型训练路线、训练工程、分布式优化、后训练、对齐算法和训练稳定性。
 
 - `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
-- `后训练与对齐/`：SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
+- `后训练与对齐/`：后训练发展史、SFT、RLHF、Reward Model、RLVR、Agentic RL、LoRA、Knowledge Distillation、Post-training、PPO、DPO、GRPO、Reward Collapse。
 - `损失函数与激活函数/`：分类损失、回归损失、激活函数、GeLU。
 - `训练稳定性/`：梯度爆炸、梯度消失、Loss 异常、NaN、发散和收敛排查等。
 

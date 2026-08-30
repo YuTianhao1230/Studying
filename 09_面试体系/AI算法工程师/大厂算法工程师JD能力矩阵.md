@@ -31,7 +31,7 @@
 | 数学与 ML 基础 | 概率统计、优化、线代、传统 ML | 能解释核心公式、适用条件、评价指标 | [数学基础](<../../01_机器学习基础/数学与机器学习/数学基础.md>)、[机器学习基础](<../../01_机器学习基础/数学与机器学习/机器学习基础.md>)、[统计推断与因果推断基础](<../../01_机器学习基础/数学与机器学习/统计推断与因果推断基础.md>) |
 | 深度学习基础 | MLP、Normalization、激活函数、梯度问题 | 能解释训练稳定性、梯度流、正则化 | [深度学习基础](<../../01_机器学习基础/深度学习基础/深度学习基础.md>)、[MLP](<../../01_机器学习基础/深度学习基础/Multi-Layer Perceptron.md>)、[Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)、[梯度问题](<../../03_训练优化与对齐/训练稳定性/怎么解决梯度爆炸和梯度消失？.md>) |
 | Transformer / LLM | Transformer、BERT、GPT、Decoder-only、RoPE、GQA、MoE | 能讲结构、复杂度、训练/推理影响 | [Transformer](<../../02_大模型/基础架构/Transformer.md>)、[Self-Attention](<../../02_大模型/基础架构/Self-Attention.md>)、[Decoder-only](<../../02_大模型/基础架构/在生成式大模型中，为何通常采用 Decoder-only 架构而非 Encoder-Decoder 结构？.md>)、[RoPE](<../../02_大模型/基础架构/RoPE.md>)、[GQA](<../../02_大模型/基础架构/GQA.md>)、[MoE](<../../02_大模型/基础架构/MoE.md>) |
-| Post-training | SFT、RLHF、DPO、PPO、GRPO、Reward Model | 能讲数据、目标函数、训练流程、风险 | [Post-training](<../../03_训练优化与对齐/后训练与对齐/Post-training.md>)、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO.md>)、[PPO](<../../03_训练优化与对齐/后训练与对齐/PPO.md>)、[GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO.md>)、[Reward Model 与 Grader](<../../03_训练优化与对齐/后训练与对齐/Reward_Model与Grader.md>)、[RLVR 与 Agentic RL](<../../03_训练优化与对齐/后训练与对齐/RLVR与Agentic_RL.md>) |
+| Post-training | SFT、RLHF、DPO、PPO、GRPO、Reward Model | 能讲发展脉络、数据形式、目标函数、训练流程、方法差异和风险 | [后训练发展史与方法对比](<../../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)、[Post-training](<../../03_训练优化与对齐/后训练与对齐/Post-training.md>)、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO.md>)、[PPO](<../../03_训练优化与对齐/后训练与对齐/PPO.md>)、[GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO.md>)、[Reward Model 与 Grader](<../../03_训练优化与对齐/后训练与对齐/Reward_Model与Grader.md>)、[RLVR 与 Agentic RL](<../../03_训练优化与对齐/后训练与对齐/RLVR与Agentic_RL.md>) |
 | Agent | Tool Use、GUI、CodeAgent、Long-horizon、Workflow、MCP | 能设计 Agent Loop、工具、记忆、评测和安全边界 | [Agent 开发完整流程](<../../10_Agent/基础概念/Agent开发完整流程.md>)、[Agent](<../../10_Agent/基础概念/Agent.md>)、[Workflow](<../../10_Agent/基础概念/Workflow.md>)、[Tool Call](<../../10_Agent/基础概念/Tool_Call与Function_Calling.md>)、[MCP](<../../10_Agent/基础概念/MCP.md>)、[生产级 Agent 案例](<../../10_Agent/基础概念/生产级Agent案例.md>) |
 | 评测体系 | Evals、graders、benchmark、diagnostics、failure analysis | 能设计自动化评测、bad case、trajectory 归因 | [模型评测与实验设计](<../../04_评测实验与数据质量/模型评测与实验设计.md>)、[LLM Judge](<../../04_评测实验与数据质量/LLM_Judge.md>)、[数据泄漏与 Benchmark 污染](<../../04_评测实验与数据质量/数据泄漏与Benchmark污染.md>)、[Agent Eval](<../../10_Agent/基础概念/Agent_Eval.md>)、[Harness](<../../10_Agent/基础概念/Harness.md>)、[Trajectory](<../../10_Agent/基础概念/Trajectory与Observability.md>) |
 | 多模态 | VLM、CLIP、BLIP、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)、[CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>)、[BLIP](<../../06_视觉多模态与生成模型/多模态模型/BLIP.md>)、[Video Understanding](<../../06_视觉多模态与生成模型/多模态模型/Video_Understanding.md>)、[OCR 与文档理解](<../../06_视觉多模态与生成模型/视觉基础/OCR与文档理解.md>)、[Multimodal Grounding](<../../06_视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>) |
@@ -59,10 +59,11 @@
 
 ### SFT / RLHF / RLVR / Agentic RL
 
-原因：大模型算法 JD 里 Post-training 已经是核心关键词，美团 Search Agent 明确提到 Generative Reward Model、RLVR、Agentic RL。
+原因：大模型算法 JD 里 Post-training 已经是核心关键词，面试不仅会问单个算法，还会追问为什么从 SFT 发展到 RLHF、DPO、GRPO/RLVR。
 
 需要知道：
 
+- [后训练发展史与方法对比](<../../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)。
 - [SFT 数据格式和训练目标](<../../03_训练优化与对齐/后训练与对齐/SFT.md>)。
 - [RLHF 三阶段：SFT、Reward Model、PPO](<../../03_训练优化与对齐/后训练与对齐/RLHF.md>)。
 - [DPO](<../../03_训练优化与对齐/后训练与对齐/DPO.md>) / [GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO.md>) 和 [PPO](<../../03_训练优化与对齐/后训练与对齐/PPO.md>) 的差异。
@@ -251,6 +252,7 @@
 - [JAX 与 XLA](<../../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)
 - [Loss 异常与收敛排查](<../../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)
 - [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT.md>)
+- [后训练发展史与方法对比](<../../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)
 - [RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF.md>)
 - [Reward Model 与 Grader](<../../03_训练优化与对齐/后训练与对齐/Reward_Model与Grader.md>)
 - [RLVR 与 Agentic RL](<../../03_训练优化与对齐/后训练与对齐/RLVR与Agentic_RL.md>)
