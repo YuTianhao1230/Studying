@@ -150,7 +150,7 @@ except Exception as e:
 
 ### Python 内置异常 是什么？
 
-回答思路：先说明它解决的具体编程问题，再给一个典型使用场景。
+回答思路：点明它是一套继承自 Exception 的层次结构，用具体异常类型区分越界、类型、缺键等运行时错误。
 
 回答模板：
 
@@ -158,7 +158,7 @@ Python 内置异常用于表达运行时错误类型，比如 `ValueError`、`Ty
 
 ### Python 内置异常 适合什么场景？
 
-回答思路：结合训练脚本、数据处理或算法题说明使用边界。
+回答思路：抓住用精确异常划清错误边界、不裸 except 吞错、保留上下文这条工程原则。
 
 回答模板：
 
@@ -166,8 +166,8 @@ Python 内置异常用于表达运行时错误类型，比如 `ValueError`、`Ty
 
 ### Python 内置异常 常见坑是什么？
 
-回答思路：从类型、返回值、副作用、性能和可读性检查。
+回答思路：抓住裸 except 吞错、多异常要用元组且父类放最后、SyntaxError 无法被 try 捕获这几个点。
 
 回答模板：
 
-使用 Python 内置异常 时，我会重点确认输入类型、返回值语义、是否修改原对象，以及在循环或大数据场景下是否有额外开销。对于工程代码，还要保证命名和结构清晰，必要时用小例子或单元测试固定边界行为。
+内置异常的坑：一是别用裸 `except:` 或笼统的 `except Exception` 吞掉一切，这会连你没预料的 bug 一起吃掉、还难排查，应该捕获具体异常并保留上下文（注意 `KeyboardInterrupt`、`SystemExit` 继承自 BaseException，`except Exception` 抓不到）。二是捕获多个异常要用元组 `except (KeyError, IndexError)`，而且父类 `Exception` 要放在最后，否则前面就把子类全拦了，后面的分支永远命中不到。三是 `SyntaxError`、`IndentationError` 属于解析阶段错误，`try/except` 根本捕获不了。

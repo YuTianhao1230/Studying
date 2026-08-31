@@ -80,7 +80,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### Agentic RAG 和传统 RAG 的区别是什么？
 
-回答思路：先分别定义两个概念，再从目标、机制、适用场景和工程取舍四个角度对比。
+回答思路：抓住"一次检索直接生成 vs 多轮检索、会规划和验证"的差异。
 
 回答模板：
 
@@ -88,7 +88,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### 什么场景需要多轮检索？
 
-回答思路：先给适用条件，再给不适用条件，最后说明真实系统里如何组合使用。
+回答思路：给出"多跳推理、首检不足、来源冲突"等需多轮的场景，再点出简单查询不必用。
 
 回答模板：
 
@@ -96,7 +96,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### 如何判断 RAG 答案是否有证据支撑？
 
-回答思路：按“目标定义 -> 关键步骤 -> 风险控制 -> 指标验证”的顺序回答，避免只讲抽象原则。
+回答思路：核心是结论能否在检索片段里找到直接对应，找不到就标不确定。
 
 回答模板：
 
@@ -104,7 +104,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### 如何减少检索噪声？
 
-回答思路：按“目标定义 -> 关键步骤 -> 风险控制 -> 指标验证”的顺序回答，避免只讲抽象原则。
+回答思路：从 query 改写、chunk 粒度、召回源、rerank、去重、压缩这些环节逐点讲。
 
 回答模板：
 
@@ -112,7 +112,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### Agentic RAG 为什么更慢、更贵？
 
-回答思路：先定义问题，再说明核心机制、适用边界、风险和验证方式。
+回答思路：从多轮 LLM 调用和检索/验证环节多来解释成本来源。
 
 回答模板：
 

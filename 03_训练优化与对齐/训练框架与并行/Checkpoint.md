@@ -116,7 +116,7 @@ LoRA checkpoint 通常只保存 adapter 参数，需要和 base model 一起加�
 
 ### Checkpoint 是什么？
 
-回答思路：先说明它在训练系统中的位置，以及优化显存、吞吐、通信还是稳定性。
+回答思路：抓“存了什么、为什么存”，先列 checkpoint 里的权重/优化器状态/scheduler/global step/随机态，再落到断点续训和选优发布这两大刚需。
 
 回答模板：
 
@@ -124,7 +124,7 @@ Checkpoint 是模型训练或运行过程中保存下来的状态快照，最常
 
 ### Checkpoint 的核心机制是什么？
 
-回答思路：拆参数、梯度、优化器状态、激活、通信、checkpoint 等训练状态回答。
+回答思路：抓“只存权重够不够”这个分水岭——推理只要权重加 config、tokenizer，断点续训必须带 optimizer、scheduler、global step 和随机态，否则恢复后训练曲线不连续。
 
 回答模板：
 
@@ -132,7 +132,7 @@ Checkpoint 是模型训练或运行过程中保存下来的状态快照，最常
 
 ### Checkpoint 的工程取舍是什么？
 
-回答思路：同时讲收益和代价，不只讲优点。
+回答思路：抓 best 与 last 的用途取舍、只保留 latest/best/间隔版本控制数量与存储成本，再点出 LoRA checkpoint 依赖 base、加载 shape mismatch 这些常见坑。
 
 回答模板：
 

@@ -74,7 +74,7 @@ CUDA Graph 的思路是：
 
 ### CUDA_Graph 是什么？
 
-回答思路：先定位它属于推理框架、推理优化还是底层执行机制。
+回答思路：一句话定位它是底层执行机制，核心是把一串 GPU 操作捕获成图后 replay，省掉每次 kernel launch 的 CPU 调度开销，而不改变模型能力。
 
 回答模板：
 
@@ -82,7 +82,7 @@ CUDA Graph 是 NVIDIA CUDA 提供的执行图机制，可以把一串 GPU 操作
 
 ### CUDA_Graph 解决什么问题？
 
-回答思路：从 KV cache、batching、显存、并发、p99 延迟等推理瓶颈回答。
+回答思路：聚焦 decode 阶段单步计算碎、kernel launch 频繁导致的 CPU 调度开销和延迟抖动，说明它针对的是 launch overhead 而非显存或 batching。
 
 回答模板：
 
@@ -90,7 +90,7 @@ CUDA Graph 是 NVIDIA CUDA 提供的执行图机制，可以把一串 GPU 操作
 
 ### CUDA_Graph 的核心机制是什么？
 
-回答思路：讲清楚它改变了哪部分推理流程，以及为什么能改善吞吐或显存。
+回答思路：讲清“先捕获固定形状执行流、后续整图 replay”这一机制，说明它靠减少 CPU 参与来降低 launch 开销和延迟抖动，尤其利于小 batch/decode。
 
 回答模板：
 
@@ -98,7 +98,7 @@ CUDA Graph 是 NVIDIA CUDA 提供的执行图机制，可以把一串 GPU 操作
 
 ### CUDA_Graph 有哪些限制？
 
-回答思路：说明适用边界、参数配置风险和线上排查重点。
+回答思路：强调它要求 shape、内存地址和执行路径稳定，动态控制流支持有限，因此线上要配合 padding/分桶固定 batch shape，并和动态 batching 做调度协调。
 
 回答模板：
 

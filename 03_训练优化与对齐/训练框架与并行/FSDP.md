@@ -82,7 +82,7 @@ FSDP 可以理解为 PyTorch 原生实现的 ZeRO-3 类方案。
 
 ### FSDP 是什么？
 
-回答思路：先说明它在训练系统中的位置，以及优化显存、吞吐、通信还是稳定性。
+回答思路：定位成 PyTorch 原生的全分片数据并行，对比 DDP 每卡存整份，强调它把参数/梯度/优化器状态切到各卡、用时再 all-gather，本质是 ZeRO-3 的官方实现。
 
 回答模板：
 
@@ -90,7 +90,7 @@ FSDP，Fully Sharded Data Parallel，是 PyTorch 提供的全参数切分数据�
 
 ### FSDP 的核心机制是什么？
 
-回答思路：拆参数、梯度、优化器状态、激活、通信、checkpoint 等训练状态回答。
+回答思路：抓 sharding、forward/backward 前 all-gather 聚合参数、算完释放、反向用 reduce-scatter 规约梯度这条闭环，再补上可叠加 activation checkpointing 进一步省显存。
 
 回答模板：
 
@@ -98,7 +98,7 @@ FSDP，Fully Sharded Data Parallel，是 PyTorch 提供的全参数切分数据�
 
 ### FSDP 的工程取舍是什么？
 
-回答思路：同时讲收益和代价，不只讲优点。
+回答思路：讲省显存与原生生态兼容的收益，同时点出 all-gather 通信更重、对带宽敏感、wrapping 策略影响性能、分片 checkpoint 保存加载更复杂这些代价。
 
 回答模板：
 

@@ -4,7 +4,7 @@
 
 ### 概述
 
-1.
+torchvision 是 PyTorch 官方的计算机视觉工具库，主要提供预训练模型（models）、常用数据集（datasets）和图像预处理与数据增强（transforms），是做图像任务和迁移学习的基础组件。
 
 ### `torchvision.models` (模型库)
 
@@ -315,7 +315,7 @@ def show_tensor_image(tensor):
 
 ### torchvision基础知识 是什么？
 
-回答思路：先说明它解决的具体编程问题，再给一个典型使用场景。
+回答思路：点明它是 PyTorch 视觉三件套——datasets、transforms、预训练 models，串起 CV 数据到模型的流程。
 
 回答模板：
 
@@ -323,7 +323,7 @@ def show_tensor_image(tensor):
 
 ### torchvision基础知识 适合什么场景？
 
-回答思路：结合训练脚本、数据处理或算法题说明使用边界。
+回答思路：抓住快速搭 CV 训练/推理流程，并强调 transform 训练/验证差异、归一化口径要对齐预训练权重。
 
 回答模板：
 
@@ -331,8 +331,8 @@ def show_tensor_image(tensor):
 
 ### torchvision基础知识 常见坑是什么？
 
-回答思路：从类型、返回值、副作用、性能和可读性检查。
+回答思路：围绕 transforms 的 Compose 顺序、ToTensor 重复归一化、Normalize 口径、增强只用于训练这几个真实坑展开。
 
 回答模板：
 
-使用 torchvision基础知识 时，我会重点确认输入类型、返回值语义、是否修改原对象，以及在循环或大数据场景下是否有额外开销。对于工程代码，还要保证命名和结构清晰，必要时用小例子或单元测试固定边界行为。
+torchvision 我最常见的坑在 transforms：`Compose` 里的顺序很关键，几何变换、`ToTensor`、`Normalize` 的先后不能乱，`ToTensor` 之前一般都是对 PIL/ndarray 的操作，之后才是对 Tensor 的操作。第二，`ToTensor` 会把 HWC 的 `[0,255]` 转成 CHW 并归一化到 `[0,1]`，很多人忘了这一步又手动除 255，等于缩放了两次。第三，`Normalize` 的 mean/std 要用和预训练权重一致的口径（比如 ImageNet 的 `[0.485,0.456,0.406]`/`[0.229,0.224,0.225]`），换了数据集或干脆忘了归一化都会掉点。第四，数据增强只该用在训练集，验证/测试要用确定性的预处理，新版 API 还可以直接用 `weights.transforms()` 拿到官方推荐的预处理，省得口径对不上。

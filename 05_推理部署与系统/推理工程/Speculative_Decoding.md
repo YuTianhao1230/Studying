@@ -81,7 +81,7 @@ Speculative Decoding 的思路是：
 
 ### Speculative_Decoding 是什么？
 
-回答思路：先定位它属于推理框架、推理优化还是底层执行机制。
+回答思路：定位为推理加速方法，一句话点出“小模型 draft 多 token、大模型一次并行验证接受/回退”，本质是减少大模型逐 token 解码的调用次数。
 
 回答模板：
 
@@ -89,7 +89,7 @@ Speculative Decoding 是一种大模型推理加速方法：用小模型先快�
 
 ### Speculative_Decoding 解决什么问题？
 
-回答思路：从 KV cache、batching、显存、并发、p99 延迟等推理瓶颈回答。
+回答思路：针对 decode 阶段逐 token 串行、难并行这一瓶颈，说明它用小模型草拟、大模型并行验证多 token 来降低大模型调用次数，从而提吞吐降延迟。
 
 回答模板：
 
@@ -97,7 +97,7 @@ Speculative Decoding 是一种大模型推理加速方法：用小模型先快�
 
 ### Speculative_Decoding 的核心机制是什么？
 
-回答思路：讲清楚它改变了哪部分推理流程，以及为什么能改善吞吐或显存。
+回答思路：按 draft-verify-accept-回退 的流程讲清，强调“小模型和大模型分布越接近、接受率越高，一次验证接受的 token 越多”是加速关键。
 
 回答模板：
 
@@ -105,7 +105,7 @@ Draft Model 根据当前上下文生成若干候选 token。Target Model 对这�
 
 ### Speculative_Decoding 有哪些限制？
 
-回答思路：说明适用边界、参数配置风险和线上排查重点。
+回答思路：强调它不一定提速——接受率低、生成太短、draft 模型加载和调度成本、tokenizer/分布不匹配都会抵消收益，要监控 acceptance rate 和 p99 而非只看均值。
 
 回答模板：
 

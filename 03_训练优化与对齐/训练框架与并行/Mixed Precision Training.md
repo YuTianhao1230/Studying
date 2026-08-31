@@ -119,7 +119,7 @@ Loss Scaling 是 FP16 的“速效救心丸”，通过**先放大再缩小**的
 
 ### Mixed Precision Training 是什么？
 
-回答思路：先说明它在训练系统中的位置，以及优化显存、吞吐、通信还是稳定性。
+回答思路：抓“算力密集步用 16 位、精度敏感步（权重更新/loss）保 FP32”的分工，点出目标是显存减半、Tensor Core 提速，同时逼近 FP32 的效果。
 
 回答模板：
 
@@ -127,7 +127,7 @@ Loss Scaling 是 FP16 的“速效救心丸”，通过**先放大再缩小**的
 
 ### Mixed Precision Training 的核心机制是什么？
 
-回答思路：拆参数、梯度、优化器状态、激活、通信、checkpoint 等训练状态回答。
+回答思路：从 FP16 与 BF16 的位分布切入——FP16 尾数多但指数只有 5 位、范围窄易溢出需 loss scaling，BF16 指数位同 FP32、范围大免 scaling，再讲 FP32 master weights 保更新精度。
 
 回答模板：
 
@@ -135,7 +135,7 @@ Loss Scaling 是 FP16 的“速效救心丸”，通过**先放大再缩小**的
 
 ### Mixed Precision Training 的工程取舍是什么？
 
-回答思路：同时讲收益和代价，不只讲优点。
+回答思路：按硬件给结论——Ampere 及以后无脑选 BF16（稳、免 loss scaling），V100/T4 等老卡不支持 BF16 只能 FP16 且必须开动态 loss scaling，纯 FP32 基本只留作 master weights。
 
 回答模板：
 

@@ -102,7 +102,7 @@ Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。
 
 ### CUDA与Triton基础 是什么？
 
-回答思路：先定位它属于推理框架、推理优化还是底层执行机制。
+回答思路：区分两者定位——CUDA 是底层 GPU 编程平台，Triton 是用 Python 风格写高性能 kernel 的上层语言，说明它们服务于自定义算子和性能优化而非模型能力。
 
 回答模板：
 
@@ -110,7 +110,7 @@ CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语�
 
 ### CUDA与Triton基础 解决什么问题？
 
-回答思路：从 KV cache、batching、显存、并发、p99 延迟等推理瓶颈回答。
+回答思路：说明性能瓶颈往往在底层算子和 GPU 利用率，CUDA/Triton 让工程师能定位并改写 kernel、做算子融合、判断是访存还是算力瓶颈。
 
 回答模板：
 
@@ -118,7 +118,7 @@ CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语�
 
 ### CUDA与Triton基础 的核心机制是什么？
 
-回答思路：讲清楚它改变了哪部分推理流程，以及为什么能改善吞吐或显存。
+回答思路：用 Grid/Block/Thread 并行层级和 Global/Shared/Register 内存层级、访存合并来解释 kernel 如何影响性能，并说明 Triton 如何降低写 kernel 的门槛。
 
 回答模板：
 
@@ -126,7 +126,7 @@ CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语�
 
 ### CUDA与Triton基础 有哪些限制？
 
-回答思路：说明适用边界、参数配置风险和线上排查重点。
+回答思路：指出手写 kernel 开发成本高、易踩访存不连续/Tensor Core 未充分利用等坑，优化前要先判断瓶颈在显存带宽还是计算算力，避免盲目改写。
 
 回答模板：
 

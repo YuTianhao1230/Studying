@@ -63,26 +63,34 @@ BLIP 的核心贡献在于其创新的 CapFilt 引导学习机制，它有效地
 
 ## 面试应对
 
-### BLIP 是什么？
+### BLIP 和 CLIP 的核心区别是什么？
 
-回答思路：先说明处理的模态和任务，再讲输入输出。
-
-回答模板：
-
-BLIP (Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation) 是 Salesforce Research 在 2022 年提出的一个强大的多模态预训练模型。它的核心思想是通过 引导学习 (Bootstrapping) 的方式，在包含噪声的网络图文数据上同时优化 理解模型 (Understanding Model) 和 生成模型 (Generation Model) ，并利用这两个模型互相生成伪标签来提升预训练效果。 它通常用于图像、文本、视频或区域级信息之间的表示、对齐、理解或生成。
-
-### BLIP 的核心机制是什么？
-
-回答思路：围绕编码、融合、对齐、生成或时序建模回答。
+回答思路：抓住“理解 vs 理解+生成”和“数据清洗”两个差异，说明 BLIP 为什么更通用。
 
 回答模板：
 
-BLIP (Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation) 是 Salesforce Research 在 2022 年提出的一个强大的多模态预训练模型。它的核心思想是通过 引导学习 (Bootstrapping) 的方式，在包含噪声的网络图文数据上同时优化 理解模型 (Understanding Model) 和 生成模型 (Generation Model) ，并利用这两个模型互相生成伪标签来提升预训练效果。 关键是说明不同模态的信息如何进入模型、如何交互，以及最终如何服务分类、检索、问答、生成或定位任务。
+CLIP 是一个纯理解、双塔对比的模型，主要做图文对齐和检索，本身不会生成文本。BLIP 用一个统一的编码器-解码器架构，同时支持理解和生成，训练目标里既有对比损失和图文匹配，又有语言建模损失，所以它能直接做图像描述、VQA 这类生成任务。另一个关键区别是 BLIP 提出了 CapFilt 来清洗网络噪声数据，用模型自己生成和过滤 caption，不完全依赖 CLIP 那种超大规模私有数据也能训得好。
 
-### BLIP 的场景和限制是什么？
+### BLIP 的三个预训练目标分别学什么？
 
-回答思路：从数据、标注、评测和计算成本回答。
+回答思路：分别讲 ITC、ITM、LM 的作用，突出 ITC 学全局对齐、ITM 学细粒度、LM 学生成。
 
 回答模板：
 
-BLIP (Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation) 是 Salesforce Research 在 2022 年提出的一个强大的多模态预训练模型。它的核心思想是通过 引导学习 (Bootstrapping) 的方式，在包含噪声的网络图文数据上同时优化 理解模型 (Understanding Model) 和 生成模型 (Generation Model) ，并利用这两个模型互相生成伪标签来提升预训练效果。 BLIP (Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation) 是 Salesforce Research 在 2022 年提出的一个强大的多模态预训练模型。它的核心思想是通过 引导学习 (Bootstrapping) 的方式，在包含噪声的网络图文数据上同时优化 理解模型 (Understanding Model) 和 生成模型 (Generation Model) ，并利用这两个模型互相生成伪标签来提升预训练效果。 多模态任务尤其要注意数据质量、模态对齐、标注噪声和评测指标是否能反映真实体验。
+BLIP 有三个目标。ITC 是图文对比，和 CLIP 类似，让匹配图文对的全局特征更接近，学的是粗粒度对齐。ITM 是图文匹配的二分类，判断这一对图文是否匹配，它会融合图文特征再分类，学的是更细粒度的对齐，能抓住 ITC 抓不到的局部不一致。LM 是语言建模，给定图像生成描述，学的是把视觉信息转成连贯文本的生成能力。三个目标配合，模型同时具备了对齐能力和生成能力。
+
+### CapFilt 是怎么工作的？为什么有用？
+
+回答思路：讲 Captioner 生成、Filter 过滤、bootstrapping 迭代三步，强调它解决网络数据噪声。
+
+回答模板：
+
+CapFilt 是为了解决网络图文数据噪声大的问题。它分两个模块：Captioner 用模型的图像接地文本解码器给每张图生成合成 caption；Filter 用图文匹配模块判断原始文本和合成 caption 哪些和图像真的匹配，只保留高质量的。然后把过滤后的高质量图文对组成新数据集再训练模型。它有用的原因是 Captioner 和 Filter 本身就是预训练模型的一部分，会随训练越来越强，形成正向循环，相当于让模型自己给自己清洗和扩充数据，不用只依赖昂贵的人工标注或超大私有数据。
+
+### BLIP-2 相比 BLIP 有什么关键改进？
+
+回答思路：点出 Q-Former 和“冻结预训练视觉塔+冻结 LLM”的高效范式。
+
+回答模板：
+
+BLIP-2 最大的改进是引入了 Q-Former，并且冻结了视觉编码器和 LLM，只训中间的 Q-Former。Q-Former 用一组可学习的 query token 通过 cross-attention 从冻结的视觉特征里抽取出一小撮和文本最相关的视觉表示，再喂给冻结的 LLM。这样训练成本大幅降低，还能直接复用现成的强 LLM。这个“冻结两端、只训连接器”的思路，后来基本成了主流 VLM 的标准做法。

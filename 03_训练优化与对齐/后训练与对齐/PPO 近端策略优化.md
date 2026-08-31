@@ -145,7 +145,7 @@ for episode in range(500):
 
 ### PPO 是什么？
 
-回答思路：先放到 SFT、RLHF、DPO、RLVR/GRPO 的后训练链路里定位。
+回答思路：抓住“通过裁剪新旧策略概率比限制单步更新幅度”的核心，说明它是 Actor-Critic、On-policy 的稳健策略梯度算法，也是 RLHF 强化学习阶段的默认选择。
 
 回答模板：
 
@@ -153,7 +153,7 @@ PPO (Proximal Policy Optimization，近端策略优化) 是目前强化学习（
 
 ### PPO 的训练信号是什么？
 
-回答思路：说明使用监督答案、偏好对、reward、verifier 还是 teacher 输出。
+回答思路：训练信号是优势函数（回报减去 Critic 预测的价值），乘以新旧策略概率比后用 clip 截断构成 surrogate 目标，再加 Critic 的价值回归损失。
 
 回答模板：
 
@@ -161,7 +161,7 @@ PPO (Proximal Policy Optimization，近端策略优化) 是目前强化学习（
 
 ### PPO 适合什么场景？
 
-回答思路：结合数据条件、目标能力和工程成本回答。
+回答思路：抓住“需要在线采样探索、有可查询的奖励信号、且要求训练稳健不易崩”的场景，如 RLHF 对齐和连续控制类 RL，代价是要维护 Actor-Critic 并在线 rollout。
 
 回答模板：
 
@@ -169,7 +169,7 @@ PPO (Proximal Policy Optimization，近端策略优化) 是目前强化学习（
 
 ### PPO 有哪些风险？
 
-回答思路：重点讲数据、reward hacking、训练稳定性和评测污染。
+回答思路：点明它对超参（clip 系数、学习率、GAE、KL 系数）敏感、需要同时维护多模型显存开销大，且在 RLHF 里容易被奖励模型 hacking，需要 KL 约束和探索熵调节。
 
 回答模板：
 

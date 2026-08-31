@@ -158,7 +158,7 @@ deepspeed --num_gpus=2 train.py
 
 ### DeepSpeed 是什么？
 
-回答思路：先说明它在训练系统中的位置，以及优化显存、吞吐、通信还是稳定性。
+回答思路：定位成微软的训练/推理优化库，一句话点出它靠 ZeRO 解决显存墙、靠 3D 并行解决规模墙，是把普通 PyTorch 脚本扩展到千亿模型的“改装套件”。
 
 回答模板：
 
@@ -166,7 +166,7 @@ deepspeed --num_gpus=2 train.py
 
 ### DeepSpeed 的核心机制是什么？
 
-回答思路：拆参数、梯度、优化器状态、激活、通信、checkpoint 等训练状态回答。
+回答思路：抓三条主线——ZeRO 分片切优化器状态/梯度/参数省显存、3D 并行（数据+张量+流水）扩规模、加上 Offload/Infinity 把状态卸到 CPU/NVMe，并说明这些都由 ds_config 配置驱动。
 
 回答模板：
 
@@ -174,7 +174,7 @@ deepspeed --num_gpus=2 train.py
 
 ### DeepSpeed 的工程取舍是什么？
 
-回答思路：同时讲收益和代价，不只讲优点。
+回答思路：讲清 ZeRO stage 越高越省显存但通信开销越大、Offload 拿速度换容量，落地时权衡是否值得引入其配置体系与启动器，以及和 Megatron 组合的场景。
 
 回答模板：
 

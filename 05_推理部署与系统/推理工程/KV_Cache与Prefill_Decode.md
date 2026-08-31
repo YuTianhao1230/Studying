@@ -96,7 +96,7 @@ KV cache 会占显存，并且随以下因素增长：
 
 ### KV_Cache与Prefill_Decode 是什么？
 
-回答思路：先定位它属于推理框架、推理优化还是底层执行机制。
+回答思路：把三者串起来——自回归生成分 Prefill（一次算完输入并生成 KV）和 Decode（逐 token 生成），KV Cache 缓存历史 K/V 供 Decode 复用，是加速自回归的核心机制。
 
 回答模板：
 
@@ -104,7 +104,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### KV_Cache与Prefill_Decode 解决什么问题？
 
-回答思路：从 KV cache、batching、显存、并发、p99 延迟等推理瓶颈回答。
+回答思路：抓住 KV cache 随上下文和输出长度线性增长导致长上下文易 OOM，说明为何用 max_tokens 限制 decode 步数、用 PagedAttention 分块管理来控制显存。
 
 回答模板：
 
@@ -112,7 +112,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### KV_Cache与Prefill_Decode 的核心机制是什么？
 
-回答思路：讲清楚它改变了哪部分推理流程，以及为什么能改善吞吐或显存。
+回答思路：讲清 KV Cache 用“缓存历史 token 的 K/V、每步只算新 token 的 Q/K/V”避免重复计算，从而把 Decode 从重复全量计算变成增量计算、大幅提速。
 
 回答模板：
 
@@ -120,7 +120,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### KV_Cache与Prefill_Decode 有哪些限制？
 
-回答思路：说明适用边界、参数配置风险和线上排查重点。
+回答思路：指出 KV cache 显存随 batch、序列长度、层数、head 数、精度增长，长上下文/大 batch 会爆显存，排查时要看请求长度分布、max_tokens 设置和显存占用。
 
 回答模板：
 

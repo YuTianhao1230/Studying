@@ -70,7 +70,7 @@ def predict(data):
 
 ### torch.inference_mode() 是什么？
 
-回答思路：先说明它解决的具体编程问题，再给一个典型使用场景。
+回答思路：点明它是 no_grad 的升级版，除关 autograd 还禁掉版本计数和视图追踪，专为纯推理提速。
 
 回答模板：
 
@@ -78,7 +78,7 @@ def predict(data):
 
 ### torch.inference_mode() 适合什么场景？
 
-回答思路：结合训练脚本、数据处理或算法题说明使用边界。
+回答思路：抓住验证/线上服务/离线生成这类纯推理才用，输出还要再参与求导就不能放进去。
 
 回答模板：
 
@@ -86,8 +86,8 @@ def predict(data):
 
 ### torch.inference_mode() 常见坑是什么？
 
-回答思路：从类型、返回值、副作用、性能和可读性检查。
+回答思路：抓住推理张量不能回传做 backward、以及它不替代 model.eval() 这两个关键坑。
 
 回答模板：
 
-使用 torch.inference_mode() 时，我会重点确认输入类型、返回值语义、是否修改原对象，以及在循环或大数据场景下是否有额外开销。对于工程代码，还要保证命名和结构清晰，必要时用小例子或单元测试固定边界行为。
+inference_mode 最大的坑是它产生的是特殊的“推理张量”，一旦你想把这个输出再放回一个需要求导的计算图（比如继续训练或二次反传），会直接报 `Inference tensors cannot be saved for backward`，这种场景要退回用 `torch.no_grad()`。另一个常见错误是以为它能替代 `model.eval()`：它只关 autograd，不会自动切换 Dropout/BatchNorm 的行为，所以推理前仍要单独调 `model.eval()`。

@@ -173,7 +173,7 @@ PyTorch入门必学：DataLoader（数据迭代器）参数解析与用法合集
 
 ### Dataloader 是什么？
 
-回答思路：先说明它解决的具体编程问题，再给一个典型使用场景。
+回答思路：点明它包在 Dataset 外，负责批量取数、shuffle、多进程并行加载和 collate 组 batch。
 
 回答模板：
 
@@ -181,7 +181,7 @@ DataLoader 通常指 PyTorch 中负责批量读取数据、shuffle、并行加�
 
 ### Dataloader 适合什么场景？
 
-回答思路：结合训练脚本、数据处理或算法题说明使用边界。
+回答思路：抓住它决定训练吞吐和数据正确性，重点在 num_workers 调优、可复现和别让 CPU 加载拖慢 GPU。
 
 回答模板：
 
@@ -189,8 +189,8 @@ DataLoader 通常指 PyTorch 中负责批量读取数据、shuffle、并行加�
 
 ### Dataloader 常见坑是什么？
 
-回答思路：从类型、返回值、副作用、性能和可读性检查。
+回答思路：围绕 num_workers 死锁/shm 不足、shuffle 复现、变长样本要自定义 collate_fn、pin_memory/drop_last 这几个真实坑。
 
 回答模板：
 
-使用 Dataloader 时，我会重点确认输入类型、返回值语义、是否修改原对象，以及在循环或大数据场景下是否有额外开销。对于工程代码，还要保证命名和结构清晰，必要时用小例子或单元测试固定边界行为。
+DataLoader 的坑我大多踩在 `num_workers` 上：设大了容易死锁，共享内存 `/dev/shm` 不够会报 bus error，Dataset 里最好别持有不能被子进程序列化的句柄（比如已打开的文件或数据库连接）。第二是随机性，`shuffle=True` 要配合固定随机种子和 `worker_init_fn` 才能复现，否则每次 epoch 的数据顺序都不一样。第三是变长样本（文本、检测框等）用默认 collate 会因为 shape 不一致报错，需要自定义 `collate_fn` 做 padding。第四，训练时 `pin_memory=True` 配合 `non_blocking=True` 能加快数据搬到 GPU，`drop_last=True` 可以丢掉最后不满一个 batch，避免 BatchNorm 在小 batch 上出问题。

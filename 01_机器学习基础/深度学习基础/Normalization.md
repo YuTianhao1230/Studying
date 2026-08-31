@@ -272,7 +272,7 @@ Layer Normalization (LayerNorm) 和 Batch Normalization (BatchNorm) 是两种最
 
 ### Normalization 是什么？
 
-回答思路：先给定义，再说明它在模型中的作用。
+回答思路：一句定义——调整输入或中间激活的尺度分布让优化更稳定，再列举输入标准化、BatchNorm、LayerNorm、RMSNorm 等常见形式。
 
 回答模板：
 
@@ -280,7 +280,7 @@ Normalization 是归一化或标准化技术，用来调整输入或中间激活
 
 ### Normalization 的核心机制是什么？
 
-回答思路：说明它如何计算或如何影响训练过程。
+回答思路：抓住“控制均值/方差/均方根尺度以减小分布差异、改善梯度传播”这一点，并用统计维度区分 BatchNorm（依赖 batch）和 LayerNorm（单样本 hidden 维度）。
 
 回答模板：
 
@@ -288,7 +288,7 @@ Normalization 是归一化或标准化技术，用来调整输入或中间激活
 
 ### Normalization 有哪些使用场景和注意事项？
 
-回答思路：先讲适用场景，再讲误用风险。
+回答思路：按模型结构给选型——CNN 用 BatchNorm、Transformer 用 LayerNorm/RMSNorm，并提醒小 batch 时 BatchNorm 不稳、大模型还要权衡归一化位置和数值精度。
 
 回答模板：
 
