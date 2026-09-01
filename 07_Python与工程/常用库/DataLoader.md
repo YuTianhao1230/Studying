@@ -1,4 +1,4 @@
-# Dataloader
+# DataLoader
 
 ## 知识点解析
 
@@ -171,7 +171,7 @@ print("--- Training complete ---")
 PyTorch入门必学：DataLoader（数据迭代器）参数解析与用法合集      https://blog.csdn.net/qq_41813454/article/details/134903615
 ## 面试应对
 
-### Dataloader 是什么？
+### DataLoader 是什么？
 
 回答思路：点明它包在 Dataset 外，负责批量取数、shuffle、多进程并行加载和 collate 组 batch。
 
@@ -179,7 +179,7 @@ PyTorch入门必学：DataLoader（数据迭代器）参数解析与用法合集
 
 DataLoader 通常指 PyTorch 中负责批量读取数据、shuffle、并行加载和 collate 的组件。
 
-### Dataloader 适合什么场景？
+### DataLoader 适合什么场景？
 
 回答思路：抓住它决定训练吞吐和数据正确性，重点在 num_workers 调优、可复现和别让 CPU 加载拖慢 GPU。
 
@@ -187,7 +187,7 @@ DataLoader 通常指 PyTorch 中负责批量读取数据、shuffle、并行加�
 
 它影响训练吞吐和数据正确性。常见问题包括 `num_workers` 不合适、随机种子不可复现、collate 处理变长样本错误，以及 CPU 数据加载跟不上 GPU。
 
-### Dataloader 常见坑是什么？
+### DataLoader 常见坑是什么？
 
 回答思路：围绕 num_workers 死锁/shm 不足、shuffle 复现、变长样本要自定义 collate_fn、pin_memory/drop_last 这几个真实坑。
 

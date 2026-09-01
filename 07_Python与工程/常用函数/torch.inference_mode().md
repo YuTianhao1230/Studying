@@ -15,7 +15,7 @@
 要理解它为什么更快，得先知道 PyTorch 默默在后台做了什么。
 
 *   **`torch.no_grad()`**：告诉 PyTorch 引擎“别记录计算图了，我不需要反向传播”。这省去了构建计算图的开销。
-*   **`torch.inference_mode()`**：除了做 `no_grad` 做的事之外，它还关闭了 **“视图追踪（View Tracking）”** 和 **“版本计数（Version Counter）”**。
+*   **`torch.inference_mode()`**：除了做 `no_grad` 做的事之外，它还关闭了 **视图追踪（View Tracking）** 和 **版本计数（Version Counter）**。
 
 #### 什么是版本追踪？
 当你对一个 Tensor 进行操作时，PyTorch 会悄悄记录这个 Tensor 被修改了多少次（版本号）。这主要是为了防止你做 In-place 操作（原地修改）导致梯度计算出错。

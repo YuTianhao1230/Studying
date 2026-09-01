@@ -15,7 +15,7 @@ Studying/
 ├── 03_训练优化与对齐/
 │   ├── 训练框架与并行/
 │   ├── 后训练与对齐/
-│   ├── 损失函数与激活函数/
+│   ├── 参数/
 │   └── 训练稳定性/
 ├── 04_评测实验与数据质量/
 ├── 05_推理部署与系统/
@@ -57,7 +57,7 @@ Studying/
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
 | Transformer、注意力、MoE、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、超参数、Optimizer、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
 | VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
@@ -81,6 +81,7 @@ Studying/
 - [03_训练优化与对齐/后训练与对齐/README.md](<03_训练优化与对齐/后训练与对齐/README.md>)：后训练与对齐目录索引，按“英文缩写或术语 + 中文翻译”组织核心名词。
 - [03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md](<03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)：后训练从 SFT、RLHF、DPO 到 RLVR/GRPO 的发展史和横向对比。
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
+- [03_训练优化与对齐/参数/README.md](<03_训练优化与对齐/参数/README.md>)：训练超参数、Optimizer、loss、activation 和 LoRA 参数入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
 - [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
 - [07_Python与工程/深度学习框架/深度学习框架选型.md](<07_Python与工程/深度学习框架/深度学习框架选型.md>)：PyTorch、TensorFlow/Keras、JAX、Hugging Face 等框架怎么选。
@@ -99,7 +100,7 @@ Studying/
 放数学、传统机器学习、深度学习基础概念。
 
 - `数学与机器学习/`：数学基础、机器学习基础、统计推断、因果推断、余弦相似度等。
-- `深度学习基础/`：MLP、Normalization、正则化、feature map、高阶特征等。
+- `深度学习基础/`：MLP、Normalization、正则化、Feature Map、高阶特征等。
 
 ### 大模型
 
@@ -114,7 +115,7 @@ Studying/
 
 - `训练框架与并行/`：DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、Mixed Precision Training、Checkpoint 等训练工程概念。
 - `后训练与对齐/`：后训练发展史、Post-training 后训练、SFT 监督微调、RLHF 基于人类反馈的强化学习、DPO 直接偏好优化、PPO 近端策略优化、GRPO 组相对策略优化、RLVR 可验证奖励强化学习、Agentic RL 智能体强化学习、Reward Model 与 Grader、LoRA、Knowledge Distillation、Reward Collapse。
-- `损失函数与激活函数/`：分类损失、回归损失、激活函数、GeLU。
+- `参数/`：训练超参数、SFT 参数设置、Optimizer、分类损失、回归损失、激活函数、GeLU。
 - `训练稳定性/`：梯度爆炸、梯度消失、Loss 异常、NaN、发散和收敛排查等。
 
 ### 评测实验与数据质量
@@ -143,7 +144,7 @@ Studying/
 
 - `Python语法/`：字典、内置函数、异常、列表推导式、lambda、collections、Counter、pairwise 等。
 - `算法刷题/`：回溯、并查集、刷题技巧、下一个排列。
-- `常用库/`：argparse、Dataloader、re、tqdm、可视化。
+- `常用库/`：argparse、DataLoader、re、tqdm、可视化。
 - `深度学习框架/`：PyTorch、TensorFlow/Keras、JAX、Hugging Face、Trainer、Accelerate、Lightning 等框架选型和训练脚手架基础。
 - `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding、Beam Search。
 - `常用函数/`：detach、enumerate、torch.inference_mode、折叠注释。
@@ -153,7 +154,7 @@ Studying/
 放程序分析理论、安全漏洞分析、代码大模型和工具。
 
 - `静态分析基础/`：程序分析、静态分析、控制流、数据流、污点分析、AST/CFG/DFG。
-- `安全漏洞分析/`：CWE、CVE、CWE-Bench-Java。
+- `安全漏洞分析/`：CWE与CVE、CWE-Bench-Java。
 - `代码智能模型/`：CodeBERT、GraphCodeBERT、CodeT5、CodeT5+、UniXcoder、大模型和静态分析。
 - `分析工具/`：CodeQL、Joern。
 

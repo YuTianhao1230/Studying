@@ -9,8 +9,8 @@
 | [Transformer.md](<Transformer.md>) | Transformer 总体结构、Attention、FFN、残差和归一化。 |
 | [Self-Attention.md](<Self-Attention.md>) | 自注意力机制、QKV、复杂度和长上下文瓶颈。 |
 | [Autoregressive Model.md](<Autoregressive Model.md>) | 自回归建模、next-token prediction 和生成式解码。 |
-| [在生成式大模型中，为何通常采用 Decoder-only 架构而非 Encoder-Decoder 结构？.md](<在生成式大模型中，为何通常采用 Decoder-only 架构而非 Encoder-Decoder 结构？.md>) | Decoder-only 架构在生成式大模型中的优势和取舍。 |
-| [Transformer 中 Pre-Norm 和 Post-Norm 的设计差异是什么？对模型训练稳定性和性能有何影响？.md](<Transformer 中 Pre-Norm 和 Post-Norm 的设计差异是什么？对模型训练稳定性和性能有何影响？.md>) | Pre-Norm/Post-Norm 对深层训练稳定性和收敛的影响。 |
+| [Decoder-only vs Encoder-Decoder.md](<Decoder-only vs Encoder-Decoder.md>) | Decoder-only 架构在生成式大模型中的优势和取舍。 |
+| [Pre-Norm vs Post-Norm.md](<Pre-Norm vs Post-Norm.md>) | Pre-Norm/Post-Norm 对深层训练稳定性和收敛的影响。 |
 | [RoPE.md](<RoPE.md>) | 旋转位置编码的原理、外推和长上下文影响。 |
 | [RMSNorm.md](<RMSNorm.md>) | RMSNorm 与 LayerNorm 的区别及训练效率影响。 |
 | [GQA.md](<GQA.md>) | Grouped Query Attention 在 KV Cache 和推理吞吐上的作用。 |

@@ -4,7 +4,7 @@
 
 ## 用户当前真正的工作
 
-用户当前主线是 `Syner-Attack/`：围绕论文 **“Syner-Attack: Decoupling Cross-modal Alignment for Transferable Adversarial Attacks on Vision-Language Models”** 做返修、补实验、结果整理和代码支撑。
+用户当前主线是 `Syner-Attack/`：围绕论文 **Syner-Attack: Decoupling Cross-modal Alignment for Transferable Adversarial Attacks on Vision-Language Models** 做返修、补实验、结果整理和代码支撑。
 
 这项工作的核心目标不是一般性维护多模态代码，而是回应 ACM MM 2026 review 中的关键质疑：
 

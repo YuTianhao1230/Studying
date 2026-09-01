@@ -1,4 +1,4 @@
-# CWE、CVE
+# CWE与CVE
 
 ## 知识点解析
 
@@ -20,7 +20,7 @@
     *   **CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')** (经典缓冲区溢出)
     *   **CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')** (路径遍历)
     *   每个条目通常包含缺陷的描述、潜在后果、发生场景、代码示例、缓解措施、相关CWE（父子关系、相似关系等）等信息。
-*   **关注点：** CWE 关注的是 **“缺陷的类型” (What kind of mistake it is?)**，即代码中可能导致漏洞的错误模式或弱点。它更偏向于根本原因和设计层面的问题。
+*   **关注点：** CWE 关注的是 **缺陷的类型 (What kind of mistake it is?)**，即代码中可能导致漏洞的错误模式或弱点。它更偏向于根本原因和设计层面的问题。
 
 **CVE (Common Vulnerabilities and Exposures) - 通用漏洞披露**
 
@@ -36,7 +36,7 @@
     *   **受影响的产品和版本：** 指明哪些软件或硬件产品及其版本受到此漏洞的影响。
     *   **参考信息：** 指向漏洞公告、补丁信息、技术细节等的链接。
     *   **（可选）CVSS评分：** 通用漏洞评分系统，用于评估漏洞的严重性。
-*   **关注点：** CVE 关注的是 **“特定软件产品中已发现的具体漏洞实例” (Which specific instance of a mistake in a specific product?)**。它更偏向于已发生的事实和具体的产品问题。
+*   **关注点：** CVE 关注的是 **特定软件产品中已发现的具体漏洞实例 (Which specific instance of a mistake in a specific product?)**。它更偏向于已发生的事实和具体的产品问题。
 
 **CWE 与 CVE 的关系：**
 

@@ -264,8 +264,8 @@ Layer Normalization (LayerNorm) 和 Batch Normalization (BatchNorm) 是两种最
 
 记住这个核心点就不会混淆：
 
-*   **BatchNorm 看的是“一群人（batch）在某个项目（channel）上的平均表现”**，比如全班同学在“数学”这门课上的平均分和方差。
-*   **LayerNorm 看的是“某个人（sample）在所有项目（channels）上的综合表现”**，比如某个学生在“数学、语文、英语...”所有科目上的平均分和方差。
+*   **BatchNorm 看的是一群人（batch）在某个项目（channel）上的平均表现**，比如全班同学在“数学”这门课上的平均分和方差。
+*   **LayerNorm 看的是某个人（sample）在所有项目（channels）上的综合表现**，比如某个学生在“数学、语文、英语...”所有科目上的平均分和方差。
 
 选择哪种归一化方法，主要取决于你的数据特性和模型架构，以及你认为在哪个维度上进行归一化是更合理、更有效的。
 ## 面试应对

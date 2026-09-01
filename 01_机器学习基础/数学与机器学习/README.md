@@ -9,11 +9,11 @@
 | [数学基础.md](<数学基础.md>) | 线性代数、概率统计、优化等机器学习常用数学基础。 |
 | [机器学习基础.md](<机器学习基础.md>) | 监督学习、无监督学习、模型训练、泛化、过拟合等传统机器学习框架。 |
 | [统计推断与因果推断基础.md](<统计推断与因果推断基础.md>) | 统计估计、假设检验、因果关系与相关关系区分。 |
-| [cosine similarity.md](<cosine similarity.md>) | 余弦相似度的定义、几何意义和在向量检索/表示学习中的作用。 |
+| [Cosine Similarity.md](<Cosine Similarity.md>) | 余弦相似度的定义、几何意义和在向量检索/表示学习中的作用。 |
 
 ## 学习路线
 
 1. 先看 [数学基础.md](<数学基础.md>)，补齐线代、概率和优化直觉。
 2. 再看 [机器学习基础.md](<机器学习基础.md>)，建立训练、评估和泛化框架。
 3. 接着看 [统计推断与因果推断基础.md](<统计推断与因果推断基础.md>)，理解实验结论是否可信。
-4. 最后看 [cosine similarity.md](<cosine similarity.md>)，连接到 embedding、检索和对比学习。
+4. 最后看 [Cosine Similarity.md](<Cosine Similarity.md>)，连接到 embedding、检索和对比学习。

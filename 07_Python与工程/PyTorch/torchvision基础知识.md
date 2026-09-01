@@ -125,7 +125,7 @@ print(f"图片张量的形状: {image.shape}") # [C, H, W] -> [3, 32, 32]
 print(f"标签: {label}") # 这是一个数字，代表类别索引
 ```
 
-**练习2: 为“猫狗大战”数据集编写 CustomDataset**
+**练习2: 为猫狗大战数据集编写 CustomDataset**
 
 假设你的数据存放结构如下：
 ```
