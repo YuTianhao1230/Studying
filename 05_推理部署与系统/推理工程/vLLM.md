@@ -87,6 +87,112 @@ Continuous Batching 的思想是：
 - `top_p`：nucleus sampling 参数。
 - `max_tokens`：最大生成 token 数。
 
+### 安装与环境配置
+
+vLLM 依赖 GPU、CUDA 和 PyTorch 环境。实际安装时优先确认三件事：
+
+```bash
+nvidia-smi
+python --version
+python -c "import torch; print(torch.__version__, torch.version.cuda)"
+```
+
+常见安装方式：
+
+```bash
+pip install -U vllm
+```
+
+如果环境里 CUDA / PyTorch 版本不匹配，常见处理方式是先安装匹配当前 CUDA 的 PyTorch，再安装 vLLM。不要在一个旧环境里反复覆盖安装，最好单独建虚拟环境：
+
+```bash
+conda create -n vllm python=3.10 -y
+conda activate vllm
+pip install -U pip
+pip install -U vllm
+```
+
+安装后检查：
+
+```bash
+python -c "import vllm; print(vllm.__version__)"
+```
+
+### 最小启动示例
+
+用 vLLM 启动一个 OpenAI-compatible 服务：
+
+```bash
+vllm serve Qwen/Qwen2.5-0.5B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --max-model-len 4096 \
+  --gpu-memory-utilization 0.90
+```
+
+如果模型太大，需要多卡张量并行：
+
+```bash
+vllm serve Qwen/Qwen2.5-7B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --tensor-parallel-size 2 \
+  --max-model-len 8192 \
+  --gpu-memory-utilization 0.90
+```
+
+### Python 调用示例
+
+vLLM 的服务接口兼容 OpenAI API，可以用 `openai` SDK 调：
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://127.0.0.1:8000/v1",
+    api_key="EMPTY",
+)
+
+resp = client.chat.completions.create(
+    model="Qwen/Qwen2.5-0.5B-Instruct",
+    messages=[
+        {"role": "user", "content": "用一句话解释 vLLM 的作用。"}
+    ],
+    temperature=0.2,
+    top_p=0.9,
+    max_tokens=128,
+)
+
+print(resp.choices[0].message.content)
+```
+
+也可以直接用 HTTP 请求：
+
+```bash
+curl http://127.0.0.1:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "messages": [{"role": "user", "content": "vLLM 是什么？"}],
+    "temperature": 0.2,
+    "max_tokens": 128
+  }'
+```
+
+### 配置怎么调
+
+常见调参逻辑：
+
+| 现象 | 优先检查/调整 |
+| --- | --- |
+| 启动 OOM | 降低 `max_model_len`、降低 `gpu_memory_utilization`、减少 `max_num_seqs`、增加 `tensor_parallel_size` |
+| 并发上不去 | 增大 `max_num_seqs`，同时观察 KV cache 显存是否够 |
+| 首 token 延迟高 | 降低并发、缩短 prompt、检查模型大小和张量并行通信 |
+| 长文本请求失败 | 检查 `max_model_len` 是否小于输入长度加生成长度 |
+| 输出和训练评测不一致 | 对齐 `chat_template`、tokenizer、temperature、top_p、max_tokens |
+
+对线上服务来说，不要只看平均 tokens/s，还要看 p95/p99 延迟、首 token 延迟、失败率、OOM 和不同输入长度下的吞吐。
+
 ## 面试应对
 
 ### vLLM 是什么？

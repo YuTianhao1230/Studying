@@ -75,6 +75,151 @@ base model frozen
 - 推理参数没有和训练/评测时对齐，导致效果差异。
 - LoRA adapter、base model、tokenizer 版本不一致。
 
+### 安装与环境配置
+
+ms-swift 依赖 Python、PyTorch、CUDA 和 ModelScope / Transformers 生态。安装前先确认 GPU 和 PyTorch 是否正常：
+
+```bash
+nvidia-smi
+python --version
+python -c "import torch; print(torch.__version__, torch.version.cuda)"
+```
+
+推荐单独建环境：
+
+```bash
+conda create -n swift python=3.10 -y
+conda activate swift
+pip install -U pip
+pip install -U ms-swift
+```
+
+如果需要训练多模态模型、使用 flash attention、deepspeed 或特定量化后端，通常还要按项目脚本额外安装对应依赖。安装后可以检查命令是否可用：
+
+```bash
+swift --help
+```
+
+常见环境变量：
+
+```bash
+export CUDA_VISIBLE_DEVICES=0,1,2,3
+export NPROC_PER_NODE=4
+```
+
+其中 `CUDA_VISIBLE_DEVICES` 控制用哪些 GPU，`NPROC_PER_NODE` 通常对应单机启动多少个训练进程。
+
+### 最小 LoRA SFT 示例
+
+一个最小的 LoRA SFT 命令大致长这样：
+
+```bash
+swift sft \
+  --model Qwen/Qwen2.5-0.5B-Instruct \
+  --dataset ./train.jsonl \
+  --train_type lora \
+  --torch_dtype bfloat16 \
+  --num_train_epochs 1 \
+  --per_device_train_batch_size 1 \
+  --gradient_accumulation_steps 8 \
+  --learning_rate 1e-4 \
+  --warmup_ratio 0.05 \
+  --max_length 4096 \
+  --lora_rank 8 \
+  --lora_alpha 16 \
+  --target_modules all-linear \
+  --save_steps 500 \
+  --eval_steps 500 \
+  --output_dir ./output/qwen_lora_sft
+```
+
+参数怎么理解：
+
+- `--model`：base model 路径或模型名。
+- `--dataset`：训练数据路径。
+- `--train_type lora`：使用 LoRA，而不是全参数微调。
+- `--torch_dtype bfloat16`：使用 BF16 训练，通常比 FP16 稳定。
+- `--gradient_accumulation_steps`：用小 micro-batch 模拟更大的 effective batch size。
+- `--learning_rate`：LoRA 常用 `5e-5` 到 `2e-4`，全参通常更小。
+- `--max_length`：输入加输出的最大 token 长度，太小会截断，太大会占显存。
+- `--lora_rank` / `--lora_alpha`：控制 LoRA adapter 的容量和缩放。
+- `--target_modules`：LoRA 插到哪些线性层。
+
+有效 batch size 要按这个公式算：
+
+```text
+effective_batch_size =
+per_device_train_batch_size * GPU 数 * gradient_accumulation_steps
+```
+
+### 训练数据格式示例
+
+SFT 数据通常是 jsonl，每行一条样本。具体字段要以当前 ms-swift 版本和项目脚本为准，一个常见写法是：
+
+```json
+{"messages": [{"role": "user", "content": "解释一下 LoRA 是什么"}, {"role": "assistant", "content": "LoRA 是一种参数高效微调方法..."}]}
+```
+
+如果是多模态任务，还要额外提供图像或视频字段，并保证数据预处理、抽帧、token 上限和评测时一致。
+
+### 推理验证示例
+
+训练完成后，可以先用少量样本做推理 smoke test：
+
+```bash
+swift infer \
+  --model Qwen/Qwen2.5-0.5B-Instruct \
+  --adapters ./output/qwen_lora_sft/checkpoint-500 \
+  --temperature 0 \
+  --max_new_tokens 256
+```
+
+如果已经把 LoRA merge 成完整模型，则推理时直接加载 merge 后模型：
+
+```bash
+swift infer \
+  --model ./output/qwen_lora_sft/merged \
+  --temperature 0 \
+  --max_new_tokens 256
+```
+
+### LoRA 合并与导出
+
+LoRA 训练产物有两种部署方式：
+
+```text
+方式一：base model + adapter
+方式二：adapter merge 回 base model，导出完整模型
+```
+
+如果后续要放到 vLLM 这类推理服务里，常见做法是先合并导出：
+
+```bash
+swift export \
+  --model Qwen/Qwen2.5-0.5B-Instruct \
+  --adapters ./output/qwen_lora_sft/checkpoint-500 \
+  --merge_lora true \
+  --output_dir ./output/qwen_lora_sft/merged
+```
+
+导出后要重点检查：
+
+- base model 和 adapter 是否匹配。
+- tokenizer 和 chat template 是否一致。
+- 推理精度、量化方式、max length 是否和评测一致。
+- 迁移到 vLLM 后输出是否和 swift infer 基本一致。
+
+### 常见配置怎么调
+
+| 现象 | 优先检查/调整 |
+| --- | --- |
+| 训练 OOM | 降低 `per_device_train_batch_size`、降低 `max_length`、开启 gradient checkpointing、增大梯度累积 |
+| loss 一开始 spike / NaN | 降低 `learning_rate`、增加 `warmup_ratio`、使用 BF16、检查异常样本 |
+| loss 基本不降 | 检查数据格式和 label mask、提高 LR、确认 LoRA target modules 生效 |
+| train loss 降但 eval 不好 | 减少 epoch、降低 LoRA rank、增加 dropout、清洗数据 |
+| 推理格式不稳定 | 统一训练数据模板、固定 temperature/top_p/max_new_tokens、检查 chat template |
+| swift 推理和 vLLM 结果不一致 | 对齐 tokenizer、chat template、采样参数、max length、LoRA merge 方式 |
+
 ## 面试应对
 
 ### ms-swift 主要用于什么？
