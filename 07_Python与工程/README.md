@@ -9,10 +9,11 @@
 | [常用函数](<常用函数/README.md>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
 | [常用库](<常用库/README.md>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
 | [深度学习框架](<深度学习框架/README.md>) | PyTorch、TensorFlow、Hugging Face、训练脚手架和框架选型。 |
-| [算法刷题](<算法刷题/README.md>) | 刷题技巧、回溯、并查集、下一个排列等算法题。 |
+| [算法刷题](<算法刷题/README.md>) | 高频算法模板、刷题技巧、回溯、并查集和典型实现题。 |
 
 ## 当前层文件
 
 | 文件 | 内容说明 |
 | --- | --- |
 | [编程与算法工程能力.md](<编程与算法工程能力.md>) | 面试中的编码能力、算法工程能力和工程实现意识。 |
+| [Python工程实践.md](<Python工程实践.md>) | GIL、并发模型、结构化日志、重试、测试、大文件处理和断点续跑。 |

@@ -68,12 +68,12 @@ Studying/
 | 想查什么 | 入口 |
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
-| Transformer、注意力、MoE、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
+| Transformer、Tokenizer、预训练、Scaling Law、注意力、MoE、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
 | DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、超参数、Optimizer、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
-| VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
-| Python 语法、刷题、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
+| CNN、ResNet、ViT、VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
+| Python 语法、高频算法模板、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Applied ML Coding、Beam Search | [07_Python与工程/](<07_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [08_程序分析与代码智能/](<08_程序分析与代码智能/>) |
 | 面试复习体系、项目闭环复盘、训练排查和综合面试题 | [09_面试体系/](<09_面试体系/>) |
 | Agent、Workflow、Skills、MCP、Tool Call、Memory、Context Engineering、AI Coding | [10_Agent/](<10_Agent/>) |
@@ -89,6 +89,7 @@ Studying/
 - [09_面试体系/项目闭环与训练排查/用人领导视角能力地图.md](<09_面试体系/项目闭环与训练排查/用人领导视角能力地图.md>)：从招聘视角反推项目经历需要证明的能力。
 - [09_面试体系/项目闭环与训练排查/简历项目表达与STAR故事库.md](<09_面试体系/项目闭环与训练排查/简历项目表达与STAR故事库.md>)：项目简历 bullet、30 秒介绍、2 分钟介绍和 STAR 故事库。
 - [02_大模型/大模型发展历史与SOTA迭代框架.md](<02_大模型/大模型发展历史与SOTA迭代框架.md>)：大模型从 Transformer 到 Agent 的历史演进和 SOTA 迭代框架。
+- [02_大模型/大模型预训练与推理基础.md](<02_大模型/大模型预训练与推理基础.md>)：Tokenizer、预训练数据、Scaling Law、长上下文和生成策略。
 - [02_大模型/应用与问题/NLP与大语言模型.md](<02_大模型/应用与问题/NLP与大语言模型.md>)：NLP 与 LLM 复习入口。
 - [03_训练优化与对齐/模型训练学习手册_预训练到后训练.md](<03_训练优化与对齐/模型训练学习手册_预训练到后训练.md>)：从预训练、SFT、DPO、GRPO/RLVR 到评测部署的模型训练路线总纲。
 - [03_训练优化与对齐/后训练与对齐/README.md](<03_训练优化与对齐/后训练与对齐/README.md>)：后训练与对齐目录索引，按“英文缩写或术语 + 中文翻译”组织核心名词。
@@ -96,13 +97,17 @@ Studying/
 - [03_训练优化与对齐/训练优化与大模型训练.md](<03_训练优化与对齐/训练优化与大模型训练.md>)：训练优化复习入口。
 - [03_训练优化与对齐/参数/README.md](<03_训练优化与对齐/参数/README.md>)：训练超参数、Optimizer、loss、activation 和 LoRA 参数入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
+- [03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md](<03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md>)：集合通信、慢节点、Hang、OOM 和恢复排查入口。
 - [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
 - [07_Python与工程/深度学习框架/深度学习框架选型.md](<07_Python与工程/深度学习框架/深度学习框架选型.md>)：PyTorch、TensorFlow/Keras、JAX、Hugging Face 等框架怎么选。
 - [07_Python与工程/深度学习框架/PyTorch训练工程基础.md](<07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)：PyTorch 训练循环、autograd、DataLoader、checkpoint 和 OOM 排查。
+- [07_Python与工程/算法刷题/高频算法模板.md](<07_Python与工程/算法刷题/高频算法模板.md>)：Coding 面试高频模式、代码骨架和边界检查。
+- [07_Python与工程/Python工程实践.md](<07_Python与工程/Python工程实践.md>)：并发、日志、重试、测试、大文件处理和断点续跑。
 - [05_推理部署与系统/推理工程/模型部署与推理工程.md](<05_推理部署与系统/推理工程/模型部署与推理工程.md>)：部署与推理工程入口。
 - [05_推理部署与系统/推理工程/推理框架总览.md](<05_推理部署与系统/推理工程/推理框架总览.md>)：推理框架和工程术语入口。
 - [10_Agent/README.md](<10_Agent/README.md>)：Agent、Workflow、Skills、MCP、生产级 Agent、AI Coding 专题入口。
 - [09_面试体系/AI算法工程师/大厂算法工程师JD能力矩阵.md](<09_面试体系/AI算法工程师/大厂算法工程师JD能力矩阵.md>)：从大厂 JD 反推的能力地图和补齐路线。
+- [09_面试体系/综合面试题/自我介绍与行为面试.md](<09_面试体系/综合面试题/自我介绍与行为面试.md>)：自我介绍、STAR、行为问题、职业规划和反问。
 - [11_搜索推荐广告/README.md](<11_搜索推荐广告/README.md>)：搜索推荐广告专题入口。
 - [12_计算机基础知识/计算机基础面试笔试总纲.md](<12_计算机基础知识/计算机基础面试笔试总纲.md>)：操作系统、数据结构、数据库、计算机组成原理和计算机网络八股复习入口。
 - [05_推理部署与系统/系统设计/MLOps与模型生产化.md](<05_推理部署与系统/系统设计/MLOps与模型生产化.md>)：模型上线、监控、灰度和回滚入口。

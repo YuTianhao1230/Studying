@@ -4,6 +4,6 @@
 
 | 子目录 | 内容说明 |
 | --- | --- |
-| [视觉基础](<视觉基础/README.md>) | 图像插值、OCR、文档理解等视觉输入基础。 |
+| [视觉基础](<视觉基础/README.md>) | CNN、ResNet、ViT、检测分割、图像插值、OCR 和文档理解。 |
 | [多模态模型](<多模态模型/README.md>) | CLIP、BLIP、VLM、Video Understanding、Multimodal Grounding。 |
 | [生成模型](<生成模型/README.md>) | UNet、Latent Diffusion Models 等生成模型基础。 |
