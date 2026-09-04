@@ -1,4 +1,12 @@
-# 计算机网络面试笔试要点
+# 计算机网络
+
+## 知识卡片
+
+| 卡片 | 重点 |
+| --- | --- |
+| [TCP与UDP](<TCP与UDP.md>) | 高频：TCP/UDP、握手挥手、可靠传输、流量与拥塞控制。 |
+| [HTTP HTTPS与DNS](<HTTP HTTPS与DNS.md>) | 高频：HTTP 版本、HTTPS、TLS、DNS、状态码、URL 访问链路。 |
+| [IP子网与路由交换](<IP子网与路由交换.md>) | IP/MAC、ARP、子网划分、私有地址、交换机和路由器。 |
 
 ## 知识点解析
 
