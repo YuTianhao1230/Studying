@@ -4,7 +4,7 @@
 
 ### 概述
 
-Applied ML Coding 是算法工程师面试中偏工程实现的 ML 编程题，要求你用 Python / NumPy / PyTorch 写出小型可运行组件，而不是只讲概念。
+本文整理使用 Python、NumPy 和 PyTorch 实现常见机器学习组件的方法，包括张量运算、模型模块、训练过程和评测指标。
 
 ### 为什么重要
 

@@ -4,7 +4,7 @@
 
 ### 概述
 
-Java 基础在银行科技岗、央国企笔试和大厂后端面试中都很高频。笔试常考语法、集合、异常和面向对象；面试常追问 HashMap、ConcurrentHashMap、JVM 内存、GC、线程池和锁。
+本文整理 Java 的面向对象、集合、HashMap、ConcurrentHashMap、JVM 内存、垃圾回收、线程池和并发机制。
 
 ### 面向对象
 
