@@ -88,7 +88,7 @@ GPT 的预训练目标只是预测下一个 token，不保证事实正确、推�
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
 | 架构题 | GPT 为什么是 decoder-only | 因为目标是自回归生成，只需要 causal self-attention |
-| 目标题 | next-token prediction 公式 | 写 `P(x_t|x_<t)` 并说明 teacher forcing |
+| 目标题 | next-token prediction 公式 | 写 `P(x_t \| x_<t)` 并说明 teacher forcing |
 | 对比题 | GPT 和 BERT 区别 | 生成 vs 理解，causal mask vs bidirectional attention |
 | 后训练题 | ChatGPT 为什么比 GPT-3 好用 | SFT + RLHF 让模型遵循指令和偏好 |
 

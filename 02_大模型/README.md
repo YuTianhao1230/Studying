@@ -22,3 +22,4 @@
 | [模型细节/阶段性里程碑模型详解.md](<模型细节/阶段性里程碑模型详解.md>) | Transformer、BERT、GPT、T5、ViT、CLIP、ALBEF、TCL、BLIP、Flamingo、LLaVA 等模型的架构、问题和影响。 |
 | [模型细节/当前SOTA模型详解.md](<模型细节/当前SOTA模型详解.md>) | GPT/o、Claude、Gemini、Qwen、DeepSeek、Llama、Mistral 等模型系列的能力定位和架构特点。 |
 | [模型细节/模型架构对比与选型.md](<模型细节/模型架构对比与选型.md>) | Encoder-only、Decoder-only、MoE、长上下文、多模态连接器、推理模型和业务选型。 |
+| [模型细节/Qwen千问架构.md](<模型细节/Qwen千问架构.md>) | Qwen3 文本模型与 Qwen3-VL 多模态模型的架构、视频输入链路、预/后训练和面试回答。 |
