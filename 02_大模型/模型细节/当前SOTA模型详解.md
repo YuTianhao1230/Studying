@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文整理 GPT/o 系列、Claude、Gemini、Qwen、DeepSeek、Llama、Mistral 等主流模型系列的架构倾向、能力定位、解决的问题、训练与推理特点、适用场景和面试回答方式。
+本文整理 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等主流模型系列的架构倾向、能力定位、解决的问题、训练与推理特点、适用场景和面试回答方式。
 
 ### 先建立 SOTA 模型坐标系
 
@@ -12,11 +12,11 @@
 
 | 维度 | 典型路线 | 解决的问题 |
 | --- | --- | --- |
-| 基座架构 | Decoder-only、MoE、GQA/MLA、长上下文 | 语言建模、成本、上下文和吞吐 |
-| 后训练 | SFT、RLHF/RLAIF、DPO、RLVR/GRPO | 指令跟随、偏好、安全、数学代码推理 |
+| 基座架构 | [Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md>)、[MoE](<../基础架构/MoE.md>)、GQA/MLA、长上下文 | 语言建模、成本、上下文和吞吐 |
+| 后训练 | [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、RLHF/RLAIF、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、RLVR/GRPO | 指令跟随、偏好、安全、数学代码推理 |
 | 多模态 | 视觉编码器 + projector/Q-Former/cross-attention/原生多模态 | 图像、视频、音频、OCR、GUI |
 | 推理时计算 | thinking mode、test-time compute、多采样、自检 | 复杂数学、代码、规划和科学推理 |
-| Agent 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
+| [Agent](<../../10_Agent/基础概念/Agent.md>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
 | 部署生态 | 开源权重、API、端侧小模型、私有化部署 | 成本、可控性、数据安全和工程落地 |
 
 ### OpenAI GPT / o 系列
@@ -40,7 +40,7 @@ large decoder-only / multimodal foundation model
 
 关键特点：
 
-- GPT 主线偏通用助手与多模态统一。
+- [GPT](<里程碑模型/GPT.md>) 主线偏通用助手与多模态统一。
 - o 系列偏推理时计算，适合复杂数学、代码、科学和规划。
 - GPT-4o 强调文本、图像、音频的低延迟统一交互。
 - API 生态强调 function calling、structured output、tools 和多模态输入。
@@ -140,13 +140,13 @@ Qwen3 / QwQ / Qwen Coder
 
 #### 能力边界
 
-开源权重不等于完整可复现，训练数据 recipe、清洗策略、后训练数据和 RL 细节仍是关键壁垒。部署时还要关注上下文长度、显存、吞吐和量化精度损失。
+开源权重不等于完整可复现，训练数据 recipe、清洗策略、后训练数据和 RL 细节仍是关键壁垒。部署时还要关注上下文长度、显存、吞吐和[量化](<../../05_推理部署与系统/推理工程/量化.md>)精度损失。
 
 ### DeepSeek
 
 #### 解决的问题
 
-DeepSeek 的主线是以更低成本训练和推理获得接近闭源 SOTA 的能力，尤其在 MoE、MLA、代码、数学推理和 RLVR/GRPO 方向影响很大。
+DeepSeek 的主线是以更低成本训练和推理获得接近闭源 SOTA 的能力，尤其在 MoE、[MLA](<../基础架构/MLA.md>)、代码、数学推理和 RLVR/GRPO 方向影响很大。
 
 #### 架构与训练特点
 
@@ -163,7 +163,7 @@ DeepSeek base model
 关键概念：
 
 - MoE：每个 token 只激活部分专家，在较低推理成本下扩大总参数容量。
-- MLA：通过压缩 KV 表示降低长上下文 KV Cache 成本。
+- MLA：通过压缩 KV 表示降低长上下文 [KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 成本。
 - GRPO/RLVR：用可验证奖励强化数学、代码等任务中的推理能力。
 - Distillation：把强推理模型能力蒸馏到更小模型中，降低部署成本。
 
@@ -175,7 +175,7 @@ DeepSeek 代表“高性价比推理模型”路线，但 MoE 的训练稳定性
 
 #### 解决的问题
 
-Llama 系列的核心价值是开放权重生态。它降低了研究、微调、私有部署和推理优化门槛，使 LoRA、QLoRA、vLLM、量化、RAG 和企业私有化应用快速发展。
+Llama 系列的核心价值是开放权重生态。它降低了研究、微调、私有部署和推理优化门槛，使 [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>)、[QLoRA](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、量化、[RAG](<../应用与问题/RAG.md>) 和企业私有化应用快速发展。
 
 #### 架构与训练特点
 
@@ -191,7 +191,7 @@ decoder-only transformer
 
 - 多尺寸覆盖，便于不同资源下部署。
 - 社区生态强，适合微调和应用实验。
-- Llama 3 之后在 tokenizer、数据规模、GQA、长上下文和 instruct 能力上明显增强。
+- Llama 3 之后在 tokenizer、数据规模、[GQA](<../基础架构/GQA.md>)、长上下文和 instruct 能力上明显增强。
 - Llama 4 路线引入多模态和 MoE，代表开放模型继续追赶闭源前沿。
 
 #### 能力边界

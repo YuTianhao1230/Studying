@@ -4,7 +4,7 @@
 
 ### 概述
 
-I-FGSM/BIM 是 FGSM 的多步迭代版本，把一次大步攻击拆成多次小步更新，并在每一步后把样本裁剪回扰动预算范围。
+I-FGSM/BIM 是 [FGSM](<FGSM.md>) 的多步迭代版本，把一次大步攻击拆成多次小步更新，并在每一步后把样本裁剪回扰动预算范围。
 
 ### 解决的问题
 
@@ -62,7 +62,7 @@ x_adv_{t+1} = clip_{x, epsilon}(x_adv_t + alpha * sign(grad_x L(f(x_adv_t), y)))
 
 - 只做像素 `clip(0,1)`，忘记投影到 `epsilon` 范围。
 - `alpha * steps` 远大于 `epsilon`，但没有投影，导致预算越界。
-- 把 I-FGSM 和 PGD 完全等同；PGD 通常还包含随机初始化。
+- 把 I-FGSM 和 [PGD](<PGD.md>) 完全等同；PGD 通常还包含随机初始化。
 
 ## 面试应对
 

@@ -6,7 +6,7 @@
 
 TensorFlow 是 Google 推出的深度学习框架，Keras 是其高层模型构建 API。TensorFlow 的特点是工程部署生态较完整，Keras 的特点是接口简洁、适合快速搭建常规模型。
 
-在当前大模型训练生态里，PyTorch 更主流，但 TensorFlow/Keras 仍然是算法工程师需要了解的基础框架，尤其在传统工业部署、端侧推理、TensorFlow Serving、TFLite、TFX 等场景中仍会被问到。
+在当前大模型训练生态里，PyTorch 更主流，但 TensorFlow/Keras 仍然是算法工程师需要了解的基础框架，尤其在传统工业部署、端侧推理、TensorFlow [Serving](<../../05_推理部署与系统/推理工程/Serving.md>)、TFLite、TFX 等场景中仍会被问到。
 
 ### 基本使用方式
 
@@ -24,7 +24,7 @@ TensorFlow 生态里常见组件包括：
 
 - Keras：高层模型构建和训练 API。
 - SavedModel：模型保存和部署格式。
-- TensorBoard：可视化训练指标。
+- TensorBoard：[可视化](<../常用库/可视化.md>)训练指标。
 - TensorFlow Serving：服务化部署。
 - TFLite：移动端和端侧推理。
 - TFX：生产级 ML pipeline。
@@ -61,7 +61,7 @@ TensorFlow 是底层深度学习框架，提供张量计算、自动求导、图
 
 回答模板：
 
-如果是研究迭代、大模型微调、自定义训练逻辑，我通常优先 PyTorch，因为动态图直观，Hugging Face、DeepSpeed、FSDP 等生态更成熟。如果是已有 TensorFlow 生产链路、TensorFlow Serving、TFLite 或端侧部署，TensorFlow/Keras 更合适。选型不是看哪个绝对更好，而是看模型生态、部署目标、团队经验和维护成本。
+如果是研究迭代、大模型微调、自定义训练逻辑，我通常优先 PyTorch，因为动态图直观，Hugging Face、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>) 等生态更成熟。如果是已有 TensorFlow 生产链路、TensorFlow Serving、TFLite 或端侧部署，TensorFlow/Keras 更合适。选型不是看哪个绝对更好，而是看模型生态、部署目标、团队经验和维护成本。
 
 ### Keras 的 `compile` 和 `fit` 做了什么？
 

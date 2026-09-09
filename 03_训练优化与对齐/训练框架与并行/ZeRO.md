@@ -4,7 +4,7 @@
 
 ### 概述
 
-**Zero Redundancy Optimizer (ZeRO)** 是由微软（Microsoft）在 DeepSpeed 库中提出的一种内存优化技术，旨在解决大规模深度学习模型（如 GPT-3 等千亿级参数模型）在分布式训练时的内存瓶颈问题。
+**Zero Redundancy Optimizer (ZeRO)** 是由微软（Microsoft）在 [DeepSpeed](<DeepSpeed.md>) 库中提出的一种内存优化技术，旨在解决大规模深度学习模型（如 GPT-3 等千亿级参数模型）在分布式训练时的内存瓶颈问题。
 
 它的核心思想是：**消除数据并行（Data Parallelism）中的内存冗余，同时保持计算效率。**
 
@@ -42,7 +42,7 @@ ZeRO 分为三个阶段（Stages），优化程度递增：
 ### ZeRO 的主要优势
 
 1.  **显存利用率极高：** 允许在同样的硬件上训练比传统方法大 10 倍甚至 100 倍的模型。
-2.  **计算效率高：** 与传统的模型并行（Tensor Parallelism）相比，ZeRO 减少了复杂的算子拆分，更易于实现，且在跨节点通信时表现更优。
+2.  **计算效率高：** 与传统的模型并行（Tensor Parallelism）相比，ZeRO 减少了复杂的[算子](<../../05_推理部署与系统/推理工程/算子.md>)拆分，更易于实现，且在跨节点通信时表现更优。
 3.  **易用性：** 开发者不需要手动修改模型架构去适配复杂的并行逻辑，代码改动极小。
 
 ### ZeRO-Offload 与 ZeRO-Infinity (后续扩展)
@@ -54,7 +54,7 @@ ZeRO 分为三个阶段（Stages），优化程度递增：
 ### 总结与应用
 
 *   **谁在用？** 几乎所有主流的大模型训练框架都集成了 ZeRO 技术。最著名的是 **DeepSpeed**。
-*   **PyTorch 的对应物：** PyTorch 官方受 ZeRO 启发，推出了 **FSDP (Fully Sharded Data Parallel)**，其原理与 ZeRO-3 基本一致。
+*   **PyTorch 的对应物：** PyTorch 官方受 ZeRO 启发，推出了 **[FSDP](<FSDP.md>) (Fully Sharded Data Parallel)**，其原理与 ZeRO-3 基本一致。
 
 **一句话总结：**
 ZeRO 通过把原本每个 GPU 都要存的“全家桶”（参数、梯度、优化器状态）拆散分给所有人拿，用少量的通信带宽换取了海量的内存空间，让平民级显卡也能跑起巨大的 AI 模型。

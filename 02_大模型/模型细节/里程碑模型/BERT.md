@@ -4,7 +4,7 @@
 
 ### 概述
 
-BERT 是 Encoder-only Transformer 预训练语言模型，核心是通过双向上下文学习通用语言理解表示，并通过“预训练 + 微调”范式迁移到分类、匹配、抽取和序列标注任务。
+BERT 是 Encoder-only [Transformer](<../../基础架构/Transformer.md>) 预训练语言模型，核心是通过双向上下文学习通用语言理解表示，并通过“预训练 + 微调”范式迁移到分类、匹配、抽取和序列标注任务。
 
 ### 解决的问题
 
@@ -59,7 +59,7 @@ NSP：判断句子 B 是否是句子 A 的下一句。后续 RoBERTa 发现 NSP 
 
 ### 做了什么改变
 
-相比 GPT 类单向 LM，BERT 最大变化是 bidirectional encoder。每个 token 可以同时看左右上下文，因此更适合理解任务。
+相比 [GPT](<GPT.md>) 类单向 LM，BERT 最大变化是 bidirectional encoder。每个 token 可以同时看左右上下文，因此更适合理解任务。
 
 相比 ELMo 等早期表示模型，BERT 把深层 Transformer、预训练目标和下游微调整合成统一范式。
 
@@ -81,7 +81,7 @@ BERT 不适合直接做自回归长文本生成。它的预训练目标是补全
 | --- | --- | --- |
 | 架构题 | BERT-Base 有多少层 | 12 层、768 hidden、12 heads、约 110M 参数 |
 | 目标题 | MLM 和 NSP 是什么 | MLM 学双向上下文，NSP 学句间关系 |
-| 对比题 | BERT 和 GPT 区别 | Encoder-only 双向理解 vs Decoder-only 自回归生成 |
+| 对比题 | BERT 和 GPT 区别 | Encoder-only 双向理解 vs [Decoder-only](<../../基础架构/Decoder-only vs Encoder-Decoder.md>) 自回归生成 |
 | 应用题 | BERT 怎么做分类/NER/QA | 分类用 `[CLS]`，NER 用 token states，QA 预测 span |
 
 ### 易错点

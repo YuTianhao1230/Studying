@@ -13,7 +13,7 @@
 | [Pre-Norm vs Post-Norm.md](<Pre-Norm vs Post-Norm.md>) | Pre-Norm/Post-Norm 对深层训练稳定性和收敛的影响。 |
 | [RoPE.md](<RoPE.md>) | 旋转位置编码的原理、外推和长上下文影响。 |
 | [RMSNorm.md](<RMSNorm.md>) | RMSNorm 与 LayerNorm 的区别及训练效率影响。 |
-| [GQA.md](<GQA.md>) | Grouped Query Attention 在 KV Cache 和推理吞吐上的作用。 |
+| [GQA.md](<GQA.md>) | MHA、MQA、GQA 的结构差异，以及 GQA 如何降低 KV Cache 和提升推理吞吐。 |
 | [MLA.md](<MLA.md>) | Multi-head Latent Attention 的压缩 KV 表示和推理优化思路。 |
 | [MoE.md](<MoE.md>) | 专家混合模型的稀疏激活、路由和训练/推理权衡。 |
 | [Dense Model.md](<Dense Model.md>) | 稠密模型的含义，以及与 MoE 的结构和成本差异。 |
@@ -23,5 +23,5 @@
 
 1. 先看 [Transformer.md](<Transformer.md>)、[Self-Attention.md](<Self-Attention.md>) 和 [Autoregressive Model.md](<Autoregressive Model.md>)。
 2. 再看 Decoder-only、Pre-Norm/Post-Norm、[RoPE.md](<RoPE.md>) 和 [RMSNorm.md](<RMSNorm.md>)。
-3. 接着看 [GQA.md](<GQA.md>)、[MLA.md](<MLA.md>)，理解推理效率优化。
+3. 接着看 [GQA.md](<GQA.md>)、[MLA.md](<MLA.md>)，理解 MHA/MQA/GQA/MLA 在 KV Cache 和推理效率上的取舍。
 4. 最后对比 [Dense Model.md](<Dense Model.md>) 和 [MoE.md](<MoE.md>)，理解规模化模型架构取舍。

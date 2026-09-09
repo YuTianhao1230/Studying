@@ -12,7 +12,7 @@ Vibe Coding 面试不是考“会不会让 AI 写代码”，而是考候选人�
 
 ### 背景
 
-AI 编程工具已经进入规模化应用阶段。以 Claude Code、Codex、Trae、Aime 等为代表的 Coding Agent，使开发者可以通过自然语言描述需求，由 AI 完成代码生成、调试和迭代。
+AI 编程工具已经进入规模化应用阶段。以 Claude Code、Codex、Trae、Aime 等为代表的 Coding [Agent](<../基础概念/Agent.md>)，使开发者可以通过自然语言描述需求，由 AI 完成代码生成、调试和迭代。
 
 这改变了工程师能力模型：
 
@@ -120,10 +120,10 @@ Vibe Coding 面试需要观察过程，而不是只看最终代码：
 
 题目示例：
 
-- 实现一个前端自动化测试 MCP，让 Agent 可以打开浏览器、搜索关键词并返回结果。
-- 实现 Agent & Skill Loader，并 Mock 执行流程。
+- 实现一个前端自动化测试 [MCP](<../基础概念/MCP.md>)，让 Agent 可以打开浏览器、搜索关键词并返回结果。
+- 实现 Agent & [Skill](<../基础概念/Skill.md>) Loader，并 Mock 执行流程。
 - 构建小型异步事件总线。
-- 构建简化版 RAG 系统。
+- 构建简化版 [RAG](<../../02_大模型/应用与问题/RAG.md>) 系统。
 - 构建代码审查系统。
 
 ### 面试官观察点

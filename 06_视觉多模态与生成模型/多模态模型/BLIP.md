@@ -12,14 +12,14 @@ BLIP 的架构相对复杂，它集成了多种功能，并引入了一些关键
 
 1.  **统一的视觉-语言编码器-解码器架构：**
     *   BLIP 采用了一个统一的架构，可以同时支持**视觉-语言理解任务**（如图像-文本检索、视觉问答）和**视觉-语言生成任务**（如图像描述生成）。
-    *   其基础是一个 Transformer 架构，但根据任务的不同，其内部的注意力掩码和连接方式会有所调整。
+    *   其基础是一个 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 架构，但根据任务的不同，其内部的注意力掩码和连接方式会有所调整。
 
 2.  **关键组件：**
-    *   **图像编码器 (Image Encoder)：** 通常使用预训练好的 Vision Transformer (ViT) 来提取图像特征。
+    *   **图像编码器 (Image Encoder)：** 通常使用预训练好的 Vision Transformer ([ViT](<../../02_大模型/模型细节/里程碑模型/ViT.md>)) 来提取图像特征。
     *   **文本编码器 (Text Encoder)：** 用于编码文本输入。
-    *   **多模态混合编码器-解码器 (Multimodal Mixture of Encoder-Decoder, MED)：** 这是 BLIP 的核心。MED 可以配置为三种不同的模式来适应不同的预训练任务：
+    *   **多模态混合编码器-解码器 (Multimodal Mixture of [Encoder-Decoder](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>), MED)：** 这是 BLIP 的核心。MED 可以配置为三种不同的模式来适应不同的预训练任务：
         *   **单流编码器 (Unimodal Encoder)：** 用于编码文本或图像的单模态表示。
-        *   **图像接地的文本编码器 (Image-grounded Text Encoder)：** 用于图像-文本匹配 (ITM) 和对比学习 (ITC) 任务，类似于 CLIP 的文本编码器，但可以感知图像信息。
+        *   **图像接地的文本编码器 (Image-grounded Text Encoder)：** 用于图像-文本匹配 (ITM) 和对比学习 (ITC) 任务，类似于 [CLIP](<CLIP.md>) 的文本编码器，但可以感知图像信息。
         *   **图像接地的文本解码器 (Image-grounded Text Decoder)：** 用于语言建模 (LM) 任务，即根据图像生成文本描述。
 
 3.  **三大预训练目标 (Pre-training Objectives)：**
@@ -93,4 +93,4 @@ CapFilt 是为了解决网络图文数据噪声大的问题。它分两个模块
 
 回答模板：
 
-BLIP-2 最大的改进是引入了 Q-Former，并且冻结了视觉编码器和 LLM，只训中间的 Q-Former。Q-Former 用一组可学习的 query token 通过 cross-attention 从冻结的视觉特征里抽取出一小撮和文本最相关的视觉表示，再喂给冻结的 LLM。这样训练成本大幅降低，还能直接复用现成的强 LLM。这个“冻结两端、只训连接器”的思路，后来基本成了主流 VLM 的标准做法。
+BLIP-2 最大的改进是引入了 Q-Former，并且冻结了视觉编码器和 LLM，只训中间的 Q-Former。Q-Former 用一组可学习的 query token 通过 cross-attention 从冻结的视觉特征里抽取出一小撮和文本最相关的视觉表示，再喂给冻结的 LLM。这样训练成本大幅降低，还能直接复用现成的强 LLM。这个“冻结两端、只训连接器”的思路，后来基本成了主流 [VLM](<VLM与Vision_Instruction_Tuning.md>) 的标准做法。

@@ -15,7 +15,7 @@
 - 任务背景：为什么要做。
 - 技术难点：难在哪里。
 - 你的动作：你具体推动了什么。
-- 量化结果：提升多少、覆盖多少、上线了吗。
+- [量化](<../../05_推理部署与系统/推理工程/量化.md>)结果：提升多少、覆盖多少、上线了吗。
 - 方法沉淀：能否迁移到下一轮项目。
 
 ## 简历项目写法
@@ -50,11 +50,11 @@
 
 #### 简历标题
 
-Syner-Attack 多模态对抗攻击研究与论文返修
+Syner-Attack [多模态对抗攻击](<../../13_AI安全与对抗攻击/多模态对抗攻击.md>)研究与论文返修
 
 #### 简历 bullet 版本
 
-- 围绕 VLM/MLLM 黑盒迁移攻击问题，研究 Syner-Attack 双流多模态对抗攻击框架，通过图像侧 feature/alignment loss 与文本侧 visual-guided word replacement 联合破坏跨模态对齐。
+- 围绕 VLM/MLLM [黑盒迁移攻击](<../../13_AI安全与对抗攻击/迁移与通用攻击/黑盒迁移攻击.md>)问题，研究 Syner-Attack 双流多模态对抗攻击框架，通过图像侧 feature/alignment loss 与文本侧 visual-guided word replacement 联合破坏跨模态对齐。
 - 针对审稿人关于 MLLM 定量评估不足、技术新颖性、baseline 公平性、语义保持和防御评估的质疑，拆解返修优先级并补充实验协议。
 - 对齐 GLEAM 等近邻 baseline，补充开源/商业 MLLM CLIP-proxy ASR、防御下 ITR、计算开销、image-only vs image-and-text、VGA 和扰动预算等结果。
 - 将论文主张从“攻击有效”升级为“跨模态解耦机制可被定量证据支撑”，用消融、对齐破坏指标和 MLLM ASR 组织返修证据链。

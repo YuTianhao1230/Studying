@@ -6,13 +6,13 @@
 
 GRPO，全称 **Group Relative Policy Optimization**，中文可以理解为“组相对策略优化”。它是一种用于大语言模型后训练阶段的强化学习算法，目标是在不额外训练 `Critic / Value Model` 的情况下，通过“同一个 prompt 下多条候选回答的组内相对优劣”来更新模型策略。
 
-如果用一句话建立直觉：**PPO 需要 Critic 来估计一个回答比预期好多少；GRPO 不训练 Critic，而是让同题的一组回答互相比较，用组内平均水平作为参照。**
+如果用一句话建立直觉：**[PPO](<PPO 近端策略优化.md>) 需要 Critic 来估计一个回答比预期好多少；GRPO 不训练 Critic，而是让同题的一组回答互相比较，用组内平均水平作为参照。**
 
-GRPO 经常和 DeepSeek-R1、数学推理、代码推理、RLVR 一起出现。原因是这些任务往往可以给出相对明确的 reward，例如数学最终答案是否正确、代码是否通过单测、格式是否满足要求。只要 reward 相对可靠，模型就可以不断采样、比较、更新，从而强化更好的推理路径。
+GRPO 经常和 DeepSeek-R1、数学推理、代码推理、[RLVR](<RLVR 可验证奖励强化学习.md>) 一起出现。原因是这些任务往往可以给出相对明确的 reward，例如数学最终答案是否正确、代码是否通过单测、格式是否满足要求。只要 reward 相对可靠，模型就可以不断采样、比较、更新，从而强化更好的推理路径。
 
 ### 背景
 
-传统 RLHF 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。
+传统 [RLHF](<RLHF 基于人类反馈的强化学习.md>) 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。
 
 这个链路的问题在于 Critic 很重。在大模型训练里，Critic 往往和 policy 同规模，意味着额外的显存、额外的前向计算、额外的训练稳定性问题。PPO 本身也比较难调，学习率、KL 系数、clip range、reward scale、rollout 配置都会影响训练稳定性。GRPO 的提出就是为了降低这部分复杂度：**既保留强化学习的在线探索能力，又尽量去掉 Critic 带来的系统成本。**
 
@@ -26,7 +26,7 @@ GRPO 不是完全抛弃 PPO。它仍然保留 policy optimization、ratio clippi
 
 ### 和 PPO、DPO 的区别
 
-GRPO、PPO、DPO 都服务于模型对齐或能力提升，但它们的训练范式不同。
+GRPO、PPO、[DPO](<DPO 直接偏好优化.md>) 都服务于模型对齐或能力提升，但它们的训练范式不同。
 
 PPO 是典型在线强化学习方法，能力强但链路重，需要 Critic。DPO 更像离线偏好优化，直接使用 `(prompt, chosen, rejected)` 偏好对训练，不需要在线采样，也不需要 Critic，工程上更简单稳定。GRPO 介于两者之间：它保留了在线采样和 reward 优化，因此比 DPO 更有探索能力；同时去掉 Critic，因此比 PPO 更轻。
 
@@ -43,7 +43,7 @@ PPO 是典型在线强化学习方法，能力强但链路重，需要 Critic。
 
 ### 适用场景
 
-GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 Agent 任务。
+GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 [Agent](<../../10_Agent/基础概念/Agent.md>) 任务。
 
 数学题可以检查最终答案是否正确，代码题可以跑单测，格式任务可以做 JSON schema 校验，工具调用任务可以检查执行结果是否达成目标。这些任务的共同点是 reward 相对明确，不完全依赖人类主观偏好，因此更适合用 GRPO 这类在线 RL 方法强化模型的推理路径。
 
@@ -115,4 +115,4 @@ GRPO 最大风险仍然是 reward 质量。如果 reward 只看最终答案，�
 
 回答模板：
 
-我会先确认任务是否有可靠 reward，比如数学答案、代码单测或工具执行结果。然后设置 baseline，比如 SFT、DPO 或不做 RL 的模型，对比 GRPO 是否提升目标能力。评测时不能只看平均分，还要看题型、难度、长度、领域的分桶结果，并抽查 bad case。同时要监控 KL、reward 分布、response 长度、pass rate、训练吞吐和显存成本，防止 reward hacking 或能力退化。只有目标指标提升、护栏指标稳定、成本可接受，才说明 GRPO 真的有效。
+我会先确认任务是否有可靠 reward，比如数学答案、代码单测或工具执行结果。然后设置 baseline，比如 [SFT](<SFT 监督微调.md>)、DPO 或不做 RL 的模型，对比 GRPO 是否提升目标能力。评测时不能只看平均分，还要看题型、难度、长度、领域的分桶结果，并抽查 bad case。同时要监控 KL、reward 分布、response 长度、pass rate、训练吞吐和显存成本，防止 reward hacking 或能力退化。只有目标指标提升、护栏指标稳定、成本可接受，才说明 GRPO 真的有效。

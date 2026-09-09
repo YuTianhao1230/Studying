@@ -4,11 +4,11 @@
 
 ### 概述
 
-**MLA (Multi-head Latent Attention)**，全称**多头潜在注意力机制**。
+**MLA (Multi-head Latent [Attention](<Self-Attention.md>))**，全称**多头潜在注意力机制**。
 
-它是 DeepSeek 团队在 DeepSeek-V2 中首次提出，并在 V3 和 R1 中发扬光大的**核心创新技术**。如果说 MoE 解决了大模型计算量的问题，那么 **MLA 则是彻底解决了大模型显存带宽（KV Cache）的问题。**
+它是 DeepSeek 团队在 DeepSeek-V2 中首次提出，并在 V3 和 R1 中发扬光大的**核心创新技术**。如果说 [MoE](<MoE.md>) 解决了大模型计算量的问题，那么 **MLA 则是彻底解决了大模型显存带宽（[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)）的问题。**
 
-你可以把它看作是 **GQA（分组查询注意力）的超级进化版**。
+你可以把它看作是 **[GQA](<GQA.md>)（分组查询注意力）的超级进化版**。
 
 ### 为什么要搞 MLA？（痛点）
 
@@ -37,7 +37,7 @@ MLA 的核心思想是：**压缩与解压**。
 ### MLA 的一个技术神作：解耦旋转位置编码 (Decoupled RoPE)
 
 这是 MLA 最聪明的地方。
-传统的 RoPE（位置编码）是直接加在 Key 上的。如果你把 Key 压缩了，位置信息就会被搅乱，解压后位置就不准了。
+传统的 [RoPE](<RoPE.md>)（位置编码）是直接加在 Key 上的。如果你把 Key 压缩了，位置信息就会被搅乱，解压后位置就不准了。
 
 **DeepSeek 的解法：**
 它把 KV 向量分成了两部分：

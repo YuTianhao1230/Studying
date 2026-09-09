@@ -10,7 +10,7 @@
 
 **主要特点和作用：**
 
-1.  **可视化进度：** 最核心的功能，它会在终端（或 Jupyter Notebook 等环境）显示一个动态更新的进度条，告诉你循环执行了多少百分比。
+1.  **[可视化](<可视化.md>)进度：** 最核心的功能，它会在终端（或 Jupyter Notebook 等环境）显示一个动态更新的进度条，告诉你循环执行了多少百分比。
 2.  **耗时估算：** `tqdm` 会根据已经完成的迭代速度，估算出整个循环大约还需要多少时间才能完成 (ETA - Estimated Time Remaining)。
 3.  **迭代速率：** 它会显示当前的迭代速度（例如 `iterations/second` 或 `it/s`）。
 4.  **易于使用：** 最常见的使用方式非常简单，只需要用 `tqdm()` 把你的可迭代对象（如列表、`range`、数据加载器 `DataLoader` 等）包起来即可。
@@ -139,7 +139,7 @@ os.remove(filename) # 清理演示文件
 
 **常用参数总结：**
 
-*   `iterable`: 你要迭代的对象（列表、range、DataLoader 等）。
+*   `iterable`: 你要迭代的对象（列表、range、[DataLoader](<DataLoader.md>) 等）。
 *   `desc`: (string) 显示在进度条前的描述文字。
 *   `total`: (int) 总的迭代次数。当 `iterable` 没有 `len()` 时，或者在手动模式下，需要指定。
 *   `leave`: (bool, default: `True`) 循环结束后是否保留进度条在屏幕上。

@@ -30,7 +30,7 @@ C++ 运行时多态通过虚函数实现。父类指针或引用指向子类对�
 - `list`：双向链表，随机访问慢。
 - `deque`：双端队列。
 - `map`/`set`：通常基于红黑树，有序，操作 O(log n)。
-- `unordered_map`/`unordered_set`：哈希表，平均 O(1)。
+- `unordered_map`/`unordered_set`：[哈希表](<../数据结构与算法/哈希表.md>)，平均 O(1)。
 - `priority_queue`：优先队列，通常基于堆。
 
 ### RAII 和智能指针

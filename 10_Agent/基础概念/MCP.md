@@ -4,7 +4,7 @@
 
 ### 概述
 
-MCP，全称 Model Context Protocol，是一种把外部工具、数据源和 Prompt 标准化暴露给 Agent 的协议。
+MCP，全称 Model Context Protocol，是一种把外部工具、数据源和 Prompt 标准化暴露给 [Agent](<Agent.md>) 的协议。
 
 ### 为什么需要 MCP
 
@@ -77,7 +77,7 @@ Agent / MCP Client <-> MCP Server <-> Tools / Resources / Prompts
 ### MCP 和 Skill 的区别
 
 - MCP：连接外部工具和数据的协议。
-- Skill：告诉 Agent 什么时候、如何使用某类能力的上下文包。
+- [Skill](<Skill.md>)：告诉 Agent 什么时候、如何使用某类能力的上下文包。
 
 二者可以配合：
 

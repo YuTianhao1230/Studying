@@ -4,7 +4,7 @@
 
 ### 概述
 
-ViT 是把图像切成 patch token 后送入 Transformer Encoder 的视觉模型，它证明了在足够大规模预训练下，视觉任务也可以使用与语言模型高度一致的 Transformer 架构。
+ViT 是把图像切成 patch token 后送入 [Transformer](<../../基础架构/Transformer.md>) Encoder 的视觉模型，它证明了在足够大规模预训练下，视觉任务也可以使用与语言模型高度一致的 Transformer 架构。
 
 ### 解决的问题
 
@@ -86,9 +86,9 @@ image -> ViT patch tokens -> projector/Q-Former/cross-attention -> LLM
 
 - 输出 token 序列，天然能接 Transformer 语言模型。
 - patch token 可保留空间信息。
-- 与 CLIP 结合后可获得强图文对齐能力。
+- 与 [CLIP](<../../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 结合后可获得强图文对齐能力。
 
-LLaVA、BLIP-2、Qwen-VL、GPT-4V 类模型都可以从 ViT/CLIP-ViT 视觉编码器路线理解。
+[LLaVA](<LLaVA.md>)、BLIP-2、Qwen-VL、GPT-4V 类模型都可以从 ViT/CLIP-ViT 视觉编码器路线理解。
 
 ### 常见考法与解题方法
 
@@ -97,7 +97,7 @@ LLaVA、BLIP-2、Qwen-VL、GPT-4V 类模型都可以从 ViT/CLIP-ViT 视觉编�
 | 架构题 | ViT 怎么处理图像 | patch 切分、线性投影、位置编码、Transformer Encoder |
 | 计算题 | patch token 数量 | `N=(H/P)*(W/P)` |
 | 对比题 | ViT 和 CNN 区别 | 局部卷积 vs 全局 attention，归纳偏置和数据规模 |
-| 多模态题 | 为什么 VLM 常用 ViT | token 输出形式和语言 Transformer 更容易连接 |
+| 多模态题 | 为什么 [VLM](<../../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) 常用 ViT | token 输出形式和语言 Transformer 更容易连接 |
 
 ### 易错点
 

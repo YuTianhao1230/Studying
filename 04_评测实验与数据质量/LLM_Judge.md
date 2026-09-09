@@ -15,7 +15,7 @@ LLM Judge 是用大模型作为评审器，根据预设 rubric 对模型输出�
 - 摘要。
 - 问答解释。
 - 多轮对话。
-- Agent 轨迹。
+- [Agent](<../10_Agent/基础概念/Agent.md>) 轨迹。
 - 代码解释。
 - 多模态描述。
 
@@ -88,7 +88,7 @@ LLM Judge 是用大模型作为评审器，根据预设 rubric 对模型输出�
 
 ### 和 Reward Model / Grader 的关系
 
-- LLM Judge 是一种 Grader。
+- LLM Judge 是一种 [Grader](<../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md>)。
 - Reward Model 常用于训练奖励。
 - LLM Judge 常用于离线评测、bad case 标注、数据筛选。
 ## 面试应对

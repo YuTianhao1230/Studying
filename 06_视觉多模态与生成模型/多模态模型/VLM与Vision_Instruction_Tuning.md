@@ -6,14 +6,14 @@
 
 VLM（Vision-Language Model，视觉语言模型）是能同时处理图像/视频和文本的多模态模型；Vision Instruction Tuning（视觉指令微调）是用图文指令数据对 VLM 做监督微调，让它从“会对齐图文”升级到“会按用户指令完成视觉任务”，如视觉问答、图像描述、OCR、目标定位和多模态推理。
 
-两者的关系类似 LLM 里的“预训练 → SFT”：VLM 的预训练解决模态对齐，Vision Instruction Tuning 解决指令跟随。
+两者的关系类似 LLM 里的“预训练 → [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)”：VLM 的预训练解决模态对齐，Vision Instruction Tuning 解决指令跟随。
 
 ### 主流 VLM 的三段式结构
 
-现在主流的 VLM（LLaVA、Qwen-VL、InternVL 等）几乎都遵循同一个范式：
+现在主流的 VLM（[LLaVA](<../../02_大模型/模型细节/里程碑模型/LLaVA.md>)、Qwen-VL、InternVL 等）几乎都遵循同一个范式：
 
-1. **视觉编码器（Vision Encoder）**：通常是 CLIP ViT 或 SigLIP，把图像编码成一串视觉 token（patch embedding）。用预训练好的对比学习视觉塔，是因为它的视觉表示已经和语言对齐得比较好。
-2. **连接器（Projector / Connector）**：把视觉特征投影到 LLM 的词嵌入空间。最简单的是一个 MLP（LLaVA），复杂一些的用 Q-Former（BLIP-2）或 cross-attention（Flamingo）压缩视觉 token 数量。
+1. **视觉编码器（Vision Encoder）**：通常是 [CLIP](<CLIP.md>) [ViT](<../../02_大模型/模型细节/里程碑模型/ViT.md>) 或 SigLIP，把图像编码成一串视觉 token（patch embedding）。用预训练好的对比学习视觉塔，是因为它的视觉表示已经和语言对齐得比较好。
+2. **连接器（Projector / Connector）**：把视觉特征投影到 LLM 的词嵌入空间。最简单的是一个 MLP（LLaVA），复杂一些的用 Q-Former（BLIP-2）或 cross-attention（[Flamingo](<../../02_大模型/模型细节/里程碑模型/Flamingo.md>)）压缩视觉 token 数量。
 3. **大语言模型（LLM Backbone）**：把投影后的视觉 token 当作“软 prompt”拼在文本 token 前面，用自回归方式生成回答。
 
 推理时输入是 `[视觉 token][文本 token]`，输出是文本。视觉 token 本质上被当成了一种“外语词”喂进 LLM。

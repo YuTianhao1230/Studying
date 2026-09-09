@@ -29,7 +29,7 @@ Checkpoint 用来解决：
 - epoch：当前训练轮数。
 - random state：随机数状态。
 - tokenizer / config：模型配置和 tokenizer 信息。
-- adapter weights：LoRA 等微调参数。
+- adapter weights：[LoRA](<../后训练与对齐/LoRA 低秩适配.md>) 等微调参数。
 
 ### 只保存权重够不够
 

@@ -6,7 +6,7 @@
 
 PyTorch 是当前深度学习和大模型训练中最常用的框架之一。它的核心优势是动态图、Pythonic、调试方便、生态完整，适合研究实验、自定义模型、复杂训练逻辑和大模型微调。
 
-理解 PyTorch 不应该停留在会写 `model(x)`，而要掌握一条完整训练链路：Tensor 表示数据，`nn.Module` 管理模型参数，Autograd 自动求导，Optimizer 更新参数，Dataset/DataLoader 提供数据，Checkpoint 保存训练状态。
+理解 PyTorch 不应该停留在会写 `model(x)`，而要掌握一条完整训练链路：Tensor 表示数据，`nn.Module` 管理模型参数，Autograd 自动求导，Optimizer 更新参数，Dataset/DataLoader 提供数据，[Checkpoint](<../../03_训练优化与对齐/训练框架与并行/Checkpoint.md>) 保存训练状态。
 
 ### 核心组件
 
@@ -18,7 +18,7 @@ Autograd 是自动求导系统。前向传播时，PyTorch 会记录张量操作
 
 Optimizer 负责根据梯度更新参数。典型流程是 `zero_grad -> forward -> loss -> backward -> step`。大模型训练里常见 AdamW，并配合 learning rate scheduler、warmup、gradient clipping、mixed precision。
 
-Dataset 和 DataLoader 负责数据管线。Dataset 定义如何取一个样本，DataLoader 负责 batching、shuffle、多进程加载和 collate。对于文本、多模态、变长输入，`collate_fn` 经常是关键点。
+Dataset 和 [DataLoader](<../常用库/DataLoader.md>) 负责数据管线。Dataset 定义如何取一个样本，DataLoader 负责 batching、shuffle、多进程加载和 collate。对于文本、多模态、变长输入，`collate_fn` 经常是关键点。
 
 ### 标准训练循环
 
@@ -40,13 +40,13 @@ Dataset 和 DataLoader 负责数据管线。Dataset 定义如何取一个样本�
 
 训练脚本要能复现，至少要保存模型权重、optimizer 状态、scheduler 状态、随机种子、训练 step、数据版本和代码版本。只保存模型权重，通常无法严格断点续训。
 
-显存问题需要分来源看：参数、梯度、优化器状态、激活、中间 buffer、输入 batch。常见优化手段包括 mixed precision、gradient accumulation、activation checkpointing、减小 sequence length、FSDP/ZeRO、LoRA。
+显存问题需要分来源看：参数、梯度、优化器状态、激活、中间 buffer、输入 batch。常见优化手段包括 mixed precision、gradient accumulation、activation checkpointing、减小 sequence length、FSDP/ZeRO、[LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>)。
 
 训练不稳定时不能只看 loss。还要看学习率曲线、grad norm、样本长度分布、异常 batch、数据质量、label mask、混合精度溢出和分布式通信错误。
 
 ### PyTorch 和大模型生态
 
-PyTorch 本身提供基础张量、模型、优化器和分布式能力；Hugging Face Transformers 提供模型结构、tokenizer、预训练权重加载和 Trainer；PEFT 提供 LoRA/QLoRA；Accelerate、FSDP、DeepSpeed、Megatron-LM 负责大规模训练；vLLM、TensorRT-LLM、TGI 更偏推理部署。
+PyTorch 本身提供基础张量、模型、优化器和分布式能力；Hugging Face Transformers 提供模型结构、tokenizer、预训练权重加载和 Trainer；[PEFT](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md>) 提供 LoRA/QLoRA；Accelerate、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、Megatron-LM 负责大规模训练；[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、TensorRT-LLM、TGI 更偏推理部署。
 
 大模型训练里，面试官通常不是问你会不会写 `nn.Linear`，而是问你是否能把 PyTorch 放进真实训练系统里：数据怎么喂、梯度怎么传、显存怎么省、checkpoint 怎么恢复、分布式怎么排障。
 
@@ -90,4 +90,4 @@ PyTorch 中参数的 `.grad` 默认是累积的，也就是说每次 `loss.backw
 
 回答模板：
 
-我会先确认 OOM 发生在 forward、backward、optimizer step 还是 evaluation。显存主要来自参数、梯度、优化器状态、激活、输入 batch 和临时 buffer。优化手段包括减小 batch size 或 sequence length、使用 bf16/fp16、gradient accumulation、activation checkpointing、清理无用 tensor、避免保存带计算图的 loss、使用 LoRA、FSDP 或 ZeRO。大模型场景还要关注 tokenizer 后的真实 token 长度和多模态 token 数。
+我会先确认 OOM 发生在 forward、backward、optimizer step 还是 evaluation。显存主要来自参数、梯度、优化器状态、激活、输入 batch 和临时 buffer。优化手段包括减小 batch size 或 sequence length、使用 bf16/fp16、gradient accumulation、activation checkpointing、清理无用 tensor、避免保存带计算图的 loss、使用 LoRA、FSDP 或 [ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)。大模型场景还要关注 tokenizer 后的真实 token 长度和多模态 token 数。

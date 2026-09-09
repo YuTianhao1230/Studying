@@ -4,20 +4,20 @@
 
 ### 概述
 
-CodeT5 是由 Salesforce AI Research 团队在2021年推出的一个**统一的、能够感知标识符**的 Encoder-Decoder 代码语言模型。它是 CodeT5+ 的前身，并且在当时的代码模型领域取得了重要的突破，特别是在统一处理多种代码任务方面。
+CodeT5 是由 Salesforce AI Research 团队在2021年推出的一个**统一的、能够感知标识符**的 [Encoder-Decoder](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>) 代码语言模型。它是 [CodeT5+](<CodeT5+.md>) 的前身，并且在当时的代码模型领域取得了重要的突破，特别是在统一处理多种代码任务方面。
 
 ### CodeT5是什么？(核心定位)
 
 **核心定位：一个能特别关注变量名和函数名的统一代码理解与生成模型。**
 
-想象一下，当程序员阅读代码 `binarySearch(...)` 时，仅仅从这个函数名就能立刻理解其核心功能是“二分查找”。CodeT5 的核心洞察就在于，代码中的**标识符 (Identifiers)**——即变量名、函数名、类名等——蕴含了极其丰富的语义信息。传统模型常常将这些标识符与其他代码词元（如 `if`, `for`, `{`, `}`）一视同仁，从而浪费了这些宝贵信息。
+想象一下，当程序员阅读代码 `binarySearch(...)` 时，仅仅从这个函数名就能立刻理解其核心功能是“[二分查找](<../../12_计算机基础知识/数据结构与算法/二分查找.md>)”。CodeT5 的核心洞察就在于，代码中的**标识符 (Identifiers)**——即变量名、函数名、类名等——蕴含了极其丰富的语义信息。传统模型常常将这些标识符与其他代码词元（如 `if`, `for`, `{`, `}`）一视同仁，从而浪费了这些宝贵信息。
 
 CodeT5 旨在解决这个问题，它是一个**统一的 Encoder-Decoder 框架**，不仅能同时支持代码理解和生成任务，还能通过特殊的预训练任务，**让模型学会区分并利用这些关键的标识符**。
 
 ### 为什么需要CodeT5？(解决了什么问题)
 
 在 CodeT5 之前，代码模型存在以下问题：
-1.  **架构分裂**：Encoder-only 模型（如 CodeBERT）擅长理解，但生成任务表现不佳；Decoder-only 模型（如 CodeGPT）擅长生成，但理解能力受限。虽然有统一的 Encoder-Decoder 模型，但它们尚未成为主流。
+1.  **架构分裂**：Encoder-only 模型（如 [CodeBERT](<CodeBERT.md>)）擅长理解，但生成任务表现不佳；Decoder-only 模型（如 CodeGPT）擅长生成，但理解能力受限。虽然有统一的 Encoder-Decoder 模型，但它们尚未成为主流。
 2.  **忽略代码的特殊性**：大多数模型直接套用自然语言处理（NLP）的方法，将代码视为一串普通文本，没有充分利用代码独有的特征，特别是开发人员精心命名的**标识符**。
 
 CodeT5 的出现，旨在：
@@ -26,10 +26,10 @@ CodeT5 的出现，旨在：
 
 ### CodeT5是如何工作的？(技术核心)
 
-CodeT5 的成功关键在于其基于 T5 的强大架构和创新的、**标识符感知 (Identifier-aware)** 的预训练策略。
+CodeT5 的成功关键在于其基于 [T5](<../../02_大模型/模型细节/里程碑模型/T5.md>) 的强大架构和创新的、**标识符感知 (Identifier-aware)** 的预训练策略。
 
 #### A. 模型架构 (Model Architecture)
-*   **基础**：CodeT5 基于 **T5 (Text-to-Text Transfer Transformer)** 架构。T5 本身就是一个非常强大的 Encoder-Decoder 模型，其核心思想是**将所有NLP任务都统一为文本到文本的生成任务**。
+*   **基础**：CodeT5 基于 **T5 (Text-to-Text Transfer [Transformer](<../../02_大模型/基础架构/Transformer.md>))** 架构。T5 本身就是一个非常强大的 Encoder-Decoder 模型，其核心思想是**将所有NLP任务都统一为文本到文本的生成任务**。
 *   **优势**：这种架构天然地适合同时处理理解和生成任务。例如，对于代码分类任务，模型可以直接生成类别标签（如 "true"）；对于代码生成任务，模型可以生成完整的代码片段。
 
 #### B. 创新的预训练任务 (Innovative Pre-training Tasks)
@@ -62,7 +62,7 @@ CodeT5 的核心创新在于它设计的**标识符感知**预训练任务，这
 CodeT5 在当时最全面的代码智能基准测试 **CodeXGLUE** 上的14个子任务中进行了广泛评测，并取得了卓越的成绩。
 
 *   **代码生成**：性能显著优于所有 Decoder-only 模型（如 CodeGPT）和当时的 SOTA Encoder-Decoder 模型 PLBART。其强大的 CodeBLEU 分数表明，得益于标识符感知预训练，它能更好地理解代码的语法和语义。
-*   **代码摘要**：性能同样超越了所有基线模型，包括 Encoder-only 模型（如 CodeBERT, GraphCodeBERT）和 PLBART。
+*   **代码摘要**：性能同样超越了所有基线模型，包括 Encoder-only 模型（如 CodeBERT, [GraphCodeBERT](<GraphCodeBERT.md>)）和 PLBART。
 *   **代码翻译和代码修复**：在这些代码到代码的生成任务上，CodeT5 也展示了强大的能力，尤其是在需要深度理解代码逻辑来修复 bug 的**代码修复**任务上，EM（精确匹配）分数远超之前的模型。
 *   **代码理解任务 (漏洞检测、克隆检测)**：虽然是 Encoder-Decoder 架构，CodeT5 在这些传统的 Encoder-only 优势任务上也表现出色，证明了其框架的通用性。
 

@@ -1,16 +1,22 @@
-# GQA
+# MHA / MQA / GQA
 
 ## 知识点解析
 
 ### 概述
 
-**GQA** 的全称是 **Grouped-Query Attention**（分组查询注意力）。它是一种在大型语言模型（LLM）中用于改进标准注意力机制的技术，旨在**在保持模型性能的同时，显著提高推理（Inference）速度并减少显存占用**。
+MHA、MQA、GQA 是三种常见的 self-attention 头设计，核心差异在于 **Query head 和 Key/Value head 的对应关系**。
+
+- **MHA**：每个 Query head 都有独立的 Key/Value head，表达能力最充分，但 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 最大。
+- **MQA**：所有 Query heads 共享一组 Key/Value head，KV cache 最小，但可能损失效果。
+- **GQA**：多个 Query heads 分组共享 Key/Value head，是 MHA 和 MQA 之间的折中。
+
+GQA 的全称是 **Grouped-Query [Attention](<Self-Attention.md>)**（分组查询注意力）。它在大型语言模型推理中非常常见，目标是在尽量保持模型效果的同时，降低 KV cache 显存占用和显存带宽压力。
 
 为了理解 GQA，我们需要先看它产生的背景，以及它与另外两种注意力机制（MHA 和 MQA）的关系。
 
 ### 为什么需要 GQA？（背景）
 
-在 Transformer 模型（如 GPT、Llama）进行推理时，有一个关键的瓶颈叫做 **KV Cache**。
+在 [Transformer](<Transformer.md>) 模型（如 [GPT](<../模型细节/里程碑模型/GPT.md>)、Llama）进行推理时，有一个关键的瓶颈叫做 **KV Cache**。
 *   **KV Cache**：为了避免重复计算，模型会把之前生成过的 Token 的 Key（键）和 Value（值）向量存在显存里。
 *   **问题**：随着上下文长度增加或 Batch Size（批大小）变大，KV Cache 会占用海量的显存，导致显存带宽成为瓶颈，推理速度变慢。
 
@@ -57,7 +63,7 @@ GQA 现在已经成为高性能大模型的**标配**。
 
 *   **Llama 2 / Llama 3**：Llama 2 的 70B 版本使用了 GQA，而 Llama 3 的所有版本（8B, 70B, 400B）都全面采用了 GQA。
 *   **Mistral / Mixtral**：Mistral 7B 和 Mixtral 8x7B 也使用了这种技术。
-*   **其他**：像通义千问 (Qwen)、Gemma 等现代模型也纷纷采用 GQA。
+*   **其他**：像通义千问 ([Qwen](<../模型细节/Qwen千问架构.md>))、Gemma 等现代模型也纷纷采用 GQA。
 
 ### 总结
 **GQA 是为了让大模型跑得更快、省更多显存而设计的。** 它通过让多个 Query 头共享一组 Key/Value 头，巧妙地解决了 MHA 太慢、MQA 效果不好的问题。

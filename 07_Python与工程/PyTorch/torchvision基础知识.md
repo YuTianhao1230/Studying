@@ -8,7 +8,7 @@ torchvision 是 PyTorch 官方的计算机视觉工具库，主要提供预训�
 
 ### `torchvision.models` (模型库)
 
-`torchvision.models` 模块包含了众多预训练好的、顶尖的计算机视觉模型，如 ResNet, VGG, MobileNet, Vision Transformer (ViT) 等。这些模型都在大型数据集（通常是 ImageNet）上进行了训练，学会了提取通用的图像特征。我们可以直接使用它们，或者在此基础上进行微调（Fine-tuning）以适应我们自己的任务。
+`torchvision.models` 模块包含了众多预训练好的、顶尖的计算机视觉模型，如 ResNet, VGG, MobileNet, Vision [Transformer](<../../02_大模型/基础架构/Transformer.md>) ([ViT](<../../02_大模型/模型细节/里程碑模型/ViT.md>)) 等。这些模型都在大型数据集（通常是 ImageNet）上进行了训练，学会了提取通用的图像特征。我们可以直接使用它们，或者在此基础上进行微调（Fine-tuning）以适应我们自己的任务。
 
 #### **学什么 (What to Learn)**
 

@@ -12,7 +12,7 @@ PEFT（Parameter-Efficient Fine-Tuning，参数高效微调）是一类**只训�
 PEFT = 冻结大模型主体 + 只训练少量可插拔参数，让模型适配新任务
 ```
 
-LoRA 是目前最常用的 PEFT 方法，但 PEFT 不等于 LoRA。PEFT 是方法体系，LoRA 是其中一种具体实现。
+[LoRA](<LoRA 低秩适配.md>) 是目前最常用的 PEFT 方法，但 PEFT 不等于 LoRA。PEFT 是方法体系，LoRA 是其中一种具体实现。
 
 ### PEFT 要解决什么问题
 
@@ -37,18 +37,18 @@ W = W0 + ΔW
 ΔW = B * A
 ```
 
-其中 `A` 和 `B` 是低秩矩阵，参数量远小于原始权重矩阵。LoRA 常插在 Transformer 的线性层上，比如 `q_proj`、`v_proj`、`o_proj`、`up_proj`、`down_proj` 等。
+其中 `A` 和 `B` 是低秩矩阵，参数量远小于原始权重矩阵。LoRA 常插在 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 的线性层上，比如 `q_proj`、`v_proj`、`o_proj`、`up_proj`、`down_proj` 等。
 
 特点：
 
 - 工程成熟，效果稳定。
 - 训练参数少，显存友好。
 - adapter 可以单独保存，也可以 merge 回基座模型。
-- 是当前 LLM SFT 里最常用的 PEFT 方法。
+- 是当前 LLM [SFT](<SFT 监督微调.md>) 里最常用的 PEFT 方法。
 
 #### QLoRA
 
-QLoRA 是 LoRA 的进一步省显存版本：**基座模型用低比特量化加载，LoRA adapter 仍用较高精度训练**。
+QLoRA 是 LoRA 的进一步省显存版本：**基座模型用低比特[量化](<../../05_推理部署与系统/推理工程/量化.md>)加载，LoRA adapter 仍用较高精度训练**。
 
 常见组合：
 

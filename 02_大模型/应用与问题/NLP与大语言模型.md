@@ -9,15 +9,15 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 #### 高频问题
 
 1. Tokenization 是什么？BPE、WordPiece、SentencePiece 有什么区别？
-2. Transformer 的 Encoder、Decoder、Encoder-Decoder 架构分别适合什么任务？
-3. Self-Attention 的计算过程是什么？为什么要除以 `sqrt(d_k)`？
+2. [Transformer](<../基础架构/Transformer.md>) 的 Encoder、Decoder、[Encoder-Decoder](<../基础架构/Decoder-only vs Encoder-Decoder.md>) 架构分别适合什么任务？
+3. [Self-Attention](<../基础架构/Self-Attention.md>) 的计算过程是什么？为什么要除以 `sqrt(d_k)`？
 4. Multi-Head Attention 为什么有效？
-5. 位置编码有什么作用？绝对位置编码、RoPE、ALiBi 有什么区别？
-6. GPT、BERT、T5 的训练目标和适用场景有什么不同？
+5. 位置编码有什么作用？绝对位置编码、[RoPE](<../基础架构/RoPE.md>)、ALiBi 有什么区别？
+6. [GPT](<../模型细节/里程碑模型/GPT.md>)、[BERT](<../模型细节/里程碑模型/BERT.md>)、[T5](<../模型细节/里程碑模型/T5.md>) 的训练目标和适用场景有什么不同？
 7. 语言模型的预训练目标是什么？Causal LM 和 Masked LM 区别是什么？
 8. 大模型为什么会出现幻觉？如何缓解？
-9. Prompt Engineering、Instruction Tuning、SFT、RLHF、DPO 分别是什么？
-10. RAG 的基本流程是什么？如何评估和优化 RAG？
+9. Prompt Engineering、Instruction Tuning、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>) 分别是什么？
+10. [RAG](<RAG.md>) 的基本流程是什么？如何评估和优化 RAG？
 11. Function Calling / Tool Use 的核心难点是什么？
 12. 多模态大模型如何处理图像、视频和文本？
 
@@ -25,12 +25,12 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 
 - NLP 基础：分词、词向量、语言模型、序列标注、文本分类、生成任务。
 - Transformer：Q/K/V、Attention Score、Mask、残差连接、FFN、Norm、位置编码。
-- 模型家族：BERT、GPT、T5、LLaMA、Qwen、Mistral、DeepSeek 等。
+- 模型家族：BERT、GPT、T5、LLaMA、[Qwen](<../模型细节/Qwen千问架构.md>)、Mistral、DeepSeek 等。
 - 训练阶段：预训练、SFT、偏好学习、RLHF、DPO、拒绝采样、蒸馏。
-- 推理技术：temperature、top-k、top-p、beam search、repetition penalty、KV cache。
+- 推理技术：temperature、top-k、top-p、beam search、repetition penalty、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - 长上下文：位置外推、RoPE scaling、Attention 优化、上下文压缩。
 - RAG：query rewrite、retrieval、rerank、context packing、generation、citation、faithfulness。
-- Agent：规划、工具调用、状态管理、记忆、反思、任务分解、安全边界。
+- [Agent](<../../10_Agent/基础概念/Agent.md>)：规划、工具调用、状态管理、记忆、反思、任务分解、安全边界。
 - 多模态：视觉编码器、投影层、图文对齐、视频采样、时序建模。
 
 #### 回答要点
@@ -40,7 +40,7 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 - 多头注意力允许模型在不同子空间关注不同关系，例如局部、全局、语义、位置关系。
 - GPT 是自回归生成模型，BERT 是双向表征模型，T5 将任务统一为 text-to-text。
 - 幻觉来源包括训练分布缺陷、解码随机性、知识过期、上下文冲突、模型缺少不确定性表达。
-- RAG 的瓶颈常在检索召回、切片粒度、排序质量、上下文污染和答案忠实性。
+- RAG 的瓶颈常在检索[召回](<../../05_推理部署与系统/系统设计/召回粗排精排重排.md>)、切片粒度、排序质量、上下文污染和答案忠实性。
 
 ### 常见追问
 

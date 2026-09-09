@@ -4,7 +4,7 @@
 
 ### 概述
 
-BLIP 是统一图文理解和生成的视觉语言预训练框架，BLIP-2 进一步用 Q-Former 连接冻结视觉编码器和冻结大语言模型，以低成本获得视觉到语言的生成能力。
+[BLIP](<../../../06_视觉多模态与生成模型/多模态模型/BLIP.md>) 是统一图文理解和生成的视觉语言预训练框架，BLIP-2 进一步用 Q-Former 连接冻结视觉编码器和冻结大语言模型，以低成本获得视觉到语言的生成能力。
 
 ### 解决的问题
 
@@ -23,7 +23,7 @@ BLIP-2 解决的问题是：
 
 #### BLIP 架构
 
-BLIP 使用 Multimodal Mixture of Encoder-Decoder，简称 MED。它通过共享部分 Transformer 层，使模型同时支持三种功能：
+BLIP 使用 Multimodal Mixture of [Encoder-Decoder](<../../基础架构/Decoder-only vs Encoder-Decoder.md>)，简称 MED。它通过共享部分 [Transformer](<../../基础架构/Transformer.md>) 层，使模型同时支持三种功能：
 
 ```text
 image
@@ -97,7 +97,7 @@ Q-Former 的作用是用少量 query token 从图像特征中抽取与语言相�
 
 ### 做了什么改变
 
-BLIP 相比 ALBEF：
+BLIP 相比 [ALBEF](<ALBEF.md>)：
 
 - 不只做理解，也做生成。
 - 用 captioner/filter 改善 web caption 噪声。

@@ -12,7 +12,7 @@ CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。�
 
 简单来说，CLIP 包含两个主要的编码器：
 
-1.  **图像编码器 (Image Encoder)：** 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision Transformer (ViT)。它负责将输入的图像转换成一个向量表示（图像嵌入）。
+1.  **图像编码器 (Image Encoder)：** 可以是标准的卷积神经网络 (如 ResNet) 或更先进的 Vision [Transformer](<../../02_大模型/基础架构/Transformer.md>) ([ViT](<../../02_大模型/模型细节/里程碑模型/ViT.md>))。它负责将输入的图像转换成一个向量表示（图像嵌入）。
 2.  **文本编码器 (Text Encoder)：** 通常是一个标准的 Transformer 模型。它负责将输入的文本转换成一个向量表示（文本嵌入）。
 
 **训练过程：**
@@ -95,9 +95,9 @@ CLIP 是由 OpenAI 在 2021 年初提出的一个革命性的多模态模型。�
         1.  将输入的图像分割成一系列固定大小的不重叠或略微重叠的图像块 (patches)，例如 16x16 或 32x32 像素的块。
         2.  将每个图像块展平成一个一维向量。
         3.  通过一个线性投影层 (Linear Projection) 将这些展平的图像块向量映射到 Transformer 的输入维度，得到一系列 "patch embeddings"。
-    *   **类别令牌 ([CLS] Token)：** 与 BERT 类似，在 patch embeddings 序列的开头添加一个可学习的特殊令牌，通常称为 `[CLS]` token。这个 `[CLS]` token 在经过 Transformer 编码器后的对应输出，将被用作整个图像的全局表示。
+    *   **类别令牌 ([CLS] Token)：** 与 [BERT](<../../02_大模型/模型细节/里程碑模型/BERT.md>) 类似，在 patch embeddings 序列的开头添加一个可学习的特殊令牌，通常称为 `[CLS]` token。这个 `[CLS]` token 在经过 Transformer 编码器后的对应输出，将被用作整个图像的全局表示。
     *   **位置编码 (Positional Encoding)：** 由于 Transformer 本身不处理序列的顺序信息，需要向 patch embeddings 中加入位置编码，以保留图像块的空间位置信息。
-    *   **Transformer 编码器：** 将带有位置编码的 patch embeddings (包括 `[CLS]` token) 输入到标准的 Transformer 编码器中。Transformer 编码器由多个堆叠的 Transformer 层组成，每个层包含一个多头自注意力 (Multi-Head Self-Attention) 模块和一个前馈神经网络 (Feed-Forward Network) 模块。
+    *   **Transformer 编码器：** 将带有位置编码的 patch embeddings (包括 `[CLS]` token) 输入到标准的 Transformer 编码器中。Transformer 编码器由多个堆叠的 Transformer 层组成，每个层包含一个多头自注意力 (Multi-Head [Self-Attention](<../../02_大模型/基础架构/Self-Attention.md>)) 模块和一个前馈神经网络 (Feed-Forward Network) 模块。
     *   **输出：**
         *   Transformer 编码器输出与输入序列等长的嵌入序列。
         *   取 `[CLS]` token 对应的输出嵌入，经过一个层归一化 (LayerNorm) 和一个可选的线性投影层，得到最终的图像嵌入向量。
@@ -157,4 +157,4 @@ CLIP 把分类问题转成了图文匹配问题。做零样本分类时，把每
 
 回答模板：
 
-CLIP 的主要局限是只学全局图文对齐，缺少细粒度定位能力，做计数、空间关系、否定这类任务表现一般，对图表、文档这类非自然图也不擅长。但它的价值在于提供了一个对齐好的视觉表示，所以现在大量多模态系统直接用 CLIP 的视觉塔当 backbone，比如 LLaVA、BLIP-2 的视觉编码器，文生图模型也用它来度量图文一致性。可以说 CLIP 不是终点，而是很多多模态模型的地基。
+CLIP 的主要局限是只学全局图文对齐，缺少细粒度定位能力，做计数、空间关系、否定这类任务表现一般，对图表、文档这类非自然图也不擅长。但它的价值在于提供了一个对齐好的视觉表示，所以现在大量多模态系统直接用 CLIP 的视觉塔当 backbone，比如 [LLaVA](<../../02_大模型/模型细节/里程碑模型/LLaVA.md>)、BLIP-2 的视觉编码器，文生图模型也用它来度量图文一致性。可以说 CLIP 不是终点，而是很多多模态模型的地基。

@@ -191,7 +191,7 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 ### **示例：Stable Diffusion**
 Stable Diffusion是LDMs的典型应用：
 
-1. **文本编码**：输入文本通过CLIP等模型转换为嵌入向量。
+1. **文本编码**：输入文本通过[CLIP](<../多模态模型/CLIP.md>)等模型转换为嵌入向量。
 
 2.  **潜在扩散**：在潜在空间中进行约50步去噪，逐步生成目标潜在表示。
 

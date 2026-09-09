@@ -4,7 +4,7 @@
 
 ### 概述
 
-LLaVA 是开源视觉指令模型路线的代表，核心是用 CLIP 视觉编码器提取图像特征，通过 projector 对齐到 LLM embedding 空间，再用视觉指令数据微调大语言模型。
+LLaVA 是开源视觉指令模型路线的代表，核心是用 [CLIP](<../../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 视觉编码器提取图像特征，通过 projector 对齐到 LLM embedding 空间，再用视觉指令数据微调大语言模型。
 
 ### 解决的问题
 
@@ -73,7 +73,7 @@ visual tokens + text embeddings
 - BLIP-2 使用 Q-Former 作为桥接模块，通常冻结 LLM。
 - LLaVA 更简单，主要使用 projector，并依赖视觉指令微调获得对话能力。
 
-相比 Flamingo：
+相比 [Flamingo](<Flamingo.md>)：
 
 - Flamingo 通过 gated cross-attention 接入视觉 tokens，强调 few-shot 交错图文。
 - LLaVA 把视觉 tokens 直接作为 LLM 输入前缀，更容易复现和扩展。

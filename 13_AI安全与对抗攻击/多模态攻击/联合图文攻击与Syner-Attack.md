@@ -34,7 +34,7 @@ L_total = lambda_img * L_image_feature
 
 可以按四层讲：
 
-1. 问题：VLM/MLLM 的黑盒迁移攻击仍不稳定。
+1. 问题：VLM/MLLM 的[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md>)仍不稳定。
 2. 假设：多模态模型依赖视觉表征和图文对齐。
 3. 方法：图像侧 feature/alignment loss + 文本侧 visual-guided attack。
 4. 证据：image-only、text-only、joint、VGA、alignment loss、防御和 MLLM ASR 消融。
@@ -96,4 +96,4 @@ word importance = language importance + visual relevance
 
 回答模板：
 
-Syner-Attack 的核心不是单独发明一个新的梯度算子，而是针对 VLM/MLLM 的跨模态对齐脆弱性，把图像侧特征扰动、图文对齐扰动和视觉引导文本攻击组织成协同双流框架。图像分支负责扰乱视觉表征和图文相似度，文本分支在语义保持约束下替换对图文匹配更关键的词。为了证明它不是简单拼接，需要用 image-only、text-only、joint、去掉 VGA、去掉 alignment loss 等消融，以及跨模型、MLLM 和防御下 ASR 来支撑。
+Syner-Attack 的核心不是单独发明一个新的梯度[算子](<../../05_推理部署与系统/推理工程/算子.md>)，而是针对 VLM/MLLM 的跨模态对齐脆弱性，把图像侧特征扰动、图文对齐扰动和视觉引导文本攻击组织成协同双流框架。图像分支负责扰乱视觉表征和图文相似度，文本分支在语义保持约束下替换对图文匹配更关键的词。为了证明它不是简单拼接，需要用 image-only、text-only、joint、去掉 VGA、去掉 alignment loss 等消融，以及跨模型、MLLM 和防御下 ASR 来支撑。

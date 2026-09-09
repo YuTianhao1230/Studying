@@ -38,7 +38,7 @@ HashMap 容量通常取 2 的幂，是为了用 `(n - 1) & hash` 快速计算桶
 
 ### ConcurrentHashMap
 
-ConcurrentHashMap 是线程安全的哈希表。JDK 1.8 之后主要使用 CAS + synchronized 控制桶级别并发，读操作大多不加锁，写操作只锁局部桶，降低全表锁竞争。它适合高并发读写场景，但复合操作仍要注意原子性。
+ConcurrentHashMap 是线程安全的[哈希表](<../数据结构与算法/哈希表.md>)。JDK 1.8 之后主要使用 CAS + synchronized 控制桶级别并发，读操作大多不加锁，写操作只锁局部桶，降低全表锁竞争。它适合高并发读写场景，但复合操作仍要注意原子性。
 
 ### JVM 内存
 

@@ -6,7 +6,7 @@
 
 **GeLU (Gaussian Error Linear Unit)**，全称是**高斯误差线性单元**。
 
-它是目前深度学习领域（尤其是 **Transformer、BERT、GPT、Llama** 等大模型）中最主流、最常用的激活函数，已经基本取代了早期的 ReLU。
+它是目前深度学习领域（尤其是 **[Transformer](<../../02_大模型/基础架构/Transformer.md>)、[BERT](<../../02_大模型/模型细节/里程碑模型/BERT.md>)、[GPT](<../../02_大模型/模型细节/里程碑模型/GPT.md>)、Llama** 等大模型）中最主流、最常用的激活函数，已经基本取代了早期的 [ReLU](<常见激活函数.md>)。
 
 ### 为什么需要 GeLU？（背景）
 

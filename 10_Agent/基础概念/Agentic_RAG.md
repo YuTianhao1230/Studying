@@ -4,7 +4,7 @@
 
 ### 概述
 
-Agentic RAG 是把传统 RAG 从“一次检索 + 一次生成”升级为可规划、可多轮检索、可调用工具、可自我校验的 Agent 工作流。
+Agentic [RAG](<../../02_大模型/应用与问题/RAG.md>) 是把传统 RAG 从“一次检索 + 一次生成”升级为可规划、可多轮检索、可调用工具、可自我校验的 [Agent](<Agent.md>) 工作流。
 
 ### 传统 RAG
 
@@ -104,7 +104,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### 如何减少检索噪声？
 
-回答思路：从 query 改写、chunk 粒度、召回源、rerank、去重、压缩这些环节逐点讲。
+回答思路：从 query 改写、chunk 粒度、[召回](<../../05_推理部署与系统/系统设计/召回粗排精排重排.md>)源、rerank、去重、压缩这些环节逐点讲。
 
 回答模板：
 

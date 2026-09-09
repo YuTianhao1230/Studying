@@ -4,7 +4,7 @@
 
 ### 概述
 
-Agent Eval 是评估 Agent 是否能稳定完成任务的体系，不只评最终答案，还要评规划、工具调用、轨迹、成本、安全和可恢复性。
+[Agent](<Agent.md>) Eval 是评估 Agent 是否能稳定完成任务的体系，不只评最终答案，还要评规划、工具调用、轨迹、成本、安全和可恢复性。
 
 ### 和普通模型评测的区别
 
@@ -100,7 +100,7 @@ Agent 是否高效。
 - LLM Judge：让模型按 rubric 评分。
 - Trace Review：人工或模型审查 trajectory。
 - Golden Set：固定任务集回归。
-- A/B Test：比较两个 Agent、Prompt、Skill 或模型版本。
+- A/B Test：比较两个 Agent、Prompt、[Skill](<Skill.md>) 或模型版本。
 
 ### 常见误区
 

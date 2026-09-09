@@ -18,6 +18,8 @@
 | Transformer | [里程碑模型/Transformer.md](<里程碑模型/Transformer.md>) |
 | BERT | [里程碑模型/BERT.md](<里程碑模型/BERT.md>) |
 | GPT | [里程碑模型/GPT.md](<里程碑模型/GPT.md>) |
+| Llama | [里程碑模型/Llama.md](<里程碑模型/Llama.md>) |
+| DeepSeek | [里程碑模型/DeepSeek.md](<里程碑模型/DeepSeek.md>) |
 | Qwen3 / Qwen3-VL | [Qwen千问架构.md](<Qwen千问架构.md>) |
 | T5 | [里程碑模型/T5.md](<里程碑模型/T5.md>) |
 | ViT | [里程碑模型/ViT.md](<里程碑模型/ViT.md>) |

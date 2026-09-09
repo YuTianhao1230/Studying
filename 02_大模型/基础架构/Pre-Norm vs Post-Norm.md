@@ -2,7 +2,7 @@
 
 ## 直接回答
 
-在 Transformer 架构中，**Pre-Norm** 和 **Post-Norm** 指的是层归一化（Layer Normalization）相对于残差连接（Residual Connection）和子层（如 Multi-Head Attention 或 FFN）的放置位置。
+在 [Transformer](<Transformer.md>) 架构中，**Pre-Norm** 和 **Post-Norm** 指的是层归一化（Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)）相对于残差连接（Residual Connection）和子层（如 Multi-Head [Attention](<Self-Attention.md>) 或 FFN）的放置位置。
 
 这是深度学习模型架构设计中的一个关键细节，直接决定了模型能否加深以及训练的难易程度。
 
@@ -57,7 +57,7 @@
 | 特性 | Pre-Norm | Post-Norm |
 | :--- | :--- | :--- |
 | **公式** | $x + \text{Sub}(LN(x))$ | $LN(x + \text{Sub}(x))$ |
-| **主流代表** | GPT-3, Llama, BLOOM | Transformer (原版), BERT |
+| **主流代表** | GPT-3, Llama, BLOOM | Transformer (原版), [BERT](<../模型细节/里程碑模型/BERT.md>) |
 | **训练稳定性** | **极高**（不易梯度消失/爆炸） | 较低（需要严格初始化和 Warm-up） |
 | **学习率** | 可以使用较大学习率 | 需配合复杂预热策略 |
 | **模型收敛** | 容易收敛 | 较难收敛，但收敛后效果可能更好 |

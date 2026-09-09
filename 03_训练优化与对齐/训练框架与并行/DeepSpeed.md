@@ -6,16 +6,16 @@
 
 简单来说，**DeepSpeed** 是由 **微软（Microsoft）** 开发的一个开源深度学习优化库，专门用于**加速超大规模模型的训练和推理**。
 
-如果你把训练大模型比作开赛车，那么 PyTorch 或 TensorFlow 就是赛车的引擎，而 **DeepSpeed 就是一套顶级赛车改装套件**（包括氮气加速、轻量化组件和自动档控制器），让你的赛车跑得更快，且能适应更长、更难的赛道。
+如果你把训练大模型比作开赛车，那么 PyTorch 或 TensorFlow 就是赛车的引擎，而 **DeepSpeed 就是一套顶级赛车改装套件**（包括氮气加速、轻[量化](<../../05_推理部署与系统/推理工程/量化.md>)组件和自动档控制器），让你的赛车跑得更快，且能适应更长、更难的赛道。
 
 以下是 DeepSpeed 的核心要点：
 
 ### 为什么会有 DeepSpeed？
 在 DeepSpeed 出现之前，训练像 GPT-3 这样拥有千亿参数的模型面临两大难题：
-*   **显存不够（Memory Wall）：** 单张显卡甚至几张显卡都塞不下模型参数。
+*   **显存不够（[Memory](<../../10_Agent/基础概念/Memory.md>) Wall）：** 单张显卡甚至几张显卡都塞不下模型参数。
 *   **计算太慢（Compute Wall）：** 即使显存够，成千上万张显卡之间的通信开销极大，导致训练效率低下。
 
-DeepSpeed 通过一系列技术（如 **ZeRO**）解决了这些问题。
+DeepSpeed 通过一系列技术（如 **[ZeRO](<ZeRO.md>)**）解决了这些问题。
 
 ### DeepSpeed 的核心功能
 
@@ -31,11 +31,11 @@ DeepSpeed 完美融合了三种并行方式，使其能够扩展到数千张显�
 3.  **流水线并行 (Pipeline Parallelism)**：把不同层分给不同的卡。
 
 #### ③ 针对大模型的算子优化 (Inference & Kernels)
-*   **DeepSpeed-Inference**：不仅能训练，推理（部署）也极快。它针对 Transformer 架构做了深度优化（如定制的 CUDA Kernel），推理速度比原生 PyTorch 快数倍。
-*   **稀疏注意力机制 (Sparse Attention)**：处理长文本时，减少计算量，让模型能“读”更长的书。
+*   **DeepSpeed-Inference**：不仅能训练，推理（部署）也极快。它针对 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 架构做了深度优化（如定制的 CUDA Kernel），推理速度比原生 PyTorch 快数倍。
+*   **稀疏注意力机制 (Sparse [Attention](<../../02_大模型/基础架构/Self-Attention.md>))**：处理长文本时，减少计算量，让模型能“读”更长的书。
 
 #### ④ 专家混合模型 (MoE) 支持
-DeepSpeed 提供了对 **Mixture of Experts (MoE)** 架构的高效支持。这种架构可以用更小的计算开销实现数万亿参数的模型规模。
+DeepSpeed 提供了对 **Mixture of Experts ([MoE](<../../02_大模型/基础架构/MoE.md>))** 架构的高效支持。这种架构可以用更小的计算开销实现数万亿参数的模型规模。
 
 ### DeepSpeed 的使用体验
 
@@ -44,7 +44,7 @@ DeepSpeed 提供了对 **Mixture of Experts (MoE)** 架构的高效支持。这�
 *   **配置驱动**：通过一个 `ds_config.json` 配置文件，就可以开关各种优化功能（比如是否开启 ZeRO-3，是否开启 FP16 等），无需硬编码。
 
 ### 谁在用 DeepSpeed？
-*   **大模型厂商**：几乎所有著名的大模型（如百川、智谱、甚至早期的一些 GPT 变体）在开发过程中都参考或直接使用了 DeepSpeed。
+*   **大模型厂商**：几乎所有著名的大模型（如百川、智谱、甚至早期的一些 [GPT](<../../02_大模型/模型细节/里程碑模型/GPT.md>) 变体）在开发过程中都参考或直接使用了 DeepSpeed。
 *   **Hugging Face**：著名的 AI 社区 Hugging Face 已经深度集成了 DeepSpeed，你可以直接在 `Transformers` 库中调用它。
 
 ### 总结

@@ -4,7 +4,7 @@
 
 ### 概述
 
-**RMSNorm (Root Mean Square Layer Normalization)** 是目前大语言模型（如 Llama、Qwen、Gemma）中几乎**标配**的归一化技术。
+**RMSNorm (Root Mean Square Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>))** 是目前大语言模型（如 Llama、[Qwen](<../模型细节/Qwen千问架构.md>)、Gemma）中几乎**标配**的归一化技术。
 
 它是传统 **LayerNorm (层归一化)** 的一种简化版。由 Biao Zhang 和 Rico Sennrich 在 2019 年提出。
 
@@ -48,12 +48,12 @@ $$\bar{x} = \frac{x}{\text{RMS}(x)} \cdot g$$
     LayerNorm 需要学习两个参数（$\gamma$ 和 $\beta$），而 RMSNorm 通常只需要一个缩放参数 $g$，且去掉了减去均值的逻辑，数学实现更优雅。
 
 3.  **效果相当甚至更好：**
-    研究表明，对于 Transformer 架构，去掉均值偏移并不影响模型的收敛性，甚至在某些任务中能提供更好的数值稳定性。
+    研究表明，对于 [Transformer](<Transformer.md>) 架构，去掉均值偏移并不影响模型的收敛性，甚至在某些任务中能提供更好的数值稳定性。
 
 ### 在 Qwen3 架构中的位置
 
 在你之前看的那张 Qwen3 架构图中，你会发现 **Pre-RMSNorm** 的字样：
-*   **Pre-Norm (前置归一化)：** 意味着 RMSNorm 是放在 Self-Attention 或 FFN 层**之前**的。
+*   **[Pre-Norm](<Pre-Norm vs Post-Norm.md>) (前置归一化)：** 意味着 RMSNorm 是放在 [Self-Attention](<Self-Attention.md>) 或 FFN 层**之前**的。
 *   这样做的目的是：让输入信号在进入计算层之前先被“标准化”，防止网络深处的信号畸变，这被认为是训练超深大模型（如 36 层、80 层甚至更多）的关键。
 
 ### 总结
@@ -77,7 +77,7 @@ RMSNorm 是 Root Mean Square Layer Normalization，是一种常见的大模型�
 
 回答模板：
 
-LayerNorm 会对 hidden states 做减均值和除标准差，相当于同时做 re-centering 和 re-scaling。RMSNorm 去掉了减均值，只保留基于均方根的 re-scaling。这样计算量更小，也减少了一部分通信和算子开销；在很多 Transformer 大模型中，这种简化对效果影响不大，但能带来更好的效率和实现简洁性。
+LayerNorm 会对 hidden states 做减均值和除标准差，相当于同时做 re-centering 和 re-scaling。RMSNorm 去掉了减均值，只保留基于均方根的 re-scaling。这样计算量更小，也减少了一部分通信和[算子](<../../05_推理部署与系统/推理工程/算子.md>)开销；在很多 Transformer 大模型中，这种简化对效果影响不大，但能带来更好的效率和实现简洁性。
 
 ### RMSNorm 的优势和限制是什么？
 

@@ -88,7 +88,7 @@ OOM 不能只说减 batch。我会先定位 OOM 阶段。如果 forward OOM，�
 优先检查：
 
 - GPU utilization 是否低。
-- DataLoader 是否成为瓶颈。
+- [DataLoader](<../../07_Python与工程/常用库/DataLoader.md>) 是否成为瓶颈。
 - 网络盘 IO 是否慢。
 - 图片/视频解码是否慢。
 - batch 长度是否过长。

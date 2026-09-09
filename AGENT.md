@@ -1,6 +1,6 @@
 # AGENT.md
 
-本文件给后续进入该工作区的 AI Agent 使用。当前路径 `/mlx_devbox/users/yutianhao` 不是单一代码仓库，而是用户的研究工作区。最重要的前提是：不要把所有目录平铺理解为“用户的工作”。这里有主线项目、baseline/依赖仓库、数据工程项目、模型缓存和个人工具，它们的角色不同。
+本文件给后续进入该工作区的 AI [Agent](<10_Agent/基础概念/Agent.md>) 使用。当前路径 `/mlx_devbox/users/yutianhao` 不是单一代码仓库，而是用户的研究工作区。最重要的前提是：不要把所有目录平铺理解为“用户的工作”。这里有主线项目、baseline/依赖仓库、数据工程项目、模型缓存和个人工具，它们的角色不同。
 
 ## 用户当前真正的工作
 
@@ -26,9 +26,9 @@
 - `Attacker.py`：Syner-Attack 核心攻击实现，包括图像侧 feature/alignment loss、输入多样性、SIA、TI kernel，以及文本侧 visual-guided attack 调用。
 - `eval.py`：传统 VLP 检索评估入口，围绕 ALBEF/TCL/CLIP 等模型做 ITR 结果。
 - `eval_mllm_attack.py`：现代 MLLM 定量评估入口，支持开源 MLLM 和商业 API，包含 `image_only` / `image_and_text` 模式、ASR 统计、GLEAM/SA-AET baseline 数字对齐。
-- `eval_defense.py`：防御评估入口，覆盖 JPEG、bit-depth、Gaussian blur/noise、random resize padding 等输入预处理防御。
+- `eval_defense.py`：防御评估入口，覆盖 JPEG、bit-depth、Gaussian blur/noise、random resize padding 等[输入预处理防御](<13_AI安全与对抗攻击/防御与鲁棒性/输入预处理防御.md>)。
 - `scripts/fresh_generate_attacks.py`：生成 clean / Syner / GLEAM 对齐样本，当前用于 MSCOCO sample100/sample500 实验。
-- `scripts/eval_mllm_clip_proxy_gleam_style.py`：按 GLEAM 风格的 CLIP-proxy 协议评估 LLaVA、Qwen2-VL、InstructBLIP 等开源 MLLM。
+- `scripts/eval_mllm_clip_proxy_gleam_style.py`：按 GLEAM 风格的 CLIP-proxy 协议评估 [LLaVA](<02_大模型/模型细节/里程碑模型/LLaVA.md>)、Qwen2-VL、InstructBLIP 等开源 MLLM。
 - `scripts/eval_openai_clip_proxy_existing.py`：对 GPT-4o 等商业模型做 CLIP-proxy ASR 评估。
 - `scripts/eval_gleam_style_defense_itr.py`、`scripts/eval_gleam_style_defense_itr_with_syner_text.py`：防御下的 ITR 评估，分别对应不同文本口径。
 - `scripts/summarize_compute_cost.py`：整理 GLEAM 与 Syner-Attack 的 wall-clock、sec/img、显存、forward pass 估计。
@@ -41,12 +41,12 @@
 
 不要把下面这些目录误判成当前主线。它们主要是 baseline、外部依赖或复现资源。
 
-- `GLEAM/`：最直接、最重要的 baseline。用户当前大量实验是在与 GLEAM 对齐协议和结果，尤其是 GLEAM Table 3 的 MLLM CLIP-proxy ASR、Table 4 的防御下 ALBEF ITR 结果。`GLEAM/NURBSAttacker.py` 有本地改动，但整体仍应视为 baseline/对照方法，不是用户的新方法主体。
+- `GLEAM/`：最直接、最重要的 baseline。用户当前大量实验是在与 GLEAM 对齐协议和结果，尤其是 GLEAM Table 3 的 MLLM CLIP-proxy ASR、Table 4 的防御下 [ALBEF](<02_大模型/模型细节/里程碑模型/ALBEF.md>) ITR 结果。`GLEAM/NURBSAttacker.py` 有本地改动，但整体仍应视为 baseline/对照方法，不是用户的新方法主体。
 - `SA-AET`：不是单独目录，但作为论文和报告里的 baseline 数字出现，常与 GLEAM 一起在 MLLM 表中对齐。
 - `TransferAttack/`：图像分类迁移攻击框架，属于外部方法库/参考代码。除非用户明确要求，不要在这里实现 Syner-Attack 主线逻辑。
 - `OpenAttack/`：文本攻击工具库，属于外部依赖/参考库。Syner-Attack 的文本攻击思想与 BERT-Attack/OpenAttack 相关，但 `OpenAttack/` 本身不是当前论文主线。
 - `BLIP/`：VLP/MLLM baseline 或模型参考。README 标明该仓库 deprecated。可用于补 BLIP/BLIP-2 相关 baseline，但不要把它当用户当前方法。
-- `hf_models/`：本地模型权重缓存，用于跑开源 MLLM 和 CLIP proxy，包括 Qwen2-VL、LLaVA、CLIP、InstructBLIP 等。只读使用，不能当代码仓库修改。
+- `hf_models/`：本地模型权重缓存，用于跑开源 MLLM 和 [CLIP](<06_视觉多模态与生成模型/多模态模型/CLIP.md>) proxy，包括 Qwen2-VL、LLaVA、CLIP、InstructBLIP 等。只读使用，不能当代码仓库修改。
 - `mllm-data/`：用户另一个数据/评测工程项目，主要处理 MLLM 数据生成、关键帧、交互体验、bad case 分析等。它不是 Syner-Attack 论文主线；只有当任务涉及数据处理、JSONL/图片/视频评测数据时才进入。
 - `feishu_todo_bot/`：个人飞书 TODO 机器人后端，是独立工具项目，不属于 Syner-Attack 研究主线。
 

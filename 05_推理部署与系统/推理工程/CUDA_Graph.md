@@ -49,9 +49,9 @@ CUDA Graph 的思路是：
 
 ### 和其他推理优化的关系
 
-- KV Cache：减少重复 Attention 计算。
-- Continuous Batching：提升吞吐。
-- Speculative Decoding：减少大模型 decode 步数。
+- [KV Cache](<KV_Cache与Prefill_Decode.md>)：减少重复 [Attention](<../../02_大模型/基础架构/Self-Attention.md>) 计算。
+- [Continuous Batching](<Batching.md>)：提升吞吐。
+- [Speculative Decoding](<Speculative_Decoding.md>)：减少大模型 decode 步数。
 - CUDA Graph：减少 CPU launch 调度开销。
 - TensorRT-LLM：常结合底层 kernel 优化和 graph 机制做高性能推理。
 

@@ -8,7 +8,7 @@ TCL 是视觉语言预训练中的对比学习增强路线，关注图像和文�
 
 ### 解决的问题
 
-CLIP 的图文对比通常是全局 image-text embedding 对齐，容易只学到粗粒度匹配。ALBEF 加入融合模块，但图文局部语义、hard negative 和跨模态 token 级关系仍然可能不足。TCL 这类方法关注：
+[CLIP](<../../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 的图文对比通常是全局 image-text embedding 对齐，容易只学到粗粒度匹配。[ALBEF](<ALBEF.md>) 加入融合模块，但图文局部语义、hard negative 和跨模态 token 级关系仍然可能不足。TCL 这类方法关注：
 
 - 全局图文匹配不等于细粒度区域-词对齐。
 - web 图文对噪声会影响对比学习质量。

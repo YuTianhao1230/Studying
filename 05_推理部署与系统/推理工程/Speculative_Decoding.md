@@ -62,8 +62,8 @@ Speculative Decoding 的思路是：
 
 ### 和其他推理优化的关系
 
-- KV Cache：减少重复 Attention 计算。
-- Continuous Batching：提高吞吐。
+- [KV Cache](<KV_Cache与Prefill_Decode.md>)：减少重复 [Attention](<../../02_大模型/基础架构/Self-Attention.md>) 计算。
+- [Continuous Batching](<Batching.md>)：提高吞吐。
 - Quantization：降低显存和计算成本。
 - Speculative Decoding：减少大模型解码步数。
 

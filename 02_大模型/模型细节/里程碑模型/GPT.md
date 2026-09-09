@@ -4,7 +4,7 @@
 
 ### 概述
 
-GPT 是 Decoder-only Transformer 自回归语言模型路线，核心是通过 next-token prediction 学习通用生成能力，并在规模化后形成 prompt、few-shot、in-context learning 和指令助手能力。
+GPT 是 [Decoder-only](<../../基础架构/Decoder-only vs Encoder-Decoder.md>) [Transformer](<../../基础架构/Transformer.md>) 自回归语言模型路线，核心是通过 next-token prediction 学习通用生成能力，并在规模化后形成 prompt、few-shot、in-context learning 和指令助手能力。
 
 ### 解决的问题
 
@@ -58,7 +58,7 @@ maximize sum_t log P(x_t | x_<t)
 
 后续助手模型通常继续做：
 
-1. SFT：学习指令-回答格式。
+1. [SFT](<../../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)：学习指令-回答格式。
 2. RLHF/RLAIF/DPO：对齐人类偏好和安全要求。
 3. 工具/函数调用训练：学习输出结构化 tool call。
 4. 推理增强训练：强化数学、代码和复杂规划。
@@ -73,11 +73,11 @@ maximize sum_t log P(x_t | x_<t)
 
 现代 LLM 在 GPT 路线上常见改造：
 
-- RoPE 替代绝对位置编码。
-- RMSNorm 替代 LayerNorm。
-- SwiGLU 替代 ReLU/GELU FFN。
-- GQA/MQA 降低 KV Cache。
-- MoE 扩大参数容量但控制激活成本。
+- [RoPE](<../../基础架构/RoPE.md>) 替代绝对位置编码。
+- [RMSNorm](<../../基础架构/RMSNorm.md>) 替代 LayerNorm。
+- [SwiGLU](<../../../03_训练优化与对齐/参数/常见激活函数.md>) 替代 ReLU/GELU FFN。
+- GQA/MQA 降低 [KV Cache](<../../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
+- [MoE](<../../基础架构/MoE.md>) 扩大参数容量但控制激活成本。
 
 ### 能力边界
 
@@ -89,8 +89,8 @@ GPT 的预训练目标只是预测下一个 token，不保证事实正确、推�
 | --- | --- | --- |
 | 架构题 | GPT 为什么是 decoder-only | 因为目标是自回归生成，只需要 causal self-attention |
 | 目标题 | next-token prediction 公式 | 写 `P(x_t \| x_<t)` 并说明 teacher forcing |
-| 对比题 | GPT 和 BERT 区别 | 生成 vs 理解，causal mask vs bidirectional attention |
-| 后训练题 | ChatGPT 为什么比 GPT-3 好用 | SFT + RLHF 让模型遵循指令和偏好 |
+| 对比题 | GPT 和 [BERT](<BERT.md>) 区别 | 生成 vs 理解，causal mask vs bidirectional attention |
+| 后训练题 | ChatGPT 为什么比 GPT-3 好用 | SFT + [RLHF](<../../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>) 让模型遵循指令和偏好 |
 
 ### 易错点
 

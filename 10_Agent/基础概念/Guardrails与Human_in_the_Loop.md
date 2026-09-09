@@ -4,7 +4,7 @@
 
 ### 概述
 
-Guardrails 是 Agent 系统的安全边界和质量约束；Human-in-the-Loop 是在关键节点引入人工确认、审核或接管。
+Guardrails 是 [Agent](<Agent.md>) 系统的安全边界和质量约束；Human-in-the-Loop 是在关键节点引入人工确认、审核或接管。
 
 ### 为什么需要 Guardrails
 

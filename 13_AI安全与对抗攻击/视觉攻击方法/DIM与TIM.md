@@ -42,7 +42,7 @@ x_adv = x_adv + alpha * sign(g_smooth)
 
 ### 常见组合
 
-DIM、TIM 常和 MI-FGSM 组合：
+DIM、TIM 常和 [MI-FGSM](<MI-FGSM.md>) 组合：
 
 ```text
 M-DI-TI-FGSM
@@ -51,7 +51,7 @@ M-DI-TI-FGSM
   + Translation-Invariant gradient
 ```
 
-组合后通常更适合黑盒迁移攻击：
+组合后通常更适合[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md>)：
 
 - Momentum 稳定优化方向。
 - Diverse Input 提升尺度和预处理鲁棒性。

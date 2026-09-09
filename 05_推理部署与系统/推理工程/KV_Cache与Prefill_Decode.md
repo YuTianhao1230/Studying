@@ -8,7 +8,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### 自回归生成是什么
 
-GPT 类模型一次生成一个 token：
+[GPT](<../../02_大模型/模型细节/里程碑模型/GPT.md>) 类模型一次生成一个 token：
 
 ```text
 输入: 今天天气
@@ -44,7 +44,7 @@ Decode 从第一个输出 token 开始，每次生成一个 token。
 
 ### KV Cache 是什么
 
-Transformer attention 中每层都会计算 Q、K、V。
+[Transformer](<../../02_大模型/基础架构/Transformer.md>) attention 中每层都会计算 Q、K、V。
 
 生成第 `t` 个 token 时，新 token 需要关注之前所有 token。如果每一步都重新计算所有历史 token 的 K/V，会非常浪费。
 
@@ -104,7 +104,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### KV_Cache与Prefill_Decode 解决什么问题？
 
-回答思路：抓住 KV cache 随上下文和输出长度线性增长导致长上下文易 OOM，说明为何用 max_tokens 限制 decode 步数、用 PagedAttention 分块管理来控制显存。
+回答思路：抓住 KV cache 随上下文和输出长度线性增长导致长上下文易 OOM，说明为何用 max_tokens 限制 decode 步数、用 [PagedAttention](<vLLM.md>) 分块管理来控制显存。
 
 回答模板：
 

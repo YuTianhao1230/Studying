@@ -88,4 +88,4 @@ def fgsm_attack(model, images, labels, epsilon):
 
 回答模板：
 
-FGSM 是 Fast Gradient Sign Method，是一种单步白盒对抗攻击。它对输入求损失梯度，在 `L_inf` 约束下沿梯度符号方向加一个大小为 `epsilon` 的扰动，即 `x_adv = x + epsilon * sign(grad_x L)`。这个公式可以从损失的一阶泰勒展开推出来。它优点是非常快，只需要一次反向传播；缺点是单步近似比较粗，攻击强度通常不如 PGD 这类多步攻击。
+FGSM 是 Fast Gradient Sign Method，是一种单步白盒对抗攻击。它对输入求损失梯度，在 `L_inf` 约束下沿梯度符号方向加一个大小为 `epsilon` 的扰动，即 `x_adv = x + epsilon * sign(grad_x L)`。这个公式可以从损失的一阶泰勒展开推出来。它优点是非常快，只需要一次反向传播；缺点是单步近似比较粗，攻击强度通常不如 [PGD](<PGD.md>) 这类多步攻击。

@@ -2,13 +2,13 @@
 
 ## 调研结论
 
-近两年大厂算法工程师 JD 的重心已经从“会训练一个模型”升级为“能把模型、数据、评测、系统和业务闭环串起来”。尤其是大模型和 Agent 方向，岗位要求明显强调：
+近两年大厂算法工程师 JD 的重心已经从“会训练一个模型”升级为“能把模型、数据、评测、系统和业务闭环串起来”。尤其是大模型和 [Agent](<../../10_Agent/基础概念/Agent.md>) 方向，岗位要求明显强调：
 
 - 扎实机器学习、深度学习、NLP/CV/RL 基础。
 - PyTorch/TensorFlow/JAX 等框架实践能力。
-- LLM、VLM、Transformer、RAG、Tool Use、Agent、Post-training、RLHF/RLVR。
+- LLM、[VLM](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)、[Transformer](<../../02_大模型/基础架构/Transformer.md>)、[RAG](<../../02_大模型/应用与问题/RAG.md>)、Tool Use、Agent、Post-training、RLHF/RLVR。
 - 数据构造、数据清洗、数据质量、合成数据、评测体系。
-- 大规模训练、分布式训练、推理优化、低延迟 Serving。
+- 大规模训练、分布式训练、推理优化、低延迟 [Serving](<../../05_推理部署与系统/推理工程/Serving.md>)。
 - 搜索、推荐、广告等业务算法在部分岗位高频出现，但对模型训练方向不是主线，可作为补充知识。
 - 工程能力：Python/C++/Go/Java、数据结构算法、Linux、系统设计、线上监控。
 - 端到端 ownership：从模糊问题到实验、上线、监控和复盘。
@@ -16,12 +16,12 @@
 ## 参考来源
 
 - OpenAI Research Engineer, Codex：强调 agentic models、coding、tool use、computer use、multi-agent coordination、long-horizon execution、post-training、RL、evals、graders、training data、diagnostics、production harness。
-- OpenAI Machine Learning Engineer, Integrity：强调 PyTorch/TensorFlow、数据结构算法、搜索相关性、广告排序、LLM、distillation、SFT、policy optimization、生产部署。
+- OpenAI Machine Learning Engineer, Integrity：强调 PyTorch/TensorFlow、数据结构算法、搜索相关性、广告排序、LLM、distillation、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、policy optimization、生产部署。
 - 字节 Seed 大语言模型 Agent 算法工程师：强调 Generalized Agent、Search、Coding、Interpreter、Tool Use、GUI、CodeAgent、Long-horizon Tasks、NLP/RL、PyTorch/TensorFlow/JAX。
 - 字节 / TikTok 多模态与 Code AI：强调 VLM、视频理解、多模态 encoder、自适应帧率、音频和用户行为融合、代码理解与推理。
 - 腾讯混元多模态算法研究：强调多模态数据构造、基础模型算法、pre-training/SFT/RL、模型评测、Diffusion、Autoregressive、CPU/GPU 加速、分布式训练与推理优化。
 - 阿里大语言模型算法工程师：强调 NLP、大模型、知识表示、机器翻译、长思维链推理、对话系统、文本生成、业务落地、PyTorch/TensorFlow、Transformer/BERT/GPT/RNN/LSTM。
-- 美团 Search Agent / AI 搜索方向：强调联网搜索、边想边搜、Deep Research、Mid-Train、SFT、Generative Reward Model、RLVR、Agentic RL、搜索链路 Query 理解、语义召回、排序、任务拆解、文本改写、多轮对话、数据挖掘和评估迭代。
+- 美团 Search Agent / AI 搜索方向：强调联网搜索、边想边搜、Deep Research、Mid-Train、SFT、Generative [Reward Model](<../../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md>)、Agentic RL、搜索链路 Query 理解、语义[召回](<../../05_推理部署与系统/系统设计/召回粗排精排重排.md>)、排序、任务拆解、文本改写、多轮对话、数据挖掘和评估迭代。
 - Meta / Google DeepMind MLE 面试趋势：强调算法编码、Applied ML Coding、ML System Design、训练到 Serving、推荐/搜索/广告、评测框架、MLOps、JAX/PyTorch、分布式训练、线上监控。
 
 ## 能力矩阵
@@ -29,15 +29,15 @@
 | 能力域 | JD 高频关键词 | 你需要掌握到什么程度 | 当前知识库位置 |
 | --- | --- | --- | --- |
 | 数学与 ML 基础 | 概率统计、优化、线代、传统 ML | 能解释核心公式、适用条件、评价指标 | [数学基础](<../../01_机器学习基础/数学与机器学习/数学基础.md>)、[机器学习基础](<../../01_机器学习基础/数学与机器学习/机器学习基础.md>)、[统计推断与因果推断基础](<../../01_机器学习基础/数学与机器学习/统计推断与因果推断基础.md>) |
-| 深度学习基础 | MLP、Normalization、激活函数、梯度问题 | 能解释训练稳定性、梯度流、正则化 | [深度学习基础](<../../01_机器学习基础/深度学习基础/深度学习基础.md>)、[MLP](<../../01_机器学习基础/深度学习基础/Multi-Layer Perceptron.md>)、[Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)、[梯度问题](<../../03_训练优化与对齐/训练稳定性/梯度爆炸与梯度消失.md>) |
-| Transformer / LLM | Transformer、Tokenizer、预训练、Decoder-only、RoPE、GQA、MoE | 能讲结构、数据、复杂度、训练/推理影响 | [大模型预训练与推理基础](<../../02_大模型/大模型预训练与推理基础.md>)、[Transformer](<../../02_大模型/基础架构/Transformer.md>)、[Self-Attention](<../../02_大模型/基础架构/Self-Attention.md>)、[Decoder-only](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>)、[RoPE](<../../02_大模型/基础架构/RoPE.md>)、[GQA](<../../02_大模型/基础架构/GQA.md>)、[MoE](<../../02_大模型/基础架构/MoE.md>) |
-| Post-training | SFT、RLHF、DPO、PPO、GRPO、RLVR、Agentic RL、Reward Model | 能讲发展脉络、数据形式、目标函数、训练流程、方法差异和风险 | [后训练发展史与方法对比](<../../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)、[Post-training](<../../03_训练优化与对齐/后训练与对齐/Post-training 后训练.md>)、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、[PPO](<../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>)、[GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md>)、[Agentic RL](<../../03_训练优化与对齐/后训练与对齐/Agentic RL 智能体强化学习.md>)、[Reward Model 与 Grader](<../../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md>) |
-| Agent | Tool Use、GUI、CodeAgent、Long-horizon、Workflow、MCP | 能设计 Agent Loop、工具、记忆、评测和安全边界 | [Agent 开发完整流程](<../../10_Agent/基础概念/Agent开发完整流程.md>)、[Agent](<../../10_Agent/基础概念/Agent.md>)、[Workflow](<../../10_Agent/基础概念/Workflow.md>)、[Tool Call](<../../10_Agent/基础概念/Tool_Call与Function_Calling.md>)、[MCP](<../../10_Agent/基础概念/MCP.md>)、[生产级 Agent 案例](<../../10_Agent/基础概念/生产级Agent案例.md>) |
+| [深度学习基础](<../../01_机器学习基础/深度学习基础/深度学习基础.md>) | MLP、[Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)、激活函数、梯度问题 | 能解释训练稳定性、梯度流、[正则化](<../../01_机器学习基础/深度学习基础/正则化.md>) | [深度学习基础](<../../01_机器学习基础/深度学习基础/深度学习基础.md>)、[MLP](<../../01_机器学习基础/深度学习基础/Multi-Layer Perceptron.md>)、[Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)、[梯度问题](<../../03_训练优化与对齐/训练稳定性/梯度爆炸与梯度消失.md>) |
+| Transformer / LLM | Transformer、Tokenizer、预训练、[Decoder-only](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>)、[RoPE](<../../02_大模型/基础架构/RoPE.md>)、[GQA](<../../02_大模型/基础架构/GQA.md>)、[MoE](<../../02_大模型/基础架构/MoE.md>) | 能讲结构、数据、复杂度、训练/推理影响 | [大模型预训练与推理基础](<../../02_大模型/大模型预训练与推理基础.md>)、[Transformer](<../../02_大模型/基础架构/Transformer.md>)、[Self-Attention](<../../02_大模型/基础架构/Self-Attention.md>)、[Decoder-only](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>)、[RoPE](<../../02_大模型/基础架构/RoPE.md>)、[GQA](<../../02_大模型/基础架构/GQA.md>)、[MoE](<../../02_大模型/基础架构/MoE.md>) |
+| Post-training | SFT、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、[PPO](<../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>)、[GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)、RLVR、Agentic RL、Reward Model | 能讲发展脉络、数据形式、目标函数、训练流程、方法差异和风险 | [后训练发展史与方法对比](<../../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)、[Post-training](<../../03_训练优化与对齐/后训练与对齐/Post-training 后训练.md>)、[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、[PPO](<../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>)、[GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md>)、[Agentic RL](<../../03_训练优化与对齐/后训练与对齐/Agentic RL 智能体强化学习.md>)、[Reward Model 与 Grader](<../../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md>) |
+| Agent | Tool Use、GUI、CodeAgent、Long-horizon、[Workflow](<../../10_Agent/基础概念/Workflow.md>)、[MCP](<../../10_Agent/基础概念/MCP.md>) | 能设计 Agent Loop、工具、记忆、评测和安全边界 | [Agent 开发完整流程](<../../10_Agent/基础概念/Agent开发完整流程.md>)、[Agent](<../../10_Agent/基础概念/Agent.md>)、[Workflow](<../../10_Agent/基础概念/Workflow.md>)、[Tool Call](<../../10_Agent/基础概念/Tool_Call与Function_Calling.md>)、[MCP](<../../10_Agent/基础概念/MCP.md>)、[生产级 Agent 案例](<../../10_Agent/基础概念/生产级Agent案例.md>) |
 | 评测体系 | Evals、graders、benchmark、diagnostics、failure analysis | 能设计自动化评测、bad case、trajectory 归因 | [模型评测与实验设计](<../../04_评测实验与数据质量/模型评测与实验设计.md>)、[LLM Judge](<../../04_评测实验与数据质量/LLM_Judge.md>)、[数据泄漏与 Benchmark 污染](<../../04_评测实验与数据质量/数据泄漏与Benchmark污染.md>)、[Agent Eval](<../../10_Agent/基础概念/Agent_Eval.md>)、[Harness](<../../10_Agent/基础概念/Harness.md>)、[Trajectory](<../../10_Agent/基础概念/Trajectory与Observability.md>) |
-| 多模态 | VLM、CLIP、BLIP、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)、[CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>)、[BLIP](<../../06_视觉多模态与生成模型/多模态模型/BLIP.md>)、[Video Understanding](<../../06_视觉多模态与生成模型/多模态模型/Video_Understanding.md>)、[OCR 与文档理解](<../../06_视觉多模态与生成模型/视觉基础/OCR与文档理解.md>)、[Multimodal Grounding](<../../06_视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>) |
+| 多模态 | VLM、[CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>)、[BLIP](<../../06_视觉多模态与生成模型/多模态模型/BLIP.md>)、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)、[CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>)、[BLIP](<../../06_视觉多模态与生成模型/多模态模型/BLIP.md>)、[Video Understanding](<../../06_视觉多模态与生成模型/多模态模型/Video_Understanding.md>)、[OCR 与文档理解](<../../06_视觉多模态与生成模型/视觉基础/OCR与文档理解.md>)、[Multimodal Grounding](<../../06_视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>) |
 | 数据工程 | 数据清洗、合成数据、Hive、Spark、Feature Store、Data Quality | 能搭数据管线、做数据版本和质量控制 | [数据工程与数据质量](<../../04_评测实验与数据质量/数据工程与数据质量.md>)、[训练数据构造与合成数据](<../../04_评测实验与数据质量/训练数据构造与合成数据.md>)、[Hive、Spark 与 Feature Store](<../../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>) |
-| 训练系统 | PyTorch、JAX、Distributed Training、FSDP、DeepSpeed、Megatron、NCCL | 能解释框架选型、并行策略、集合通信、显存优化和故障排查 | [深度学习框架选型](<../../07_Python与工程/深度学习框架/深度学习框架选型.md>)、[PyTorch 训练工程基础](<../../07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)、[分布式训练通信与故障排查](<../../03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[Megatron-LM](<../../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)、[Loss 异常与收敛排查](<../../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>) |
-| 推理部署 | vLLM、TensorRT-LLM、Quantization、Dynamic Batching、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../../05_推理部署与系统/推理工程/模型部署与推理工程.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、[TensorRT-LLM](<../../05_推理部署与系统/推理工程/TensorRT_LLM.md>)、[Batching](<../../05_推理部署与系统/推理工程/Batching.md>)、[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[量化](<../../05_推理部署与系统/推理工程/量化.md>)、[CUDA Graph](<../../05_推理部署与系统/推理工程/CUDA_Graph.md>) |
+| 训练系统 | PyTorch、JAX、Distributed Training、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、Megatron、NCCL | 能解释框架选型、并行策略、集合通信、显存优化和故障排查 | [深度学习框架选型](<../../07_Python与工程/深度学习框架/深度学习框架选型.md>)、[PyTorch 训练工程基础](<../../07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)、[分布式训练通信与故障排查](<../../03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[Megatron-LM](<../../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)、[Loss 异常与收敛排查](<../../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>) |
+| 推理部署 | [vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、TensorRT-LLM、Quantization、[Dynamic Batching](<../../05_推理部署与系统/推理工程/Batching.md>)、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../../05_推理部署与系统/推理工程/模型部署与推理工程.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、[TensorRT-LLM](<../../05_推理部署与系统/推理工程/TensorRT_LLM.md>)、[Batching](<../../05_推理部署与系统/推理工程/Batching.md>)、[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[量化](<../../05_推理部署与系统/推理工程/量化.md>)、[CUDA Graph](<../../05_推理部署与系统/推理工程/CUDA_Graph.md>) |
 | 系统工程 | Linux、C++、Python、服务化、监控、回滚、CI/CD | 能把模型稳定上线并排障 | [MLOps 与模型生产化](<../../05_推理部署与系统/系统设计/MLOps与模型生产化.md>)、[Serving](<../../05_推理部署与系统/推理工程/Serving.md>)、[CUDA 与 Triton 基础](<../../05_推理部署与系统/推理工程/CUDA与Triton基础.md>)、[编程与算法工程能力](<../../07_Python与工程/编程与算法工程能力.md>) |
 | 编码能力 | 数据结构算法、Applied ML Coding、Python 工程 | 能写可运行、可测试、可恢复、复杂度清楚的代码 | [Applied ML Coding](<../../07_Python与工程/PyTorch/Applied_ML_Coding.md>)、[Beam Search](<../../07_Python与工程/PyTorch/Beam_Search.md>)、[高频算法模板](<../../07_Python与工程/算法刷题/高频算法模板.md>)、[Python 工程实践](<../../07_Python与工程/Python工程实践.md>) |
 
@@ -145,8 +145,8 @@
 
 1. LLM 评测与 Grader。
 2. SFT / RLHF / DPO / GRPO / RLVR。
-3. 分布式训练：FSDP、ZeRO、Megatron。
-4. 推理优化：KV Cache、Batching、量化、vLLM。
+3. 分布式训练：FSDP、[ZeRO](<../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、Megatron。
+4. 推理优化：[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、Batching、[量化](<../../05_推理部署与系统/推理工程/量化.md>)、vLLM。
 5. 数据质量、数据版本和训练可复现。
 
 ### P1：区分中高级候选人
@@ -169,7 +169,7 @@
 
 - 复习 `01_机器学习基础/`。
 - 复习 `02_大模型/基础架构/`。
-- 手写 Attention、AUC、Top-k Sampling、训练循环。
+- 手写 [Attention](<../../02_大模型/基础架构/Self-Attention.md>)、AUC、Top-k Sampling、训练循环。
 
 ### 第二阶段：补齐模型训练工程
 
@@ -186,7 +186,7 @@
 ### 第四阶段：补齐 Agent
 
 - 学习 `10_Agent/` 下的基础概念。
-- 能设计 Agent Workflow、Tool Schema、Memory、Guardrails 和 Eval。
+- 能设计 Agent Workflow、Tool Schema、[Memory](<../../10_Agent/基础概念/Memory.md>)、Guardrails 和 Eval。
 - 能解释 Vibe Coding 与 Spec Coding 的工程价值。
 
 ### 第五阶段：项目表达

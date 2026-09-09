@@ -4,7 +4,7 @@
 
 ### 概述
 
-Trajectory 是 Agent 完成任务过程中的完整轨迹；Observability 是记录、查看和分析这条轨迹的工程能力。
+Trajectory 是 [Agent](<Agent.md>) 完成任务过程中的完整轨迹；Observability 是记录、查看和分析这条轨迹的工程能力。
 
 ### Trajectory 包含什么
 
@@ -66,7 +66,7 @@ Observability 要帮助定位这些问题。
 
 ### 和 Harness 的关系
 
-Harness 负责系统化跑评测；Trajectory 是评测中的关键证据。
+[Harness](<Harness.md>) 负责系统化跑评测；Trajectory 是评测中的关键证据。
 
 对 Agent 来说，逐 case 的 trajectory 比单个最终分数更重要，因为它能解释：
 
@@ -100,7 +100,7 @@ Agent trajectory 是任务执行全过程记录，包括观察、计划、工具
 
 回答模板：
 
-沿 trajectory 从目标理解、上下文、计划、工具选择、参数、工具结果和最终判断逐步定位。先判断失败发生在哪一步，再决定修 prompt、Skill、工具还是调度逻辑。
+沿 trajectory 从目标理解、上下文、计划、工具选择、参数、工具结果和最终判断逐步定位。先判断失败发生在哪一步，再决定修 prompt、[Skill](<Skill.md>)、工具还是调度逻辑。
 
 ### Agent Observability 需要记录哪些信息？
 

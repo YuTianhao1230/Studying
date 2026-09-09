@@ -4,7 +4,7 @@
 
 ### 概述
 
-Planning 是 Agent 在执行前或执行中拆解任务、安排步骤的能力；ReAct 是把推理和行动交替进行的 Agent 模式，即 Reasoning + Acting。
+Planning 是 [Agent](<Agent.md>) 在执行前或执行中拆解任务、安排步骤的能力；ReAct 是把推理和行动交替进行的 Agent 模式，即 Reasoning + Acting。
 
 ### ReAct 是什么
 
@@ -87,7 +87,7 @@ Thought -> Action -> Observation -> Thought -> ...
 
 ### 和 Workflow 的关系
 
-- Workflow 是预定义流程。
+- [Workflow](<Workflow.md>) 是预定义流程。
 - Planning 是 Agent 动态生成或更新流程。
 
 生产系统常见组合：

@@ -68,7 +68,7 @@ Schema 写得越清楚，模型越容易正确调用。
 
 ### Tool Call 和 MCP 的关系
 
-Tool Call 是能力调用机制；MCP 是一种标准协议，用于统一发现和调用外部工具。
+Tool Call 是能力调用机制；[MCP](<MCP.md>) 是一种标准协议，用于统一发现和调用外部工具。
 
 简单说：
 
@@ -117,4 +117,4 @@ Function Calling 是让大模型用结构化方式请求外部函数执行任务
 
 回答模板：
 
-Tool Call 是模型发起工具调用这件事，也就是模型根据 schema 生成工具名和参数；MCP 是一种把外部工具、资源和 prompt 标准化暴露给 Agent 的协议。可以理解为 Tool Call 是调用动作，MCP 是工具接入和发现的标准。没有 MCP，也可以做 Tool Call，只是每个工具要单独适配；有了 MCP，Agent 可以用统一方式发现和调用很多外部能力。实际系统里，Skill 往往告诉模型什么时候该用某类 MCP 工具，而 Tool Call 负责发起具体调用。
+Tool Call 是模型发起工具调用这件事，也就是模型根据 schema 生成工具名和参数；MCP 是一种把外部工具、资源和 prompt 标准化暴露给 [Agent](<Agent.md>) 的协议。可以理解为 Tool Call 是调用动作，MCP 是工具接入和发现的标准。没有 MCP，也可以做 Tool Call，只是每个工具要单独适配；有了 MCP，Agent 可以用统一方式发现和调用很多外部能力。实际系统里，[Skill](<Skill.md>) 往往告诉模型什么时候该用某类 MCP 工具，而 Tool Call 负责发起具体调用。

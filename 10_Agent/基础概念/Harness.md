@@ -41,7 +41,7 @@ Harness 就是为了解决这些问题。
 - Prompt Builder：把样本转成模型输入。
 - Model Client：调用本地模型、在线服务或推理框架。
 - Parser：把模型原始输出解析成结构化预测。
-- Evaluator：计算准确率、F1、召回率、格式正确率等指标。
+- Evaluator：计算准确率、F1、[召回](<../../05_推理部署与系统/系统设计/召回粗排精排重排.md>)率、格式正确率等指标。
 - Reporter：输出 summary、失败样本、diff case。
 - Runner：负责并发、重试、断点续跑和进度管理。
 

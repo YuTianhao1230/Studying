@@ -4,7 +4,7 @@
 
 ### 概述
 
-UniXcoder 是微软研究院继 CodeBERT 和 GraphCodeBERT 之后，于2022年推出的一个**更强大、更统一**的代码语言模型。它的核心目标是创建一个能够灵活适应**所有类型**的代码智能任务（理解、生成、自回归补全）的**单一模型**，并且能有效融合多种信息源（代码、注释、AST）。
+UniXcoder 是微软研究院继 [CodeBERT](<CodeBERT.md>) 和 [GraphCodeBERT](<GraphCodeBERT.md>) 之后，于2022年推出的一个**更强大、更统一**的代码语言模型。它的核心目标是创建一个能够灵活适应**所有类型**的代码智能任务（理解、生成、自回归补全）的**单一模型**，并且能有效融合多种信息源（代码、注释、AST）。
 
 ### UniXcoder是什么？(核心定位)
 
@@ -12,7 +12,7 @@ UniXcoder 是微软研究院继 CodeBERT 和 GraphCodeBERT 之后，于2022年�
 
 想象一下，你不需要为代码搜索、代码生成、代码补全这三个任务分别训练不同的模型。UniXcoder 的目标就是成为这样一个“全能选手”。它通过一种巧妙的设计，让同一个模型可以在不同的“模式”下工作：
 *   **Encoder-only 模式**：用于代码理解任务，如代码搜索、克隆检测。
-*   **Decoder-only 模式**：用于自回归任务，如实时代码补全。
+*   **[Decoder-only](<../../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md>) 模式**：用于自回归任务，如实时代码补全。
 *   **Encoder-Decoder 模式**：用于生成任务，如代码注释生成。
 
 同时，它还是一个**跨模态 (Cross-Modal)** 模型，能够同时处理和理解来自不同源头的信息，包括：
@@ -25,7 +25,7 @@ UniXcoder 是微软研究院继 CodeBERT 和 GraphCodeBERT 之后，于2022年�
 在 UniXcoder 之前，代码模型存在“术业有专攻”但不够灵活的问题：
 1.  **Encoder-only 模型 (如 CodeBERT, GraphCodeBERT)**：理解能力强，但生成任务需要额外加一个随机初始化的解码器，效果不佳。
 2.  **Decoder-only 模型 (如 CodeGPT, GPT-C)**：代码补全和生成能力强，但因为只能看到上文（单向信息），理解能力受限。
-3.  **Encoder-Decoder 模型 (如 CodeT5, PLBART)**：兼具理解和生成能力，但对于需要极高效率的实时代码补全（IDE中的常见场景）来说，其架构过于庞大，推理速度慢，不如纯 Decoder-only 模型高效。
+3.  **Encoder-Decoder 模型 (如 [CodeT5](<CodeT5.md>), PLBART)**：兼具理解和生成能力，但对于需要极高效率的实时代码补全（IDE中的常见场景）来说，其架构过于庞大，推理速度慢，不如纯 Decoder-only 模型高效。
 
 UniXcoder 的提出就是为了解决这个**统一性与效率的矛盾**，希望用一个模型优雅地解决所有问题。
 
@@ -35,7 +35,7 @@ UniXcoder 的创新主要体现在其**灵活的架构**和**多模态信息的�
 
 #### A. 核心架构：带前缀的统一Transformer (Unified Transformer with Prefix)
 
-UniXcoder 的底层是一个标准的 Transformer，但它的“魔力”在于如何通过**掩码注意力矩阵 (Mask Attention Matrices)** 和 **前缀 (Prefix)** 来控制模型的行为。
+UniXcoder 的底层是一个标准的 [Transformer](<../../02_大模型/基础架构/Transformer.md>)，但它的“魔力”在于如何通过**掩码注意力矩阵 (Mask [Attention](<../../02_大模型/基础架构/Self-Attention.md>) Matrices)** 和 **前缀 (Prefix)** 来控制模型的行为。
 
 *   **工作模式切换**：在输入序列的开头，UniXcoder会加上一个特殊的前缀词元，来告诉模型现在要扮演什么角色：
     *   `[Enc]`: 切换到 **Encoder-only** 模式。此时，注意力掩码是全通的，序列中任何一个词元都可以看到其他所有词元。

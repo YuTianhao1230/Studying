@@ -1,6 +1,6 @@
 # Agent学习资料索引
 
-这个文件记录 Agent、AI Coding、Skills、MCP、OpenClaw/Clawdbot 等相关资料来源和阅读状态。
+这个文件记录 [Agent](<../基础概念/Agent.md>)、AI Coding、Skills、[MCP](<../基础概念/MCP.md>)、OpenClaw/Clawdbot 等相关资料来源和阅读状态。
 
 ## 已整理资料
 
@@ -25,12 +25,12 @@
 
 主题分类：
 
-- Skills：Skill 概念、实操、Claude Code 插件实践、Trae Skill 实践。
+- Skills：[Skill](<../基础概念/Skill.md>) 概念、实操、Claude Code 插件实践、Trae Skill 实践。
 - MCP：MCP 工具提效。
 - Spec Coding：Spec Coding 最佳实践、Spec Coding Agent。
 - Trae：Trae 使用经验。
 - Claude Code：Claude Code 使用、代理、工作流实践。
-- OpenClaw / Clawdbot：内部开发机、Hermes 灰度、Fornax Trace、手机接力编码。
+- OpenClaw / Clawdbot：内部开发机、[Hermes](<../基础概念/Hermes.md>) 灰度、Fornax Trace、手机接力编码。
 - AGENTS.md：AI 辅助编程规范与仓库级上下文实践。
 - DeepResearch 类 Agent：调研型 Agent 能力与工作流。
 

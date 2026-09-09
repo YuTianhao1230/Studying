@@ -12,7 +12,7 @@ vLLM 是一个高吞吐的大语言模型推理和服务框架，核心特点是
 
 - 多用户并发请求长度不同。
 - 每个请求生成长度不同。
-- KV cache 占用大量显存。
+- [KV cache](<KV_Cache与Prefill_Decode.md>) 占用大量显存。
 - 静态 batch 容易浪费计算。
 - 长上下文容易造成显存碎片。
 
@@ -54,7 +54,7 @@ PagedAttention：
 
 问题是有些请求很短，有些很长，短请求完成后 GPU 位置空出来但不能马上补新请求。
 
-Continuous Batching 的思想是：
+[Continuous Batching](<Batching.md>) 的思想是：
 
 ```text
 某个请求生成结束后，马上把新请求插入 batch。

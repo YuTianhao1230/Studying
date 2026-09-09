@@ -30,7 +30,7 @@ Serving 是线上服务系统：
 ### Serving 系统通常包括什么
 
 - API Server：HTTP、gRPC、OpenAI-compatible API。
-- Model Runtime：vLLM、TensorRT-LLM、xLLM 等推理运行时。
+- Model Runtime：[vLLM](<vLLM.md>)、TensorRT-LLM、xLLM 等推理运行时。
 - Scheduler：请求调度和 batching。
 - Load Balancer：负载均衡。
 - Autoscaler：自动扩缩容。
@@ -51,7 +51,7 @@ Serving 是线上服务系统：
 ### 常见线上问题
 
 - 请求排队导致 P99 延迟升高。
-- KV cache 占满导致 OOM。
+- [KV cache](<KV_Cache与Prefill_Decode.md>) 占满导致 OOM。
 - 上游请求量突增导致超时。
 - 模型版本不一致导致输出异常。
 - tokenizer 或 prompt 模板版本不匹配。

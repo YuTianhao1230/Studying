@@ -4,7 +4,7 @@
 
 ### 概述
 
-Transformer 是以自注意力为核心的序列建模架构，原始版本采用 Encoder-Decoder 结构，奠定了 BERT、GPT、T5、ViT、CLIP 和现代 LLM/VLM 的基础。
+[Transformer](<../../基础架构/Transformer.md>) 是以自注意力为核心的序列建模架构，原始版本采用 [Encoder-Decoder](<../../基础架构/Decoder-only vs Encoder-Decoder.md>) 结构，奠定了 [BERT](<BERT.md>)、[GPT](<GPT.md>)、[T5](<T5.md>)、[ViT](<ViT.md>)、[CLIP](<../../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 和现代 LLM/VLM 的基础。
 
 ### 解决的问题
 
@@ -59,7 +59,7 @@ target tokens
 
 ### 核心组件
 
-Self-Attention：
+[Self-Attention](<../../基础架构/Self-Attention.md>)：
 
 ```text
 Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V
@@ -93,7 +93,7 @@ FFN(x) = max(0, xW1 + b1)W2 + b2
 - GPT：只使用 Decoder 的 masked self-attention，做自回归生成。
 - T5：保留 Encoder-Decoder，统一 text-to-text。
 - ViT：把图像 patch 当 token 输入 Transformer Encoder。
-- LLM：在 decoder block 上加入 RoPE、RMSNorm、SwiGLU、GQA/MoE 等改造。
+- LLM：在 decoder block 上加入 [RoPE](<../../基础架构/RoPE.md>)、[RMSNorm](<../../基础架构/RMSNorm.md>)、[SwiGLU](<../../../03_训练优化与对齐/参数/常见激活函数.md>)、GQA/MoE 等改造。
 
 ### 常见考法与解题方法
 

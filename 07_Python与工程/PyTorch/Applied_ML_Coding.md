@@ -126,7 +126,7 @@
 - 写一个最小 training loop。
 - 写一个 top-k/top-p 采样函数。
 - 写一个 JSONL eval harness。
-- 写一个 RAG chunking + retrieval demo。
+- 写一个 [RAG](<../../02_大模型/应用与问题/RAG.md>) chunking + retrieval demo。
 ## 面试应对
 
 ### Applied_ML_Coding 是什么？

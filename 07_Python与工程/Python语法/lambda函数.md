@@ -92,7 +92,7 @@ squared_numbers_list = list(squared_numbers_iterator) # map返回的是迭代器
 
 print(squared_numbers_list) # [1, 4, 9, 16, 25]
 ```
-> **提示**：虽然这个例子很好地展示了 `map` 和 `lambda`，但在 Python 中，使用列表推导式通常更受欢迎且可读性更高：`squared = [x * x for x in numbers]`。
+> **提示**：虽然这个例子很好地展示了 `map` 和 `lambda`，但在 Python 中，使用[列表推导式](<列表推导式.md>)通常更受欢迎且可读性更高：`squared = [x * x for x in numbers]`。
 
 #### 场景三：筛选数据 `filter()`
 
