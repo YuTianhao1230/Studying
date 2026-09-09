@@ -208,6 +208,92 @@ image / video
 
 对 UI / 文档 / 视频任务来说，动态分辨率非常重要：如果统一压成低分辨率，小字、按钮、价格、角标、表格会丢；如果全量高分辨率输入，视觉 token 会爆炸。
 
+### Qwen3-VL 接受什么图像尺寸
+
+Qwen3-VL **不是固定输入 `224x224`、`336x336` 或 `448x448` 的视觉模型**。它支持 Native Dynamic Resolution，原始图片可以是任意合理的宽高比例，processor 会根据视觉 token 预算动态调整尺寸。
+
+需要区分三个尺寸：
+
+```text
+原始尺寸：
+  图片文件本身的 W x H，例如手机截图的竖屏尺寸。
+
+预处理尺寸：
+  processor resize 后送入 Vision Encoder 的 W' x H'。
+
+视觉 token 网格：
+  resize 后再按 patch 和 spatial merge 切分得到的 grid_thw。
+```
+
+所以模型不是直接把原始图片的每个像素送进去，也不是把所有图片都压成同一个固定正方形。
+
+### 每张图片都会 resize 吗
+
+通常会。Qwen3-VL 的 processor 会根据配置对图片做缩放和尺寸对齐，主要逻辑是：
+
+```text
+原始图片
+  -> 保持宽高比缩放
+  -> 让总像素数落在 min_pixels / max_pixels 预算内
+  -> 将宽高对齐到 patch 和 spatial merge 需要的倍数
+  -> 切成视觉 patch/token
+```
+
+一般不会通过拉伸把图片强行变成正方形，而是尽量保持原始宽高比。对于手机 UI 截图，这一点很重要：强行正方形 resize 会改变页面布局比例，细小文字和控件也更容易失真。
+
+### resize 后如何计算视觉 token
+
+以 Qwen3-VL 常见视觉配置为例：
+
+```text
+patch_size = 16
+spatial_merge_size = 2
+```
+
+图片经过 resize 后，可以粗略理解为：
+
+```text
+原始视觉 patch 数
+  ≈ (H' / 16) * (W' / 16)
+
+Merger 后视觉 token 数
+  ≈ (H' / 32) * (W' / 32)
+```
+
+这里的 `32` 来自 `patch_size * spatial_merge_size`。实际 token 数还会受具体 processor、边界取整和模型版本影响，最终应以 processor 生成的 `image_grid_thw` 为准。
+
+视频则多一个时间维：
+
+```text
+video_grid_thw = [T, H, W]
+```
+
+其中 `T` 是时间 patch 网格，`H/W` 是空间 patch 网格。视频的帧率、总帧数、空间分辨率和视觉 token 预算会共同决定最终输入规模。
+
+### `min_pixels`、`max_pixels` 和 `total_pixels`
+
+常见控制参数可以这样理解：
+
+| 参数 | 作用 |
+| --- | --- |
+| `min_pixels` | 约束图片不能被缩得过小，保证文字和局部细节有最低分辨率 |
+| `max_pixels` | 限制单张图片最大像素预算，防止高分辨率图片产生过多视觉 token |
+| `total_pixels` | 视频或多图片输入的总像素/token 预算，控制整个样本的视觉成本 |
+| `image_grid_thw` | 记录图片经过 patch 化后的空间网格 |
+| `video_grid_thw` | 记录视频经过时空 patch 化后的 T/H/W 网格 |
+
+不同 checkpoint 和 processor 的默认值可能不同，不能把某一个项目的 `max_pixels` 当成 Qwen3-VL 的固定输入尺寸。实际使用时应以模型目录里的 processor 配置和运行参数为准。
+
+### 固定尺寸和动态尺寸怎么选
+
+| 方式 | 特点 | 适合场景 |
+| --- | --- | --- |
+| 动态分辨率 | 保持比例，按像素/token 预算变化 | 通用图片、手机截图、文档、多模态问答 |
+| 固定 resize | 所有图片变成同一尺寸，吞吐和显存更容易预估 | 受限的批处理、严格固定输入的实验 |
+| 固定像素预算 | 尺寸不一定相同，但总视觉 token 大致受控 | 线上服务和长视频，通常是更实用的折中 |
+
+对关键帧/UI 任务，通常不建议直接把所有图片固定压到很小的正方形。更合理的做法是保留宽高比，用 `min_pixels` 保证小字可读，再用 `max_pixels` 或视觉 token 上限控制显存。
+
 ### Interleaved-MRoPE
 
 Qwen3-VL 使用 Interleaved-MRoPE 来表达多维位置。
@@ -499,6 +585,14 @@ Qwen3-VL 是三模块架构：第一部分是 SigLIP-2-based Vision Encoder，�
 回答模板：
 
 Qwen3-VL 的视频输入一般先由 processor 或 qwen-vl-utils 读取，视频可以来自 URL、本地文件或抽帧列表。然后按 `fps` 或 `num_frames` 采样，并根据 `min_pixels`、`max_pixels`、`total_pixels` 做动态分辨率缩放。采样帧会被切成时空 patch，形成 `pixel_values_videos` 和 `video_grid_thw`，其中 `video_grid_thw` 记录时间、高度、宽度网格。接着 Vision Encoder 编码视觉 token，Merger 把视觉 token 压缩并投影到 Qwen3 hidden size，最后和文本 token 一起进入 Qwen3 decoder 生成答案。
+
+### Qwen3-VL 的图像输入尺寸是固定的吗？
+
+回答思路：先否定固定分辨率，再讲动态 resize、像素预算、宽高比和 patch 对齐。
+
+回答模板：
+
+Qwen3-VL 通常不是固定输入分辨率的模型，不要求所有图片都变成 `224x224` 或 `448x448`。processor 会尽量保持原图宽高比，根据 `min_pixels`、`max_pixels` 和多图/视频的总像素预算进行 resize，再把宽高对齐到 patch 和 spatial merge 需要的倍数。以常见的 `patch_size=16`、`spatial_merge_size=2` 为例，Merger 后的视觉 token 网格大致按 `H'/32` 和 `W'/32` 计算。这样可以在保留手机截图小字和布局比例的同时控制显存和上下文成本。具体尺寸和 token 数应以当前 checkpoint 的 processor 配置以及 `image_grid_thw`/`video_grid_thw` 为准。
 
 ### Interleaved-MRoPE 和 DeepStack 分别解决什么？
 
