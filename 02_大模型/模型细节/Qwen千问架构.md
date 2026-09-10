@@ -62,6 +62,8 @@ token ids
 | Output | final [RMSNorm](<../基础架构/RMSNorm.md>) + linear output layer，词表约 151k | 输出 next-token logits |
 | Context | 支持长上下文，例如 128k 级别 | 长文档、长视频、多轮对话会共同消耗上下文 |
 
+![Qwen3-8B Decoder 架构图](assets/qwen3-vl/qwen3_8b_decoder.png)
+
 这里最值得记的是：
 
 ```text
@@ -145,6 +147,8 @@ image / video frames
   -> text / timestamp / box / JSON / tool call
 ```
 
+![Qwen3-VL 总体架构图](assets/qwen3-vl/qwen3_vl_architecture.png)
+
 对应关系：
 
 | 模块 | 输入 | 核心机制 | 输出 |
@@ -160,6 +164,8 @@ image / video frames
 Qwen3-VL 的视觉侧基于 SigLIP-2 视觉编码器继续训练和适配。
 
 SigLIP-2 可以理解为更强的视觉语言编码器，相比传统 [CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 式 softmax contrastive loss，SigLIP 把 batch 内图文配对看成独立二分类问题；SigLIP-2 进一步强化多语言、OCR、定位、dense features 等能力。
+
+![SigLIP-2 训练框架图](assets/qwen3-vl/siglip2_training_recipe.png)
 
 这里要注意：**SigLIP-2 是一个视觉编码器家族，不同变体层数和输入分辨率不同**。放到 Qwen3-VL 里说时，重点不是泛泛背 SigLIP-2，而是记住 Qwen3-VL 使用的 **SigLIP-2-based ViT** 配置。
 
@@ -417,6 +423,8 @@ Qwen3-VL 的预训练大致分四个阶段：
 | Stage 1: Multimodal Pre-Training | 建立通用多模态理解能力 | 所有组件 | 约 8k |
 | Stage 2: Long-Context Pre-Training | 扩展长上下文处理能力 | 所有组件 | 约 32k |
 | Stage 3: Ultra-Long-Context Adaptation | 适配超长上下文 | 所有组件 | 约 256k |
+
+![Qwen3-VL 预训练阶段与训练设置](assets/qwen3-vl/qwen3_vl_pretraining_stages.png)
 
 Stage 0 很关键：视觉编码器和 LLM 原本不在同一个表示空间，先训练 Merger 能让视觉 token 更快贴近语言空间，降低后续全模型训练难度。
 

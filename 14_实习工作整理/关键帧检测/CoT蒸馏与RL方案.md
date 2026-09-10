@@ -932,7 +932,7 @@ Direct SFT
 | STVG-R1 | 用对象 ID 和时空证据替代脆弱的坐标回归 | 建立稳定的 UI/对象 primitive，拆分时间、区域和格式 reward |
 | OmniVideo-100K | Entity-Anchored Scripting 与 Clue-Guided QA | 先构造“时间段 -> UI 状态/动作/字幕”，再选择任务相关 evidence set |
 | Open-o3 Video | 将 reasoning 与时间戳、对象区域绑定 | 设计 `evidence_span + evidence_region + reasoning + answer` |
-| Thinking with Visual Primitives | 点、框、mask 和轨迹是推理中的一等证据 | 将 State/Event/Region primitive 作为 CoT 可引用对象 |
+| [Thinking with Visual Primitives](<Thinking with Visual Primitives 视觉原语推理.md>) | 点、框、mask 和轨迹是推理中的一等证据 | 将 State/Event/Region primitive 作为 CoT 可引用对象 |
 | LongVT | 先稀疏浏览，再局部高密度复查 | 采用低 FPS 粗筛 + 候选窗口高 FPS 精筛 |
 | VITAL | 通过 visual toolbox 重新采样减少长视频幻觉 | 将局部重采样结果写入可审计的 CoT，按难度分桶做 GRPO |
 | Chain-of-Frames | 推理步骤必须绑定具体帧 | 记录 `frame_id`、`frame_time` 和 `evidence_region` |
@@ -993,6 +993,8 @@ Region Primitive：
 ```
 
 模型先引用 primitive，再生成短证据句，比直接生成长篇自然语言更容易自动检查。
+
+论文方法、训练数据、Reward、RFT/OPD 流程以及对关键帧任务的迁移方式，详见 [Thinking with Visual Primitives：视觉原语推理](<Thinking with Visual Primitives 视觉原语推理.md>)。
 
 #### 12.5 粗筛到精筛与多模态 CoT
 
