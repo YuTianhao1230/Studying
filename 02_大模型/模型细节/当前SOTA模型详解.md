@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文整理 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等主流模型系列的架构倾向、能力定位、解决的问题、训练与推理特点、适用场景和面试回答方式。
+本文按技术路线和代表性阶段整理 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等模型系列。这里的“SOTA”表示某个时间点、任务或能力维度上的代表性路线，不等于永久的排行榜第一；实际选型必须以具体模型版本、评测集、成本和部署约束为准。
 
 ### 先建立 SOTA 模型坐标系
 

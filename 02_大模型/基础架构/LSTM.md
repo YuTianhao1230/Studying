@@ -84,7 +84,7 @@ LSTM 通过三个精心设计的“门”来控制这条传送带，决定哪些
 #### 缺点：
 *   **结构复杂**：相比标准 RNN，LSTM 的参数量要大得多，计算也更复杂，训练起来更慢。
 *   **仍然可能遇到梯度问题**：在处理极度长的序列时，LSTM 依然可能会遇到梯度消失或爆炸的问题。
-*   **已被更先进的架构超越**：在许多自然语言处理（NLP）任务中，基于注意力机制（[Attention](<Self-Attention.md>) Mechanism）的 **[Transformer](<Transformer.md>)** 模型（如 [BERT](<../模型细节/里程碑模型/BERT.md>), [GPT](<../模型细节/里程碑模型/GPT.md>)）已经取代了 LSTM，成为最先进（SOTA）的选择。因为 Transformer 可以并行计算，并且通过自注意力机制能更直接地捕捉序列中任意两个位置之间的依赖关系。
+*   **在主流 NLP 任务中逐渐被 Transformer 路线替代**：在许多自然语言处理任务中，基于注意力机制（[Attention](<Self-Attention.md>) Mechanism）的 **[Transformer](<Transformer.md>)** 模型（如 [BERT](<../模型细节/里程碑模型/BERT.md>)、[GPT](<../模型细节/里程碑模型/GPT.md>)）通常更有优势，因为 Transformer 可以并行计算，并通过自注意力直接捕捉序列中任意两个位置之间的依赖关系。但 LSTM 在流式序列、资源受限和对延迟敏感的场景仍有使用价值。
 
 ### 主要应用场景
 

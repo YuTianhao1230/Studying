@@ -73,7 +73,7 @@ Studying/
 | --- | --- |
 | 数学、统计推断、因果推断、机器学习、深度学习基础 | [01_机器学习基础/](<01_机器学习基础/>) |
 | Transformer、Tokenizer、预训练、Scaling Law、注意力、MoE、模型细节、RAG、CoT、Prompt、大模型发展历史与 SOTA 演进 | [02_大模型/](<02_大模型/>) |
-| DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、LoRA、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、超参数、Optimizer、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
+| DeepSpeed、ZeRO、FSDP、Megatron-LM、多 GPU 通信、LoRA、Adapter、后训练发展史、DPO、PPO、GRPO、Checkpoint、Loss 异常、超参数、Optimizer、损失函数、模型训练路线 | [03_训练优化与对齐/](<03_训练优化与对齐/>) |
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
 | CNN、ResNet、ViT、VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [06_视觉多模态与生成模型/](<06_视觉多模态与生成模型/>) |
@@ -106,6 +106,7 @@ Studying/
 - [03_训练优化与对齐/参数/README.md](<03_训练优化与对齐/参数/README.md>)：训练超参数、Optimizer、loss、activation 和 LoRA 参数入口。
 - [03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md](<03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>)：训练 loss 异常、NaN、发散和不收敛排查入口。
 - [03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md](<03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md>)：集合通信、慢节点、Hang、OOM 和恢复排查入口。
+- [03_训练优化与对齐/训练框架与并行/多GPU并行通信与吞吐优化.md](<03_训练优化与对齐/训练框架与并行/多GPU并行通信与吞吐优化.md>)：多 GPU 并行策略、通信计算重叠、吞吐分析和通信损耗优化。
 - [04_评测实验与数据质量/训练数据构造与合成数据.md](<04_评测实验与数据质量/训练数据构造与合成数据.md>)：训练数据、后训练数据和合成数据构造入口。
 - [07_Python与工程/深度学习框架/深度学习框架选型.md](<07_Python与工程/深度学习框架/深度学习框架选型.md>)：PyTorch、TensorFlow/Keras、JAX、Hugging Face 等框架怎么选。
 - [07_Python与工程/深度学习框架/PyTorch训练工程基础.md](<07_Python与工程/深度学习框架/PyTorch训练工程基础.md>)：PyTorch 训练循环、autograd、DataLoader、checkpoint 和 OOM 排查。

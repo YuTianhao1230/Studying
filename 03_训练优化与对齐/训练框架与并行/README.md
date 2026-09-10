@@ -14,11 +14,13 @@
 | [Mixed Precision Training.md](<Mixed Precision Training.md>) | fp16/bf16、loss scaling 和混合精度训练稳定性。 |
 | [Checkpoint.md](<Checkpoint.md>) | 模型、优化器、调度器和训练状态保存/恢复机制。 |
 | [分布式训练通信与故障排查.md](<分布式训练通信与故障排查.md>) | 并行策略、NCCL 集合通信、慢节点、Hang、OOM 和故障恢复。 |
+| [多GPU并行通信与吞吐优化.md](<多GPU并行通信与吞吐优化.md>) | 多 GPU 并行策略、集合通信、通信计算重叠、吞吐分析和通信损耗优化。 |
 
 ## 学习路线
 
 1. 先看 [Mixed Precision Training.md](<Mixed Precision Training.md>) 和 [Checkpoint.md](<Checkpoint.md>)，理解单次训练任务的基础工程。
 2. 再看 [ZeRO.md](<ZeRO.md>) 和 [FSDP.md](<FSDP.md>)，理解显存切分。
 3. 接着看 [DeepSpeed.md](<DeepSpeed.md>) 和 [Megatron_LM.md](<Megatron_LM.md>)，理解大规模训练框架。
-4. 用 [分布式训练通信与故障排查.md](<分布式训练通信与故障排查.md>) 串联通信、吞吐和多机故障定位。
-5. 最后看 [JAX与XLA.md](<JAX与XLA.md>)，补充编译式训练生态。
+4. 先看 [多GPU并行通信与吞吐优化.md](<多GPU并行通信与吞吐优化.md>)，理解并行策略、通信和吞吐优化。
+5. 再用 [分布式训练通信与故障排查.md](<分布式训练通信与故障排查.md>) 串联慢节点、Hang、OOM 和多机故障定位。
+6. 最后看 [JAX与XLA.md](<JAX与XLA.md>)，补充编译式训练生态。

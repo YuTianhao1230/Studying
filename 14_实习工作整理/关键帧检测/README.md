@@ -12,7 +12,7 @@
 | [BadCase归因与UI元素治理.md](<BadCase归因与UI元素治理.md>) | 小面积 UI、购物车角标、营销 Banner、边缘小图和 GT 标注误差治理。 |
 | [数据飞轮与主动学习.md](<数据飞轮与主动学习.md>) | 多模型筛 bad case、人工重标、分桶评测、采样配比和高优指标治理。 |
 | [并行DE与PE.md](<并行DE与PE.md>) | 数据侧治理和 prompt/规则侧治理的并行闭环，以及相关面试问答。 |
-| [CoT蒸馏与RL方案.md](<CoT蒸馏与RL方案.md>) | 关键帧 CoT 数据蒸馏现成方案：Video Primitive、eval_keyframe graph、hidden filter、训练样本构造和 RL 衔接。 |
+| [CoT蒸馏与RL方案.md](<CoT蒸馏与RL方案.md>) | 关键帧 CoT 数据蒸馏与质量提升方案：Video Primitive、Evidence Chain、人工抽检、质量分层、结构化 SFT 和 GRPO/RL。 |
 | [Qwen3-VL关键帧数据格式.md](<Qwen3-VL关键帧数据格式.md>) | 当前关键帧任务从标准 JSONL 到 qwen3 JSONL 的数据结构、字段含义、模态绑定和 Qwen 实际接收信息。 |
 | [ms-swift关键帧训练与推理.md](<ms-swift关键帧训练与推理.md>) | 当前 train_video.sh 的 Qwen3.5 full SFT、分布式配置、推理分片、参数含义和结果合并逻辑。 |
 | [部署上线与容量评估.md](<部署上线与容量评估.md>) | 接口字段、链路耗时、图片下载瓶颈、并发压测、QPM 和线上回测。 |

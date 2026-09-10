@@ -157,7 +157,8 @@ MoE/GQA/MLA/FlashAttention]
 ---
 
 ## 主线二：按同系列模型看迭代历史（更新至 2026-06-14）
-> **本节重写说明：**前一版确实不全，且很多系列停在 2025。现在按 2026-06-14 的公开官方信息补齐文档中已有系列：OpenAI、Google Gemini/PaLM、Meta LLaMA、Anthropic Claude、Alibaba Qwen、DeepSeek、Mistral，并新增“其他主流 SOTA 补充”。每行都回答：上一阶段什么问题没解决、本代怎么解决，以及官方入口。
+
+本节按截至 2026-06-14 可核验的公开资料，整理 OpenAI、Google Gemini/PaLM、Meta LLaMA、Anthropic Claude、Alibaba Qwen、DeepSeek、Mistral 等主线系列。每行关注上一阶段的问题、本代的主要变化和可核验入口；模型排名和能力结论仍需结合具体时间、任务和评测集判断。
 
 | 口径 | 说明 | 为什么这样处理 |
 |-|-|-|

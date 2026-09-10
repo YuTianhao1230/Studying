@@ -28,6 +28,7 @@
 | [Reward Model 与 Grader 奖励模型与评分器.md](<Reward Model 与 Grader 奖励模型与评分器.md>) | 负责给模型输出、候选答案或轨迹打分的偏好模型或规则评分器 |
 | [Reward Collapse 奖励坍缩.md](<Reward Collapse 奖励坍缩.md>) | 模型通过钻 reward 漏洞获得高分，但真实质量下降的现象 |
 | [PEFT 参数高效微调.md](<PEFT 参数高效微调.md>) | 冻结大模型主体，只训练少量 adapter、prefix 或 soft prompt 的高效微调方法体系 |
+| [Adapter 参数高效微调.md](<Adapter 参数高效微调.md>) | Bottleneck Adapter 的结构、插入位置、训练方式以及与 LoRA/Prefix Tuning 的区别 |
 | [LoRA 低秩适配.md](<LoRA 低秩适配.md>) | 参数高效微调方法，通过低秩矩阵适配大模型 |
 | [Knowledge Distillation 知识蒸馏.md](<Knowledge Distillation 知识蒸馏.md>) | 让小模型学习强模型输出、推理轨迹或分布的能力迁移方法 |
 | [Model Merging 模型合并.md](<Model Merging 模型合并.md>) | 在权重空间合并多个模型或 adapter，在不增加推理成本的情况下融合能力 |
@@ -47,5 +48,5 @@ RLVR 和 Agentic RL 经常一起出现，但它们不是同一个层级的概念
 2. 再看 [SFT 监督微调.md](<SFT 监督微调.md>)，理解后训练冷启动。
 3. 接着看 [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>)、[DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) 和 [PPO 近端策略优化.md](<PPO 近端策略优化.md>)，理解偏好对齐。
 4. 再看 [GRPO 组相对策略优化.md](<GRPO 组相对策略优化.md>) 和 [RLVR 可验证奖励强化学习.md](<RLVR 可验证奖励强化学习.md>)，理解推理强化。
-5. 然后看 [PEFT 参数高效微调.md](<PEFT 参数高效微调.md>) 和 [LoRA 低秩适配.md](<LoRA 低秩适配.md>)，理解资源受限场景下如何高效做任务适配。
+5. 然后看 [PEFT 参数高效微调.md](<PEFT 参数高效微调.md>)、[Adapter 参数高效微调.md](<Adapter 参数高效微调.md>) 和 [LoRA 低秩适配.md](<LoRA 低秩适配.md>)，理解资源受限场景下如何高效做任务适配。
 6. 最后看 [Model Merging 模型合并.md](<Model Merging 模型合并.md>) 和 [Agentic RL 智能体强化学习.md](<Agentic RL 智能体强化学习.md>)，理解多能力融合与工具调用/长任务轨迹训练。

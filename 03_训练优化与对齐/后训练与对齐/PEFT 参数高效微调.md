@@ -84,7 +84,7 @@ Prompt Tuning 是训练一组连续向量作为 soft prompt，把它拼到输入
 
 #### Adapter Tuning
 
-Adapter Tuning 在 Transformer 层中插入小型 bottleneck 模块，只训练这些 adapter。
+Adapter Tuning 在 Transformer 层中插入小型 bottleneck 模块，只训练这些 adapter。完整的结构、训练方式和工程取舍见 [Adapter 参数高效微调](<Adapter 参数高效微调.md>)。
 
 特点：
 
