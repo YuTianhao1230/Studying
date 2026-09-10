@@ -242,7 +242,7 @@ human.value 的 <video>
 - `task_type_en` 可以由中文到英文的映射表补充，是元数据，不会重新生成 prompt。
 - `original_images` 是为了兼容图片字段保留的空列表，对当前视频任务没有视觉内容。
 - `fps`、`max_frames`、`max_pixels` 的顶层副本方便训练/推理框架读取，和 `infos` 中的配置保持一致。
-- `input_size` 是预处理尺寸记录，不代表 Qwen3-VL 要求所有图片固定成这个尺寸。Qwen3-VL 的动态 resize、像素预算和视觉 token 计算见 [Qwen千问架构.md](<../../02_大模型/模型细节/Qwen千问架构.md>)。
+- `input_size` 是预处理尺寸记录，不代表 Qwen3-VL 要求所有图片固定成这个尺寸。Qwen3-VL 的动态 resize、像素预算和视觉 token 计算见 [Qwen千问架构.md](<../../../02_大模型/模型细节/Qwen千问架构.md>)。
 
 ### Qwen3-VL 实际接收什么
 

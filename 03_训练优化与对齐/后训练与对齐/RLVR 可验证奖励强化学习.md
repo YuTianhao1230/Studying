@@ -62,6 +62,43 @@ RLVR 适合结果可以自动验证的任务：
 
 不适合 RLVR 的场景，是那些没有可靠验证器、目标高度主观、或者 reward 和真实质量相关性很弱的任务，例如开放创意写作、复杂价值判断、纯风格偏好。
 
+### 关键帧检测中的 RLVR 设计
+
+关键帧检测适合尝试 RLVR，因为最终时间和结构化输出都可以程序化验证。推荐从 Structured CoT SFT checkpoint 开始，让 policy 对同一个视频和 `task_type` 生成多条回答，再使用以下 reward：
+
+```text
+R_total =
+  w_time * R_time
+  + w_format * R_format
+  + w_boundary * R_boundary
+  + w_evidence * R_evidence
+  - w_length * P_length
+  - w_hallucination * P_hallucination
+```
+
+其中：
+
+- `R_time`：预测时间与 GT 的连续误差奖励，以及业务容忍阈值命中奖励。
+- `R_format`：JSON/XML schema、answer 解析和时间字段类型检查。
+- `R_boundary`：检查 before 未完成、current 首次满足、after 没有二次刷新推翻。
+- `R_evidence`：检查 CoT 引用的时间、UI 区域和状态是否与视频一致。
+- `P_length`：惩罚重复、循环和无关视频描述。
+- `P_hallucination`：惩罚不存在的 UI 元素、用户操作和因果解释。
+
+RL 数据优先使用当前模型部分正确、部分错误的 Normal-Level 困难样本。全对样本的组内 reward 通常没有差异，全错样本又缺少正向轨迹，都不适合作为第一批 GRPO 数据。
+
+关键帧 RLVR 的验收不能只看 reward，还要看：
+
+```text
+全量 ACC
+  + 低 ACC 指标 ACC
+  + frame/time error
+  + early/late 分布
+  + 格式解析率
+  + evidence accuracy
+  + KL 和 response length
+```
+
 ### 优势与局限
 
 RLVR 的优势是 reward 更客观、可规模化、成本低于人类偏好标注，尤其适合数学、代码和工具任务。它还能让模型通过采样和验证发现比 [SFT](<SFT 监督微调.md>) 数据更好的解法，而不只是模仿离线答案。
@@ -120,4 +157,3 @@ RLVR 最大风险是 reward 不等于真实目标。如果数学 reward 只看�
 回答模板：
 
 关键帧识别是一个适合尝试 RLVR 的任务，因为预测时间可以和 GT 做自动比较。我会把 reward 拆成几部分：第一是时间 reward，比如预测时间和 GT 的误差或 IoU；第二是格式 reward，确保输出能被解析；第三是边界证据 reward，要求模型说明为什么前一段未完成、当前段首次完成；第四是长度惩罚，避免模型输出过长 [CoT](<../../02_大模型/应用与问题/CoT.md>)。训练时还要人工抽检高 reward 样本，防止模型只学会格式或利用 GT 噪声。
-

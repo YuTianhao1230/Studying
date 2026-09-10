@@ -24,6 +24,115 @@ GRPO 的核心流程是：对同一个 prompt 采样一组回答，给每个回�
 
 GRPO 不是完全抛弃 PPO。它仍然保留 policy optimization、ratio clipping 和 KL 约束这些思想，用来限制策略更新幅度，防止模型一步更新太猛，或者偏离 reference model 太远。真正被替换的是 advantage 的来源：PPO 依赖 Critic 估计 baseline，GRPO 使用同组回答的相对 reward 构造 advantage。
 
+### GRPO 的训练目标
+
+对同一个 prompt `q` 采样 `G` 个回答：
+
+```text
+y_1, y_2, ..., y_G ~ π_old(y | q)
+```
+
+每个回答经过 reward function 得到 `r_i`，再计算组内相对 advantage：
+
+```text
+A_i = (r_i - mean(r_group))
+      / (std(r_group) + epsilon)
+```
+
+策略更新可以简化表示为：
+
+```text
+L =
+  - E[
+      min(
+        ρ_i,t * A_i,
+        clip(ρ_i,t, 1 - ε, 1 + ε) * A_i
+      )
+    ]
+  + β * KL(π_policy || π_reference)
+```
+
+其中：
+
+- `ρ_i,t`：当前 policy 与旧 policy 在第 `t` 个 token 上的概率比。
+- `ε`：限制单次策略更新幅度。
+- `π_reference`：通常是 RL 开始前的 SFT checkpoint。
+- `β`：KL 约束系数。
+
+实际实现会因框架不同采用不同的 token-level loss 和 KL 估计，但核心思想不变：
+
+```text
+同题多答案
+  -> reward 排序
+  -> 组内相对 advantage
+  -> clipped policy update
+  -> KL 约束
+```
+
+### GRPO 为什么必须关注 reward 方差
+
+GRPO 学习的是相对差异。如果同一个 group 中所有回答 reward 都相同：
+
+```text
+std(r_group) ≈ 0
+```
+
+那么组内没有有效的相对学习信号。常见原因：
+
+- 所有回答都正确。
+- 所有回答都错误。
+- temperature 太低，回答几乎完全相同。
+- parser 失败，所有回答被打成同一个分数。
+- reward 过于粗糙，只返回 0/1。
+
+训练时应监控：
+
+```text
+reward_mean
+reward_std
+group_zero_variance_ratio
+answer_parse_rate
+format_parse_rate
+```
+
+### GRPO 的 reward 设计原则
+
+一个可用的 reward 通常由多个分项构成：
+
+```text
+R_total =
+  R_answer
+  + R_process
+  + R_format
+  + R_evidence
+  - P_length
+  - P_hallucination
+```
+
+设计时要遵循：
+
+1. 最终业务目标的权重不能被格式奖励压过。
+2. reward 要提供平滑差异，不能所有错误都得到同一个 0 分。
+3. 必须抽检高 reward 样本，防止 reward hacking。
+4. reward 分项要单独记录，不能只看总 reward。
+5. reward 要与独立业务评测相关，否则 reward 上升不代表能力提升。
+
+### GRPO 的工程训练循环
+
+```text
+1. 准备 SFT checkpoint 作为 policy 初始模型和 reference。
+2. 从 RL-friendly 数据集中取一个 prompt。
+3. 对同一个 prompt 采样 G 个回答。
+4. 解析回答并运行 verifier。
+5. 计算每个回答的分项 reward。
+6. 计算组内均值、标准差和 advantage。
+7. 使用 clipping 和 KL 约束更新 policy。
+8. 记录 reward、KL、长度、解析率和业务指标。
+9. 定期在固定回归集和困难集上评测。
+```
+
+GRPO 不应直接从 Base Model 开始。通常需要先经过 SFT 或 Reasoning SFT，让模型具备基本的任务理解、输出格式和可验证回答能力。
+
 ### 和 PPO、DPO 的区别
 
 GRPO、PPO、[DPO](<DPO 直接偏好优化.md>) 都服务于模型对齐或能力提升，但它们的训练范式不同。
@@ -55,11 +164,32 @@ GRPO 的主要优势有三点。第一，不需要 Critic，显存和计算成�
 
 它的局限也很明确。GRPO 去掉了 Critic，但没有解决 reward 质量问题。如果 reward 设计不完整，模型仍然会 reward hacking。例如数学题只看最终答案，模型可能学会猜答案；代码题单测太弱，模型可能过拟合测试；格式 reward 太重，模型可能牺牲内容质量。另一个问题是组内比较本身有方差，group size 太小会导致 advantage 估计不稳，group size 太大又会增加采样成本。此外，GRPO 仍然是 RL 训练，KL 系数、clipping、采样温度、reward scale 都会影响稳定性。
 
+### 什么时候不应该做 GRPO
+
+以下条件不满足时，应先修数据、SFT 或 verifier：
+
+- 模型还不能稳定生成可解析回答。
+- reward 无法区分正确和错误回答。
+- group 内回答几乎没有差异。
+- 高 reward 样本经人工抽检仍然大量错误。
+- 真实业务指标与 reward 没有相关性。
+- 训练成本无法支持 rollout 和验证。
+
+如果 SFT 已经达到目标，也不需要为了完整训练流程强行加入 GRPO。GRPO 的价值在于利用在线探索继续优化 SFT 尚未解决的能力缺口。
+
 ### 相关概念
 
 [PPO](<PPO 近端策略优化.md>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
 
 ## 面试应对
+
+### GRPO 的核心训练目标是什么？
+
+回答思路：按同题采样、reward、组内 advantage、策略更新和 KL 约束回答。
+
+回答模板：
+
+GRPO 对同一个 prompt 采样一组回答，并分别计算 reward。然后用组内 reward 的均值和标准差构造相对 advantage，高于组内平均水平的回答会被强化，低于平均水平的回答会被抑制。策略更新仍然使用 PPO 类的 clipping 和 KL 约束，防止 policy 一次更新过大或偏离 reference model 太远。它的核心不是简单多生成几次，而是把同一个任务下不同回答的相对质量转化为策略更新信号。
 
 ### GRPO 是什么？
 
@@ -100,6 +230,14 @@ DPO 和 GRPO 都可以用于对齐，但范式不同。DPO 使用离线偏好对
 回答模板：
 
 GRPO 适合推理模型训练，核心原因是数学、代码这类任务有比较可靠的 verifiable reward。同一个题目可以采样多个解法，然后用最终答案、单测、格式规则或执行结果给每个回答打分。GRPO 再用组内相对 reward 强化更好的解法。这样模型不只是模仿离线答案，而是在采样和验证中逐渐提高正确推理路径的概率，这也是它常和 RLVR、数学推理、代码推理一起讨论的原因。
+
+### 如果一个 group 中所有回答的 reward 都一样，会发生什么？
+
+回答思路：解释组内相对 advantage 和 reward 方差。
+
+回答模板：
+
+GRPO 依赖组内 reward 的相对差异。如果同一个 group 中所有回答的 reward 都一样，那么标准差接近零，所有回答的 advantage 也接近零，模型几乎得不到有效更新信号。常见原因是模型已经全部答对、全部答错、temperature 太低导致回答相同，或者 parser 和 reward 把不同回答错误地打成同一个分数。排查时要看 reward_std、group zero-variance ratio、解析率和采样多样性，并通过 Normal-Level 数据、提高探索或细化 reward 恢复差异。
 
 ### GRPO 有哪些风险？
 

@@ -19,6 +19,7 @@
 | --- | --- |
 | [Post-training 后训练.md](<Post-training 后训练.md>) | 预训练之后用于提升指令遵循、偏好对齐、推理能力和业务适配的一组训练方法 |
 | [SFT 监督微调.md](<SFT 监督微调.md>) | 用高质量指令-回答数据做监督训练，让模型学会任务格式和基础回答方式 |
+| [RFT 拒绝采样微调.md](<RFT 拒绝采样微调.md>) | 先生成候选并用 reward/verifier 筛选，再将高质量回答用于继续 SFT |
 | [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>) | 用人类偏好训练奖励模型，再通过强化学习优化策略模型 |
 | [DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) | 直接用 chosen/rejected 偏好对优化模型，降低 RLHF 工程复杂度 |
 | [PPO 近端策略优化.md](<PPO 近端策略优化.md>) | 通过限制策略更新幅度提升 RL 训练稳定性的经典算法 |
@@ -31,6 +32,7 @@
 | [Adapter 参数高效微调.md](<Adapter 参数高效微调.md>) | Bottleneck Adapter 的结构、插入位置、训练方式以及与 LoRA/Prefix Tuning 的区别 |
 | [LoRA 低秩适配.md](<LoRA 低秩适配.md>) | 参数高效微调方法，通过低秩矩阵适配大模型 |
 | [Knowledge Distillation 知识蒸馏.md](<Knowledge Distillation 知识蒸馏.md>) | 让小模型学习强模型输出、推理轨迹或分布的能力迁移方法 |
+| [On-Policy Distillation 在线策略蒸馏.md](<On-Policy Distillation 在线策略蒸馏.md>) | 让学生在自己的 rollout 状态上接受教师 token-level 软监督的蒸馏方法 |
 | [Model Merging 模型合并.md](<Model Merging 模型合并.md>) | 在权重空间合并多个模型或 adapter，在不增加推理成本的情况下融合能力 |
 
 ## RLVR 和 Agentic RL 为什么拆开
@@ -47,6 +49,8 @@ RLVR 和 Agentic RL 经常一起出现，但它们不是同一个层级的概念
 1. 先看 [Post-training 后训练.md](<Post-training 后训练.md>) 和 [后训练发展史与方法对比.md](<后训练发展史与方法对比.md>) 建立全局框架。
 2. 再看 [SFT 监督微调.md](<SFT 监督微调.md>)，理解后训练冷启动。
 3. 接着看 [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>)、[DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) 和 [PPO 近端策略优化.md](<PPO 近端策略优化.md>)，理解偏好对齐。
-4. 再看 [GRPO 组相对策略优化.md](<GRPO 组相对策略优化.md>) 和 [RLVR 可验证奖励强化学习.md](<RLVR 可验证奖励强化学习.md>)，理解推理强化。
-5. 然后看 [PEFT 参数高效微调.md](<PEFT 参数高效微调.md>)、[Adapter 参数高效微调.md](<Adapter 参数高效微调.md>) 和 [LoRA 低秩适配.md](<LoRA 低秩适配.md>)，理解资源受限场景下如何高效做任务适配。
-6. 最后看 [Model Merging 模型合并.md](<Model Merging 模型合并.md>) 和 [Agentic RL 智能体强化学习.md](<Agentic RL 智能体强化学习.md>)，理解多能力融合与工具调用/长任务轨迹训练。
+4. 再看 [RFT 拒绝采样微调.md](<RFT 拒绝采样微调.md>)，理解候选生成、筛选和继续 SFT 的低风险强化路线。
+5. 再看 [GRPO 组相对策略优化.md](<GRPO 组相对策略优化.md>) 和 [RLVR 可验证奖励强化学习.md](<RLVR 可验证奖励强化学习.md>)，理解推理强化。
+6. 然后看 [Knowledge Distillation 知识蒸馏.md](<Knowledge Distillation 知识蒸馏.md>) 和 [On-Policy Distillation 在线策略蒸馏.md](<On-Policy Distillation 在线策略蒸馏.md>)，理解 Response Distillation、Logit Distillation 和 OPD 的边界。
+7. 再看 [PEFT 参数高效微调.md](<PEFT 参数高效微调.md>)、[Adapter 参数高效微调.md](<Adapter 参数高效微调.md>) 和 [LoRA 低秩适配.md](<LoRA 低秩适配.md>)，理解资源受限场景下如何高效做任务适配。
+8. 最后看 [Model Merging 模型合并.md](<Model Merging 模型合并.md>) 和 [Agentic RL 智能体强化学习.md](<Agentic RL 智能体强化学习.md>)，理解多能力融合与工具调用/长任务轨迹训练。

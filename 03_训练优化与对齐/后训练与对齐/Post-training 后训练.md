@@ -53,7 +53,9 @@
 随着高质量人类数据耗尽，后训练越来越依赖于“AI 训练 AI”。
 
 *   **自我进化（Self-Instruct）：** 让强大的模型生成指令和答案，再用来训练较弱的模型。
+*   **[RFT](<RFT 拒绝采样微调.md>)（Rejection Sampling Fine-Tuning）：** 让模型生成多个候选，用 reward/verifier 筛选高质量回答，再用筛选结果继续 SFT。
 *   **知识蒸馏：** 让小模型学习大模型（如 GPT-4）的输出分布，从而以更小的尺寸获得接近大模型的能力。
+*   **[OPD](<On-Policy Distillation 在线策略蒸馏.md>)：** 让学生先生成自己的 rollout，再接受教师在这些错误状态上的 token-level 软监督。
 
 ### 模型合并与量化 (Model Merging & Quantization)
 这是后训练的最后润色阶段。

@@ -56,6 +56,18 @@
     *   **总 Loss = $\alpha \cdot$ Loss 1 + $\beta \cdot$ Loss 2**。
 4.  **推理阶段：** 训练完成后，扔掉老师，只用学生模型进行部署。
 
+### LLM 后训练中的蒸馏路径
+
+在大语言模型和多模态模型中，蒸馏不只是在固定数据上复制教师答案，还可以按监督粒度和训练状态进一步区分：
+
+| 路径 | 学生训练时看到的状态 | 教师提供的信号 |
+| --- | --- | --- |
+| Response Distillation | 教师预先生成的输入-回答对 | 教师文本 response，通常用 SFT 学习 |
+| Logit Distillation | 固定数据或教师轨迹上的前缀 | 教师 token 概率分布或 logits |
+| [On-Policy Distillation 在线策略蒸馏](<On-Policy Distillation 在线策略蒸馏.md>) | 学生自己生成的 rollout 前缀 | 教师在学生前缀上的 token-level 软分布 |
+
+OPD 的关键不在于教师是否在线更新，而在于训练状态来自学生当前 policy。学生先暴露自己的错误状态，教师再针对这些状态提供局部监督，因此更贴近学生部署时的真实分布；代价是需要学生 rollout、教师前向和更严格的 tokenizer、模板及多模态输入兼容。
+
 ### 现实生活中的例子
 
 *   **NLP 领域：** 

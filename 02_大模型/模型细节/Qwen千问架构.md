@@ -486,7 +486,7 @@ Long-CoT 数据用于 Thinking 模型，核心不是让所有样本都变长，�
 Off-policy Distillation：
 多个教师模型生成答案，学生模仿教师 response，快速建立基础能力。
 
-On-policy Distillation：
+**[On-Policy Distillation 在线策略蒸馏](<../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md>)**：
 学生先生成 response，再用教师分布或评分约束学生，常用 KL 散度对齐。
 ```
 

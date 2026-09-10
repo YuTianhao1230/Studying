@@ -20,9 +20,10 @@
 
 ### 资料与相关方案
 
-- 本地论文：[Lu 等 - Thinking with Visual Primitives.pdf](<Lu 等 - Thinking with Visual Primitives.pdf>)
-- 主方案：[CoT蒸馏与RL方案.md](<CoT蒸馏与RL方案.md>)
-- 相关知识：[Qwen千问架构.md](<../../02_大模型/模型细节/Qwen千问架构.md>)
+- 本地论文：[Lu 等 - Thinking with Visual Primitives.pdf](<参考资料/Lu 等 - Thinking with Visual Primitives.pdf>)
+- 主方案：[关键帧检测完整训练方案.md](<关键帧检测完整训练方案.md>)
+- CoT 细节：[CoT-SFT 蒸馏方案设计.md](<CoT-SFT 蒸馏方案设计.md>)
+- 相关知识：[Qwen千问架构.md](<../../../02_大模型/模型细节/Qwen千问架构.md>)
 
 ### 1. 论文要解决的问题
 
