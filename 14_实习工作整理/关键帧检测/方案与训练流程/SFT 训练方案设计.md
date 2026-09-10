@@ -40,7 +40,7 @@ Direct SFT 的训练目标：
 - 模型、tokenizer、processor 可以加载。
 - 视频可以解码。
 - `<video>` 与 `videos[0]` 对应。
-- BF16、FlashAttention、ZeRO/FSDP 等依赖正常。
+- BF16、FlashAttention、[ZeRO](<../../../03_训练优化与对齐/训练框架与并行/ZeRO.md>)/[FSDP](<../../../03_训练优化与对齐/训练框架与并行/FSDP.md>) 等依赖正常。
 - 训练和推理的 chat template 一致。
 
 #### 2.2 单样本 forward
@@ -105,7 +105,7 @@ PASS
 - 下游 ACC 是否提升。
 - 输出格式是否退化。
 
-LoRA 可以使用更大学习率，但不能把 LoRA 经验直接套到 full fine-tuning。
+[LoRA](<../../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>) 可以使用更大学习率，但不能把 LoRA 经验直接套到 full fine-tuning。
 
 #### 3.2 Effective Batch Size
 
@@ -210,7 +210,7 @@ FPS、最大帧数和视觉 token 预算共同决定：
 
 - loss 主要落在格式 token，而不是答案 token。
 - GT 时间噪声。
-- Prompt 规则与评测规则不一致。
+- [Prompt](<../../../02_大模型/应用与问题/Prompt调优.md>) 规则与评测规则不一致。
 - FPS 和时间坐标不一致。
 - 模型学会格式但没有学会边界。
 

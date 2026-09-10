@@ -9,7 +9,7 @@
 ```text
 Direct SFT
   -> Structured CoT SFT
-  -> 构造 RL-friendly 数据
+  -> 将同一批 CoT 数据作为 GRPO 的输入和评分依据
   -> rollout 采样多条回答
   -> verifier 计算分项 reward
   -> 组内归一化 advantage
@@ -18,6 +18,74 @@ Direct SFT
 ```
 
 GRPO 不是必做阶段。如果 Structured CoT SFT 已经达到业务目标，或者 reward 与真实 ACC 没有可靠相关性，应停止在 SFT 或先修 verifier，而不是直接增加 RL。
+
+### 同一批 CoT 数据如何进入 GRPO
+
+这里不需要额外构造一套与 CoT 数据完全不同的数据。当前方案直接复用已经用于 Structured CoT SFT 的 2.5w CoT 数据，只是在不同训练阶段承担不同角色：
+
+```text
+CoT-SFT 阶段：
+  gpt.value 是模型需要学习的固定 CoT target。
+
+GRPO 阶段：
+  human.value + videos[0] 是模型输入；
+  infos.answer_obj 是 GT time；
+  gpt.value 是可选的 reference CoT；
+  模型自己生成 rollout，再由 verifier 打分。
+```
+
+因此，`RL-friendly 数据`不是第四种新的答案格式，也不是模型生成的答案，而是**同一批 CoT 样本在 GRPO 阶段的使用方式**。它需要保留：
+
+```text
+视频
+  + task_type
+  + 完成态、排除和豁免规则
+  + GT time 或其他可验证答案
+  + infos 元数据
+  + 可选的 clean reference CoT
+```
+
+GRPO 训练时，模型根据这些输入自己生成多条回答：
+
+```text
+RL-friendly prompt
+  -> policy 生成 G 个 CoT + answer
+  -> verifier 读取 GT、视频信息和回答
+  -> 计算 reward
+  -> GRPO 更新 policy
+```
+
+它和现有两类 SFT 数据的区别是：
+
+| 数据类型 | 是否有固定 assistant target | 主要用途 |
+| --- | --- | --- |
+| Direct SFT 数据 | 有，通常是 `<answer>{"time": ...}</answer>` | 学基础视频判断和短答案格式 |
+| Structured CoT SFT 数据 | 有，包含完整 CoT 和 answer | 学状态、证据和边界判断 |
+| 同一批 CoT 数据的 GRPO 用法 | 不把原始 `gpt.value` 作为当前 policy 的固定 target | 让 policy 在线生成候选，再由 verifier 打分 |
+
+这意味着 GRPO 阶段不是重新生成一份 CoT target，而是改变原始 CoT 样本的使用方式：原来的 `gpt.value` 作为隐藏的参考答案，当前 policy 生成新的回答，GT 和 verifier 决定这些新回答的 reward。
+
+#### 是否需要单独生成 RL 数据文件
+不一定。当前方案可以直接复用 CoT 样本中的：
+
+```text
+视频
+  + human prompt
+  + GT time
+  + clean reference CoT
+```
+
+工程上即使另存一个 GRPO 文件，也只是为了让字段职责更清楚，不代表样本来源发生变化：
+
+```text
+同一批 2.5w CoT 样本：
+  在 SFT 文件中保留 gpt target。
+
+  在 GRPO 输入中使用 human、videos、infos 和 reference solution，
+  不把 gpt target 当作当前 policy 的 teacher-forcing target。
+```
+
+当前工程配置中如果 RL 阶段回退使用 `cot_sft_source`，实际含义就是直接复用这批 CoT 数据；如果设置独立的 `RL_DATASET`，也应该只是对同一批样本做字段整理或筛选，而不是引入另一套不相关的 target。
 
 ### 1. 为什么关键帧任务适合 GRPO
 
@@ -174,9 +242,57 @@ answer parser
   + length/repetition verifier
 ```
 
-### 4. RL-friendly 数据怎么构造
+#### 3.4 Rollout、Verifier 和 Reward
 
-GRPO 阶段不应该直接把 20w 短答案数据和 2.5w CoT target 混合作为 SFT 数据。RL 数据应该包含：
+在关键帧任务中，三个概念的分工是：
+
+```text
+Rollout：
+  当前 policy 对一个视频和 task_type 生成的一条完整回答。
+
+Verifier：
+  检查这条回答的时间、格式、边界和视觉证据。
+
+Reward：
+  把检查结果汇总成一个分数，供 GRPO 比较和更新。
+```
+
+具体流程：
+
+```text
+同一个视频 + task_type
+  -> rollout 1：预测 6.53s
+  -> rollout 2：预测 6.97s
+  -> rollout 3：预测 10.00s
+  -> verifier 分别检查
+  -> reward 分别打分
+  -> 强化 reward 更高的回答
+```
+
+Verifier 的检查可以拆成：
+
+| Verifier | 检查内容 |
+| --- | --- |
+| Answer Parser | 是否提取出合法的 `answer.time` |
+| Format Verifier | JSON、XML、State/Event 标签是否符合 schema |
+| Time Verifier | 时间误差、时间范围和答案边界对齐 |
+| Boundary Verifier | before 未完成、current 首次满足、after 没有推翻 |
+| Evidence Verifier | UI 区域、状态和时间是否与视频一致 |
+| Length Verifier | 是否重复、循环、过长或缺少必要证据 |
+
+因此：
+
+```text
+Rollout 负责“模型尝试什么”
+Verifier 负责“这次尝试哪里对、哪里错”
+Reward 负责“把好坏程度变成数字”
+```
+
+如果 verifier 把所有回答都打成同一个分数，GRPO 就没有有效的组内学习信号；如果 verifier 奖励了格式而没有检查真实时间和视觉证据，模型就可能学会 reward hacking。
+
+### 4. 同一批 CoT 数据如何筛选和使用
+
+GRPO 阶段不应该把 20w 短答案 target 和 2.5w CoT target 混合作为 SFT 数据。对于同一批 2.5w CoT 样本，GRPO 阶段主要使用：
 
 ```text
 视频
@@ -454,10 +570,10 @@ R_time
 | `TIME_WEIGHT` | 1.00 | 时间答案 reward 权重 |
 | `FORMAT_WEIGHT` | 0.25 | 结构和解析 reward 权重 |
 | `BOUNDARY_WEIGHT` | 0.35 | before/current/after 边界 reward 权重 |
-| `COT_ANCHOR_WEIGHT` | 0.35 | 与 clean reference CoT 的证据对齐权重 |
+| `COT_ANCHOR_WEIGHT` | 0.20 | 与 clean reference CoT 的结构和证据对齐权重 |
 | `GROUP_CVK_WEIGHT` | 0.08 | 组内语义集中度调整 |
 | `DVR_WEIGHT` | 0.05 | 在未解决 group 中保留合理多样性 |
-| `LENGTH_WEIGHT` | 0.12 | 长度和重复惩罚权重 |
+| `LENGTH_WEIGHT` | 0.10 | 长度和重复惩罚权重 |
 | `TIME_TOLERANCE` | 0.10s | 时间命中和边界对齐容忍度 |
 | `MIN_THINK_CHARS` | 120 | 防止回答没有必要证据 |
 | `MAX_THINK_CHARS` | 2600 | 限制思考文本长度 |
@@ -469,10 +585,11 @@ R_time
 适合作为第一版起点，但需要注意：
 
 1. `R_cot_anchor` 依赖 reference CoT，必须保证 reference CoT clean。
-2. keyword-based boundary reward 可能误判，需要逐步替换为结构化 verifier。
-3. CVK 类一致性奖励不能鼓励所有回答使用同一个模板。
-4. DVR 类多样性奖励不能鼓励无关或错误的探索。
-5. 总 reward 必须记录分项，否则无法判断模型到底利用了哪一项。
+2. 当前 parser 同时兼容 `<time>/<caption>/<think>` 和项目实际使用的 `<状态 时间="">`、`<事件 时间="">`；后者不要求 `名称` 属性。
+3. keyword-based boundary reward 可能误判，需要逐步替换为结构化 verifier。
+4. CVK 类一致性奖励不能鼓励所有回答使用同一个模板。
+5. DVR 类多样性奖励不能鼓励无关或错误的探索。
+6. 总 reward 必须记录分项，否则无法判断模型到底利用了哪一项。
 
 建议第一轮优先保证：
 

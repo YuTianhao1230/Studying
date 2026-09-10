@@ -30,7 +30,7 @@ ms-swift 在这套方案中主要负责四件事：
 
 1. 加载 Qwen3.5 多模态 base model。
 2. 根据 JSONL 数据构造视频-文本训练样本。
-3. 调用 PyTorch、DeepSpeed 和 FlashAttention 完成分布式训练。
+3. 调用 PyTorch、[DeepSpeed](<../../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>) 和 FlashAttention 完成分布式训练。
 4. 加载 checkpoint，对测试集批量推理并写出结果。
 
 它本身不是关键帧算法规则的来源。完成态、排除条件、任务描述和时间标签已经在数据构造阶段写进样本，ms-swift 负责把这些数据送进模型进行训练和推理。
@@ -72,7 +72,7 @@ warmup ratio：0.05
 
 因此训练时不仅更新语言模型，也允许视觉 encoder 和视觉语言对齐模块参与更新。
 
-这和 LoRA 的区别是：
+这和 [LoRA](<../../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>) 的区别是：
 
 ```text
 LoRA：
@@ -121,7 +121,7 @@ effective batch size = 1 * 16 * 2 = 32
 
 | 参数 | 当前配置 | 解决的问题 |
 | --- | --- | --- |
-| `deepspeed` | ZeRO-3 | 分片保存参数、梯度和 optimizer state |
+| `deepspeed` | [ZeRO-3](<../../../03_训练优化与对齐/训练框架与并行/ZeRO.md>) | 分片保存参数、梯度和 optimizer state |
 | `attn_impl` | FlashAttention | 降低 attention 中间张量和显存读写 |
 | `gradient_checkpointing` | 开启 | 用反向重算换激活显存 |
 | `vit_gradient_checkpointing` | 开启 | 同样降低视觉 encoder 的激活显存 |
@@ -135,7 +135,7 @@ effective batch size = 1 * 16 * 2 = 32
   + vision encoder 也训练
   + full fine-tuning
   -> 显存压力大
-  -> BF16 + ZeRO-3 + FlashAttention + 两类 checkpointing
+  -> BF16 + [ZeRO-3](<../../../03_训练优化与对齐/训练框架与并行/ZeRO.md>) + FlashAttention + 两类 checkpointing
 ```
 
 #### 数据字段保留
@@ -288,7 +288,7 @@ Direct SFT
   -> GRPO/RL
 ```
 
-#### Structured CoT SFT
+#### [Structured CoT SFT](<../方案与训练流程/CoT-SFT 蒸馏方案设计.md>)
 
 让模型先输出结构化的视频状态、事件和边界证据，再输出最终时间：
 
@@ -301,7 +301,7 @@ Direct SFT
 
 它适合解决边界难例，但不建议一开始让所有样本都输出很长 CoT，否则会增加 token 成本、训练难度和格式风险。
 
-#### GRPO/RL
+#### [GRPO/RL](<../方案与训练流程/GRPO 训练方案设计.md>)
 
 可以用结构化 reward 约束模型：
 

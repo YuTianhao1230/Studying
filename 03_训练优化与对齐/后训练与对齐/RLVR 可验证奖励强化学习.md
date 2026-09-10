@@ -29,6 +29,46 @@ RLVR 的基本流程是：
 4. 使用 [PPO](<PPO 近端策略优化.md>)、[GRPO](<GRPO 组相对策略优化.md>)、REINFORCE 或其他策略优化方法更新模型。
 5. 通过 KL、长度惩罚、格式约束和能力回归控制模型不要跑偏。
 
+### Rollout、Verifier 和 Reward
+
+RLVR 中三个核心对象的职责不同：
+
+```text
+Rollout：
+  当前模型生成的答案或行动轨迹。
+
+Verifier：
+  用规则、程序、判题器或环境反馈检查 rollout。
+
+Reward：
+  将 verifier 的检查结果转成模型优化需要的数值。
+```
+
+完整关系是：
+
+```text
+prompt
+  -> rollout
+  -> verifier
+  -> reward
+  -> PPO / GRPO / REINFORCE 等策略更新
+```
+
+例如代码任务中：
+
+```text
+rollout：
+  模型生成代码。
+
+verifier：
+  编译代码并运行单元测试。
+
+reward：
+  根据编译结果和测试通过比例打分。
+```
+
+Verifier 不一定是独立的 Reward Model，也可以是确定性规则、程序执行结果、schema 校验器或环境状态检查器。一个复杂任务通常会组合多个 verifier，再把分项结果加权成总 reward。
+
 常见验证器包括：
 
 | 验证器 | 典型任务 | Reward 示例 |

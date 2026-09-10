@@ -24,6 +24,47 @@ GRPO 的核心流程是：对同一个 prompt 采样一组回答，给每个回�
 
 GRPO 不是完全抛弃 PPO。它仍然保留 policy optimization、ratio clipping 和 KL 约束这些思想，用来限制策略更新幅度，防止模型一步更新太猛，或者偏离 reference model 太远。真正被替换的是 advantage 的来源：PPO 依赖 Critic 估计 baseline，GRPO 使用同组回答的相对 reward 构造 advantage。
 
+### Rollout、Verifier 和 Reward 的分工
+
+这三个概念经常一起出现，但职责不同：
+
+```text
+Rollout：
+  当前 policy 实际生成的回答或行动轨迹。
+
+Verifier：
+  检查 rollout 是否满足任务标准。
+
+Reward：
+  把 verifier 的检查结果转换成可优化的分数。
+```
+
+GRPO 的完整链路是：
+
+```text
+prompt
+  -> policy rollout：生成多个候选
+  -> verifier：逐条检查
+  -> reward：得到每条候选的分数
+  -> group advantage：比较同题候选
+  -> policy update
+```
+
+例如数学任务：
+
+```text
+rollout：
+  模型生成多个解题过程和答案。
+
+verifier：
+  检查最终答案是否正确、格式是否合规。
+
+reward：
+  正确答案得高分，错误答案得低分。
+```
+
+Rollout 不是训练标签，而是模型当前策略在线探索出的候选；Verifier 也不一定是另一个大模型，可以是规则、程序、单元测试、环境反馈或它们的组合。Reward 可以是 verifier 的直接结果，也可以由多个分项加权得到。
+
 ### GRPO 的训练目标
 
 对同一个 prompt `q` 采样 `G` 个回答：

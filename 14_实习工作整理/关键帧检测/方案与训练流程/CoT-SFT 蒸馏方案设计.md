@@ -4,14 +4,14 @@
 
 ### 概述
 
-CoT-SFT 的目标不是让模型输出更长的解释，而是把人工判断关键帧时隐含的边界证据显式化。Direct SFT 只监督最终时间点，CoT-SFT 则额外监督任务理解、目标区域、状态变化、before/current/after 和 boundary check。关键帧项目中，CoT 数据必须先经过 GT 分流、时间校验、视觉一致性检查和长度过滤，再用于 Structured CoT SFT。
+CoT-SFT 的目标不是让模型输出更长的解释，而是把人工判断关键帧时隐含的边界证据显式化。[Direct SFT](<SFT 训练方案设计.md>) 只监督最终时间点，CoT-SFT 则额外监督任务理解、目标区域、状态变化、before/current/after 和 boundary check。关键帧项目中，CoT 数据必须先经过 GT 分流、时间校验、视觉一致性检查和长度过滤，再用于 Structured CoT SFT。
 
 ```text
 Direct SFT checkpoint
   -> clean CoT 数据
   -> Structured CoT SFT
   -> 评估困难边界能力
-  -> 可选 RFT / GRPO
+  -> 可选 [RFT](<../../../03_训练优化与对齐/后训练与对齐/RFT 拒绝采样微调.md>) / [GRPO](<../../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)
 ```
 
 ### 1. 为什么 Direct SFT 不够
@@ -73,11 +73,11 @@ CoT 不应等于完整视频 caption。完整 caption 回答：
 | 来源 | 作用 |
 | --- | --- |
 | 高质量人工 GT | 提供可靠完成态标准 |
-| Direct SFT 数据 | 保持业务覆盖和基础任务格式 |
+| [Direct SFT](<SFT 训练方案设计.md>) 数据 | 保持业务覆盖和基础任务格式 |
 | 低 ACC 指标 | 针对能力缺口采样 |
 | bad case | 覆盖 early/late、二次刷新和证据幻觉 |
 | GT 附近 hard negative | 区分接近完成和首次完成 |
-| Video Primitive | 提供客观时间轴 |
+| [Video Primitive](<Thinking with Visual Primitives 视觉原语推理.md>) | 提供客观时间轴 |
 | 强教师模型 | 生成结构化状态、事件和边界解释 |
 
 CoT 数据不是越多越好，优先保证：
@@ -137,7 +137,7 @@ task_type
 输出 schema
 ```
 
-可见 Prompt 不应直接包含：
+可见 [Prompt](<../../../02_大模型/应用与问题/Prompt调优.md>) 不应直接包含：
 
 ```text
 GT 是多少
@@ -336,7 +336,7 @@ CoT 教师生成更可靠的困难样本
 CoT-SFT：
   教模型学习结构化证据和基本推理路径。
 
-GRPO：
+  [GRPO](<../../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)：
   让模型生成多个候选，用 reward 选择和强化更好的路径。
 ```
 
@@ -344,7 +344,7 @@ GRPO：
 
 - CoT 格式解析率稳定。
 - answer.time 可提取。
-- verifier 与人工判断一致。
+- verifier 与人工判断一致，具体机制见 [GRPO 训练方案设计.md](<GRPO 训练方案设计.md>)。
 - group 内存在正确和错误的回答差异。
 
 ### 10. 常见问题
