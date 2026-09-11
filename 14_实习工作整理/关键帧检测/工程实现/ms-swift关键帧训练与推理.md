@@ -28,7 +28,7 @@ Structured CoT SFT 和 GRPO/RL 属于后续扩展方向，不是当前主流程�
 
 ms-swift 在这套方案中主要负责四件事：
 
-1. 加载 Qwen3.5 多模态 base model。
+1. 加载 [Qwen3.5](<../../../02_大模型/模型细节/Qwen千问架构.md>) 多模态 base model。
 2. 根据 JSONL 数据构造视频-文本训练样本。
 3. 调用 PyTorch、[DeepSpeed](<../../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>) 和 FlashAttention 完成分布式训练。
 4. 加载 checkpoint，对测试集批量推理并写出结果。
@@ -135,7 +135,7 @@ effective batch size = 1 * 16 * 2 = 32
   + vision encoder 也训练
   + full fine-tuning
   -> 显存压力大
-  -> BF16 + [ZeRO-3](<../../../03_训练优化与对齐/训练框架与并行/ZeRO.md>) + FlashAttention + 两类 checkpointing
+  -> BF16 + ZeRO-3 + FlashAttention + 两类 checkpointing
 ```
 
 #### 数据字段保留

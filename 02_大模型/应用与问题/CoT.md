@@ -267,11 +267,13 @@ rejected：
 
 ```text
 Base Model
-  -> [Reasoning SFT / Long-CoT Cold Start](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)
-  -> [RLVR / GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)
+  -> Reasoning SFT / Long-CoT Cold Start
+  -> RLVR / GRPO
   -> Response Distillation 或 On-Policy Distillation
   -> 推理阶段按任务开启不同 thinking budget
 ```
+
+相关方法：[Reasoning SFT / Long-CoT Cold Start](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[RLVR / GRPO](<../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)。
 
 不是所有项目都需要走完整路线：
 

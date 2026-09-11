@@ -34,21 +34,14 @@ GRPO 阶段：
   模型自己生成 rollout，再由 verifier 打分。
 ```
 
-因此，`RL-friendly 数据`不是第四种新的答案格式，也不是模型生成的答案，而是**同一批 CoT 样本在 GRPO 阶段的使用方式**。它需要保留：
+因此，这不是第四种新的答案格式，也不是模型生成的新数据，而是**同一批 CoT 样本在 GRPO 阶段的使用方式**。它需要保留：
 
-```text
-视频
-  + task_type
-  + 完成态、排除和豁免规则
-  + GT time 或其他可验证答案
-  + infos 元数据
-  + 可选的 clean reference CoT
-```
+GRPO 输入：视频 + task_type + 完成态、排除和豁免规则 + GT time 或其他可验证答案 + infos 元数据 + 可选的 clean reference CoT。
 
 GRPO 训练时，模型根据这些输入自己生成多条回答：
 
 ```text
-RL-friendly prompt
+同一批 CoT 数据中的视频和任务输入
   -> policy 生成 G 个 CoT + answer
   -> verifier 读取 GT、视频信息和回答
   -> 计算 reward
@@ -65,15 +58,10 @@ RL-friendly prompt
 
 这意味着 GRPO 阶段不是重新生成一份 CoT target，而是改变原始 CoT 样本的使用方式：原来的 `gpt.value` 作为隐藏的参考答案，当前 policy 生成新的回答，GT 和 verifier 决定这些新回答的 reward。
 
-#### 是否需要单独生成 RL 数据文件
+#### 是否需要单独整理 GRPO 输入文件
 不一定。当前方案可以直接复用 CoT 样本中的：
 
-```text
-视频
-  + human prompt
-  + GT time
-  + clean reference CoT
-```
+GRPO 输入：视频 + human prompt + GT time + clean reference CoT。
 
 工程上即使另存一个 GRPO 文件，也只是为了让字段职责更清楚，不代表样本来源发生变化：
 
@@ -157,7 +145,7 @@ GRPO 不训练单独的 Critic/Value Model，而是用同一 prompt 下其他回
 
 #### 2.3 带 clipping 和 KL 约束的目标
 
-GRPO 保留 PPO 类方法的策略更新约束。对回答中第 `t` 个 token，可以定义概率比：
+GRPO 保留 [PPO](<../../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>) 类方法的策略更新约束。对回答中第 `t` 个 token，可以定义概率比：
 
 ```text
 ρ_i,t(θ) =
@@ -342,7 +330,7 @@ Hard 数据不是丢弃，而是用于：
 重新构造 CoT SFT
   + 修正 GT
   + 增强 verifier
-  + 作为后续 RL 数据
+  + 作为后续 GRPO 训练样本
 ```
 
 #### 4.3 数据划分
@@ -617,8 +605,10 @@ M0：Direct SFT checkpoint
   -> 检查 reward 分布、KL 和 hard ACC
   -> M3：正式 GRPO
   -> 选择最佳 checkpoint
-  -> 可选 [OPD 在线策略蒸馏](<../../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md>) 或 answer-only distillation
+  -> 可选 OPD 或 answer-only distillation
 ```
+
+其中 OPD 的详细说明见 [On-Policy Distillation 在线策略蒸馏](<../../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md>)。
 
 #### 7.1 进入 GRPO 的准入条件
 
