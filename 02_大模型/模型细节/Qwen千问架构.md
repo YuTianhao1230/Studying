@@ -35,6 +35,8 @@ SigLIP-2-based Vision Encoder
 Qwen3 负责强文本理解、推理和生成；Qwen3-VL 在它前面接入视觉编码和视觉 token 对齐，让图像、视频、文档、OCR、GUI 截图也能进入同一个自回归解码器统一推理。
 ```
 
+如果要专门理解“文本、图像和视频到底怎样经过 processor 并进入模型”，请继续阅读[Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。该文进一步区分了原始帧与 temporal patch，并展开说明视频 timestamp、`video_grid_thw`、Interleaved-MRoPE 和 DeepStack 的工程链路。
+
 ### Qwen3 文本模型架构
 
 Qwen3 文本模型仍然是主流的 **[Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md>) [Transformer](<../基础架构/Transformer.md>)**：
