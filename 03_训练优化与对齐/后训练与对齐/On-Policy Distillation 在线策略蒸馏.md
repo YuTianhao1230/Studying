@@ -404,6 +404,247 @@ SFT
 - 中间状态或区域级蒸馏。
 - 教师生成候选，verifier 过滤后做 SFT。
 
+### 十一、Vision-OPD 与 OPSD：把特权感知能力迁移到普通输入
+
+#### 11.1 核心问题：regional-to-global perception gap
+
+Vision-OPD 关注一种特殊的多模态失败：
+
+```text
+同一个模型看局部 crop：能够回答
+同一个模型看完整图像：回答错误
+```
+
+这说明模型不一定缺少局部识别能力，问题可能是：
+
+- 决定答案的区域太小。
+- 局部视觉 token 被全局视觉 token 淹没。
+- 背景和其他物体带来注意力竞争。
+- 高分辨率输入中，关键细节被视觉编码或 token 压缩削弱。
+
+这种现象可以称为 regional-to-global perception gap。Vision-OPD 的目标不是让推理阶段一直调用 crop/zoom 工具，而是把局部输入带来的收益在训练阶段迁移到完整输入策略中。
+
+#### 11.2 Teacher 和 Student 的条件不同
+
+Vision-OPD 通常用同一个 MLLM 实例化两个条件策略：
+
+| 角色 | 输入 | 优势 |
+| --- | --- | --- |
+| Teacher | 证据中心 crop、放大图或更清晰的局部视图 | 干扰少，局部证据更突出 |
+| Student | 完整图像或完整场景 | 与真实部署输入一致 |
+
+形式化表示：
+
+```text
+p_T(. | x_privileged, q)
+p_S(. | x_global, q)
+```
+
+其中 `x_privileged` 不是答案文本，而是教师拥有的额外感知条件。它可以是：
+
+- 证据区域 crop。
+- crop 后的 2x 放大图。
+- 原图加目标框、背景模糊。
+- 更高分辨率或更高帧率的局部视频。
+- 工具返回的局部视觉结果。
+
+如果教师和学生是同一个模型，只是输入条件不同，通常称为 On-Policy Self-Distillation，即 OPSD。Vision-OPD 这个名称强调训练范式，OPSD 则强调教师来源。
+
+#### 11.3 Vision-OPD 的数据三元组
+
+训练样本可以表示为：
+
+```text
+(x_global, x_privileged, q)
+```
+
+其中：
+
+- `x_global`：学生实际部署时看到的完整输入。
+- `x_privileged`：训练阶段给教师看的局部或高质量输入。
+- `q`：问题、task_type 和约束。
+
+如果使用图像细粒度问答，数据通常还需要：
+
+```text
+目标区域 R
+证据中心 crop
+问题 q
+答案或高质量回答
+```
+
+数据构造必须保证问题确实依赖目标区域，否则教师看到 crop 并不会带来真实的特权信息。
+
+推荐的数据质量条件：
+
+- 目标区域面积不能过大，否则退化成整图输入。
+- 问题必须依赖目标区域中的细节。
+- crop 不能截断决定性证据。
+- 多个候选答案或多次教师回答需要有较高一致性。
+- 不能把正确答案或目标位置直接写入教师 prompt。
+- 需要加入区域无关或目标不存在的负样本，避免模型把“有框”当作“有答案”。
+
+#### 11.4 Vision-OPD 的训练目标
+
+学生先在完整输入上生成自己的回答：
+
+```text
+y ~ p_S(. | x_global, q)
+```
+
+然后对学生生成的每个 prefix，分别计算：
+
+```text
+p_T(. | x_privileged, q, y_<t)
+p_S(. | x_global, q, y_<t)
+```
+
+训练目标是：
+
+```text
+Student 在完整输入上的分布
+  -> 接近
+Teacher 在特权输入上的分布
+```
+
+常用的广义 GKD 目标可以写成：
+
+$$
+\mathcal{L}_{GKD}
+=
+\mathbb{E}_{y\sim p_S}
+\left[
+\frac{1}{|y|}
+\sum_t
+D\left(p_T^t\|p_S^t\right)
+\right]
+$$
+
+如果使用 JSD：
+
+$$
+M_t=\beta p_T^t+(1-\beta)p_S^t
+$$
+
+$$
+D_{JSD}
+=
+\beta KL(p_T^t\|M_t)
++(1-\beta)KL(p_S^t\|M_t)
+$$
+
+Vision-OPD 常用 `beta=0.5`。实际使用时也可以比较：
+
+- Forward KL：更强调覆盖教师的概率质量。
+- Reverse KL：更强调学生自己会生成的模式落在教师认可区域。
+- JSD：在覆盖和聚焦之间折中，训练通常更稳定。
+
+#### 11.5 为什么要 EMA Teacher
+
+如果教师和学生完全使用当前同一组参数：
+
+```text
+Student 犯错
+  -> Teacher 立即继承这个错误
+  -> Student 再学习这个错误
+```
+
+可能出现共同漂移和模式坍塌。
+
+常见方案是：
+
+```text
+固定 Teacher：
+  使用训练开始前的 checkpoint，目标稳定但不会变强。
+
+EMA Teacher：
+  Teacher 是 Student 历史参数的平滑平均。
+
+Dynamic Teacher：
+  Teacher 直接等于当前 Student，适应快但最不稳定。
+```
+
+EMA 更新可写为：
+
+$$
+\theta_T\leftarrow(1-\alpha)\theta_T+\alpha\theta_S
+$$
+
+工程上必须明确 `alpha` 是更新率还是衰减率。有些实现把衰减率记为 `beta`，有些实现把更新率记为 `alpha`，不能只根据变量名复制参数。
+
+推荐的工程顺序：
+
+```text
+第一版：冻结 SFT/CoT-SFT checkpoint 作为 Teacher
+第二版：加入 EMA Teacher
+最后才考虑 Dynamic Teacher
+```
+
+#### 11.6 Top-K logits distillation
+
+完整词表 logits 的显存和通信开销很大，视觉语言模型的词表通常还会叠加较长的视觉输入计算。可以采用 Top-K logits 蒸馏：
+
+1. 取 Student 的 Top-K token。
+2. 查询 Teacher 在这些 token 上的 logits 或 log-prob。
+3. 对剩余词表质量使用 tail probability 近似。
+4. 在截断分布上计算 KL/JSD。
+
+Vision-OPD 类方案常把 `K=100` 作为起点。对于结构化时间输出，也可以只在以下 token 上做精确蒸馏：
+
+- `<answer>` 和 JSON 结构 token。
+- `time` 数值 token。
+- `before/current/after` 状态 token。
+- 任务相关的视觉证据 token。
+
+但不能只蒸馏格式 token，否则学生可能只学会输出合法 JSON，而没有改善任务判断。
+
+#### 11.7 结构化输出为什么有利于 OPD
+
+如果回答只有一个短数字：
+
+```text
+<answer>{"time": 6.97}</answer>
+```
+
+可提供的 token-level 监督位置很少。
+
+如果回答包含结构化证据：
+
+```text
+状态：
+  页面主体出现，但局部区域仍在加载。
+
+事件：
+  核心图片和价格首次清晰，页面停止位移。
+
+边界：
+  前一候选未完成，当前候选首次满足，后续仅为稳定延续。
+
+答案：
+  {"time": 6.97}
+```
+
+OPD 可以在更多位置上学习教师的判断分布。对于关键帧、UI 检测、文档理解等任务，结构化 CoT 不是为了增加解释长度，而是为了让教师在边界证据上提供更密集的监督。
+
+#### 11.8 Vision-OPD 的能力边界
+
+Vision-OPD 更适合：
+
+- 细粒度局部识别。
+- 小目标和小文字。
+- UI 细节和局部状态。
+- 高分辨率图像理解。
+- 训练时使用 zoom，推理时希望 single-pass。
+
+它不能自动解决：
+
+- 需要主动搜索多个区域的开放式任务。
+- 需要复杂多跳时序推理的任务。
+- 教师本身看不清或判断不稳定的问题。
+- 学生完全没有基础任务格式和视觉能力的问题。
+
+在这些场景中，应先使用 SFT、结构化 CoT 或区域/时间原语建立基础能力。
+
 ## 面试应对
 
 ### 常考点及考法
