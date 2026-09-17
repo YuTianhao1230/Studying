@@ -165,7 +165,7 @@ image / video frames
 
 Qwen3-VL 的视觉侧基于 SigLIP-2 视觉编码器继续训练和适配。
 
-SigLIP-2 可以理解为更强的视觉语言编码器，相比传统 [CLIP](<../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 式 softmax contrastive loss，SigLIP 把 batch 内图文配对看成独立二分类问题；SigLIP-2 进一步强化多语言、OCR、定位、dense features 等能力。
+SigLIP-2 可以理解为更强的视觉语言编码器，相比传统 [CLIP](<里程碑模型/CLIP.md>) 式 softmax contrastive loss，SigLIP 把 batch 内图文配对看成独立二分类问题；SigLIP-2 进一步强化多语言、OCR、定位、dense features 等能力。
 
 ![SigLIP-2 训练框架图](assets/qwen3-vl/siglip2_training_recipe.png)
 
@@ -496,7 +496,7 @@ On-Policy Distillation 在线策略蒸馏：
 
 在关键帧任务中，可以对应为：
 
-- 先用强 [VLM](<../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) / 强 reasoning model 生成结构化关键帧 CoT。
+- 先用强 [VLM](<../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) / 强 reasoning model 生成结构化关键帧 CoT。
 - 再用学生模型自己的输出做二次过滤和纠偏。
 - 对齐时既看最终时间，也看边界证据是否成立。
 

@@ -30,7 +30,7 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 - 推理技术：temperature、top-k、top-p、beam search、repetition penalty、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - 长上下文：位置外推、RoPE scaling、Attention 优化、上下文压缩。
 - RAG：query rewrite、retrieval、rerank、context packing、generation、citation、faithfulness。
-- [Agent](<../../10_Agent/基础概念/Agent.md>)：规划、工具调用、状态管理、记忆、反思、任务分解、安全边界。
+- [Agent](<../../08_Agent/基础概念/Agent.md>)：规划、工具调用、状态管理、记忆、反思、任务分解、安全边界。
 - 多模态：视觉编码器、投影层、图文对齐、视频采样、时序建模。
 
 #### 回答要点

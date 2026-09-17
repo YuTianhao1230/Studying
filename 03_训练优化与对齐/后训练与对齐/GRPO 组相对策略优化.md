@@ -4,11 +4,7 @@
 
 ### 概述
 
-GRPO，全称 **Group Relative Policy Optimization**，中文可以理解为“组相对策略优化”。它是一种用于大语言模型后训练阶段的强化学习算法，目标是在不额外训练 `Critic / Value Model` 的情况下，通过“同一个 prompt 下多条候选回答的组内相对优劣”来更新模型策略。
-
-如果用一句话建立直觉：**[PPO](<PPO 近端策略优化.md>) 需要 Critic 来估计一个回答比预期好多少；GRPO 不训练 Critic，而是让同题的一组回答互相比较，用组内平均水平作为参照。**
-
-GRPO 经常和 DeepSeek-R1、数学推理、代码推理、[RLVR](<RLVR 可验证奖励强化学习.md>) 一起出现。原因是这些任务往往可以给出相对明确的 reward，例如数学最终答案是否正确、代码是否通过单测、格式是否满足要求。只要 reward 相对可靠，模型就可以不断采样、比较、更新，从而强化更好的推理路径。
+GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**，是一种用于大语言模型后训练的强化学习方法。它对同一 prompt 采样多条回答，用组内奖励均值和标准差构造相对优势，配合裁剪策略目标及可选的 reference KL 正则更新策略，无需单独训练 Critic。数学、代码等可验证任务常使用这类方法；有效策略信号取决于组内奖励差异，而不只取决于奖励绝对值。
 
 ### 背景
 
@@ -18,11 +14,9 @@ GRPO 经常和 DeepSeek-R1、数学推理、代码推理、[RLVR](<RLVR 可验�
 
 ### 方法原理
 
-GRPO 的核心流程是：对同一个 prompt 采样一组回答，给每个回答计算 reward，然后用这一组 reward 的均值和标准差做归一化，得到每个回答的相对 advantage。简化公式是 `A_i = (r_i - mean(r)) / std(r)`。
+高于同题组内平均奖励的回答得到正优势，低于均值的回答得到负优势，分别提供提高与降低生成概率的激励。优势不是“正确标签”：奖励为 0 也可能产生负优势，所有回答奖励都高也可能没有组内相对信号。
 
-这个公式背后的含义很直接：一个回答不再只看自己的绝对分数，而是看它在同题的一组回答里相对好不好。高于组内平均水平的回答，advantage 为正，模型会提高它的生成概率；低于组内平均水平的回答，advantage 为负，模型会降低它的生成概率。这样就不需要额外训练 Critic 来估计 baseline，因为组内平均 reward 本身就提供了一个相对基准。
-
-GRPO 不是完全抛弃 PPO。它仍然保留 policy optimization、ratio clipping 和 KL 约束这些思想，用来限制策略更新幅度，防止模型一步更新太猛，或者偏离 reference model 太远。真正被替换的是 advantage 的来源：PPO 依赖 Critic 估计 baseline，GRPO 使用同组回答的相对 reward 构造 advantage。
+GRPO 沿用 [PPO](<PPO 近端策略优化.md>) 类的 clipped surrogate，但用组内奖励统计替换常见 Actor-Critic 实现中的优势估计。Clip 裁剪的是 surrogate 激励，不是实际概率比或 KL 的硬约束。组均值包含当前样本、标准差也来自随机采样，因此不能直接套用状态 baseline 无偏证明；相关推导见 [RL 强化学习基础](<RL 强化学习基础.md>)。
 
 ### Rollout、Verifier 和 Reward 的分工
 
@@ -77,7 +71,7 @@ y_1, y_2, ..., y_G ~ π_old(y | q)
 
 ```text
 A_i = (r_i - mean(r_group))
-      / (std(r_group) + epsilon)
+      / (std(r_group) + eps_norm)
 ```
 
 策略更新可以简化表示为：
@@ -95,20 +89,26 @@ L =
 
 其中：
 
-- `ρ_i,t`：当前 policy 与旧 policy 在第 `t` 个 token 上的概率比。
-- `ε`：限制单次策略更新幅度。
-- `π_reference`：通常是 RL 开始前的 SFT checkpoint。
-- `β`：KL 约束系数。
+- `ρ_i,t = πθ(y_i,t | q, y_i,<t) / π_old(y_i,t | q, y_i,<t)`：在相同前缀上，当前与采样旧策略的 token 概率比。
+- `ε`：surrogate 的裁剪阈值；`eps_norm > 0` 是奖励归一化的数值稳定项，两者用途不同。
+- `π_old`：生成本批回答的旧策略，本批多个 epoch 内旧 log-prob 和优势保持固定，下次采样时刷新。
+- `π_reference`：KL 正则的锚点，通常是冻结的初始 SFT checkpoint，也可为 Base 或其他选定模型；它不随每批 rollout 刷新，不能替代 ratio 分母。
+- `β`：KL 正则系数，可取 0；对 reference 的 KL 与对旧策略的更新幅度监控是不同量。
 
-实际实现会因框架不同采用不同的 token-level loss 和 KL 估计，但核心思想不变：
+上式的期望包含 prompt、旧策略采样回答和有效 token。常见目标先对每条回答的有效 token 求平均，再对组内回答求平均；也有不同长度归一化变体，必须说明口径。序列级奖励得到的同一个 `A_i` 通常广播到整条回答的 token，不能据此认为每一步推理都被独立验证。KL 通常在采样前缀上估计，具体采样估计式与精确 KL 不应混写。
 
-```text
-同题多答案
-  -> reward 排序
-  -> 组内相对 advantage
-  -> clipped policy update
-  -> KL 约束
-```
+### 二元奖励与组内优势手算
+
+取组大小 $G=4$，奖励为 $[1,0,0,1]$，采用总体标准差（分母为 $G$）：
+
+1. 均值 $\bar r=0.5$。
+2. 方差为 $(0.25+0.25+0.25+0.25)/4=0.25$，标准差 $\sigma=0.5$。
+3. 忽略极小稳定项时，优势为 $[1,-1,-1,1]$；若保留稳定项，则各项幅度为 $0.5/(0.5+\mathrm{eps\_norm})$。
+4. 两个奖励为 0 的回答有负优势，仍提供降低其生成概率的策略信号。
+
+若奖励改为 $[0,0,0,0]$ 或 $[1,1,1,1]$，均值分别为 0 或 1，标准差为 0，每个中心化分子都为 0；加稳定项后优势严格为 0。仅剩 KL 等其他损失项可能更新参数：当 $\beta>0$ 且当前策略偏离 reference 时，KL 通常能提供梯度；若两者相同且无其他项，也可能完全没有更新。混合 batch 中其他非零优势组也仍可更新共享参数。
+
+因此二元奖励完全可用，“错误全给 0”也可用；问题是组内是否同时出现不同奖励。独立采样且单回答正确率为 $p$ 时，二元奖励同分组的概率为 $p^G+(1-p)^G$；例如 $p=0.5,G=4$ 时为 $1/8$。回答高度相关时不能直接套独立公式。
 
 ### GRPO 为什么必须关注 reward 方差
 
@@ -118,13 +118,13 @@ GRPO 学习的是相对差异。如果同一个 group 中所有回答 reward 都
 std(r_group) ≈ 0
 ```
 
-那么组内没有有效的相对学习信号。常见原因：
+完全同分时，clipped policy 项的组内信号为 0，不代表总损失必无梯度；仅接近同分时还需检查稳定项、浮点精度和噪声放大。常见原因：
 
 - 所有回答都正确。
 - 所有回答都错误。
 - temperature 太低，回答几乎完全相同。
 - parser 失败，所有回答被打成同一个分数。
-- reward 过于粗糙，只返回 0/1。
+- 对当前难度，二元奖励几乎总是全对或全错；不是 0/1 奖励本身不可用。
 
 训练时应监控：
 
@@ -136,9 +136,11 @@ answer_parse_rate
 format_parse_rate
 ```
 
+需明确标准差采用总体还是样本口径；$G=1$ 没有相对信号，样本标准差还可能产生 NaN。很小的方差也可能放大评分噪声，不能只追求“方差非零”。
+
 ### GRPO 的 reward 设计原则
 
-一个可用的 reward 通常由多个分项构成：
+业务需要时，reward 可以由多个分项构成；可靠的单一二元结果奖励也可以使用：
 
 ```text
 R_total =
@@ -153,7 +155,7 @@ R_total =
 设计时要遵循：
 
 1. 最终业务目标的权重不能被格式奖励压过。
-2. reward 要提供平滑差异，不能所有错误都得到同一个 0 分。
+2. 奖励粒度要匹配业务。二元正确性奖励可将错误统一记 0；只有确实能可靠评价部分进展时，才引入过程或分项奖励，避免为制造方差而奖励错误行为。
 3. 必须抽检高 reward 样本，防止 reward hacking。
 4. reward 分项要单独记录，不能只看总 reward。
 5. reward 要与独立业务评测相关，否则 reward 上升不代表能力提升。
@@ -161,39 +163,37 @@ R_total =
 ### GRPO 的工程训练循环
 
 ```text
-1. 准备 SFT checkpoint 作为 policy 初始模型和 reference。
+1. 选择 policy 初始 checkpoint，并在使用 KL 时指定 reference。
 2. 从 RL-friendly 数据集中取一个 prompt。
 3. 对同一个 prompt 采样 G 个回答。
 4. 解析回答并运行 verifier。
 5. 计算每个回答的分项 reward。
 6. 计算组内均值、标准差和 advantage。
-7. 使用 clipping 和 KL 约束更新 policy。
+7. 固定本批优势与旧 log-prob，使用 clipped surrogate 和配置的 KL 正则更新 policy。
 8. 记录 reward、KL、长度、解析率和业务指标。
 9. 定期在固定回归集和困难集上评测。
 ```
 
-GRPO 不应直接从 Base Model 开始。通常需要先经过 SFT 或 Reasoning SFT，让模型具备基本的任务理解、输出格式和可验证回答能力。
+GRPO 可以直接从 Base Model 开始，算法本身不要求 SFT 冷启动。是否先做 SFT 取决于初始模型能否探索到有效答案、输出是否可解析以及 verifier 是否可靠。SFT 或 Reasoning SFT 常用于降低探索难度、改善格式和可读性，但不是必要前置条件。
 
 ### 和 PPO、DPO 的区别
 
 GRPO、PPO、[DPO](<DPO 直接偏好优化.md>) 都服务于模型对齐或能力提升，但它们的训练范式不同。
 
-PPO 是典型在线强化学习方法，能力强但链路重，需要 Critic。DPO 更像离线偏好优化，直接使用 `(prompt, chosen, rejected)` 偏好对训练，不需要在线采样，也不需要 Critic，工程上更简单稳定。GRPO 介于两者之间：它保留了在线采样和 reward 优化，因此比 DPO 更有探索能力；同时去掉 Critic，因此比 PPO 更轻。
+常见 PPO 使用 Actor-Critic 并在线采样；典型 DPO 直接使用 `(prompt, chosen, rejected)` 离线偏好对训练；GRPO 则在线采样多条候选并用组内奖励构造优势。GRPO 省去 Critic 成本，但总成本还取决于组大小、回答长度和 verifier 开销，不能仅凭算法名排序。
 
 | 维度 | DPO | PPO | GRPO |
 | --- | --- | --- | --- |
 | 数据来源 | 离线 chosen/rejected | 在线采样 + reward | 在线采样 + group reward |
-| 是否需要 Critic | 不需要 | 需要 | 不需要 |
+| 是否需要 Critic | 不需要 | 常见实现需要 | 不需要 |
 | 是否需要 reward | 隐含在偏好对里 | 需要 | 需要 |
-| 探索能力 | 较弱 | 强 | 强 |
-| 工程复杂度 | 低 | 高 | 中 |
+| 训练中在线探索 | 典型离线版本不采样 | 通常采样 | 通常同题多次采样 |
+| 主要额外成本 | 偏好数据 | Rollout、价值估计、评分 | 组内多次 rollout、评分 |
 | 典型场景 | 风格偏好、通用对齐 | 通用 RLHF | 数学、代码、RLVR |
-
-简单总结：DPO 是“给定好坏答案对，让模型学习偏好”；PPO 是“用 Reward 和 Critic 指导模型做强化学习”；GRPO 是“同题生成一组答案，根据组内相对 reward 更新模型”。
 
 ### 适用场景
 
-GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 [Agent](<../../10_Agent/基础概念/Agent.md>) 任务。
+GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 [Agent](<../../08_Agent/基础概念/Agent.md>) 任务。
 
 数学题可以检查最终答案是否正确，代码题可以跑单测，格式任务可以做 JSON schema 校验，工具调用任务可以检查执行结果是否达成目标。这些任务的共同点是 reward 相对明确，不完全依赖人类主观偏好，因此更适合用 GRPO 这类在线 RL 方法强化模型的推理路径。
 
@@ -201,13 +201,13 @@ GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Re
 
 ### 优势与局限
 
-GRPO 的主要优势有三点。第一，不需要 Critic，显存和计算成本更低，训练链路也少一个不稳定模块。第二，适合可验证任务，可以直接利用规则、单测、执行结果作为 reward。第三，相比 DPO，它保留了在线探索能力，模型可以生成新的推理路径，再通过 reward 强化有效路径。
+GRPO 省去了 Critic 的参数、优化器状态及训练计算，并能直接使用规则、单测、执行结果作为 reward。在线探索可以产生离线偏好数据中没有的新候选，但能否改善能力仍取决于采样覆盖和奖励质量。
 
 它的局限也很明确。GRPO 去掉了 Critic，但没有解决 reward 质量问题。如果 reward 设计不完整，模型仍然会 reward hacking。例如数学题只看最终答案，模型可能学会猜答案；代码题单测太弱，模型可能过拟合测试；格式 reward 太重，模型可能牺牲内容质量。另一个问题是组内比较本身有方差，group size 太小会导致 advantage 估计不稳，group size 太大又会增加采样成本。此外，GRPO 仍然是 RL 训练，KL 系数、clipping、采样温度、reward scale 都会影响稳定性。
 
 ### 什么时候不应该做 GRPO
 
-以下条件不满足时，应先修数据、SFT 或 verifier：
+出现以下问题时，应优先修数据、探索设置或 verifier，必要时做 SFT：
 
 - 模型还不能稳定生成可解析回答。
 - reward 无法区分正确和错误回答。
@@ -218,27 +218,41 @@ GRPO 的主要优势有三点。第一，不需要 Critic，显存和计算成�
 
 如果 SFT 已经达到目标，也不需要为了完整训练流程强行加入 GRPO。GRPO 的价值在于利用在线探索继续优化 SFT 尚未解决的能力缺口。
 
+### 复杂度
+
+每批 $B$ 个 prompt、每题 $G$ 条回答、平均长度 $L$ 时，组内奖励统计为 $O(BG)$，token 级损失聚合为 $O(BGL)$，不含模型前反向。做 $K$ 个 epoch 的模型更新约为 $O(KBGLC_{\mathrm{model}})$；还需单独计入自回归生成和 verifier 成本。去掉 Critic 不等于 rollout 免费，也不保证总显存或总时延一定低于另一套 PPO 配置。
+
 ### 相关概念
 
 [PPO](<PPO 近端策略优化.md>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
 
 ## 面试应对
 
-### GRPO 的核心训练目标是什么？
+### 常考点及考法
 
-回答思路：按同题采样、reward、组内 advantage、策略更新和 KL 约束回答。
+| 考法 | 解法/回答思路 |
+| --- | --- |
+| 给一组 reward 算 advantage | 先声明标准差口径，算均值、中心化、标准差，再除以带稳定项的分母 |
+| 全 0 是否不能训练，奖励 0 是否无信号 | 分开讨论组内同分、个体低于均值、KL 和其他 batch 样本 |
+| 旧策略是否就是 reference | 先写 ratio 分母，再说明 reference 的 KL 锚点职责 |
+| 能否从 Base 开始 | 区分算法必要条件与探索成功率、格式、奖励可靠性的工程条件 |
+| 如何验证业务收益 | 对照初始模型，做难度分桶、独立评测、奖励投机抽检和成本核算 |
 
-回答模板：
+### 易错点
 
-GRPO 对同一个 prompt 采样一组回答，并分别计算 reward。然后用组内 reward 的均值和标准差构造相对 advantage，高于组内平均水平的回答会被强化，低于平均水平的回答会被抑制。策略更新仍然使用 PPO 类的 clipping 和 KL 约束，防止 policy 一次更新过大或偏离 reference model 太远。它的核心不是简单多生成几次，而是把同一个任务下不同回答的相对质量转化为策略更新信号。
+- 将二元奖励或所有错误统一为 0 直接判为无效；决定相对信号的是同组奖励差异。
+- 将零方差组等同于整个模型停止更新，忽略 KL、其他损失与其他组。
+- 混用归一化稳定项和 clip 阈值，或用无效的单样本标准差制造 NaN。
+- 声称 SFT 是强制前置条件，或把省去 Critic 等同于总训练成本必然更低。
+- 把同一序列优势广播到各 token 当成过程级正确性监督。
 
-### GRPO 是什么？
+### GRPO 是什么，核心训练目标是什么？
 
 回答思路：先给定义，再讲它为什么出现，最后讲核心机制和适用场景。
 
 回答模板：
 
-GRPO 是 Group Relative Policy Optimization，是一种用于大模型后训练的强化学习算法。它主要解决 PPO 训练中 Critic / Value Model 成本高、链路复杂的问题。GRPO 对同一个 prompt 采样一组回答，分别计算 reward，然后用组内 reward 的均值和标准差计算相对 advantage。高于组内平均的回答会被强化，低于平均的回答会被抑制。因为它不需要单独训练 Critic，所以显存和计算成本更低，特别适合数学、代码这类有可验证奖励的推理任务。
+GRPO 是组相对策略优化。它对同一个 prompt 采样多条回答，用组内奖励均值和标准差构造相对优势，再用当前与旧策略的 token 概率比构造裁剪目标，并可加入 reference KL 正则。它用组内比较代替单独的 Critic，省去价值模型训练成本，但需要多次采样和可靠评分。数学、代码这类可验证任务是常见应用，clip 本身不是概率比或 KL 的硬约束。
 
 ### GRPO 为什么可以去掉 Critic？
 
@@ -246,7 +260,7 @@ GRPO 是 Group Relative Policy Optimization，是一种用于大模型后训练�
 
 回答模板：
 
-PPO 里的 Critic 主要用于估计 baseline，从而计算 advantage，也就是某个回答相对预期好多少。GRPO 对同一个 prompt 采样多个回答，并计算这一组回答的 reward。然后它用组内 reward 的均值作为 baseline，用相对分数来近似 advantage。这样就不需要额外训练 Value Model。本质上，GRPO 用“同题多答案的组内竞争”替代了 Critic 的价值估计。
+常见 PPO 的 Critic 估计状态价值，用来构造优势。GRPO 不学习这个价值函数，而是对同题回答的奖励做中心化和标准化，得到组相对策略信号。因此它省去了 Value Model，但不意味着得到了无偏的真实优势估计；组大小、样本相关性和奖励方差仍然影响训练。
 
 ### GRPO 和 PPO 有什么区别？
 
@@ -254,7 +268,7 @@ PPO 里的 Critic 主要用于估计 baseline，从而计算 advantage，也就�
 
 回答模板：
 
-PPO 和 GRPO 都属于 policy optimization，也都会控制策略更新幅度，并通常加入 KL 约束防止模型偏离 reference model。区别在于 PPO 需要训练 Critic 来估计 advantage，而 GRPO 不训练 Critic。GRPO 的 advantage 来自同一个 prompt 下多条回答的组内相对 reward。因此 GRPO 的训练链路更轻，显存和计算成本更低，但它对 reward 质量和采样组大小仍然很敏感。
+常见 PPO 与 GRPO 都可使用 clipped surrogate，但优势来源不同：PPO 通常由 Critic 和回报构造，GRPO 由同题多条回答的相对奖励构造。GRPO 省去 Critic，代价是组内多次 rollout 与评分。二者都需要关注策略漂移；在 LLM 训练中可以额外加 reference KL 正则，而 reference 不是本批采样旧策略。
 
 ### GRPO 和 DPO 有什么区别？
 
@@ -262,7 +276,7 @@ PPO 和 GRPO 都属于 policy optimization，也都会控制策略更新幅度�
 
 回答模板：
 
-DPO 和 GRPO 都可以用于对齐，但范式不同。DPO 使用离线偏好对 `(prompt, chosen, rejected)`，让模型提高 chosen 的概率、降低 rejected 的概率；GRPO 则让当前模型对同一个 prompt 生成一组回答，再根据 reward 做组内相对比较并更新策略。所以 DPO 更简单稳定，适合已有高质量偏好数据的场景；GRPO 更适合数学、代码、工具调用这类可以在线采样并用规则验证的任务。
+DPO 和 GRPO 都可以用于对齐，但典型训练数据不同。DPO 用离线偏好对 `(prompt, chosen, rejected)` 优化相对 reference 的偏好概率比，不保证每个 chosen 的绝对概率都上升；GRPO 在线生成同题多条回答，再根据 reward 构造相对优势。已有高质量偏好数据时 DPO 链路通常更简单；可持续采样且能可靠验证结果时，可考虑 GRPO。
 
 ### 为什么 GRPO 适合推理模型训练？
 
@@ -278,7 +292,15 @@ GRPO 适合推理模型训练，核心原因是数学、代码这类任务有比
 
 回答模板：
 
-GRPO 依赖组内 reward 的相对差异。如果同一个 group 中所有回答的 reward 都一样，那么标准差接近零，所有回答的 advantage 也接近零，模型几乎得不到有效更新信号。常见原因是模型已经全部答对、全部答错、temperature 太低导致回答相同，或者 parser 和 reward 把不同回答错误地打成同一个分数。排查时要看 reward_std、group zero-variance ratio、解析率和采样多样性，并通过 Normal-Level 数据、提高探索或细化 reward 恢复差异。
+所有奖励完全相同时，中心化分子为零，加数值稳定项后优势也是零，该组 clipped policy 项没有相对信号。但 KL 项在当前策略偏离 reference 时仍可能产生梯度，其他组也可更新共享参数。二元奖励并不天然有问题，例如奖励为一半 1、一半 0 时，0 分回答具有负优势。排查要看同分组比例、难度、解析率和采样多样性，不能只为增加方差而制造不可靠奖励。
+
+### 能否从 Base Model 开始？
+
+回答思路：先回答算法允许，再说明什么时候值得先做 SFT。
+
+回答模板：
+
+可以，GRPO 本身不要求初始模型一定经过 SFT。关键是 Base 是否能采到可验证的有效答案，奖励是否可靠以及输出是否容易解析。若成功样本过少或格式混乱，先做 SFT 往往降低探索成本；如果已具备可用探索信号，也可以直接做 RL。Reference 是另行选择的 KL 锚点，不一定是 SFT 模型。
 
 ### GRPO 有哪些风险？
 

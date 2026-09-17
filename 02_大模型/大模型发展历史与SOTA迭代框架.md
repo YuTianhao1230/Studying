@@ -2,7 +2,7 @@
 
 > 来源：https://bytedance.larkoffice.com/docx/FUjKdPEdioj73ox8KzMcTWn6ntg
 
-> **核心结论：**大模型的发展不是模型越大越强一条线，而是由 **预训练规模化**、**数据质量**、**架构效率**、**后训练对齐**、**推理时计算**、**多模态统一** 和 **[Agent](<../10_Agent/基础概念/Agent.md>) 工程闭环** 共同推进。理解历史时建议同时看两条线：一条是业内 SOTA 按时间如何迭代，另一条是同一家模型系列如何一代代优化。
+> **核心结论：**大模型的发展不是模型越大越强一条线，而是由 **预训练规模化**、**数据质量**、**架构效率**、**后训练对齐**、**推理时计算**、**多模态统一** 和 **[Agent](<../08_Agent/基础概念/Agent.md>) 工程闭环** 共同推进。理解历史时建议同时看两条线：一条是业内 SOTA 按时间如何迭代，另一条是同一家模型系列如何一代代优化。
 
 ## 先建立完整思维框架
 ## 业内 SOTA 模型进化时间轴：从 Transformer 到 2026 Agent
@@ -135,7 +135,7 @@ MoE/GQA/MLA/FlashAttention]
 | 2018 | GPT-1 / BERT | OpenAI / Google | 从任务专用模型转向“预训练 + 微调” | GPT 用自回归预训练；BERT 用双向 masked LM | 生成与理解路线分化；下游任务仍需标注微调 | [BERT](https://arxiv.org/abs/1810.04805) |
 | 2019 | GPT-2 / T5 / Megatron-LM | OpenAI / Google / NVIDIA | 验证扩大参数和数据能显著提升生成能力 | 更大语料、更大模型、统一 text-to-text、模型并行 | 对齐和事实性仍弱；训练工程成为壁垒 | [GPT-2](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) |
 | 2020 | GPT-3 / [RAG](<应用与问题/RAG.md>) / Switch Transformer | OpenAI / Meta / Google | 让模型不用每个任务都微调，探索少样本泛化 | 175B dense LM、in-context learning、检索增强、MoE 稀疏激活 | 成本极高；会续写但不一定会遵循指令 | [GPT-3](https://proceedings.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html) |
-| 2021 | [CLIP](<../06_视觉多模态与生成模型/多模态模型/CLIP.md>) / Codex / FLAN | OpenAI / Google | 把语言模型扩展到图文、代码和指令泛化 | 图文对比学习、代码预训练、多任务 instruction tuning | 能力开始泛化，但对话体验、安全和复杂推理仍不足 | [FLAN](https://openreview.net/forum?id=gEZrGCozdqR) |
+| 2021 | [CLIP](<模型细节/里程碑模型/CLIP.md>) / Codex / FLAN | OpenAI / Google | 把语言模型扩展到图文、代码和指令泛化 | 图文对比学习、代码预训练、多任务 instruction tuning | 能力开始泛化，但对话体验、安全和复杂推理仍不足 | [FLAN](https://openreview.net/forum?id=gEZrGCozdqR) |
 | 2022 | InstructGPT / PaLM / Chinchilla / ChatGPT | OpenAI / Google / DeepMind | 让 base model 变成可用助手，并修正规模化训练配比 | SFT + RM + [PPO](<../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>)；540B PaLM；Chinchilla 数据-参数最优配比 | RLHF 贵且不稳；ChatGPT 证明产品形态，但幻觉仍存在 | [InstructGPT](https://proceedings.neurips.cc/paper_files/paper/2022/hash/b1efde53be364a73914f58805a001731-Abstract-Conference.html) |
 | 2023 | GPT-4 / Claude / LLaMA / Gemini 1.0 / Qwen / Mistral | OpenAI / Anthropic / Meta / Google / Alibaba / Mistral | 闭源旗舰与开放权重生态同时爆发 | 多模态、RLAIF、开放权重、MoE、函数调用、长上下文 | SOTA 不再单一；开源追赶但数据和后训练细节差距仍大 | [GPT-4 Report](https://arxiv.org/abs/2303.08774) |
 | 2024 | GPT-4o / Claude 3.5 / Gemini 1.5 / Llama 3.1 / Qwen2.5 / DeepSeek-V3 / o1 | 多家机构 | 从聊天走向实时多模态、长上下文、代码和推理模型 | omni 多模态、1M 上下文、405B 开放模型、MoE/MLA、test-time compute | 推理成本、长上下文可靠性、工具调用安全成为新问题 | [GPT-4o](https://openai.com/index/hello-gpt-4o/) |
@@ -280,7 +280,7 @@ MoE/GQA/MLA/FlashAttention]
 | Codestral / Mathstral / Codestral Mamba | 2024-05/07 | 专项模型 | 通用模型代码、数学、长代码延迟不足 | 代码、数学和 Mamba 长序列代码专项模型 | [Mistral](https://mistral.ai/news/codestral/) |
 | Mistral NeMo / Ministral | 2024-07/10 | 高性价比/端侧 | 企业需要 12B 级和端侧小模型 | NeMo 12B 多语言；Ministral 3B/8B 低延迟端侧 | [Mistral](https://mistral.ai/news/mistral-nemo/) |
 | Pixtral 12B / Pixtral Large | 2024-09/11 | 视觉语言 | Mistral 缺开放多模态能力 | 图像理解、文档/图表/截图和多图推理 | [Mistral](https://mistral.ai/news/pixtral-12b/) |
-| Mistral Small 3.1 / OCR | 2025-03 | 开放多模态/OCR | 企业文档 RAG 需要结构化抽取和单机可跑 [VLM](<../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) | 24B 开放多模态 128K；OCR 处理 PDF/图表/公式 | [Mistral](https://mistral.ai/news/mistral-small-3-1/) |
+| Mistral Small 3.1 / OCR | 2025-03 | 开放多模态/OCR | 企业文档 RAG 需要结构化抽取和单机可跑 [VLM](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) | 24B 开放多模态 128K；OCR 处理 PDF/图表/公式 | [Mistral](https://mistral.ai/news/mistral-small-3-1/) |
 | Mistral Medium 3 / Devstral | 2025-05 | 企业中型/代码 Agent | 企业需要低成本强模型和真实代码库 Agent | Medium 3 覆盖代码/STEM/视觉；Devstral 面向 SWE-bench 类任务 | [Mistral](https://mistral.ai/news/devstral) |
 | Magistral | 2025-06 | 推理模型 | Mistral 缺长思考推理模型 | 首批推理模型，补齐数学、逻辑和多步问题求解 | [Mistral](https://mistral.ai/news/magistral) |
 | Voxtral | 2025-07 | 语音理解 | 开放语音理解和音频函数调用不足 | 转写、音频问答、总结、多语言语音与函数调用 | [Mistral](https://mistral.ai/news/voxtral) |

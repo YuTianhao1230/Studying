@@ -6,6 +6,10 @@
 
 本文整理 Transformer 的提出背景、[Encoder-Decoder](<Decoder-only vs Encoder-Decoder.md>) 架构、自注意力、多头注意力、位置编码、前馈网络、残差连接、归一化、复杂度和主要局限。
 
+### 原始论文规格
+
+原始 Transformer 的 Base 配置为 6 层 Encoder、6 层 Decoder，`d_model=512`、8 个 attention heads、`d_ff=2048`、dropout `0.1`，使用 sinusoidal positional encoding。Big 配置通常扩大到 `d_model=1024`、`d_ff=4096`、16 个 heads。这里的规格属于原论文基线，不应直接当成 BERT、GPT 或现代 LLM 的固定配置。
+
 ### Transformer 架构
 
 #### 核心思想：为什么需要Transformer？
@@ -82,6 +86,14 @@ Encoder和Decoder都不是单一的组件，而是由N个相同的层（Layer）
 #### 总结
 
 Transformer通过自注意力机制实现了对序列内部长距离依赖的强大捕捉能力，并通过并行计算大大提高了训练效率，成为了现代大语言模型（如[BERT](<../模型细节/里程碑模型/BERT.md>), [GPT](<../模型细节/里程碑模型/GPT.md>)系列）的基石。
+
+### 后续影响
+
+- BERT 主要使用 Encoder，结合双向上下文完成理解任务。
+- GPT 主要使用 Decoder 的 masked self-attention，进行自回归生成。
+- T5 保留 Encoder-Decoder，将不同任务统一成 text-to-text。
+- ViT 将图像 patch 当作 token 输入 Transformer Encoder；CLIP、LLaVA 等视觉语言模型也建立在 Transformer 和视觉编码器的组合之上。
+- 现代 LLM 通常在 Decoder block 上加入 RoPE、RMSNorm、SwiGLU、GQA 或 MoE 等改造，但核心的注意力、前馈网络和残差归一化结构仍然延续 Transformer。
 
 ### 衍生问题
 
@@ -219,7 +231,7 @@ BERT和GPT是Transformer架构在不同方向上的两个最成功的应用，�
 **方案一：分层与分块处理（Hierarchical & Chunking）**
 1.  **宏观分块：** 首先，我会将代码文件按照其语法结构进行切分，比如切分成一个个独立的函数（Function）或类（Class）。这是最自然的分块方式，能最大程度地保留局部上下文。
 2.  **局部精细分析：** 将每个函数或类的代码块作为独立的序列，送入Transformer模型进行漏洞分析。因为单个函数或类的长度通常在模型的处理范围内，这样可以进行深度语义分析。
-3.  **全局信息关联：** 对于需要跨函数、跨文件分析的漏洞（比如[污点分析](<../../08_程序分析与代码智能/静态分析基础/污点分析.md>)），单独使用分块是不足的。这时，我会引入下一步的方案。
+3.  **全局信息关联：** 对于需要跨函数、跨文件分析的漏洞（比如[污点分析](<../../12_实习工作整理/程序分析/静态分析基础/污点分析.md>)），单独使用分块是不足的。这时，我会引入下一步的方案。
 
 **方案二：传统静态分析辅助的混合模型（Hybrid Model）**
 这是我认为更有效和实际的方案。它将传统静态分析的**高效性**与大模型的**深度理解能力**相结合。

@@ -4,22 +4,48 @@
 
 ### 概述
 
-**PPO (Proximal Policy Optimization，近端策略优化)** 是目前强化学习（RL）领域最流行、算法效果最稳健的算法之一。它由 OpenAI 在 2017 年提出，现在已成为许多 RL 项目（如 ChatGPT 的强化学习阶段）的默认基准算法。
+**PPO (Proximal Policy Optimization，近端策略优化)** 是一种使用近期策略采样、通过 surrogate 目标优化策略的强化学习方法。常见的 PPO-Clip 配合 Actor-Critic，以新旧策略动作概率比和优势构造裁剪目标，降低沿有利方向过度更新的激励。裁剪不保证真实概率比或 KL 被限制在固定范围内，训练效果仍依赖奖励、价值估计与超参数。
 
 ### PPO 的核心思想
 
-在传统的策略梯度（Policy Gradient）算法中，如果步长（学习率）太大，策略更新就会过猛，导致模型坍塌且难以恢复。
+策略梯度步长过大可能使策略迅速偏离采样分布，导致性能下降。PPO-Clip 使用以下机制：
 
-PPO 解决了这个问题，它的核心是 **限制更新幅度**：
-1.  **Clipped Objective (截断目标函数)**：它计算“新策略”和“旧策略”的比率。如果新策略偏离旧策略太多（超过了一个比例 $\epsilon$，通常是 0.2），它就会把这个比率“截断”，防止步子迈得太大。
-2.  **Actor-Critic 架构**：
-    *   **Actor (演员)**：负责选择动作（策略 $\pi$）。
-    *   **Critic (评论家)**：负责预测当前状态的分数（价值 $V$），用来辅助 Actor 更新。
-3.  **On-policy**：PPO 是一种在线学习算法，意味着它收集一段数据，更新一次，然后就把这些数据丢掉。
+1. **Clipped surrogate**：对超过阈值且沿有利方向变化的样本，不再增加该样本的 surrogate 收益，而不是把策略参数投影到一个硬约束集合。
+2. **常见 Actor-Critic 实现**：actor 输出策略，critic 估计状态价值，用来构造优势与价值回归目标。Return、V/Q/A、策略梯度和 GAE 推导见 [RL 强化学习基础](<RL 强化学习基础.md>)。
+3. **On-policy 数据循环**：冻结旧策略收集一批 rollout，固定旧动作 log-prob、旧价值及由它们计算的优势和 return target；同批数据可做多个 minibatch、多个 epoch 更新，然后重新采样。不能无限复用陈旧 rollout。
+
+### 裁剪目标与四种情况
+
+令 $\rho_t(\theta)=\pi_\theta(a_t\mid s_t)/\pi_{\mathrm{old}}(a_t\mid s_t)$，最大化：
+
+$$
+L^{\mathrm{CLIP}}(\theta)=\mathbb E_{\mathrm{old}}
+\left[\min\left(\rho_t\hat A_t,
+\operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)\hat A_t\right)\right].
+$$
+
+这里 $\rho_t$ 是概率比，不是奖励；$\hat A_t$ 在本批更新中固定。取 $\epsilon=0.2$：
+
+| 优势与概率比 | 未裁剪项 | 裁剪项 | min 结果 | 对该样本的作用 |
+| --- | --- | --- | --- | --- |
+| $\hat A=2,\rho=1.3$ | 2.6 | 2.4 | 2.4 | 增加好动作概率已越上界，停止额外激励 |
+| $\hat A=2,\rho=0.7$ | 1.4 | 1.6 | 1.4 | 好动作概率下降，保留提高概率的梯度 |
+| $\hat A=-2,\rho=0.7$ | -1.4 | -1.6 | -1.6 | 降低坏动作概率已越下界，停止额外激励 |
+| $\hat A=-2,\rho=1.3$ | -2.6 | -2.4 | -2.6 | 坏动作概率上升，保留降低概率的梯度 |
+
+区间内两项相同，例如 $\rho=1.1$ 时分别为 $2.2$ 和 $-2.2$。这是最大化目标；代码中的 actor loss 要取负号。
+
+**边界**：裁剪饱和仅表示该样本的该项局部梯度为零。共享参数、其他样本、价值损失、熵或 KL 项仍可改变动作概率；单次优化步也可能越界。因此 clip 不是概率比硬限制，更不是 KL 上界。可配合较小学习率、有限 epoch、KL 监控和 target-KL 提前停止。
+
+### 旧策略与 Reference
+
+- **旧策略 $\pi_{\mathrm{old}}$**：产生本批 rollout 的行为策略，概率比的分母；每次新采样周期刷新。存下采样动作的旧 log-prob 后，不一定要额外保留完整旧模型。
+- **Reference $\pi_{\mathrm{ref}}$**：RLHF 中用于 KL 正则的能力锚点，通常是冻结的初始 SFT 模型，也可由其他 checkpoint 初始化。一般不会每批刷新。
+- PPO-Clip 本身不要求 reference 或 reward model；控制任务可直接用环境奖励。RLHF 中的 reference KL 与当前/旧策略 KL 监控含义不同，不能混用。
 
 ### 最简 Python 实现 (使用 PyTorch)
 
-为了保持代码足够简单，我们使用 `Gymnasium` 的经典环境 `CartPole`（平衡杆）。这个实现去掉了复杂的并行环境和 GAE（广义优势估计），只保留 PPO 的精髓。
+下面是 `Gymnasium CartPole` 的单环境教学示例，运行需要 PyTorch、NumPy 和 Gymnasium。采用单回合折扣回报，时间限制截断时补末端价值；不实现 GAE、并行采样和 KL 提前停止，不是生产训练器。
 
 ```python
 import torch
@@ -28,6 +54,15 @@ import torch.optim as optim
 import torch.nn.functional as F
 import gymnasium as gym
 import numpy as np
+
+def discounted_returns(rewards, gamma, last_value, terminated):
+    # Time-limit truncation bootstraps; true termination does not.
+    running = 0.0 if terminated else float(last_value)
+    returns = [0.0] * len(rewards)
+    for t in reversed(range(len(rewards))):
+        running = float(rewards[t]) + gamma * running
+        returns[t] = running
+    return returns
 
 ### 定义 Actor-Critic 网络
 class ActorCritic(nn.Module):
@@ -60,24 +95,23 @@ class PPO:
         # 转换 memory 数据为 Tensor
         states = torch.FloatTensor(np.array(memory['states']))
         actions = torch.LongTensor(np.array(memory['actions'])).view(-1, 1)
-        old_probs = torch.FloatTensor(np.array(memory['probs'])).view(-1, 1)
+        old_log_probs = torch.FloatTensor(np.array(memory['log_probs'])).view(-1, 1)
+        old_values = torch.FloatTensor(np.array(memory['values'])).view(-1, 1)
         returns = torch.FloatTensor(np.array(memory['returns'])).view(-1, 1)
 
+        # Freeze rollout targets across all update epochs.
+        advantages = (returns - old_values).detach()
         for _ in range(self.epochs):
             # 获取当前模型的概率和价值
             probs, values = self.model(states)
-            curr_probs = probs.gather(1, actions)
-            
-            # 计算优势 (Advantage): 实际回报 - 预测价值
-            advantages = returns - values.detach()
-
-            # 计算比率 ratio = curr_prob / old_prob
-            ratio = curr_probs / old_probs
+            dist = torch.distributions.Categorical(probs=probs)
+            curr_log_probs = dist.log_prob(actions.squeeze(-1)).view(-1, 1)
+            ratio = torch.exp(curr_log_probs - old_log_probs)
 
             # PPO 核心损失函数：Clipped Surrogate Objective
             surr1 = ratio * advantages
             surr2 = torch.clamp(ratio, 1-self.eps_clip, 1+self.eps_clip) * advantages
-            
+
             # 策略损失 + 价值损失 (均方误差)
             loss = -torch.min(surr1, surr2).mean() + F.mse_loss(values, returns)
 
@@ -91,86 +125,97 @@ ppo = PPO(4, 2)
 
 for episode in range(500):
     state, _ = env.reset()
-    memory = {'states': [], 'actions': [], 'probs': [], 'rewards': []}
+    memory = {
+        'states': [], 'actions': [], 'log_probs': [],
+        'values': [], 'rewards': [],
+    }
     done = False
-    
+
     # --- 阶段 1: 收集数据 ---
     while not done:
         state_tensor = torch.FloatTensor(state).unsqueeze(0)
-        probs, _ = ppo.model(state_tensor)
-        
-        # 按概率采样动作
-        action = torch.multinomial(probs, 1).item()
-        
+        with torch.no_grad():
+            probs, value = ppo.model(state_tensor)
+            dist = torch.distributions.Categorical(probs=probs)
+            action_tensor = dist.sample()
+            action = action_tensor.item()
+            old_log_prob = dist.log_prob(action_tensor).item()
+
         next_state, reward, terminated, truncated, _ = env.step(action)
         done = terminated or truncated
 
         memory['states'].append(state)
         memory['actions'].append(action)
-        memory['probs'].append(probs[0, action].item())
+        memory['log_probs'].append(old_log_prob)
+        memory['values'].append(value.item())
         memory['rewards'].append(reward)
         state = next_state
 
-    # --- 阶段 2: 计算每一步的回报 (Returns) ---
-    discounted_rewards = []
-    running_add = 0
-    for r in reversed(memory['rewards']):
-        running_add = r + ppo.gamma * running_add
-        discounted_rewards.insert(0, running_add)
-    memory['returns'] = discounted_rewards
+    # --- 阶段 2: 用更新前的价值计算固定回报目标 ---
+    # This non-autoreset environment returns the final observation.
+    with torch.no_grad():
+        last_value = 0.0 if terminated else ppo.model(
+            torch.FloatTensor(state).unsqueeze(0)
+        )[1].item()
+    memory['returns'] = discounted_returns(
+        memory['rewards'], ppo.gamma, last_value, terminated
+    )
 
     # --- 阶段 3: 训练更新 ---
     ppo.train(memory)
 
     if episode % 20 == 0:
         print(f"Episode {episode}, Total Reward: {sum(memory['rewards'])}")
+
+env.close()
 ```
 
 ### 代码关键点说明
 
-1.  **`torch.multinomial`**: 这让智能体探索环境。它不是选择概率最大的动作，而是根据概率分布进行随机采样。
-2.  **`ratio` (新旧策略比)**: 
-    *   如果 `ratio > 1`，说明这个动作在新策略中更可能发生。
-    *   如果 `ratio < 1`，说明在新策略中发生的可能性降低了。
-3.  **`torch.clamp`**: 这是 PPO 的灵魂。它把 `ratio` 限制在 `[0.8, 1.2]` 之间。如果优势（Advantage）很大，但 `ratio` 已经超过了 1.2，损失函数就不会再增加，从而阻止了参数的剧烈波动。
-4.  **`advantages` (优势)**: 告诉我们这个动作比平均水平好多少。如果返回的回报（returns）比 Critic 预测的价值（values）高，说明这个动作值得以后更多地被选中。
+1. `Categorical.sample()` 按策略分布探索；采样和更新用同一种分布计算 log-prob。
+2. `ratio = exp(new_log_prob - old_log_prob)`；分母始终是产生 rollout 的策略，不随 epoch 更新。
+3. `advantages = returns - old_values` 在循环外计算。Critic 可以继续拟合 returns，但不能用更新后的 critic 反复改写本批优势。
+4. `terminated` 表示真实任务终止，不 bootstrap；`truncated` 若只是外部时间限制，则要 bootstrap。二者同时为真时按真实终止处理。
+5. 本例一批只有单环境单回合，不跨 reset 回传。向量化版本需沿各环境时间轴计算回报/GAE 后再展平，并在自动 reset 时使用 final observation；不能把向量化环境与模型量化混为一谈。
 
-### 为什么这个代码是最简单的？
-*   它没有使用复杂的向[量化](<../../05_推理部署与系统/推理工程/量化.md>)环境（如 SubprocVecEnv）。
-*   它使用最基础的 Discounted Reward 计算，而不是复杂的 GAE。
-*   网络结构极其简单（只有两层）。
-*   所有逻辑都在一个文件内，适合理解原理。
+**递推核验**：奖励 $[1,2]$、$\gamma=0.9$。真实终止时回报为 $[2.8,2]$；若只是时间截断且末端旧价值为 10，则末步目标为 $2+0.9\times10=11$，首步为 $1+0.9\times11=10.9$。若旧价值为 $[1,2]$，固定优势为 $[9.9,9]$，不能因 critic 更新而改变。
+
+### 复杂度与教学边界
+
+长度 $T$ 的回报递推时间和输出空间均为 $O(T)$；每轮 full-batch 更新需处理 $T$ 个样本，$K$ 个 epoch 的模型计算量约为 $O(KT C_{\mathrm{model}})$，其中 $C_{\mathrm{model}}$ 表示单样本前反向成本。网络为一层共享隐藏层加策略/价值双头；工程中常增加 minibatch、GAE、梯度裁剪、熵项和 KL 监控。
+
+本例对时间步均匀求平均，是常见 PPO surrogate 实现，不声称精确等于折扣初始状态目标的无偏梯度。优势未标准化，超参数仅供演示，实际训练需根据环境评测和调整。
 
 ## 面试应对
 
-### PPO 是什么？
+### 常考点及考法
 
-回答思路：抓住“通过裁剪新旧策略概率比限制单步更新幅度”的核心，说明它是 Actor-Critic、On-policy 的稳健策略梯度算法，也是 [RLHF](<RLHF 基于人类反馈的强化学习.md>) 强化学习阶段的默认选择。
+| 考法 | 解法/回答思路 |
+| --- | --- |
+| 写 PPO-Clip 公式并手算 | 先说明最大化目标，分别算两项，再取 min；负优势会反转乘法不等号 |
+| clip 是否保证 KL 小 | 区分单样本 surrogate 饱和、共享参数更新和真实分布约束 |
+| 为什么一批数据能训多个 epoch | 说明固定 rollout 目标、概率比校正与新一轮重新采样 |
+| 审查代码的回报/优势计算 | 先看终止与截断，再看旧价值、旧 log-prob 是否固定及环境轴边界 |
+| 旧策略和 reference 是否相同 | 分别回答采样分母与 KL 能力锚点的职责、刷新时机 |
 
-回答模板：
+### 易错点
 
-PPO (Proximal Policy Optimization，近端策略优化) 是目前强化学习（RL）领域最流行、算法效果最稳健的算法之一。它由 OpenAI 在 2017 年提出，现在已成为许多 RL 项目（如 ChatGPT 的强化学习阶段）的默认基准算法。 它的核心是改变预训练模型的行为分布，让模型更符合指令、偏好、任务目标或可验证结果。
+- 把 `clamp(ratio)` 分支当成实际 ratio 的硬限制，忽略 `min` 与优势符号。
+- 每个 epoch 重算优势，或者把旧 log-prob 更新成当前 log-prob，使分母失去采样含义。
+- 将时间截断当真实终止，或对 reset 后的状态 bootstrap。
+- 把 PPO 当成不需要新 rollout 的离线 replay 算法，或声称它必然最稳定。
+- 将 RLHF 常见的多模型链路误认为 PPO 本身强制要求。
 
-### PPO 的训练信号是什么？
+### 可直接复述的回答模板
 
-回答思路：训练信号是优势函数（回报减去 Critic 预测的价值），乘以新旧策略概率比后用 clip 截断构成 surrogate 目标，再加 Critic 的价值回归损失。
+**“PPO 是什么，训练信号是什么？”**
 
-回答模板：
+PPO 是一种基于近期 rollout 的策略优化方法。常见 PPO-Clip 用当前与旧策略的动作概率比乘固定优势，再与裁剪后的结果取较小值作为最大化目标。优势通常由奖励和 critic 构造，critic 则回归固定价值目标。裁剪减少沿有利方向继续过度更新的激励，但不是实际概率比或 KL 的硬约束。
 
-在传统的策略梯度（Policy Gradient）算法中，如果步长（学习率）太大，策略更新就会过猛，导致模型坍塌且难以恢复。PPO 解决了这个问题，它的核心是 “限制更新幅度” ： Clipped Objective (截断目标函数) ：它计算“新策略”和“旧策略”的比率。如果新策略偏离旧策略太多（超过了一个比例 $\epsilon$，通常是 0.2），它就会把这个比率“截断”，防止步子迈得太大。Actor-Critic 架构 ： Actor (演员) ：负责选择动作（策略 $\pi$）。 判断一个后训练方法，重点看数据形式、优化目标、是否在线采样、是否需要 Reference / [Reward Model](<Reward Model 与 Grader 奖励模型与评分器.md>)，以及如何防止模型偏离原始能力。
+**“PPO 一批数据更新几次，哪些量不能变？”**
 
-### PPO 适合什么场景？
+同一批 rollout 可以做多个 minibatch 和多个 epoch；旧策略的动作 log-prob、旧价值及计算好的优势和回报目标保持固定，当前策略和 critic 才参与更新。更新过多会偏离采样分布，因此需要控制学习率、epoch 数并监控 KL，随后用新策略重新采样。
 
-回答思路：抓住“需要在线采样探索、有可查询的奖励信号、且要求训练稳健不易崩”的场景，如 RLHF 对齐和连续控制类 RL，代价是要维护 Actor-Critic 并在线 rollout。
+**“PPO 适合什么场景，有哪些风险？”**
 
-回答模板：
-
-为了保持代码足够简单，我们使用 Gymnasium 的经典环境 CartPole （平衡杆）。这个实现去掉了复杂的并行环境和 GAE（广义优势估计），只保留 PPO 的精髓。它没有使用复杂的向量化环境（如 SubprocVecEnv）。 如果数据质量不足、reward 不可靠或评测覆盖不完整，后训练可能带来表面收益但损害真实能力。
-
-### PPO 有哪些风险？
-
-回答思路：点明它对超参（clip 系数、学习率、GAE、KL 系数）敏感、需要同时维护多模型显存开销大，且在 RLHF 里容易被奖励模型 hacking，需要 KL 约束和探索熵调节。
-
-回答模板：
-
-PPO (Proximal Policy Optimization，近端策略优化) 是目前强化学习（RL）领域最流行、算法效果最稳健的算法之一。它由 OpenAI 在 2017 年提出，现在已成为许多 RL 项目（如 ChatGPT 的强化学习阶段）的默认基准算法。 实际使用时必须做对照实验、分桶评测、bad case 分析和能力回归，不能只看单一平均分。
+PPO 适合能够继续采样、获得奖励反馈并承担交互成本的任务，例如控制和部分 RLHF 场景。代价是 rollout 与价值模型训练成本，风险包括 critic 误差、超参数敏感和奖励投机。clip 不能替代 KL 监控和独立评测；在 RLHF 中还要区分作为本批采样分母的旧策略，与作为长期能力锚点的 reference。

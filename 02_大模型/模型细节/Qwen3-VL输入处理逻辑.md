@@ -791,8 +791,8 @@ Qwen3-VL 负责：
    - `_deepstack_process()`：视觉位置上的 residual addition。
 8. **Qwen3-VL 配置源码**：[configuration_qwen3_vl.py](https://github.com/huggingface/transformers/blob/main/src/transformers/models/qwen3_vl/configuration_qwen3_vl.py)。主要用于当前配置示例：Vision depth 27、hidden size 1152、16 heads、patch size 16、spatial merge 2、temporal patch 2、DeepStack indexes `[8, 16, 24]`。
 9. **兼容图像处理源码**：[Qwen2VLImageProcessor](https://github.com/huggingface/transformers/blob/main/src/transformers/models/qwen2_vl/image_processing_qwen2_vl.py)。只用于说明当前兼容图像处理路径中的单图 temporal 补齐、动态 resize 和 image grid 行为，不把这些版本相关实现细节误写成 Qwen3-VL 论文结论。
-10. **关键帧任务定义**：[任务定义与标注标准.md](<../../14_实习工作整理/关键帧检测/任务与数据治理/任务定义与标注标准.md>)。用于本文中“首次完成态”“GT 时间”和业务时间边界的说明。
-11. **关键帧 Qwen3-VL 数据格式**：[Qwen3-VL关键帧数据格式.md](<../../14_实习工作整理/关键帧检测/工程实现/Qwen3-VL关键帧数据格式.md>)。用于本文中视频字段、`<video>` 占位符、视频路径、FPS 和工程数据链路的说明。
+10. **关键帧任务定义**：[任务定义与标注标准.md](<../../12_实习工作整理/关键帧检测/任务与数据治理/任务定义与标注标准.md>)。用于本文中“首次完成态”“GT 时间”和业务时间边界的说明。
+11. **关键帧 Qwen3-VL 数据格式**：[Qwen3-VL关键帧数据格式.md](<../../12_实习工作整理/关键帧检测/工程实现/Qwen3-VL关键帧数据格式.md>)。用于本文中视频字段、`<video>` 占位符、视频路径、FPS 和工程数据链路的说明。
 
 公式、token 数量、序列展开示例和跨来源综合解释属于本文推导，主要根据 `[3]` 至 `[9]` 得出，不是外部文献的直接原文。关键帧检测部分的采样、GT、UI 分辨率和 verifier 建议属于业务建议，主要依据 `[10]` 和 `[11]`，不代表 Qwen3-VL 官方保证。
 

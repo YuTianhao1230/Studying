@@ -16,7 +16,7 @@
 | 后训练 | [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、RLHF/RLAIF、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、RLVR/GRPO | 指令跟随、偏好、安全、数学代码推理 |
 | 多模态 | 视觉编码器 + projector/Q-Former/cross-attention/原生多模态 | 图像、视频、音频、OCR、GUI |
 | 推理时计算 | thinking mode、test-time compute、多采样、自检 | 复杂数学、代码、规划和科学推理 |
-| [Agent](<../../10_Agent/基础概念/Agent.md>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
+| [Agent](<../../08_Agent/基础概念/Agent.md>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
 | 部署生态 | 开源权重、API、端侧小模型、私有化部署 | 成本、可控性、数据安全和工程落地 |
 
 ### OpenAI GPT / o 系列

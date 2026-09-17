@@ -16,7 +16,7 @@
 
 | 模型 | 卡片 |
 | --- | --- |
-| Transformer | [里程碑模型/Transformer.md](<里程碑模型/Transformer.md>) |
+| Transformer | [基础架构/Transformer.md](<../基础架构/Transformer.md>) |
 | BERT | [里程碑模型/BERT.md](<里程碑模型/BERT.md>) |
 | GPT | [里程碑模型/GPT.md](<里程碑模型/GPT.md>) |
 | Llama | [里程碑模型/Llama.md](<里程碑模型/Llama.md>) |

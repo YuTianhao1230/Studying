@@ -4,7 +4,7 @@
 
 ### 概述
 
-[CLIP](<../../../06_视觉多模态与生成模型/多模态模型/CLIP.md>) 是双塔图文对比学习模型，用图像编码器和文本编码器把图像、文本映射到同一 embedding 空间，通过大规模图文对训练获得 zero-shot 分类、图文检索和跨模态迁移能力。
+CLIP 是双塔图文对比学习模型，用图像编码器和文本编码器把图像、文本映射到同一 embedding 空间，通过大规模图文对训练获得 zero-shot 分类、图文检索和跨模态迁移能力。
 
 ### 解决的问题
 
@@ -68,6 +68,8 @@ Vision [Transformer](<../../基础架构/Transformer.md>)：
 - ViT-L/14 通常是 24 层、hidden size 1024、16 heads。
 - 图像被切成 patch token，经过 Transformer Encoder 得到全局图像表示。
 
+两类视觉编码器的取舍可以概括为：Modified ResNet 具有更强的卷积归纳偏置和局部特征提取能力，工程实现成熟；ViT 直接用 self-attention 建模 patch 之间的全局关系，扩展性更好，但通常更依赖大规模预训练数据。二者最终都通过 image projection 输出全局图像 embedding，不应把 CLIP 的全局匹配能力等同于细粒度定位能力。
+
 ### 文本分支
 
 CLIP 文本编码器是 Transformer：
@@ -90,14 +92,14 @@ CLIP 不是一个只有单一尺寸的 checkpoint，面试时要区分“论文�
 | Image encoder | ResNet-50/101 或 ViT-B/32、ViT-B/16、ViT-L/14 | 生成全局 image embedding |
 | ViT-B/32 | 12 层、hidden size 768、12 heads，patch size 32 | 计算成本较低 |
 | ViT-L/14 | 24 层、hidden size 1024、16 heads，patch size 14 | 表达能力和 zero-shot 效果更强 |
-| Text encoder | 12 层、hidden size 512、8 heads、context length 77 | 生成全局 text embedding |
+| Text encoder（ViT-B/32 对应配置） | 12 层、hidden size 512、8 heads、context length 77；ViT-L/14 对应文本塔宽度 768、12 heads | 生成全局 text embedding |
 | Projection | image/text 各自一个线性投影 | 把两种模态映射到相同维度 |
 
 这里的“12 层文本 Transformer”是 OpenAI CLIP 常见配置，不代表所有后续 CLIP-like 模型都使用相同层数。
 
 ### 训练目标
 
-给定 batch 内 `N` 个图文对，计算 `N x N` 相似度矩阵：
+给定 batch 内 `N` 个图文对，将两塔投影后的向量分别做 L2 归一化，再计算 `N x N` 相似度矩阵：
 
 ```text
 logits = image_embeddings @ text_embeddings.T / temperature
@@ -119,12 +121,15 @@ L_t2i = CrossEntropy(logits_per_text, target=[0, 1, ..., N-1])
 L_clip = (L_i2t + L_t2i) / 2
 ```
 
-其中 `logits[i][j]` 表示第 `i` 张图和第 `j` 条文本的相似度，正确配对在对角线上。温度参数通常是可学习的 `logit_scale`，它控制 softmax 分布的尖锐程度：
+其中 `logits[i][j]` 表示第 `i` 张图和第 `j` 条文本的缩放相似度，正确配对在对角线上。温度 `τ > 0` 与 OpenAI 实现中的可学习参数 `logit_scale` 满足 `exp(logit_scale) = 1/τ`：
 
-- 温度太高或 `logit_scale` 太大，模型会过度强调最相似项，训练可能变得不稳定。
-- 温度太低或 `logit_scale` 太小，对比信号变弱，正负样本难以拉开。
+- 温度越低，或 `logit_scale` 越大，softmax 越尖锐，模型越强调得分较高的候选；过大缩放可能放大困难负例和错配的影响。
+- 温度越高，或 `logit_scale` 越小，softmax 越平滑。例如相似度 `[1, 0]` 在 `τ=1` 时概率约为 `[0.7311, 0.2689]`，在 `τ=0.5` 时约为 `[0.8808, 0.1192]`。
+- 固定温度时，单行交叉熵对原始相似度的梯度为 `(p_j - y_j)/τ`；不能仅凭“概率更尖锐”就断言每个样本的梯度都变大。
 
 CLIP 的负样本主要来自 batch 内其他图文对，因此 batch size 和跨卡 all-gather 会直接影响负样本数量和对比学习质量。
+
+同一图片的多个描述或语义等价图片可能构成假负例。应先处理重复/多正例关系，再决定是否采用多正例目标；盲目增大 batch 不保证收益。若面试要求手写损失，先检查两塔归一化、相似度矩阵转置、目标索引和两个方向的平均，交叉熵梯度推导见[数学基础](<../../../01_机器学习基础/数学与机器学习/数学基础.md>)。
 
 ### CLIP 为什么能从 noisy web data 学到能力
 
@@ -147,7 +152,7 @@ CLIP 使用的是互联网图文对，不要求每条文本都是严格人工标
 - 用图文对比学习替代人工类别监督。
 - 学到开放词表的视觉语义空间。
 
-相比单塔 [VLM](<../../../06_视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)：
+相比单塔 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)：
 
 - CLIP 不做 early fusion，图像和文本分开编码。
 - 适合检索和 zero-shot，但不直接生成自然语言答案。
@@ -193,7 +198,7 @@ CLIP 的视觉编码器和图文 embedding 空间影响很大：
 
 - [LLaVA](<LLaVA.md>) 等模型常用 CLIP [ViT](<ViT.md>) 作为视觉编码器。
 - 图文检索、开放词表分类、grounding 和 VLM 评测常用 CLIPScore。
-- [多模态对抗攻击](<../../../13_AI安全与对抗攻击/多模态对抗攻击.md>)常攻击 CLIP 对齐空间，因为它代表图文语义绑定。
+- [多模态对抗攻击](<../../../11_AI安全与对抗攻击/多模态对抗攻击.md>)常攻击 CLIP 对齐空间，因为它代表图文语义绑定。
 
 ### 常见考法与解题方法
 

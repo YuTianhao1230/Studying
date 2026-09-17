@@ -47,7 +47,7 @@ Grid
 
 GPU 内存层级会影响性能：
 
-- Global [Memory](<../../10_Agent/基础概念/Memory.md>)：容量大，访问慢。
+- Global Memory：容量大，访问慢。
 - Shared Memory：block 内共享，速度快。
 - Register：线程私有，最快。
 - Cache：缓存常用数据。

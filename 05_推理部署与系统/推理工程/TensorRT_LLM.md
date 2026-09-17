@@ -79,7 +79,7 @@ TensorRT-LLM 属于解决这些问题的工程工具之一。
 - Tokens per Second。
 - p50/p95/p99 latency。
 - GPU utilization。
-- [Memory](<../../10_Agent/基础概念/Memory.md>) bandwidth。
+- Memory bandwidth。
 - Throughput。
 - Cost per 1M tokens。
 

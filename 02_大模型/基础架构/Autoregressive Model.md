@@ -43,7 +43,7 @@
 
 2. **推理阶段**  
    • **自回归生成**：每一步将当前生成的元素作为下一步的输入，无法并行。  
-   • **解码策略**：贪心搜索（Greedy Search）、束搜索（[Beam Search](<../../07_Python与工程/PyTorch/Beam_Search.md>)）、Top-k采样、核采样（Nucleus Sampling）等。
+   • **解码策略**：贪心搜索（Greedy Search）、束搜索（[Beam Search](<../../06_Python与工程/PyTorch/Beam_Search.md>)）、Top-k采样、核采样（Nucleus Sampling）等。
 
 #### 自回归模型的典型应用
 1. **文本生成**  
