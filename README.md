@@ -75,7 +75,7 @@ Studying/
 | 评测、LLM Judge、Benchmark 污染、训练数据构造、合成数据、Hive/Spark、Feature Store、数据质量 | [04_评测实验与数据质量/](<04_评测实验与数据质量/>) |
 | 推理框架、Serving、KV Cache、Batching、量化、TensorRT-LLM、CUDA Graph、CUDA/Triton、系统设计、Docker | [05_推理部署与系统/](<05_推理部署与系统/>) |
 | CNN、ResNet、ViT、VLM、CLIP、BLIP、UNet、Latent Diffusion、OCR、Video Understanding、Grounding | [02_大模型/视觉多模态与生成模型/](<02_大模型/视觉多模态与生成模型/>) |
-| Python 语法、高频算法模板、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Applied ML Coding、Beam Search | [06_Python与工程/](<06_Python与工程/>) |
+| Python 语法、高频算法模板、常用库、PyTorch/TensorFlow/JAX 框架选型、Hugging Face、Beam Search | [06_Python与工程/](<06_Python与工程/>) |
 | 静态分析、数据流、污点分析、CodeQL、代码大模型 | [12_实习工作整理/程序分析/](<12_实习工作整理/程序分析/>) |
 | 面试复习体系、项目闭环复盘、训练排查和综合面试题 | [07_面试体系/](<07_面试体系/>) |
 | Agent 基础概念、实战落地、Skill、Workflow、Tool Call、MCP、RAG、评测和生产化 | [08_Agent/](<08_Agent/>) |
@@ -95,7 +95,6 @@ Studying/
 - [数学基础](<01_机器学习基础/数学与机器学习/数学基础.md>)、[机器学习基础](<01_机器学习基础/数学与机器学习/机器学习基础.md>)：梯度、反向传播、统计估计与经典模型推导。
 - [RL 强化学习基础](<03_训练优化与对齐/后训练与对齐/RL 强化学习基础.md>)：MDP、Bellman、策略梯度、GAE 与重要性采样，衔接 PPO/GRPO。
 - [指标与统计计算](<04_评测实验与数据质量/指标与统计计算.md>)：排序指标手算、置信区间、分组 Bootstrap 与样本量。
-- [Applied ML Coding](<06_Python与工程/PyTorch/Applied_ML_Coding.md>)：ML 手写题面、shape、复杂度和边界说明。
 - [02_大模型/大模型发展历史与SOTA迭代框架.md](<02_大模型/大模型发展历史与SOTA迭代框架.md>)：大模型从 Transformer 到 Agent 的历史演进和 SOTA 迭代框架。
 - [02_大模型/模型细节/README.md](<02_大模型/模型细节/README.md>)：Transformer、CLIP、ViT、ALBEF、TCL、Qwen、DeepSeek、GPT 等模型架构和能力细节入口。
 - [07_面试体系/README.md](<07_面试体系/README.md>)：专业知识、计算机基础、项目复盘和综合素质面试入口。
@@ -173,7 +172,7 @@ Studying/
 - `算法刷题/`：回溯、并查集、刷题技巧、下一个排列。
 - `常用库/`：argparse、DataLoader、re、tqdm、可视化。
 - `深度学习框架/`：PyTorch、TensorFlow/Keras、JAX、Hugging Face、Trainer、Accelerate、Lightning 等框架选型和训练脚手架基础。
-- `PyTorch/`：torch、torchvision、torch.unsqueeze、Applied ML Coding、Beam Search。
+- `PyTorch/`：torch、torchvision、torch.unsqueeze 和 Beam Search。
 - `常用函数/`：detach、enumerate、torch.inference_mode、折叠注释。
 
 ### 程序分析与代码智能

@@ -12,4 +12,3 @@
 1. [数学基础](<数学与机器学习/数学基础.md>)：Softmax/交叉熵、两层网络反传、MLE/MAP 与 PCA。
 2. [机器学习基础](<数学与机器学习/机器学习基础.md>)：LR、树与 Boosting、SVM、朴素贝叶斯、KMeans 和 GMM/EM。
 3. [指标与统计计算](<../04_评测实验与数据质量/指标与统计计算.md>)：指标手算与抽样不确定性。
-4. [Applied ML Coding](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)：将推导写成代码并检验数值及边界。

@@ -22,7 +22,7 @@
 - 腾讯混元多模态算法研究：强调多模态数据构造、基础模型算法、pre-training/SFT/RL、模型评测、Diffusion、Autoregressive、CPU/GPU 加速、分布式训练与推理优化。
 - 阿里大语言模型算法工程师：强调 NLP、大模型、知识表示、机器翻译、长思维链推理、对话系统、文本生成、业务落地、PyTorch/TensorFlow、Transformer/BERT/GPT/RNN/LSTM。
 - 美团 Search Agent / AI 搜索方向：强调联网搜索、边想边搜、Deep Research、Mid-Train、SFT、Generative [Reward Model](<../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md>)、[RLVR](<../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md>)、Agentic RL、搜索链路 Query 理解、语义[召回](<../05_推理部署与系统/系统设计/召回粗排精排重排.md>)、排序、任务拆解、文本改写、多轮对话、数据挖掘和评估迭代。
-- Meta / Google DeepMind MLE 面试趋势：强调算法编码、Applied ML Coding、ML System Design、训练到 Serving、推荐/搜索/广告、评测框架、MLOps、JAX/PyTorch、分布式训练、线上监控。
+- Meta / Google DeepMind MLE 面试趋势：强调算法编码、机器学习实现、ML System Design、训练到 Serving、推荐/搜索/广告、评测框架、MLOps、JAX/PyTorch、分布式训练、线上监控。
 
 ## 能力矩阵
 
@@ -39,7 +39,7 @@
 | 训练系统 | PyTorch、JAX、Distributed Training、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、Megatron、NCCL | 能解释框架选型、并行策略、集合通信、显存优化和故障排查 | [深度学习框架选型](<../06_Python与工程/深度学习框架/深度学习框架选型.md>)、[PyTorch 训练工程基础](<../06_Python与工程/深度学习框架/PyTorch训练工程基础.md>)、[分布式训练通信与故障排查](<../03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md>)、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md>)、[Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../03_训练优化与对齐/训练框架与并行/JAX与XLA.md>)、[Loss 异常与收敛排查](<../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md>) |
 | 推理部署 | [vLLM](<../05_推理部署与系统/推理工程/vLLM.md>)、TensorRT-LLM、Quantization、[Dynamic Batching](<../05_推理部署与系统/推理工程/Batching.md>)、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../05_推理部署与系统/推理工程/模型部署与推理工程.md>)、[vLLM](<../05_推理部署与系统/推理工程/vLLM.md>)、[TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md>)、[Batching](<../05_推理部署与系统/推理工程/Batching.md>)、[KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[量化](<../05_推理部署与系统/推理工程/量化.md>)、[CUDA Graph](<../05_推理部署与系统/推理工程/CUDA_Graph.md>) |
 | 系统工程 | Linux、C++、Python、服务化、监控、回滚、CI/CD | 能把模型稳定上线并排障 | [MLOps 与模型生产化](<../05_推理部署与系统/系统设计/MLOps与模型生产化.md>)、[Serving](<../05_推理部署与系统/推理工程/Serving.md>)、[CUDA 与 Triton 基础](<../05_推理部署与系统/推理工程/CUDA与Triton基础.md>)、[编程与算法工程能力](<../06_Python与工程/编程与算法工程能力.md>) |
-| 编码能力 | 数据结构算法、Applied ML Coding、Python 工程 | 能写可运行、可测试、可恢复、复杂度清楚的代码 | [Applied ML Coding](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)、[Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md>)、[高频算法模板](<../06_Python与工程/算法刷题/高频算法模板.md>)、[Python 工程实践](<../06_Python与工程/Python工程实践.md>) |
+| 编码能力 | 数据结构算法、Python 工程 | 能写可运行、可测试、可恢复、复杂度清楚的代码 | [Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md>)、[高频算法模板](<../06_Python与工程/算法刷题/高频算法模板.md>)、[Python 工程实践](<../06_Python与工程/Python工程实践.md>) |
 
 ## 模型训练方向最该掌握的 7 个方向
 
@@ -123,21 +123,6 @@
 - [Feature Drift / Data Drift / Concept Drift](<../05_推理部署与系统/系统设计/MLOps与模型生产化.md>)。
 - [训练-Serving Skew](<../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>)。
 - [线上监控和告警](<../05_推理部署与系统/系统设计/MLOps与模型生产化.md>)。
-
-### Applied ML Coding
-
-原因：很多面试不再只考 LeetCode，还会考小型 ML 实现。
-
-需要能手写：
-
-- [Scaled Dot-Product Attention](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [Top-k / Top-p Sampling](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md>)。
-- [AUC / PR-AUC / NDCG](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [小型训练循环](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [Gradient Accumulation](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [RAG chunking](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)。
-- [简单 Eval Harness](<../08_Agent/基础概念/Agent_Eval.md>)。
 
 ## 建议学习优先级
 
@@ -275,7 +260,6 @@
 - [Video Understanding](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md>)
 - [Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>)
 - [生产级 Agent 案例](<../08_Agent/基础概念/生产级Agent案例.md>)
-- [Applied ML Coding](<../06_Python与工程/PyTorch/Applied_ML_Coding.md>)
 - [Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md>)
 
 补充知识已保留：

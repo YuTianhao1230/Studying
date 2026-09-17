@@ -10,11 +10,9 @@
 | [torch.unsqueeze().md](<torch.unsqueeze().md>) | unsqueeze 的维度扩展作用和常见张量 shape 场景。 |
 | [torchvision基础知识.md](<torchvision基础知识.md>) | torchvision 数据集、变换和视觉模型工具。 |
 | [Beam_Search.md](<Beam_Search.md>) | Beam Search 解码过程、复杂度和生成任务使用场景。 |
-| [Applied_ML_Coding.md](<Applied_ML_Coding.md>) | 面试中常见的 ML coding 实现题和工程化写法。 |
 
 ## 学习路线
 
 1. 先看 [基础介绍.md](<基础介绍.md>) 和 [torch.unsqueeze().md](<torch.unsqueeze().md>)。
 2. 再看 [torchvision基础知识.md](<torchvision基础知识.md>)，连接视觉数据处理。
-3. 再看 [Applied_ML_Coding.md](<Applied_ML_Coding.md>)，明确题面、shape、复杂度和边界。
-4. 最后按题面手写 Attention、指标、采样和训练循环，重点检查 shape、数值稳定性和边界。
+3. 最后看 [Beam_Search.md](<Beam_Search.md>)，准备生成任务中的解码和复杂度问题。

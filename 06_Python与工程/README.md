@@ -5,7 +5,7 @@
 | 子目录 | 内容说明 |
 | --- | --- |
 | [Python语法](<Python语法/README.md>) | 内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
-| [PyTorch](<PyTorch/README.md>) | PyTorch 基础、张量操作、torchvision、Beam Search 和 Applied ML Coding。 |
+| [PyTorch](<PyTorch/README.md>) | PyTorch 基础、张量操作、torchvision 和 Beam Search。 |
 | [常用函数](<常用函数/README.md>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
 | [常用库](<常用库/README.md>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
 | [深度学习框架](<深度学习框架/README.md>) | PyTorch、TensorFlow、Hugging Face、训练脚手架和框架选型。 |
@@ -17,7 +17,3 @@
 | --- | --- |
 | [编程与算法工程能力.md](<编程与算法工程能力.md>) | 面试中的编码能力、算法工程能力和工程实现意识。 |
 | [Python工程实践.md](<Python工程实践.md>) | GIL、并发模型、结构化日志、重试、测试、大文件处理和断点续跑。 |
-
-## ML Coding 题面
-
-[Applied ML Coding](<PyTorch/Applied_ML_Coding.md>) 提供题面、形状约定、算法步骤、复杂度和边界说明，按“独立推导 → 手写 → 解释边界”的顺序练习。
