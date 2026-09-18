@@ -4,7 +4,7 @@
 
 | 子目录 | 内容说明 |
 | --- | --- |
-| [Python语法](<Python语法/README.md>) | 内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
+| [Python语法](<Python语法/README.md>) | ACM/OJ 输入输出、内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
 | [PyTorch](<PyTorch/README.md>) | PyTorch 基础、张量操作、torchvision 和 Beam Search。 |
 | [常用函数](<常用函数/README.md>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
 | [常用库](<常用库/README.md>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
