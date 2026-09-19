@@ -8,3 +8,4 @@
 | [BadCase归因与UI元素治理.md](<BadCase归因与UI元素治理.md>) | bad case 分类、小 UI、角标、Banner、GT 误差和 UI primitive。 |
 | [数据飞轮与主动学习.md](<数据飞轮与主动学习.md>) | bad case 筛选、人工重标、分桶评测和主动采样。 |
 | [并行DE与PE.md](<并行DE与PE.md>) | 数据工程和 Prompt/规则工程的并行治理闭环。 |
+| [Agentic Model Optimization 模型自训练优化.md](<Agentic Model Optimization 模型自训练优化.md>) | Agent 接管 bad case、数据策略、训练、评测和持续迭代的 Loop-Engineering。 |

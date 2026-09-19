@@ -1,10 +1,10 @@
-# 关键帧检测 OPD 备选方案：Temporal-OPSD
+# 关键帧检测：OPD / Temporal-OPSD 训练方案
 
 ## 知识点解析
 
 ### 概述
 
-本文是关键帧检测现有 Direct SFT、Structured CoT SFT 和 Verifier-based GRPO 主方案之外的一条独立备选路线，不修改原有训练方案。
+本文是关键帧检测主训练流程中 On-Policy 阶段的详细设计卡片。主方案只描述训练阶段之间的关系和准入准出；本文负责展开 Temporal-OPSD 的原理、数据、训练目标、工程实现、实验协议和面试应对。
 
 方案把 Vision-OPD 的“局部 crop/zoom 教师”改造成“局部时间窗口教师”：
 
@@ -22,11 +22,11 @@
   仍然只输入完整视频，不需要真实调用局部 crop 工具。
 ```
 
-这条路线可以在满足条件时替代 GRPO 作为 CoT-SFT 之后的优化阶段，但不能自动替代 verifier，也不能在只有教师最终文本、没有教师 logit/log-prob 时被称为严格的 token-level OPD。
+Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student 的完整视频 rollout 与 Teacher 的高密度局部时间窗口进行 token-level 对齐。它不能替代 verifier；只有具备 Teacher logits/log-prob 时，才能称为严格的 token-level OPD。
 
 ### 1. 先给方法选择结论
 
-#### 1.1 OPD 能不能替代 GRPO
+#### 1.1 OPD 与 GRPO 的分工
 
 可以替代**训练阶段的优化方法**，但不能简单认为两者功能完全相同。
 
@@ -40,11 +40,11 @@
 | 必备条件 | 教师 logit/log-prob，或至少可复现教师前向 | 可用 verifier 和有区分度的 reward |
 | 当前项目适配 | 需要定制双视频训练链路 | 已有 reward plugin 和 verifier 基础 |
 
-针对当前关键帧项目，建议采用如下判断：
+在关键帧主流程中按以下条件进入 OPD：
 
 ```text
 有可靠的局部时间教师 + 可获得 logits：
-  Temporal-OPSD 可以作为 GRPO 的独立替代路线。
+  进入 Temporal-OPSD On-Policy 阶段。
 
 只有教师 API 文本答案：
   做 Response Distillation/RFT，不是严格 OPD。
@@ -56,7 +56,7 @@
   不要直接做 OPD，先做教师质量评估和 CoT-SFT。
 ```
 
-#### 1.2 推荐的备选训练顺序
+#### 1.2 主流程中的训练顺序
 
 ```text
 Base Qwen3-VL
@@ -67,14 +67,14 @@ Base Qwen3-VL
   -> 部署
 ```
 
-如果 Temporal-OPSD 的离线结果不足，再切回原方案：
+若 Temporal-OPSD 的离线结果不足，回到数据治理和 verifier 分析：
 
 ```text
 Structured CoT SFT
   -> Verifier-based GRPO
 ```
 
-这里的 Temporal-OPSD 不会修改原有 GRPO 方案，也不要求删除现有 reward 代码。
+现有 GRPO reward 代码继续用于样本筛选、rollout 分桶和对照评估。
 
 ### 2. 从 Vision-OPD 到关键帧检测
 
@@ -1029,7 +1029,7 @@ Recall 很高但 Precision 很低。
 
 #### OPD 可以完全替代 GRPO 吗？
 
-在工程上，OPD 可以替代 GRPO 作为 CoT-SFT 之后的优化阶段，但前提是有可靠的 Teacher logits 或 log-prob，以及质量稳定的局部时间教师。它不能替代 verifier，因为 OPD 主要迁移教师行为，可能继承教师错误；GRPO 则直接优化时间、格式和业务证据 reward。当前关键帧项目可以把 Temporal-OPSD 作为独立备选路线，先做小规模对照，再根据困难集 ACC 和全量回归结果决定是否保留 GRPO。
+Temporal-OPSD 可以作为 GRPO 之后的 On-Policy 优化阶段，但前提是有可靠的 Teacher logits 或 log-prob，以及质量稳定的局部时间教师。它不能替代 verifier，因为 OPD 主要迁移教师行为，可能继承教师错误；GRPO 则直接优化时间、格式和业务证据 reward。两者在主流程中分别承担业务 reward 优化和局部时间证据蒸馏。
 
 #### 为什么教师不能只看 GT 关键帧？
 
@@ -1038,4 +1038,3 @@ Recall 很高但 Precision 很低。
 #### 当前代码怎么改？
 
 当前 reward plugin 只能返回标量 reward，不能直接实现 OPD。工程上需要增加双视图数据字段、Teacher/Student collator、Student rollout、相同 prefix 上的双模型 forward、masked KL/JSD loss 和可选 EMA Teacher。现有关键帧 reward 代码可以继续作为 Teacher 样本过滤、rollout 分桶和最终评测工具。
-

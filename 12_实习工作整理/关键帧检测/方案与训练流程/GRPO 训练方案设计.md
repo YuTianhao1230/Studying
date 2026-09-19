@@ -418,7 +418,7 @@ GT >= 0 但 pred = -1 -> 惩罚
 
 ```text
 格式正确但时间错误
-  < 
+  <
 时间正确且格式正确
 ```
 
@@ -605,10 +605,10 @@ M0：Direct SFT checkpoint
   -> 检查 reward 分布、KL 和 hard ACC
   -> M3：正式 GRPO
   -> 选择最佳 checkpoint
-  -> 可选 OPD 或 answer-only distillation
+  -> Temporal-OPSD On-Policy 蒸馏或 answer-only distillation
 ```
 
-其中 OPD 的详细说明见 [On-Policy Distillation 在线策略蒸馏](<../../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md>)。
+Temporal-OPSD 的完整数据、训练器、loss、准入准出和面试回答见[OPD 训练方案设计.md](<OPD 训练方案设计.md>)。
 
 #### 7.1 进入 GRPO 的准入条件
 
@@ -740,13 +740,13 @@ GRPO 的核心不是“让模型多生成几次”，
 
 ## 面试应对
 
-### 为什么关键帧任务选择 GRPO，而不是 DPO、PPO、OPD 或 RFT？
+### 为什么关键帧任务先使用 GRPO，再进入 Temporal-OPSD？
 
 回答思路：先看监督数据和目标，再比较探索能力、reward 形式和工程成本。
 
 回答模板：
 
-关键帧任务的目标是优化可验证的时间边界和证据判断，而不只是让模型偏好某种回答风格。DPO 需要高质量 chosen/rejected 偏好对，适合离线偏好优化，但本身没有在线探索能力；PPO 也能使用时间和证据 reward，但需要额外训练 Critic，工程和显存成本更高；OPD 需要强教师在学生 rollout 前缀上的 token-level logits，我当前主要拥有结构化 CoT 和业务 verifier，暂时不具备严格 OPD 的条件；RFT 可以作为低风险 baseline，通过筛选高 reward 回答继续 SFT，但它只能放大当前 policy 已经生成出来的行为，无法充分探索新的边界判断。GRPO 对同一个视频采样多条回答，用时间、格式、before/current/after 和证据 reward 做组内相对优化，不需要 Critic，和关键帧的可验证目标最匹配。因此我会先做 RFT 对照实验，再在 reward 可靠且 SFT 仍有边界缺口时使用 GRPO。
+关键帧任务的目标是优化可验证的时间边界和证据判断，而不只是让模型偏好某种回答风格。DPO 需要高质量 chosen/rejected 偏好对，适合离线偏好优化，但本身没有在线探索能力；PPO 也能使用时间和证据 reward，但需要额外训练 Critic，工程和显存成本更高；RFT 可以作为低风险 baseline，通过筛选高 reward 回答继续 SFT，但它只能放大当前 policy 已经生成出来的行为，无法充分探索新的边界判断。GRPO 对同一个视频采样多条回答，用时间、格式、before/current/after 和证据 reward 做组内相对优化，不需要 Critic，适合先把业务 reward 和 verifier 验证清楚。GRPO 之后，若完成态附近的高密度时间窗口明显优于完整视频，且可以取得 Teacher 在 Student prefix 上的 logits/log-prob，则进入主方案 Stage 5 的 Temporal-OPSD，把局部边界证据迁移回线上完整视频策略。
 
 ### GRPO 在关键帧任务中怎么设计？
 
