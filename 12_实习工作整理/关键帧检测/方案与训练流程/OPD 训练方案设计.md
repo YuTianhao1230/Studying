@@ -30,6 +30,8 @@ Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student �
 
 可以替代**训练阶段的优化方法**，但不能简单认为两者功能完全相同。
 
+![SFT、RFT/GRPO、OPD 与 OPSD 的训练信号对比](<assets/opd_training_paradigms.png>)
+
 | 维度 | Temporal-OPSD/OPD | Verifier-based GRPO |
 | --- | --- | --- |
 | 核心监督 | 教师 token 分布 | 时间、格式、边界和证据 reward |
@@ -39,6 +41,32 @@ Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student �
 | 主要风险 | 继承教师错误，受教师输入优势影响 | reward hacking、reward 稀疏或不稳定 |
 | 必备条件 | 教师 logit/log-prob，或至少可复现教师前向 | 可用 verifier 和有区分度的 reward |
 | 当前项目适配 | 需要定制双视频训练链路 | 已有 reward plugin 和 verifier 基础 |
+
+#### 1.2 SFT、RFT、OPD 与 OPSD 的统一关系
+
+![SFT、RFT、OPD 与 OPSD 的统一关系](<assets/opd_method_relationships.png>)
+
+四种方法可用两个正交维度理解：
+
+```text
+维度一：训练轨迹从哪里来？
+  离线标注 / 教师轨迹（off-policy）
+  vs Student 自己生成的 rollout（on-policy）
+
+维度二：每一步获得什么反馈？
+  one-hot 硬标签
+  vs 序列级标量 reward
+  vs token-level 教师软分布
+```
+
+| 方法 | 轨迹来源 | 监督信号 | 核心能力与局限 |
+| --- | --- | --- | --- |
+| SFT | 标注或教师轨迹 | one-hot CE | 稳定高效，但 Student 犯错后会进入未见状态 |
+| RFT / GRPO | Student rollout | 序列级 reward | 可以探索并直接优化业务目标，但反馈稀疏 |
+| OPD | Student rollout | 外部 Teacher token 分布 | 在真实状态上获得稠密监督，但需要外部强 Teacher |
+| OPSD | Student rollout | 带特权信息的 Self-Teacher token 分布 | 不依赖外部教师，但特权信息必须避免泄漏标签 |
+
+OPD/OPSD 不是“每道题必须采多条 rollout”才有效。对 token-level 蒸馏而言，一条 Student rollout 已提供该轨迹上每个 token 的监督；增加 rollout 数主要扩大状态覆盖，而不是增加同一状态的监督密度。相反，GRPO 需要同题多个回答构成相对比较组，若组内没有 reward 差异，学习信号会退化。
 
 在关键帧主流程中按以下条件进入 OPD：
 
@@ -56,7 +84,7 @@ Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student �
   不要直接做 OPD，先做教师质量评估和 CoT-SFT。
 ```
 
-#### 1.2 主流程中的训练顺序
+#### 1.3 主流程中的训练顺序
 
 ```text
 Base Qwen3-VL
@@ -76,9 +104,41 @@ Structured CoT SFT
 
 现有 GRPO reward 代码继续用于样本筛选、rollout 分桶和对照评估。
 
-### 2. 从 Vision-OPD 到关键帧检测
+### 2. 问题诊断与 OPD 动机
 
-#### 2.1 Vision-OPD 原始思路
+细粒度视觉任务中常见如下现象：
+
+```text
+将关键区域单独裁出：
+  模型能够答对。
+
+输入完整图像或完整视频：
+  模型却答错。
+```
+
+这说明瓶颈通常不在于模型缺少对该局部对象、UI 元素或状态的识别能力，而在于完整输入中局部证据与大量全局视觉 token 竞争，最终被稀释或淹没。对关键帧检测而言，决定完成态的可能只是短时间内出现的角标变化、图片由占位变清晰、按钮可点击，或一次很短的状态转移；这些证据在长视频的全局采样中尤其容易丢失。
+
+因此，不能仅通过让 Student 在整图或完整视频上继续拟合最终答案来解决问题。OPD 的基本思路是：
+
+```text
+局部视图可答对
+  -> 证明局部证据本身可被模型识别。
+
+完整视图会答错
+  -> 说明 Student 没有稳定利用该证据。
+
+训练期给 Teacher 特权局部视图
+  -> 让 Teacher 形成更可靠的局部边界判断。
+
+Teacher 在 Student 自己的 rollout prefix 上提供 token 分布
+  -> 将局部判别能力蒸馏回只能看完整输入的 Student。
+```
+
+部署阶段仍使用完整视频 Student。局部裁剪、高密度时间窗口和可选空间放大只作为训练期的特权信息，因此 OPD 的目标不是改变线上输入，而是提高模型在原始线上输入下提取和使用细粒度证据的能力。
+
+### 3. 从 Vision-OPD 到关键帧检测
+
+#### 3.1 Vision-OPD 原始思路
 
 Vision-OPD 的基本设定是：
 
@@ -99,7 +159,7 @@ Vision-OPD 的基本设定是：
 
 学生先生成自己的回答，教师再在学生的 prefix 上提供下一 token 分布。
 
-#### 2.2 关键帧任务中的对应关系
+#### 3.2 关键帧任务中的对应关系
 
 关键帧检测的决定性证据不是单纯的空间区域，而是某个时间窗口中的状态转移：
 
@@ -134,9 +194,9 @@ Temporal-OPSD
 Temporal-OPD
 ```
 
-### 3. 模型角色和输入定义
+### 4. 模型角色和输入定义
 
-#### 3.1 Student
+#### 4.1 Student
 
 学生模型使用线上真实的完整视频输入：
 
@@ -161,7 +221,7 @@ x_global =
 
 学生的输出是部署时真正需要的策略，因此学生必须自己 rollout。
 
-#### 3.2 Teacher
+#### 4.2 Teacher
 
 教师模型使用训练阶段的特权时间窗口：
 
@@ -192,7 +252,7 @@ after：
   稳定延续或二次刷新证据。
 ```
 
-#### 3.3 Teacher 的参数版本
+#### 4.3 Teacher 的参数版本
 
 建议分三版实现：
 
@@ -211,9 +271,98 @@ V3 External Temporal-OPD：
 
 第一版优先使用 V1。它最容易判断收益来自“时间特权输入”，也能避免 Dynamic Teacher 造成训练坍塌。
 
-### 4. 数据构造方案
+#### 4.4 特权信息的三种实现
 
-#### 4.1 基础样本字段
+OPD 的核心不是固定使用 crop，而是让 Teacher 在不改变任务语义和输出坐标的前提下，获得比 Student 更可靠的证据条件。对于视觉和视频任务，可按问题类型选择三类特权信息：
+
+![Vision-OPD 的 Crop + 2x 与 UI-OPSD 的红框加背景模糊特权信息设计](<assets/opd_privileged_view_design.png>)
+
+| 路线 | Student 视图 | Teacher 特权视图 | 主要解决的问题 |
+| --- | --- | --- | --- |
+| Vision-OPD | 整图 | 目标区域 crop + `2x` 放大 | 小目标像素不足、局部细节不清楚 |
+| UI-OPSD 空间路线 | 原图 | 同尺寸原图 + 目标红框 + 背景高斯模糊 | 目标区域被背景和其他 UI 元素干扰 |
+| Temporal-OPSD 时间路线 | 完整视频 | 完成态附近的高密度时间窗口 | 短暂状态转移、边界帧和局部刷新被全局时间采样稀释 |
+
+当前关键帧检测以 Temporal-OPSD 为主，因为任务的决定性证据是“完成态第一次成立”的时间转移，而不只是某一张图中的空间目标。若已能稳定获得关键 UI 区域的 bbox，可在时间窗口 Teacher 中叠加 UI-OPSD 空间特权信息，形成：
+
+```text
+Teacher =
+  高密度时间窗口
+  + 关键 UI 区域红框
+  + 非目标区域背景模糊
+
+Student =
+  线上完整视频
+  + 原始任务规则
+```
+
+#### 4.5 文本 OPSD 与视觉 OPSD：特权信息载体不同
+
+![文本 OPSD 与 Vision-OPSD 的共同骨架和特权信息差异](<assets/text_vs_vision_opsd.png>)
+
+文本 OPSD 和视觉 OPSD 的训练骨架相同：
+
+```text
+Student rollout
+  -> Teacher 在相同 Student prefix 上前向
+  -> token-level distribution matching
+  -> 只更新 Student
+```
+
+差异只在 Teacher 获得的特权信息：
+
+| 路线 | Teacher 特权信息 | 优势来源 | 主要泄漏风险 |
+| --- | --- | --- | --- |
+| 文本 OPSD | `teacher_prompt`，如题目 + 参考解答 | Teacher 已知答案或更完整推理上下文 | 参考解答直接包含最终答案 |
+| Vision-OPD | `teacher_images`，如 evidence crop + 放大 | 视觉局部更清晰 | crop / bbox 直接暴露目标区域 |
+| UI-OPSD | 同尺寸图像 + 红框 + 背景模糊 | 干扰被抑制、注意力被指向 | 红框与标签高度相关 |
+| Temporal-OPSD | GT 附近高密度时间窗口 | 状态转移更完整、边界更清晰 | 窗口中心或 GT 相对位置泄漏 |
+
+对关键帧任务，视觉特权不能变成“答案编码”。因此必须同时做三件事：
+
+1. Teacher 输出仍使用原始视频绝对时间，不能用窗口相对时间。
+2. 窗口中心、长度和边界应随机扰动，不能让 GT 总在固定位置。
+3. 对空间红框、时间窗口都构造匹配的负样本，确保特权信息只表达“值得检查”，不直接表达“已经完成”。
+
+还应记录 `region-to-global gap`：
+
+```text
+gap =
+  特权局部视图准确率
+  - 线上完整输入准确率
+```
+
+只有 Teacher gap 明显存在，且 OPD 后 Student gap 收敛，才能说明模型真正内化了局部证据能力，而不是只拟合了训练数据或特权输入偏置。
+
+#### 4.6 UI-OPSD：同尺寸红框与背景模糊
+
+Vision-OPD 的 Teacher 通过“裁出目标区域并放大”获得优势，优势来源是更高的有效分辨率。UI-OPSD 的空间路线不改变图像尺寸：Student 看完整清晰原图；Teacher 看同一张原图，但目标 bbox 用红框显式标出，其他区域做高斯模糊。
+
+```text
+Student：
+  原图 + 任务描述
+  -> 自己在全图搜索、定位并判断。
+
+Teacher：
+  同尺寸原图 + 红框 + 背景高斯模糊 + 同一任务描述
+  -> 聚焦红框区域，减少无关 UI 干扰。
+```
+
+两条路线的差异如下：
+
+| 维度 | Crop + `2x` | 红框 + 背景模糊 |
+| --- | --- | --- |
+| Teacher 优势来源 | 放大局部，提升有效分辨率 | 抑制干扰，显式指向注意力 |
+| 图像尺寸 | Student/Teacher 不同 | Student/Teacher 相同 |
+| 视觉 token 对齐 | 需要处理不同 token 数和 crop 坐标 | 天然对齐，坐标保持原图口径 |
+| 适用任务 | 极小目标、文字、纹理细节 | UI 缺陷、区域判断、Grounding |
+| 主要风险 | crop 依赖目标位置且坐标需映射 | 红框和模糊可能让 Teacher 只学位置捷径 |
+
+红框 + 背景模糊不提高目标区域的像素分辨率，因此不能替代 crop 来解决“目标本身看不清”的问题；它解决的是“模型看得到，但在全图中没有稳定关注”的问题。对于关键帧检测，适合用于价格、角标、按钮、商品图等已知关键 UI 区域的空间注意力增强。
+
+### 5. 数据构造方案
+
+#### 5.1 基础样本字段
 
 当前 `MllmData` 只有一套 `videos[0]`，Temporal-OPSD 需要增加教师视图字段。推荐的离线中间格式如下：
 
@@ -276,7 +425,7 @@ teacher_window_end
 Student 和 Teacher 的输出坐标口径
 ```
 
-#### 4.2 教师窗口生成
+#### 5.2 教师窗口生成
 
 对于有完成态的样本，设 GT 时间为 `t*`，推荐先使用：
 
@@ -312,7 +461,7 @@ Temporal-OPSD
 
 否则无法判断收益来自教师输入还是蒸馏机制。
 
-#### 4.3 无完成态样本
+#### 5.3 无完成态样本
 
 如果 `gt_time=-1`，不能伪造一个正向 GT 窗口。推荐三种处理：
 
@@ -330,7 +479,7 @@ Temporal-OPSD
 
 第一版建议使用方案 A，避免负样本的特权窗口构造引入额外噪声。
 
-#### 4.4 GT 附近 hard negative
+#### 5.4 GT 附近 hard negative
 
 Temporal-OPSD 的核心不是只让教师看 GT，而是让模型学会边界。
 
@@ -356,9 +505,57 @@ after window：
 - 页面主体已出现但核心小元素未完成的样本。
 - 局部异步加载可以豁免的样本。
 
-### 5. Prompt 和输出协议
+#### 5.5 UI-OPSD 空间特权样本构造
 
-#### 5.1 Student prompt
+若将红框 + 背景模糊叠加到关键帧 Teacher，Student 与 Teacher 必须来自同一源帧或同一时间窗口；二者唯一的视觉差异是 Teacher 的特权标注。
+
+![UI-OPSD 的 Student、Teacher 正样本与 Teacher 负样本构造流程](<assets/ui_opsd_sample_construction.png>)
+
+```text
+源 UI 帧 / 时间窗口
+  -> Student 样本：原图或原视频，不裁剪、不加标记
+  -> Teacher 正样本：真实问题 / 关键区域 bbox + 红框 + 背景模糊
+  -> Teacher 负样本：疑似区域 bbox + 同样红框 + 同样背景模糊
+```
+
+正样本使用人工确认的 bbox。负样本不能只使用“没有框”的正常图，因为这会让模型把“有红框”直接等同于“有问题”或“必定完成”。应使用强 MLLM、规则或检测器在正常样本中挖掘“看似存在问题或可能相关、实际却无问题”的候选区域，并施加与正样本完全相同的红框与模糊处理。
+
+建议起始配比：
+
+```text
+Teacher 正样本：人工确认的关键 UI 区域
+Teacher 负样本：约为正样本的 4-6 倍
+```
+
+高比例负样本的目的不是制造类别不平衡，而是消除位置捷径：
+
+```text
+只有正样本带红框：
+  红框出现 -> Teacher 可直接猜“有问题 / 已完成”。
+
+加入相同处理的负样本：
+  红框只表示“这里值得检查”；
+  Teacher 仍必须判断框内是否真的满足任务条件。
+```
+
+对关键帧检测，负样本可以来自：
+
+- GT 之前仍未完成的关键 UI 区域。
+- 首次完成之后但发生核心二次刷新的区域。
+- 页面看似完整但关键角标、价格或按钮尚未满足条件的区域。
+- 可豁免的局部异步加载区域。
+- 强模型或规则选出的视觉相似、但不构成完成态的候选区域。
+
+数据门禁：
+
+- 正负样本采用相同图像处理、同一 bbox 格式和相同 Teacher Prompt。
+- bbox 必须保持原图/原视频绝对坐标，不能因 Teacher 处理改变时间或空间口径。
+- 训练、评测按原始视频实体划分，避免同一视频相邻帧泄漏到不同集合。
+- 单独报告“有框正样本”“有框负样本”和“无框 Student”表现，确认模型学到的是区域判断而不是红框先验。
+
+### 6. Prompt 和输出协议
+
+#### 6.1 Student prompt
 
 Student prompt 应与线上 prompt 保持一致，不暴露教师窗口：
 
@@ -377,7 +574,7 @@ Student prompt 应与线上 prompt 保持一致，不暴露教师窗口：
 输出结构化证据和最终答案。
 ```
 
-#### 5.2 Teacher prompt
+#### 6.2 Teacher prompt
 
 Teacher prompt 可以说明局部窗口的时间范围，但不能给出 GT：
 
@@ -397,7 +594,18 @@ after：后续是否稳定或发生二次刷新。
 
 Teacher 和 Student 的任务语义、输出 schema 和时间坐标必须一致。二者只应该在视觉输入条件上有差异。
 
-#### 5.3 推荐输出格式
+若 Teacher 叠加 UI-OPSD 空间特权信息，可在不暴露标签的前提下附加：
+
+```text
+画面中的红框仅标记本次需要重点检查的 UI 区域。
+请只依据红框区域在当前时间窗口内的真实视觉状态，
+判断它是否满足 task_type 的完成态条件；
+红框本身不表示该区域已经完成、存在缺陷或必然是正确答案。
+```
+
+这段约束与有框负样本配合，避免模型将“红框出现”误学为“完成态成立”。
+
+#### 6.3 推荐输出格式
 
 为了获得更多 token-level 监督，建议先使用结构化输出：
 
@@ -425,15 +633,21 @@ Teacher 和 Student 的任务语义、输出 schema 和时间坐标必须一致�
 
 现有 `video_keyframe_structured_reward.py` 已经能够解析类似的时间、caption、thinking、状态和事件信息，可以继续用于离线质量检查。
 
-### 6. 训练目标
+### 7. 训练目标
 
-#### 6.1 学生 on-policy rollout
+#### 7.1 学生 on-policy rollout
 
 对每个输入样本：
 
 ```text
 y ~ p_S(. | x_global, q)
 ```
+
+![Off-policy 与 on-policy 蒸馏的状态分布错配和误差累积对比](<assets/offpolicy_vs_onpolicy.png>)
+
+SFT 或离线蒸馏在标注/教师 prefix 上训练，但部署时 Student 必须处理自己的 prefix。一旦早期 token 偏离，后续会进入训练中未覆盖的状态，形成 exposure bias。On-policy 蒸馏让 Teacher 在 Student 已实际到达的状态上提供 token-level 分布，因此训练状态与推理状态对齐。
+
+在常见的行为克隆误差分析中，离线训练的长程误差上界可随 horizon 呈二次累积，而在自身状态分布上学习可缓解为更接近线性累积；这里应将它理解为解释状态分布错配的理论直觉，而非对所有模型和任务无条件成立的精确承诺。
 
 训练中必须保存：
 
@@ -447,7 +661,7 @@ y ~ p_S(. | x_global, q)
 
 只保存最后的预测时间，无法计算严格的 OPD loss。
 
-#### 6.2 Teacher 和 Student 前向
+#### 7.2 Teacher 和 Student 前向
 
 对每个 student prefix `y_<t`：
 
@@ -469,9 +683,11 @@ student_logits = student_forward(...)
 loss = divergence(teacher_logits, student_logits)
 ```
 
-#### 6.3 推荐联合损失
+#### 7.3 推荐联合损失
 
 第一版推荐：
+
+![SFT、纯 OPSD 与 JSD 加 CE 联合损失的逐 token 训练对比](<assets/opsd_joint_loss_training.png>)
 
 \[
 \mathcal{L}_{total}
@@ -513,7 +729,7 @@ temperature = 1.0-2.0
 增加 boundary evidence 的 clean target
 ```
 
-#### 6.4 Loss mask
+#### 7.4 Loss mask
 
 不要对所有 token 无差别蒸馏。建议分别记录：
 
@@ -543,9 +759,9 @@ L_total =
 
 这不是固定结论，最终以困难集指标和格式稳定性调节。
 
-### 7. 两种 OPD 实现路线
+### 8. 两种 OPD 实现路线
 
-#### 7.1 路线 A：Sampled-token reverse KL
+#### 8.1 路线 A：Sampled-token reverse KL
 
 这是最容易写代码的原型版本。
 
@@ -579,7 +795,7 @@ r_t^{KD}
 
 建议先用路线 A 做 smoke test，再实现路线 B。
 
-#### 7.2 路线 B：Top-K JSD/KL
+#### 8.2 路线 B：Top-K JSD/KL
 
 完整版本保留 Student Top-K token，并查询 Teacher 对应 token 的 logits：
 
@@ -601,7 +817,36 @@ temperature = 1.0
 
 路线 B 更接近 Vision-OPD 的完整做法，但需要更高的显存、通信和工程复杂度。
 
-### 8. 训练器实现结构
+#### 8.3 GKD / OPD 的五个独立配置轴
+
+![GKD 框架中轨迹、散度、粒度、硬标签和 Teacher 更新的五个配置轴](<assets/gkd_configuration_knobs.png>)
+
+可将 GKD 视为“Student rollout 上的分布蒸馏”工程框架。它把训练策略拆为五个可独立控制的轴：
+
+| 配置轴 | 可选项 | 对关键帧 Temporal-OPSD 的建议 |
+| --- | --- | --- |
+| 轨迹来源 `lambda_rollout` | 离线数据、混合、纯 Student rollout | smoke test 可混入 clean CoT；正式 OPD 以 Student rollout 为主 |
+| 散度 `beta` | Forward KL、广义 JSD、Reverse KL | 默认 JSD `beta=0.5`；避免只用低熵单向 KL |
+| 分布粒度 | 全词表、Top-K、采样 token | 先用 sampled-token 验证链路，再用 Top-K JSD；`K=100` 是起点 |
+| 硬标签权重 `sft_alpha` | 纯软蒸馏或叠加 CE | 时间和格式 token 易漂移，建议保留 CE anchor |
+| Teacher 来源 / 更新 | Frozen、EMA、Dynamic、外部 Teacher | V1 Frozen，稳定后切 EMA；避免直接用 Current Policy Teacher |
+
+注意变量命名不能混淆：
+
+```text
+lambda_rollout：
+  控制训练 prefix 来自离线数据还是 Student rollout。
+
+lambda_opd / sft_alpha：
+  控制软分布蒸馏和硬标签 CE 的损失权重。
+
+beta：
+  控制 JSD 中 Forward / Reverse KL 的相对形态。
+```
+
+这三个参数解决的是不同问题，不能把截图中 GKD 的 `lambda_rollout` 误当成前文联合损失的 `lambda_opd`。
+
+### 9. 训练器实现结构
 
 当前标准 ms-swift SFT 和 `ORM reward` 不能直接完成双视图 OPD，需要增加一个自定义训练器或独立训练入口。
 
@@ -700,9 +945,9 @@ for batch in dataloader:
 - rollout 和训练 forward 的 cache 是否复用。
 - 分布式训练下 Teacher 参数的同步。
 
-### 9. 训练阶段和参数建议
+### 10. 训练阶段和参数建议
 
-#### 9.1 阶段零：先测 privileged gap
+#### 10.1 阶段零：先测 privileged gap
 
 使用同一个 CoT-SFT checkpoint，分别测试：
 
@@ -723,7 +968,7 @@ Dense temporal-window input
 
 如果教师窗口输入本身没有明显优于完整视频，先不要做 OPD。
 
-#### 9.2 阶段一：教师质量验证
+#### 10.2 阶段一：教师质量验证
 
 从候选数据中抽取：
 
@@ -747,7 +992,7 @@ late bad case
 
 教师质量不稳定时，先回流 CoT 数据治理，不直接训练 OPD。
 
-#### 9.3 阶段二：小规模 smoke test
+#### 10.3 阶段二：小规模 smoke test
 
 推荐先使用：
 
@@ -769,7 +1014,7 @@ smoke test 必须验证：
 - 输出格式不会迅速退化。
 - 困难集指标有改善趋势。
 
-#### 9.4 阶段三：正式 Temporal-OPSD
+#### 10.4 阶段三：正式 Temporal-OPSD
 
 建议起始配置：
 
@@ -797,9 +1042,9 @@ Frozen Teacher
 
 不要同时修改 Teacher 类型、divergence、Top-K 和数据分布，否则无法定位收益或退化来源。
 
-### 10. 评估协议
+### 11. 评估协议
 
-#### 10.1 必须保留的对照
+#### 11.1 必须保留的对照
 
 至少比较：
 
@@ -816,7 +1061,7 @@ H：原有 Verifier-based GRPO
 
 其中 `C` 很重要，它衡量“教师输入本身有多强”；没有这个对照，不能证明 OPD 机制有效。
 
-#### 10.2 指标
+#### 11.2 指标
 
 业务指标：
 
@@ -842,7 +1087,7 @@ H：原有 Verifier-based GRPO
 - 重复率。
 - 格式合法率。
 
-#### 10.3 建议的准入和停止条件
+#### 11.3 建议的准入和停止条件
 
 可以使用以下工程准入标准：
 
@@ -864,7 +1109,7 @@ Teacher-Student gap 在训练中缩小；
 
 作为小规模实验的继续条件。正式阈值仍应根据业务容忍度确定。
 
-### 11. 与现有 GRPO 代码的关系
+### 12. 与现有 GRPO 代码的关系
 
 当前的：
 
@@ -899,9 +1144,9 @@ rollout 刷新
 EMA Teacher
 ```
 
-### 12. 常见失败模式
+### 13. 常见失败模式
 
-#### 12.1 教师窗口中心泄漏答案
+#### 13.1 教师窗口中心泄漏答案
 
 表现：
 
@@ -918,7 +1163,7 @@ Student 学到窗口中心偏置。
 - Prompt 中明确禁止使用窗口中心。
 - 检查 Teacher 在不同窗口长度下的稳定性。
 
-#### 12.2 教师看到更多帧，Student 无法复现
+#### 13.2 教师看到更多帧，Student 无法复现
 
 表现：
 
@@ -935,7 +1180,7 @@ Teacher 很准，OPD 后 Student 不升反降。
 - 报告“输入增益”和“蒸馏增益”两个结果。
 - 不把教师输入优势全部归因于 OPD。
 
-#### 12.3 纯 OPD 发生模式坍塌
+#### 13.3 纯 OPD 发生模式坍塌
 
 表现：
 
@@ -954,7 +1199,7 @@ Recall 很高但 Precision 很低。
 - 使用 JSD 替代单向 Reverse KL。
 - 对时间 token 和结构 token 单独监控。
 
-#### 12.4 只学会 CoT 风格
+#### 13.4 只学会 CoT 风格
 
 表现：
 
@@ -970,7 +1215,7 @@ Recall 很高但 Precision 很低。
 - 增加 GT 附近 hard negative。
 - 使用时间和证据一致性作为离线筛选条件。
 
-#### 12.5 只有教师文本，没有 logits
+#### 13.5 只有教师文本，没有 logits
 
 这时不能实现严格的 logit-level OPD。可改成：
 
