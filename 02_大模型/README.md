@@ -8,6 +8,7 @@
 | [应用与问题](<应用与问题/README.md>) | RAG、CoT、幻觉、Prompt 调优、NLP 与大模型关系等应用问题。 |
 | [模型细节](<模型细节/README.md>) | Transformer、CLIP、ViT、ALBEF、TCL、Qwen、DeepSeek、GPT 等里程碑与 SOTA 模型详解。 |
 | [视觉多模态与生成模型](<视觉多模态与生成模型/README.md>) | 视觉基础、VLM/视频/grounding、多模态任务和扩散生成模型。 |
+| [笔试训练](<笔试训练/README.md>) | 重点覆盖基础架构、高效推理、预训练生成、RAG、模型选型和多模态专项题集。 |
 
 ## 当前层文件
 
