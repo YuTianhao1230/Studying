@@ -112,6 +112,18 @@ LoRA checkpoint 通常只保存 adapter 参数，需要和 base model 一起加�
 - 模型结构配置不一致。
 - LoRA target module 不一致。
 
+#### 保存 checkpoint 时 OOM 怎么办？
+
+分布式训练可能在保存时把分片权重聚合到单个 Rank，产生高于训练 step 的显存或内存峰值。优先使用 sharded checkpoint、流式写盘或 CPU offload，并避免在训练进程中频繁 merge 完整 LoRA 权重。保存前后要验证文件完整性和多 Rank 同步。
+
+#### 恢复训练后 loss 或学习率不连续怎么办？
+
+检查是否同时恢复 optimizer、scheduler、GradScaler、global step、随机数状态和数据迭代位置。只恢复模型权重会丢失动量与调度进度；数据 sampler 未恢复还可能重复或跳过样本。
+
+#### LoRA merge 后效果下降怎么办？
+
+核对 base model 的精确版本和 hash、Adapter 配置、target modules、merge dtype 与缩放系数。分别在 merge 前后使用相同 Tokenizer、模板和推理参数跑回归；若只在低精度 merge 后退化，使用 BF16/FP32 完成合并并重新保存。
+
 ## 面试应对
 
 ### Checkpoint 是什么？

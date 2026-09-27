@@ -20,7 +20,7 @@
 | [Post-training 后训练.md](<Post-training 后训练.md>) | 预训练之后用于提升指令遵循、偏好对齐、推理能力和业务适配的一组训练方法 |
 | [SFT 监督微调.md](<SFT 监督微调.md>) | 用高质量指令-回答数据做监督训练，让模型学会任务格式和基础回答方式 |
 | [RFT 拒绝采样微调.md](<RFT 拒绝采样微调.md>) | 先生成候选并用 reward/verifier 筛选，再将高质量回答用于继续 SFT |
-| [RL 强化学习基础.md](<RL 强化学习基础.md>) | MDP、价值与 Bellman 方程、策略梯度、TD/GAE 和采样分布校正，含手算例题 |
+| [强化学习基础.md](<../../01_机器学习基础/概率与序列决策/强化学习基础.md>) | 01中的通用RL权威卡：MDP、值方法、策略梯度、TD/GAE 和采样分布校正 |
 | [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>) | 用人类偏好训练奖励模型，再通过强化学习优化策略模型 |
 | [DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) | 直接用 chosen/rejected 偏好对优化模型，降低 RLHF 工程复杂度 |
 | [PPO 近端策略优化.md](<PPO 近端策略优化.md>) | 用裁剪 surrogate 减少过度更新激励，含优势符号算例与 rollout 边界处理 |
@@ -49,7 +49,7 @@ RLVR 和 Agentic RL 经常一起出现，但它们不是同一个层级的概念
 
 1. 先看 [Post-training 后训练.md](<Post-training 后训练.md>) 和 [后训练发展史与方法对比.md](<后训练发展史与方法对比.md>) 建立全局框架。
 2. 再看 [SFT 监督微调.md](<SFT 监督微调.md>)，理解后训练冷启动。
-3. 先读 [RL 强化学习基础.md](<RL 强化学习基础.md>)，按 MDP/回报 → V/Q/A/Bellman → 策略梯度/baseline → TD/GAE → 采样校正学习并手算；再读 [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>)、[DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) 和 [PPO 近端策略优化.md](<PPO 近端策略优化.md>)，理解偏好对齐与裁剪目标。
+3. 先读 [强化学习基础.md](<../../01_机器学习基础/概率与序列决策/强化学习基础.md>)，按 MDP/回报 → V/Q/A/Bellman → 策略梯度/baseline → TD/GAE → 采样校正学习并手算；再读 [RLHF 基于人类反馈的强化学习.md](<RLHF 基于人类反馈的强化学习.md>)、[DPO 直接偏好优化.md](<DPO 直接偏好优化.md>) 和 [PPO 近端策略优化.md](<PPO 近端策略优化.md>)，理解偏好对齐与裁剪目标。
 4. 再看 [RFT 拒绝采样微调.md](<RFT 拒绝采样微调.md>)，理解候选生成、筛选和继续 SFT 的低风险强化路线。
 5. 再看 [GRPO 组相对策略优化.md](<GRPO 组相对策略优化.md>) 和 [RLVR 可验证奖励强化学习.md](<RLVR 可验证奖励强化学习.md>)，对比价值估计与组相对优势，核对二元奖励、零方差和 reference KL 的边界。
 6. 然后看 [Knowledge Distillation 知识蒸馏.md](<Knowledge Distillation 知识蒸馏.md>) 和 [On-Policy Distillation 在线策略蒸馏.md](<On-Policy Distillation 在线策略蒸馏.md>)，理解 Response Distillation、Logit Distillation 和 OPD 的边界。

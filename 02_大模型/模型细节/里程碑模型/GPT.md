@@ -75,7 +75,7 @@ maximize sum_t log P(x_t | x_<t)
 
 - [RoPE](<../../基础架构/RoPE.md>) 替代绝对位置编码。
 - [RMSNorm](<../../基础架构/RMSNorm.md>) 替代 LayerNorm。
-- [SwiGLU](<../../../03_训练优化与对齐/参数/常见激活函数.md>) 替代 ReLU/GELU FFN。
+- [SwiGLU](<../../../01_机器学习基础/深度学习基础/常见激活函数.md>) 替代 ReLU/GELU FFN。
 - GQA/MQA 降低 [KV Cache](<../../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - [MoE](<../../基础架构/MoE.md>) 扩大参数容量但控制激活成本。
 

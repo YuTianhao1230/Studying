@@ -22,6 +22,23 @@ Optimizer -> 根据 grad 更新参数
 
 不同 optimizer 的区别，本质上就是**如何利用当前梯度、历史梯度、梯度尺度和正则项来更新参数**。
 
+### 学习率、Warmup 与调度
+
+学习率 $\eta_t$ 决定每步更新尺度。过大容易震荡、发散或产生 NaN，过小则收敛慢并可能停在平台区。优化器选择与学习率不能分开讨论：AdamW 的常用学习率通常与 SGD 不在同一数量级。
+
+常见调度包括：
+
+- **Warmup**：训练初期从较小学习率逐步升到峰值，缓解随机初始化、未稳定动量和大梯度带来的冲击。
+- **Step decay**：在预设里程碑将学习率乘固定比例。
+- **Cosine decay**：从峰值平滑衰减到最小学习率，形如
+
+$$
+\eta_t=\eta_{\min}+\frac12(\eta_{\max}-\eta_{\min})
+\left(1+\cos\frac{\pi t}{T}\right).
+$$
+
+调度器必须按预期的 optimizer step 更新；使用梯度累积时，不能误把 micro-batch 次数当作参数更新次数。具体参数范围和诊断流程见[训练超参数调参指南](<训练超参数调参指南.md>)。
+
 ### SGD
 
 SGD 全称是 **Stochastic Gradient Descent，随机梯度下降**。
@@ -32,6 +49,13 @@ SGD 全称是 **Stochastic Gradient Descent，随机梯度下降**。
 w = w - lr * grad
 ```
 
+对 mini-batch $B_t$，随机梯度可写为：
+
+$$
+g_t=\frac{1}{|B_t|}\sum_{i\in B_t}\nabla_\theta\ell_i,\qquad
+\theta_{t+1}=\theta_t-\eta_t g_t.
+$$
+
 其中：
 
 - `w`：模型参数。
@@ -41,6 +65,8 @@ w = w - lr * grad
 它的思想很直接：梯度指向 loss 上升最快的方向，所以沿着梯度的反方向走，让 loss 下降。
 
 之所以叫 Stochastic，是因为真实训练不是每次用全量数据算梯度，而是用一个 mini-batch 估计梯度，所以这个梯度带随机性。
+
+较小 batch 降低单步计算量但梯度噪声更大；增大 batch 会降低采样噪声，却可能需要同步调整学习率、训练步数和分布式通信策略。有效 batch 还要计入梯度累积和数据并行卡数。
 
 优点：
 
@@ -90,6 +116,25 @@ Adam 维护两类统计量：
 - 某个参数梯度很大、波动很剧烈，Adam 会自动把步子缩小。
 - 不同参数可以有不同的有效学习率。
 
+对第 $t$ 步梯度 $g_t$，Adam 的逐元素更新为：
+
+$$
+m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,\qquad
+v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^2,
+$$
+
+$$
+\hat m_t=\frac{m_t}{1-\beta_1^t},\qquad
+\hat v_t=\frac{v_t}{1-\beta_2^t},
+$$
+
+$$
+\theta_t=\theta_{t-1}
+-\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon}.
+$$
+
+$m_0=v_0=0$ 会使训练早期的一阶、二阶矩估计偏向零，因此需要偏差校正。$\epsilon$ 主要防止分母过小，不应被当作修复任意 NaN 的通用手段。
+
 Adam 的优点是收敛快、好上手、对学习率没有 SGD 那么敏感，所以在 NLP、大模型微调和很多深度学习任务中非常常见。
 
 ### AdamW
@@ -106,6 +151,15 @@ AdamW：先按 Adam 更新，再单独做参数衰减
 ```
 
 这样 weight decay 的含义更清晰，正则效果更稳定。
+
+写成一次更新时，AdamW 将自适应梯度步与参数衰减分开：
+
+$$
+\theta_t=(1-\eta\lambda)\theta_{t-1}
+-\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon}.
+$$
+
+这与“先把 $\lambda\theta$ 加进梯度，再交给 Adam 的自适应预条件器”一般不等价。Bias 和归一化层参数常被排除在 weight decay 之外，具体规则应通过 optimizer parameter groups 明确配置。
 
 大模型 [SFT](<../后训练与对齐/SFT 监督微调.md>) / [LoRA](<../后训练与对齐/LoRA 低秩适配.md>) 微调默认通常优先用 AdamW，因为它兼顾了：
 

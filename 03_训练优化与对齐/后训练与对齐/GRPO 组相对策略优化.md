@@ -16,7 +16,7 @@ GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**�
 
 高于同题组内平均奖励的回答得到正优势，低于均值的回答得到负优势，分别提供提高与降低生成概率的激励。优势不是“正确标签”：奖励为 0 也可能产生负优势，所有回答奖励都高也可能没有组内相对信号。
 
-GRPO 沿用 [PPO](<PPO 近端策略优化.md>) 类的 clipped surrogate，但用组内奖励统计替换常见 Actor-Critic 实现中的优势估计。Clip 裁剪的是 surrogate 激励，不是实际概率比或 KL 的硬约束。组均值包含当前样本、标准差也来自随机采样，因此不能直接套用状态 baseline 无偏证明；相关推导见 [RL 强化学习基础](<RL 强化学习基础.md>)。
+GRPO 沿用 [PPO](<PPO 近端策略优化.md>) 类的 clipped surrogate，但用组内奖励统计替换常见 Actor-Critic 实现中的优势估计。Clip 裁剪的是 surrogate 激励，不是实际概率比或 KL 的硬约束。组均值包含当前样本、标准差也来自随机采样，因此不能直接套用状态 baseline 无偏证明；相关推导见 [强化学习基础](<../../01_机器学习基础/概率与序列决策/强化学习基础.md>)。
 
 ### Rollout、Verifier 和 Reward 的分工
 

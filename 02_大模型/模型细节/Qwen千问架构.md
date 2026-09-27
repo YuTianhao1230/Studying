@@ -96,7 +96,7 @@ x
 - **RoPE**：把位置信息注入 query/key，适合相对位置建模和长上下文扩展。
 - **QK-Norm**：对 query/key 做归一化，缓解 attention logits 过大或不稳定的问题。
 - **Pre-RMSNorm**：每个子层前先归一化，让深层 Transformer 更稳定。
-- **[SwiGLU](<../../03_训练优化与对齐/参数/常见激活函数.md>)**：门控 FFN，表达能力通常比普通 MLP 更强。
+- **[SwiGLU](<../../01_机器学习基础/深度学习基础/常见激活函数.md>)**：门控 FFN，表达能力通常比普通 MLP 更强。
 
 ### Qwen3 为什么仍然是 Decoder-only
 

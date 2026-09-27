@@ -122,8 +122,17 @@ SFT / 大模型训练里，mask 错非常常见。
 - scheduler 是否按预期变化。
 - optimizer 是否真的执行了 `step()`。
 - gradient accumulation 是否正确。
+- grad norm 是否持续增大，梯度裁剪是否在反向传播和 optimizer step 之间执行。
 - weight decay 是否过大。
 - checkpoint 恢复后 optimizer state 是否完整。
+
+按全局 L2 范数裁剪时，若 $\lVert g\rVert_2>c$，使用：
+
+$$
+g\leftarrow\frac{c}{\lVert g\rVert_2}g.
+$$
+
+梯度裁剪能限制偶发尖峰的更新幅度，但不能修复错误标签、mask、损失公式或长期过大的学习率。若裁剪每一步都触发，应继续定位根因，而不是只调小阈值。
 
 ### 检查混合精度
 
@@ -137,6 +146,8 @@ SFT / 大模型训练里，mask 错非常常见。
 
 大模型训练中，BF16 通常比 FP16 更稳。
 
+Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，避免显式计算大指数或 `log(0)`；基础公式见[参数初始化与数值稳定性](<../../01_机器学习基础/深度学习基础/参数初始化与数值稳定性.md>)。FP16 发生 overflow 时还需检查动态 loss scaling，不能仅靠加入 epsilon 掩盖异常。
+
 ### 检查分布式训练
 
 如果单卡正常，多卡异常，优先查分布式配置：
@@ -147,6 +158,18 @@ SFT / 大模型训练里，mask 错非常常见。
 - sampler 是否重复或漏样本。
 - 每个 rank 的数据分布是否一致。
 - checkpoint 是否完整恢复参数、optimizer、scheduler 和随机种子。
+
+### 按发生阶段定位 OOM
+
+| 发生阶段 | 常见主因 | 优先动作 |
+| --- | --- | --- |
+| Forward | 激活、序列长度、视觉 Token 或 micro-batch 过大 | 降低长度或 batch，启用 activation checkpointing |
+| Backward | 激活与梯度峰值叠加 | 检查 checkpointing、累积策略和异常长样本 |
+| Optimizer step | Adam 一阶/二阶状态或主参数占用过高 | 使用 ZeRO/FSDP、optimizer offload 或参数高效微调 |
+| Eval / Generation | KV Cache、`max_new_tokens` 或评测 batch 过大 | 降低生成长度和并发，分批评测 |
+| Checkpoint save | 聚合完整 state dict 或训练中合并 Adapter 产生峰值 | 使用分片保存，避免在训练进程中聚合全量权重 |
+
+先定位 OOM 发生在哪个阶段，再选择优化手段；“训练能跑”不代表生成和保存阶段也不会达到更高峰值。
 
 ## 最小复现方法
 
