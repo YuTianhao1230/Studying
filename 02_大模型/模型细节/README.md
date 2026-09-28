@@ -6,6 +6,7 @@
 
 | 文件 | 内容说明 |
 | --- | --- |
+| [里程碑模型](<里程碑模型/README.md>) | BERT、GPT、T5、Llama、DeepSeek、ViT、CLIP、ALBEF、TCL、BLIP、Flamingo、LLaVA 单模型卡片索引。 |
 | [阶段性里程碑模型详解.md](<阶段性里程碑模型详解.md>) | Transformer、BERT、GPT、T5、ViT、CLIP、ALBEF、TCL、BLIP、Flamingo、LLaVA 等里程碑模型的横向总览。 |
 | [当前SOTA模型详解.md](<当前SOTA模型详解.md>) | GPT/o 系列、Claude、Gemini、Qwen、DeepSeek、Llama、Mistral 等主流模型系列的架构与能力。 |
 | [模型架构对比与选型.md](<模型架构对比与选型.md>) | Decoder-only、Encoder-Decoder、Dense、MoE、长上下文、多模态连接器、推理模型和 Agent 模型的对比。 |
