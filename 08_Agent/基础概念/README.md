@@ -15,6 +15,7 @@
 | [Guardrails 与 Human-in-the-Loop](<Guardrails与Human_in_the_Loop.md>) | 输入输出校验、权限、预算、人工确认、敏感信息保护和高风险动作控制。 |
 | [Computer Use](<Computer_Use.md>) | GUI 感知与操作、grounding、状态验证、浏览器自动化和人工确认。 |
 | [Agent Eval、Trajectory 与 Harness](<Agent_Eval.md>) | Agent 评测维度、执行轨迹、可观测性、评测脚手架、回归和 bad case 诊断。 |
+| [Jev 与 System One 决策模型](<Jev与System_One决策模型.md>) | `state + typed questions` 的结构化决策模型、三种原语、Agent 路由与风险门控、校准和能力边界。 |
 | [Agentic RAG](<Agentic_RAG.md>) | 检索规划、多轮检索、查询改写、证据验证、结果融合和噪声控制。 |
 | [Hermes](<Hermes.md>) | 任务调度、消息分发、模型服务编排、Agent 编排、重试、幂等和扩缩容。 |
 | [生产级 Agent 案例](<生产级Agent案例.md>) | Code Agent、Search/Deep Research Agent、数据分析 Agent、GUI Agent 和生产架构。 |
@@ -34,9 +35,10 @@
 1. 阅读 [Agent](<Agent.md>)，建立整体系统模型。
 2. 阅读 [Workflow](<Workflow.md>)、[Tool Call 与 Function Calling](<Tool_Call与Function_Calling.md>) 和 [Context Engineering](<Context_Engineering.md>)，理解规划、执行和上下文。
 3. 阅读 [Skill](<Skill.md>)、[SubAgent 与 Multi-Agent](<SubAgent与Multi_Agent.md>)、[Guardrails 与 Human-in-the-Loop](<Guardrails与Human_in_the_Loop.md>)，理解能力复用、协作和安全边界。
-4. 阅读 [Agent Eval、Trajectory 与 Harness](<Agent_Eval.md>)，建立评测和诊断闭环。
-5. 最后阅读 [Computer Use](<Computer_Use.md>)、[Agentic RAG](<Agentic_RAG.md>)、[Hermes](<Hermes.md>) 和 [生产级 Agent 案例](<生产级Agent案例.md>)。
-6. 转入 [实战落地](<../实战落地/README.md>)，把概念映射到 D2C 真实业务。
+4. 阅读 [Jev 与 System One 决策模型](<Jev与System_One决策模型.md>)，理解 Agent 决策层的分类、评分、路由和风险门控。
+5. 阅读 [Agent Eval、Trajectory 与 Harness](<Agent_Eval.md>)，建立评测和诊断闭环。
+6. 最后阅读 [Computer Use](<Computer_Use.md>)、[Agentic RAG](<Agentic_RAG.md>)、[Hermes](<Hermes.md>) 和 [生产级 Agent 案例](<生产级Agent案例.md>)。
+7. 转入 [实战落地](<../实战落地/README.md>)，把概念映射到 D2C 真实业务。
 
 ## 主题归属
 
@@ -44,6 +46,7 @@
 - MCP 与 Code Execution：见 [Tool Call 与 Function Calling](<Tool_Call与Function_Calling.md>)。
 - Memory：见 [Context Engineering](<Context_Engineering.md>)。
 - Agent Skills 设计与维护：见 [Skill](<Skill.md>)。
+- 结构化决策、模型路由与工具风险门控：见 [Jev 与 System One 决策模型](<Jev与System_One决策模型.md>)。
 - Trajectory、Observability 与 Harness：见 [Agent Eval、Trajectory 与 Harness](<Agent_Eval.md>)。
 - Agent 开发流程：见 [Agent](<Agent.md>)。
 

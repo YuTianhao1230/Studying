@@ -6,16 +6,17 @@
 
 | 部分 | 内容边界 |
 | --- | --- |
-| [基础概念](<基础概念/README.md>) | Agent、Workflow、Tool Call、Context、Skill、SubAgent、安全、Computer Use、评测、RAG、调度和生产案例等基础知识与面试应对。 |
+| [基础概念](<基础概念/README.md>) | Agent、Workflow、Tool Call、Context、Skill、SubAgent、安全、评测、Jev 等基础与前沿知识。 |
 | [实战落地](<实战落地/README.md>) | 从问题定义到生产 Agent 的完整工程链路，重点以 D2C 视觉一致性评估场景为案例，覆盖 Skill、Workflow、MCP、RAG、数据、评测、可靠性、安全和排障。 |
 | [常用Skill](<常用Skill/README.md>) | 已安装和实际使用过的 Skill，记录 GitHub 来源、解决的问题、核心机制、安装位置、使用方式和适用场景。 |
 
 ## 推荐入口
 
 1. 先读 [基础概念](<基础概念/README.md>) 中的 Agent、Workflow、Tool Call 与 Context，建立系统模型。
-2. 再读 [实战总览](<实战落地/实战总览：从问题到生产Agent.md>)，理解如何把概念转成任务契约和工程链路。
-3. 以 [D2C 视觉一致性评估 Agent 案例](<实战落地/D2C视觉一致性评估Agent案例.md>) 为主线，按实战目录的推荐顺序深入。
-4. 需要查已安装能力时，进入 [常用Skill](<常用Skill/README.md>) 查看来源和使用说明。
+2. 再读 [Jev 与 System One 决策模型](<基础概念/Jev与System_One决策模型.md>)，扩展对 Agent 决策层、模型路由和工具风险门控的认识。
+3. 然后读 [实战总览](<实战落地/实战总览：从问题到生产Agent.md>)，理解如何把概念转成任务契约和工程链路。
+4. 以 [D2C 视觉一致性评估 Agent 案例](<实战落地/D2C视觉一致性评估Agent案例.md>) 为主线，按实战目录的推荐顺序深入。
+5. 需要查已安装能力时，进入 [常用Skill](<常用Skill/README.md>) 查看来源和使用说明。
 
 ## 学习顺序
 
@@ -24,6 +25,7 @@
 1. 用 [Agent](<基础概念/Agent.md>)、[Workflow](<基础概念/Workflow.md>)、[Tool Call 与 Function Calling](<基础概念/Tool_Call与Function_Calling.md>) 建立 Agent 系统模型。
 2. 用 [Context Engineering](<基础概念/Context_Engineering.md>)、[Skill](<基础概念/Skill.md>)、[SubAgent 与 Multi-Agent](<基础概念/SubAgent与Multi_Agent.md>) 理解上下文、能力复用和协作。
 3. 用 [Guardrails 与 Human-in-the-Loop](<基础概念/Guardrails与Human_in_the_Loop.md>)、[Agent Eval、Trajectory 与 Harness](<基础概念/Agent_Eval.md>) 建立安全和评测框架。
+4. 用 [Jev 与 System One 决策模型](<基础概念/Jev与System_One决策模型.md>) 理解结构化概率决策与开放式 LLM 的分工。
 
 ### 实战落地阶段
 
@@ -48,6 +50,7 @@
 | Memory 与上下文 | [基础概念/Context Engineering](<基础概念/Context_Engineering.md>) | 上下文组织、长期记忆、按需注入和污染控制。 |
 | Agent Skill 设计 | [基础概念/Skill](<基础概念/Skill.md>) | Skill 原理、路由、目录结构、评测和维护。 |
 | Agent 评测与轨迹 | [基础概念/Agent Eval](<基础概念/Agent_Eval.md>) | 执行记录、Harness、指标体系和失败诊断。 |
+| Agent 决策模型 | [基础概念/Jev 与 System One](<基础概念/Jev与System_One决策模型.md>) | 分类、评分、路由、风险门控、概率校准和人工升级。 |
 | D2C 视觉评估 | [实战落地/D2C 案例](<实战落地/D2C视觉一致性评估Agent案例.md>) | 采集、匹配、确定性检测、模型复核和结果回流。 |
 | Skill 工程化 | [实战落地/Skill 工程化](<实战落地/Skill工程化：设计、路由、实现与迭代.md>) | 业务能力的路由、目录、工具、评测和版本迭代。 |
 | 生产可靠性 | [实战落地/可靠性](<实战落地/可靠性性能成本与可观测性.md>) | 重试、幂等、并发、缓存、Trace、容量和降级。 |

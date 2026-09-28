@@ -119,7 +119,7 @@ Agentic RAG = RAG + Planning + Tool Use + Reflection + Verification
 
 ### 如何减少检索噪声？
 
-回答思路：从 query 改写、chunk 粒度、[召回](<../../05_推理部署与系统/系统设计/召回粗排精排重排.md>)源、rerank、去重、压缩这些环节逐点讲。
+回答思路：从 query 改写、chunk 粒度、[召回](<../../09_搜索推荐广告/召回粗排精排重排.md>)源、rerank、去重、压缩这些环节逐点讲。
 
 回答模板：
 

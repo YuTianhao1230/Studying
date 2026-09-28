@@ -140,7 +140,7 @@ MoE/GQA/MLA/FlashAttention]
 | 2023 | GPT-4 / Claude / LLaMA / Gemini 1.0 / Qwen / Mistral | OpenAI / Anthropic / Meta / Google / Alibaba / Mistral | 闭源旗舰与开放权重生态同时爆发 | 多模态、RLAIF、开放权重、MoE、函数调用、长上下文 | SOTA 不再单一；开源追赶但数据和后训练细节差距仍大 | [GPT-4 Report](https://arxiv.org/abs/2303.08774) |
 | 2024 | GPT-4o / Claude 3.5 / Gemini 1.5 / Llama 3.1 / Qwen2.5 / DeepSeek-V3 / o1 | 多家机构 | 从聊天走向实时多模态、长上下文、代码和推理模型 | omni 多模态、1M 上下文、405B 开放模型、MoE/MLA、test-time compute | 推理成本、长上下文可靠性、工具调用安全成为新问题 | [GPT-4o](https://openai.com/index/hello-gpt-4o/) |
 | 2025 | DeepSeek-R1 / Gemini 2.5 / o3-o4-mini / Claude 4 / Qwen3 / Llama 4 | 多家机构 | 推理能力、可验证奖励和 Agent 成为竞争中心 | RLVR/GRPO、thinking budget、MoE、长上下文、agentic coding | 需以官方发布为准；推理增强带来成本、长度偏置和安全挑战 | [DeepSeek-R1](https://github.com/deepseek-ai/DeepSeek-R1) |
-| 2026 | 趋势：多[模型路由](<../05_推理部署与系统/系统设计/模型路由.md>)、Agent 工程化、可靠评测、私有部署 | 产业界 | 从单模型能力转向端到端工作流可靠性 | 模型路由、推理预算控制、RAG/工具/环境反馈闭环、持续评测 | 2026 新旗舰细节变化快；报告只把公开可信方向作为框架 | [Qwen3](https://qwenlm.github.io/blog/qwen3/) |
+| 2026 | 趋势：多[模型路由](<../05_推理部署与系统/生产系统设计/模型路由.md>)、Agent 工程化、可靠评测、私有部署 | 产业界 | 从单模型能力转向端到端工作流可靠性 | 模型路由、推理预算控制、RAG/工具/环境反馈闭环、持续评测 | 2026 新旗舰细节变化快；报告只把公开可信方向作为框架 | [Qwen3](https://qwenlm.github.io/blog/qwen3/) |
 
 ---
 
@@ -244,7 +244,7 @@ MoE/GQA/MLA/FlashAttention]
 | Qwen2.5-VL / 1M / Max / Omni | 2025-01\~03 | 视觉/长上下文/全模态 | 视觉 Agent、长上下文、全模态实时交互不足 | 文档解析、GUI/视频、1M 上下文、MoE Max、端到端全模态 | [Qwen2.5-VL](https://qwenlm.github.io/blog/qwen2.5-vl/) |
 | QwQ / QVQ | 2025-03 | 推理模型 | 通用 instruct 在复杂数学/视觉推理不足 | 强化学习驱动文本推理和视觉推理模型 | [Qwen blog index](https://qwenlm.github.io/page/3/) |
 | Qwen3 | 2025-04 | 开源混合思考模型 | 模型需要快速回答和深度推理可切换 | thinking/non-thinking 混合模式，dense+MoE，119 语言 | [Qwen3](https://qwenlm.github.io/zh/blog/qwen3/) |
-| Qwen3-Embedding/Reranker | 2025-06 | 检索/RAG | 生成模型之外，RAG 需要更强[召回](<../05_推理部署与系统/系统设计/召回粗排精排重排.md>)和排序 | 文本向量和重排模型，服务检索、聚类、分类和 RAG | [Qwen](https://qwen.ai/blog?id=qwen3-vl-embedding) |
+| Qwen3-Embedding/Reranker | 2025-06 | 检索/RAG | 生成模型之外，RAG 需要更强[召回](<../09_搜索推荐广告/召回粗排精排重排.md>)和排序 | 文本向量和重排模型，服务检索、聚类、分类和 RAG | [Qwen](https://qwen.ai/blog?id=qwen3-vl-embedding) |
 | Qwen3-Coder | 2025-07 | Agentic coding | 代码模型需要仓库级理解和多步工具调用 | 面向 coding agent，支持长上下文、工具调用和软件工程任务 | [Qwen](https://qwen.ai/blog?id=qwen3-coder) |
 | Qwen3-VL / Qwen3Guard | 2025-09 | 视觉语言/安全 | 视觉 Agent、长视频、GUI、空间理解和安全审核不足 | Qwen3-VL 强化视觉感知/推理/GUI/长视频；Guard 做安全分类 | [Qwen3-VL](https://qwen.ai/blog?id=99f0335c4ad9ff6153e517418d48535ab6d8afef) |
 | Qwen3-VL-Embedding/Reranker | 2026-01 | 多模态检索 | 图文视频统一检索和跨模态重排不足 | 统一多模态向量和 reranker，服务视频/图文 RAG | [Qwen](https://qwen.ai/blog?id=qwen3-vl-embedding) |
