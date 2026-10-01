@@ -10,9 +10,3 @@
 | [torch.unsqueeze().md](<torch.unsqueeze().md>) | unsqueeze 的维度扩展作用和常见张量 shape 场景。 |
 | [torchvision基础知识.md](<torchvision基础知识.md>) | torchvision 数据集、变换和视觉模型工具。 |
 | [Beam_Search.md](<Beam_Search.md>) | Beam Search 解码过程、复杂度和生成任务使用场景。 |
-
-## 学习路线
-
-1. 先看 [基础介绍.md](<基础介绍.md>) 和 [torch.unsqueeze().md](<torch.unsqueeze().md>)。
-2. 再看 [torchvision基础知识.md](<torchvision基础知识.md>)，连接视觉数据处理。
-3. 最后看 [Beam_Search.md](<Beam_Search.md>)，准备生成任务中的解码和复杂度问题。

@@ -7,10 +7,7 @@
 | GitHub 仓库 | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) |
 | 仓库定位 | Persistent file-based planning for AI coding agents and long-running tasks |
 | 默认分支 | `master` |
-| 当前版本 | `3.18.3`，以本地 `SKILL.md` 的 metadata 为准 |
 | 许可证 | MIT |
-| 本地安装位置 | `/mlx_devbox/users/yutianhao/.trae/skills/planning-with-files/` |
-| 当前安装形态 | Skill-only 安装，已包含 `SKILL.md`、脚本和模板 |
 
 ## 主要做什么
 
@@ -49,10 +46,10 @@ progress.md    执行日志、阶段结果和验证记录
 ### 初始化长任务
 
 ```bash
-cd /path/to/project
-sh /mlx_devbox/users/yutianhao/.trae/skills/planning-with-files/scripts/init-session.sh "任务名称"
+cd <project-dir>
+sh <skill-dir>/scripts/init-session.sh "任务名称"
 export PLAN_ID=<脚本输出的计划 ID>
-export PWF_PLAN_ROOT=/path/to/project
+export PWF_PLAN_ROOT=<project-dir>
 ```
 
 初始化后，先读取选中的 `task_plan.md`、`findings.md` 和 `progress.md`，再开展多步工作。
@@ -72,7 +69,7 @@ export PWF_PLAN_ROOT=/path/to/project
 ### 常用脚本
 
 ```bash
-SKILL_DIR=/mlx_devbox/users/yutianhao/.trae/skills/planning-with-files
+SKILL_DIR=<skill-dir>
 sh "$SKILL_DIR/scripts/resolve-plan-dir.sh"
 sh "$SKILL_DIR/scripts/check-complete.sh"
 sh "$SKILL_DIR/scripts/plan-doctor.sh"
@@ -90,8 +87,34 @@ python3 "$SKILL_DIR/scripts/session-catchup.py" --metadata "$(pwd)"
 - 适合研究、资料整理、复杂开发和 5 次以上工具调用的长任务。
 - 一次性问答、单文件小改动不需要额外建立计划文件。
 - 它持久化的是计划和工作状态，不会自动替代测试、代码审查或业务验收。
-- Skill-only 安装包含 `SKILL.md`、脚本和模板，但不包含仓库插件安装路径里的 slash commands；当前 TraeCode 是否支持这些 hook 不能仅凭文件落地确认。
+- Skill-only 与插件安装提供的命令和 hook 能力可能不同，必须以当前安装说明和宿主能力为准。
 - 计划文件在项目目录中产生，属于工作产物；不要把项目计划写入 Skill 安装目录。
+
+## 面试应对
+
+### Planning with Files 为什么能减少长任务中的上下文丢失？
+
+回答思路：说明聊天上下文与持久化文件的差异，再讲三个文件各自负责什么。
+
+回答模板：
+
+Planning with Files 把任务状态从易丢失的对话上下文转成项目内可读回的持久化文件。`task_plan.md` 保存目标、阶段、决策和下一步，`findings.md` 保存调研事实，`progress.md` 保存执行与验证记录。Agent 在关键决策和阶段切换前重新读取这些文件，因此即使经历长时间执行或上下文压缩，也能从明确的磁盘状态恢复，而不是依赖不完整记忆。
+
+### 多个任务如何避免互相覆盖计划？
+
+回答思路：说明命名计划目录、`PLAN_ID`、计划所有者和独立工作区的分工。
+
+回答模板：
+
+多个任务不能共用一个未绑定的根计划。我会为每个任务创建独立的 `.planning/<id>/` 目录，并用 `PLAN_ID` 或计划根目录把会话绑定到唯一计划。共享任务由一个计划所有者更新主计划，其他执行者写各自记录；如果还会并行修改代码，则进一步使用独立 worktree。这样计划选择、进度写入和代码修改都有隔离边界。
+
+### 计划文件显示完成，是否就能对外宣布任务完成？
+
+回答思路：区分状态记录与验证证据，说明完成检查和真实测试的关系。
+
+回答模板：
+
+不能。计划文件只说明预定阶段被标记为完成，`check-complete` 也只检查计划结构；它们不能证明代码、文档或外部系统行为正确。对外宣布完成前仍要运行与风险匹配的测试、链接检查或真实链路验证，读取退出码和结果，并核对最终 diff。计划负责不丢步骤，验证负责证明结果。
 
 ## 与当前工作区的结合
 

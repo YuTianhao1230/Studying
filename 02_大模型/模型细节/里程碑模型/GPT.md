@@ -108,3 +108,19 @@ GPT 的预训练目标只是预测下一个 token，不保证事实正确、推�
 回答模板：
 
 GPT 是 Decoder-only Transformer。输入经过 BPE tokenization 和 embedding 后，进入多层 masked self-attention block，每个 token 只能 attend 到自己和之前的 token，最后通过 LM head 预测下一个 token。GPT-1 是 12 层、768 hidden、12 heads，GPT-3 公开规格是 96 层、hidden size 12288、96 heads、175B 参数。它的基础训练目标是最大化 `P(x_t | x_<t)`。ChatGPT 这类助手模型还需要 SFT 和 RLHF 等后训练，让模型从单纯续写变成会遵循指令的助手。
+
+### GPT 与 BERT、T5 的关键区别是什么？
+
+回答思路：按结构、可见范围、训练目标和任务接口四个维度比较。
+
+回答模板：
+
+GPT 是 Decoder-only，用因果 Mask 根据左侧上下文预测下一个 token，训练和推理接口都是文本续写。BERT 是 Encoder-only，用双向注意力和 MLM 学表示，更适合理解与判别任务。T5 是 Encoder-Decoder，先双向编码输入，再通过 Cross-Attention 条件生成输出，更适合输入输出边界明确的转换任务。GPT 的优势是把问答、写作、代码和多轮对话统一为同一种自回归建模形式，但这不代表它在所有理解或条件生成任务上都天然优于另外两类架构。
+
+### GPT 的适用场景和主要局限是什么？
+
+回答思路：先列生成式优势，再从可靠性、推理成本和信息边界说明限制。
+
+回答模板：
+
+GPT 路线适合开放式文本生成、对话、代码补全、工具调用和依赖 in-context learning 的任务，因为它可以把指令、示例和答案统一成 token 序列。它的局限是 next-token prediction 只约束续写概率，不保证事实正确、逻辑有效或价值安全，因此通常还需要后训练、检索、工具和外部校验。自回归 Decode 还具有串行延迟，长上下文会增加 Attention 与 KV Cache 成本。闭源后续版本的层数、参数量和训练数据未公开时，应只讨论可验证的能力与机制，不猜测具体配置。

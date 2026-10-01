@@ -1,45 +1,22 @@
 # 关键帧检测
 
-本目录整理关键帧检测项目，按“完整方案、阶段设计、任务与数据治理、工程实现”分层，避免多个文件同时承担总览职责。
+本目录整理关键帧检测项目，覆盖完整训练方案、任务与数据治理、分阶段训练设计、工程实现和研究参考。索引按从项目全貌、业务规则、训练方法到上线落地的顺序排列。
 
-## 目录结构
+## 内容索引
 
-| 子目录 | 内容 |
+| 文件 | 内容说明 |
 | --- | --- |
-| [方案与训练流程/](<方案与训练流程/>) | 唯一完整训练方案，以及 SFT、CoT-SFT、GRPO、Temporal-OPSD 和视觉原语等阶段设计。 |
-| [任务与数据治理/](<任务与数据治理/>) | 任务定义、标注标准、bad case、数据飞轮和 Prompt/规则治理。 |
-| [工程实现/](<工程实现/>) | Qwen3-VL 数据格式、ms-swift 训练推理和部署上线。 |
-
-## 方案入口
-
-唯一主方案是：
-
-[关键帧检测完整训练方案.md](<方案与训练流程/关键帧检测完整训练方案.md>)
-
-主线：
-
-```text
-Direct SFT
-  -> Structured CoT SFT
-  -> RFT baseline
-  -> Verifier-based GRPO
-  -> Temporal-OPSD On-Policy 蒸馏
-  -> 评测和数据飞轮
-  -> 上线
-```
-
-## 推荐阅读顺序
-
-1. [关键帧检测完整训练方案.md](<方案与训练流程/关键帧检测完整训练方案.md>)：建立从任务、数据、SFT、CoT-SFT、GRPO、Temporal-OPSD 到上线的完整流程。
-2. [任务定义与标注标准.md](<任务与数据治理/任务定义与标注标准.md>) 和 [BadCase归因与UI元素治理.md](<任务与数据治理/BadCase归因与UI元素治理.md>)：理解完成态、标注边界和错误归因。
-3. [SFT 训练方案设计.md](<方案与训练流程/SFT 训练方案设计.md>)：理解冷启动、参数、收敛和训练排查。
-4. [CoT-SFT 蒸馏方案设计.md](<方案与训练流程/CoT-SFT 蒸馏方案设计.md>)：理解 CoT 数据构造、质量治理和结构化监督。
-5. [GRPO 训练方案设计.md](<方案与训练流程/GRPO 训练方案设计.md>)：理解 rollout、verifier、reward、参数和方法选择。
-6. [方案与训练流程/OPD 训练方案设计.md](<方案与训练流程/OPD 训练方案设计.md>)：深入理解 Temporal-OPSD 的双视图训练和工程实现。
-7. [数据飞轮与主动学习.md](<任务与数据治理/数据飞轮与主动学习.md>) 和 [并行DE与PE.md](<任务与数据治理/并行DE与PE.md>)：理解数据回流和规则治理。
-8. [Qwen3-VL关键帧数据格式.md](<工程实现/Qwen3-VL关键帧数据格式.md>) 和 [ms-swift关键帧训练与推理.md](<工程实现/ms-swift关键帧训练与推理.md>)：理解实际输入、训练框架和推理链路。
-9. [部署上线与容量评估.md](<工程实现/部署上线与容量评估.md>)：准备接口、容量、并发和线上回测问题。
-
-## 研究参考
-
-[Thinking with Visual Primitives 视觉原语推理.md](<方案与训练流程/Thinking with Visual Primitives 视觉原语推理.md>)总结视觉原语论文，并解释它如何迁移到关键帧的 `Region + State + Event + Time` 证据链。
+| [关键帧检测完整训练方案.md](<方案与训练流程/关键帧检测完整训练方案.md>) | 任务、数据、baseline、SFT、CoT-SFT、GRPO、Temporal-OPSD、评测回流和上线的完整主线。 |
+| [任务定义与标注标准.md](<任务与数据治理/任务定义与标注标准.md>) | 完成态、排除与豁免条件、标注边界和证据优先级。 |
+| [BadCase归因与UI元素治理.md](<任务与数据治理/BadCase归因与UI元素治理.md>) | bad case 分类、小 UI、角标、Banner、GT 误差和 UI primitive。 |
+| [SFT 训练方案设计.md](<方案与训练流程/SFT 训练方案设计.md>) | Direct SFT 与 Structured CoT SFT 的冷启动、参数、收敛和训练排查。 |
+| [CoT-SFT 蒸馏方案设计.md](<方案与训练流程/CoT-SFT 蒸馏方案设计.md>) | CoT 数据构造、Video Primitive、证据链、质量治理和结构化监督。 |
+| [GRPO 训练方案设计.md](<方案与训练流程/GRPO 训练方案设计.md>) | rollout、verifier、reward、参数、监控和方法选择。 |
+| [OPD 训练方案设计.md](<方案与训练流程/OPD 训练方案设计.md>) | Temporal-OPSD 的双视图输入、on-policy logits、联合损失、训练器和评估协议。 |
+| [数据飞轮与主动学习.md](<任务与数据治理/数据飞轮与主动学习.md>) | bad case 筛选、人工重标、分桶评测和主动采样。 |
+| [并行DE与PE.md](<任务与数据治理/并行DE与PE.md>) | 数据工程和 Prompt/规则工程的并行治理闭环。 |
+| [Agentic Model Optimization 模型自训练优化.md](<任务与数据治理/Agentic Model Optimization 模型自训练优化.md>) | Agent 接管数据、训练、评测和持续迭代的优化闭环。 |
+| [Qwen3-VL关键帧数据格式.md](<工程实现/Qwen3-VL关键帧数据格式.md>) | JSONL、多模态字段、视频映射和标签格式。 |
+| [ms-swift关键帧训练与推理.md](<工程实现/ms-swift关键帧训练与推理.md>) | ms-swift、Qwen3.5、full SFT、DeepSpeed、推理分片和参数。 |
+| [部署上线与容量评估.md](<工程实现/部署上线与容量评估.md>) | 接口、下载瓶颈、并发压测、QPM 和线上回测。 |
+| [Thinking with Visual Primitives 视觉原语推理.md](<方案与训练流程/Thinking with Visual Primitives 视觉原语推理.md>) | 视觉原语论文及其向关键帧时空证据链的迁移。 |

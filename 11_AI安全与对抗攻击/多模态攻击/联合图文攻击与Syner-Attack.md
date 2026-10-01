@@ -4,7 +4,7 @@
 
 ### 概述
 
-联合图文攻击同时扰动图像和文本，目标是破坏多模态模型的视觉表征、文本语义和图文对齐关系。Syner-Attack 可以从协同双流攻击和跨模态对齐破坏角度理解。
+联合图文攻击同时扰动图像和文本，目标是破坏多模态模型的视觉表征、文本语义和图文对齐关系。Syner-Attack 采用先优化对抗图像、再执行离散文本替换的两阶段流程。
 
 ### 解决的问题
 
@@ -16,19 +16,20 @@
 
 联合攻击的目标是让两个模态同时偏离，并破坏它们在共享语义空间中的绑定关系。
 
-### 基本目标
+### 视觉优化目标与执行流程
 
 ```text
-L_total = lambda_img * L_image_feature
-        + lambda_align * L_image_text_alignment
-        + lambda_txt * L_text_attack
+L_visual(I', T) = lambda * L_feat(I', I)
+                + (1 - lambda) * L_align(I', T),  0 <= lambda <= 1
 ```
 
-典型分支：
+该目标只用于视觉阶段：
 
-- 图像特征扰动：让视觉表征偏离 clean image。
-- 图文对齐扰动：降低正确图文相似度或匹配分数。
-- 文本扰动：替换对图文对齐更关键的词。
+- `L_feat`：让对抗图像的视觉表征偏离干净图像。
+- `L_align`：降低对抗图像与配对文本的跨模态对齐程度。
+- `lambda`：平衡视觉特征破坏与图文对齐破坏。
+
+VGA 在图像攻击之后执行离散词替换。可见代码流程是先调用 `Image_Attack` 得到 `adv_imgs`，再调用 `img_guided_attack` 生成 `adv_txts`。
 
 ### Syner-Attack 的表达框架
 
@@ -36,7 +37,7 @@ L_total = lambda_img * L_image_feature
 
 1. 问题：VLM/MLLM 的[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md>)仍不稳定。
 2. 假设：多模态模型依赖视觉表征和图文对齐。
-3. 方法：图像侧 feature/alignment loss + 文本侧 visual-guided attack。
+3. 方法：视觉阶段联合优化 `lambda*L_feat+(1-lambda)*L_align`，随后由 VGA 执行离散文本替换。
 4. 证据：image-only、text-only、joint、VGA、alignment loss、防御和 MLLM ASR 消融。
 
 ### 视觉引导文本攻击
@@ -44,10 +45,12 @@ L_total = lambda_img * L_image_feature
 视觉引导文本攻击不是随机替换词，而是结合图像和文本对齐关系选择词：
 
 ```text
-word importance = language importance + visual relevance
+S_semantic_norm(i) = S_semantic(i) / max_j S_semantic(j)
+S_visual_norm(i) = S_visual(i) / max_j S_visual(j)
+S_VGA(i) = (1 - beta) * S_semantic_norm(i) + beta * S_visual_norm(i)
 ```
 
-优先替换：
+这里的最大值在当前候选词集合上计算；实现时要对分母为零的边界做保护。归一化用于消除两类分数的量纲和尺度差异，使 `beta` 表示可解释的融合权重。VGA 再按融合后的语言语义重要性和视觉相关性排序词，并从离散候选中选择替换词。优先替换：
 
 - 物体词。
 - 属性词。
@@ -65,7 +68,7 @@ word importance = language importance + visual relevance
 | --- | --- |
 | image-only | 图像分支单独贡献 |
 | text-only | 文本分支单独贡献 |
-| image + text | 联合是否有增益 |
+| 完整两阶段流程 | 图像攻击后追加 VGA 是否有增益 |
 | w/o alignment loss | 图文对齐损失是否必要 |
 | w/o VGA | 视觉引导文本攻击是否有效 |
 | 不同预算 | 增益是否只来自更大扰动 |
@@ -76,7 +79,7 @@ word importance = language importance + visual relevance
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
 | 动机题 | 为什么同时攻击图文 | 单模态可能被另一模态纠正 |
-| 公式题 | 联合 loss 怎么写 | feature + alignment + text attack |
+| 公式题 | 视觉阶段 loss 怎么写 | `lambda*L_feat+(1-lambda)*L_align` |
 | 创新题 | 如何回应拼接质疑 | 用机制解释和消融证据 |
 | 约束题 | 文本扰动如何公平 | 替换率、语义相似度、实体关系保护 |
 | 评估题 | MLLM 怎么评估 | 固定 prompt、ASR 规则、人审或 LLM judge |
@@ -90,10 +93,26 @@ word importance = language importance + visual relevance
 
 ## 面试应对
 
-### Syner-Attack 的核心怎么讲？
+### 1. Syner-Attack 的优化目标和执行顺序是什么，协同体现在哪里？
 
-回答思路：承认基础组件，强调跨模态机制和证据链。
+回答思路：区分视觉阶段的双损失连续优化与后续 VGA 离散替换，说明两个阶段如何共同破坏视觉表征和跨模态对应关系。
 
 回答模板：
 
-Syner-Attack 的核心不是单独发明一个新的梯度[算子](<../../05_推理部署与系统/推理工程/算子.md>)，而是针对 VLM/MLLM 的跨模态对齐脆弱性，把图像侧特征扰动、图文对齐扰动和视觉引导文本攻击组织成协同双流框架。图像分支负责扰乱视觉表征和图文相似度，文本分支在语义保持约束下替换对图文匹配更关键的词。为了证明它不是简单拼接，需要用 image-only、text-only、joint、去掉 VGA、去掉 alignment loss 等消融，以及跨模型、MLLM 和防御下 ASR 来支撑。
+> Syner-Attack 的可微联合目标属于视觉阶段，即 `L_visual=lambda*L_feat+(1-lambda)*L_align`。其中 `L_feat` 使对抗图像偏离干净视觉表征，`L_align` 削弱对抗图像与配对文本的对齐。视觉优化完成后，VGA 先分别对候选词的语义重要性和视觉相关性做最大值归一化，再按 `beta` 融合排序并执行离散候选替换。项目代码也按这个顺序先运行 `Image_Attack`，再运行 `img_guided_attack`。协同体现在双损失视觉优化与视觉引导文本替换按阶段配合，共同削弱视觉表征和图文对应关系。
+
+### 2. 如何回应“Syner-Attack 只是图像攻击和文本攻击的拼接”？
+
+回答思路：不回避基础组件，通过机制、交互消融和预算公平性建立证据链，避免引用未提供的论文数值。
+
+回答模板：
+
+> 我会把贡献表述为针对跨模态互补和对齐脆弱性的两阶段协同框架，而不是声称每个基础攻击算子都是新提出的。视觉阶段联合使用 `L_feat` 和 `L_align` 优化图像，随后 VGA 以视觉信息引导离散文本替换。证据上需要比较 image-only、text-only、仅双损失视觉攻击和完整两阶段流程，并分别去掉 alignment loss 与 VGA；只有在相同图像预算、文本预算和查询条件下观察到稳定增益，才能说明各组件存在互补作用。没有这样的消融时，不能夸大机制创新。
+
+### 3. 联合攻击实验如何保证与单模态 baseline 公平，失败时怎么分析？
+
+回答思路：按同威胁模型和能力边界分组比较，固定 prompt、模型和 Judge；按图像、文本、对齐、生成四层定位失败。
+
+回答模板：
+
+> 同时改图和文本的方法拥有更大的攻击能力，不能只凭 ASR 与只改图的 baseline 横向排名。我会分别设置 image-only、text-only 和 joint threat model，在各自预算内比较同类方法，并额外报告联合总成本、文本语义质量和图像范数。目标模型、prompt、解码参数及 Judge 规则保持一致。若攻击失败，我会检查图像特征是否被扰乱、文本候选是否真正影响视觉语义、图文相似度是否下降，以及生成模型是否通过上下文完成纠错，从而判断瓶颈位于单模态分支、对齐层还是下游生成层。

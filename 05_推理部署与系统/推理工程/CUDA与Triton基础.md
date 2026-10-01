@@ -100,34 +100,34 @@ Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。
 
 ## 面试应对
 
-### CUDA与Triton基础 是什么？
+### CUDA 和 Triton 的定位有什么区别？
 
-回答思路：区分两者定位——CUDA 是底层 GPU 编程平台，Triton 是用 Python 风格写高性能 kernel 的上层语言，说明它们服务于自定义算子和性能优化而非模型能力。
-
-回答模板：
-
-CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语言，常用于为深度学习模型实现高性能自定义算子。Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。 它关注的核心不是提升模型本身能力，而是让已有模型在服务中更高吞吐、更低延迟、更稳定地运行。
-
-### CUDA与Triton基础 解决什么问题？
-
-回答思路：说明性能瓶颈往往在底层算子和 GPU 利用率，CUDA/Triton 让工程师能定位并改写 kernel、做算子融合、判断是访存还是算力瓶颈。
+回答思路：从抽象层级、开发方式、控制能力和适用场景比较。
 
 回答模板：
 
-大模型训练和推理的性能瓶颈常常不只在算法，也在底层算子和 GPU 利用率。JD 中提到的这些词都和底层性能相关： CUDA。Kernel fusion。 在工程上通常要结合 p50/p95/p99 延迟、tokens/s、显存峰值、并发数和失败率来判断它是否有效。
+CUDA 是 NVIDIA 的 GPU 编程平台，CUDA C++ 能直接控制线程层级、共享内存、同步和底层硬件特性，能力最完整，但开发和调优成本高。Triton 是面向张量计算的高层 Kernel 语言，使用 Python 风格按数据块描述程序，由编译器完成线程映射等工作。常规深度学习自定义算子可优先尝试 Triton；需要极细粒度硬件控制、特殊同步或 Triton 不支持的能力时，再使用 CUDA。
 
-### CUDA与Triton基础 的核心机制是什么？
+### 如何判断 Kernel 是计算瓶颈还是访存瓶颈？
 
-回答思路：用 Grid/Block/Thread 并行层级和 Global/Shared/Register 内存层级、访存合并来解释 kernel 如何影响性能，并说明 Triton 如何降低写 kernel 的门槛。
-
-回答模板：
-
-CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语言，常用于为深度学习模型实现高性能自定义算子。 这类机制的价值在于减少无效计算、降低显存碎片、提升 GPU 利用率或稳定服务调度。
-
-### CUDA与Triton基础 有哪些限制？
-
-回答思路：指出手写 kernel 开发成本高、易踩访存不连续/Tensor Core 未充分利用等坑，优化前要先判断瓶颈在显存带宽还是计算算力，避免盲目改写。
+回答思路：比较计算量与数据搬运量，结合 Profiler 的计算单元、带宽和访存指标定位，再选择优化方向。
 
 回答模板：
 
-CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语言，常用于为深度学习模型实现高性能自定义算子。 如果线上效果异常，需要检查请求长度分布、batch 配置、KV cache、显存利用率、并发策略和模型并行配置。
+我会先用 Profiler 看 Kernel 时间、显存带宽利用率、计算单元利用率和数据搬运量。如果带宽接近上限而计算单元利用率低，通常是 Memory-bound，应优先做连续访存、算子融合和减少中间 Tensor；如果计算单元接近饱和，则更像 Compute-bound，应关注 Tensor Core、数据类型、Tile 大小和算法计算量。优化前必须先定位瓶颈，否则手写 Kernel 可能只是增加维护成本。
+
+### 连续访存和 Shared Memory 为什么能提升性能？
+
+回答思路：从 Global Memory 访问代价、Warp 合并事务和片上数据复用解释。
+
+回答模板：
+
+GPU 的 Global Memory 延迟高、带宽宝贵。相邻线程访问连续地址时，硬件可以把多个访问合并成更少的内存事务；把会被重复使用的数据先加载到 Shared Memory 或寄存器，还能减少反复访问 Global Memory。优化时也要控制 Shared Memory 和寄存器占用，因为资源用得过多会降低 Occupancy，最终需要用 Profiler 验证而不是只凭规则判断。
+
+### 什么时候值得写 Triton 自定义算子？
+
+回答思路：先检查现有库和编译器，再依据热点占比、可融合性和维护成本决策。
+
+回答模板：
+
+只有当 Profiler 证明某段算子是主要热点，且现有 PyTorch、cuBLAS、cuDNN、FlashAttention 或编译器生成结果不能满足需求时，我才会考虑 Triton。它特别适合融合多个逐元素操作、减少中间读写或实现规则的块级张量计算。完成后要对不同 Shape 和数据类型做正确性、数值误差、性能与回退测试；如果收益只覆盖极少输入，就不值得承担额外维护成本。

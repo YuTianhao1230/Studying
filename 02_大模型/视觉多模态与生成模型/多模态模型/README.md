@@ -11,10 +11,3 @@
 | [VLM与Vision_Instruction_Tuning.md](<VLM与Vision_Instruction_Tuning.md>) | VLM 和视觉指令微调的数据、训练和应用。 |
 | [Video_Understanding.md](<Video_Understanding.md>) | 视频理解中的时序建模、抽帧和多模态任务。 |
 | [Multimodal_Grounding.md](<Multimodal_Grounding.md>) | 文本、图像区域、时间片段之间的 grounding 关系。 |
-
-## 学习路线
-
-1. 先看 [CLIP 模型卡片](<../../模型细节/里程碑模型/CLIP.md>)，理解图文对齐基础。
-2. 再看 [BLIP 与 BLIP-2 模型卡片](<../../模型细节/里程碑模型/BLIP与BLIP2.md>) 和 [VLM与Vision_Instruction_Tuning.md](<VLM与Vision_Instruction_Tuning.md>)。
-3. 接着看 [Video_Understanding.md](<Video_Understanding.md>)，连接视频任务。
-4. 最后看 [Multimodal_Grounding.md](<Multimodal_Grounding.md>)，理解细粒度对齐。

@@ -115,3 +115,19 @@ image -> ViT patch tokens -> projector/Q-Former/cross-attention -> LLM
 回答模板：
 
 ViT 会先把图像切成固定大小的 patch，比如 `224x224` 图像用 `16x16` patch 会得到 196 个 patch。每个 patch 展平后经过线性投影变成 token embedding，再加上一个 `[CLS]` token 和可学习位置编码，送入多层 Transformer Encoder。ViT-Base 通常是 12 层、hidden size 768、12 个 heads，ViT-Large 是 24 层、hidden size 1024、16 个 heads。最后用 `[CLS]` 表示接分类头。它的意义是把视觉建模转成 token 序列建模，也为后续 VLM 连接语言模型打下基础。
+
+### ViT 和 CNN 的核心差异是什么？
+
+回答思路：按基本算子、归纳偏置、感受野、数据需求和计算代价比较。
+
+回答模板：
+
+CNN 通过局部卷积、权重共享和层级下采样建模图像，自带局部性和平移等变等归纳偏置，因此在数据较少时通常更容易训练。ViT 把 patch 当作 token，用 Self-Attention 直接建立全局关系，结构更容易与语言 Transformer 统一，但对数据规模、正则化和训练策略更敏感。ViT 的 Attention 成本随 patch token 数近似平方增长，所以减小 patch 或提高分辨率会明显增加计算量。两者不是绝对替代关系，选择取决于数据规模、分辨率和部署预算。
+
+### ViT 适合哪些场景，在多模态模型中有什么局限？
+
+回答思路：先讲视觉骨干和多模态接口，再说明分辨率、局部细节与任务头限制。
+
+回答模板：
+
+ViT 适合大规模视觉预训练、分类、检测分割骨干以及 VLM 的视觉编码器，因为它输出规则的 patch token 序列，可以通过 projector、Q-Former 或 Cross-Attention 接入语言模型。它的局限是高分辨率会快速增加 token 数和 Attention 成本，固定 patch 可能丢失小目标、文字和细粒度空间关系；原始分类式 ViT 本身也不具备图文对齐或文本生成能力。用于多模态任务时，视觉预训练目标、特征层选择、分辨率和连接器同样决定最终效果。

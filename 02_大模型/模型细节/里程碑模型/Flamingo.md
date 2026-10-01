@@ -97,3 +97,27 @@ maximize P(text tokens | previous text tokens, visual tokens)
 回答模板：
 
 Flamingo 的目标是让大语言模型具备多模态 few-shot 能力。它先用冻结视觉编码器提取图像或视频帧特征，再用 Perceiver Resampler 把可变数量的视觉特征压缩成固定数量的 visual tokens。文本侧是大语言模型，在若干层之间插入 gated cross-attention，让文本生成时可以 attend 到 visual tokens。这样模型可以接收交错的图文示例，并像语言模型做 few-shot 一样完成新的视觉问答、caption 或分类任务。
+
+### Flamingo 的训练目标和关键机制是什么？
+
+回答思路：用“冻结主干、训练桥接模块、条件语言建模”串起训练方式。
+
+回答模板：
+
+Flamingo 复用预训练视觉编码器和语言模型，主要训练 Perceiver Resampler 与插入语言模型层间的 gated cross-attention。Perceiver Resampler 把不同图像或视频产生的可变长度视觉特征压缩成固定数量的 visual tokens，Cross-Attention 再让文本位置按需读取对应视觉信息。训练目标仍是图文条件下的自回归 next-token prediction，训练数据包含交错图文序列和图文对。门控使新增视觉分支在训练初期对原语言模型的扰动可控。
+
+### Flamingo、BLIP-2 和 LLaVA 应该怎样比较？
+
+回答思路：统一按视觉压缩器、视觉注入位置和主要训练能力比较。
+
+回答模板：
+
+Flamingo 用 Perceiver Resampler 压缩视觉特征，并在语言模型多层之间插入 gated cross-attention，重点是交错图文上下文中的多模态 few-shot。BLIP-2 用 Q-Former 以一组可学习 Query 从冻结视觉编码器中提取与语言相关的信息，再连接冻结 LLM，强调参数高效的视觉语言桥接。LLaVA 通常用线性层或 MLP projector 把视觉 patch 特征直接映射到 LLM embedding 空间，再依靠视觉指令微调获得对话能力。三者都复用预训练主干，但连接器、视觉信息注入方式和目标能力不同。
+
+### Flamingo 适合什么场景，有哪些局限？
+
+回答思路：先给交错图文和少样本场景，再讲训练成本、感知边界与部署复杂度。
+
+回答模板：
+
+Flamingo 适合需要在上下文中给出多组图文示例的少样本视觉问答、分类、描述和视频理解任务，尤其适合研究多模态 in-context learning。它的局限是模型和交错图文数据训练成本高，Cross-Attention 插入多层语言模型会增加实现与推理复杂度；视觉能力仍受冻结视觉编码器和 Resampler 信息瓶颈限制，对 OCR、小目标和精细定位不一定可靠。若目标只是低成本构建视觉对话助手，结构更简单的 projector 路线可能更容易复现和部署。

@@ -100,3 +100,27 @@ BERT 不适合直接做自回归长文本生成。它的预训练目标是补全
 回答模板：
 
 BERT 是 Encoder-only Transformer。BERT-Base 有 12 层 encoder、hidden size 768、12 个 attention heads，BERT-Large 有 24 层、hidden size 1024、16 个 heads。输入由 token embedding、segment embedding 和 position embedding 相加得到，经过双向 self-attention 编码后，用 `[CLS]` 做句级任务，用 token hidden states 做序列标注或抽取式问答。它的核心创新是用 MLM 学双向上下文表示，并通过预训练加微调把同一个模型迁移到多种理解任务。
+
+### BERT 的 MLM 和 NSP 分别解决什么问题？
+
+回答思路：先解释两个目标的输入输出，再区分核心目标与可替代设计。
+
+回答模板：
+
+MLM 会遮盖部分 token，让 BERT 同时利用左右上下文恢复原词，因此它直接训练双向语义表示，是 BERT 最核心的预训练目标。NSP 则输入两个句段，判断第二段是否是第一段的后续，用来引入句间关系监督。不过后续工作表明，NSP 不是 BERT 成功的必要条件，去掉 NSP 并改进数据规模、训练时长和掩码策略也能取得更好效果。因此不能把 BERT 的能力简单归因于 NSP。
+
+### BERT、GPT 和 T5 应该怎样比较？
+
+回答思路：统一按架构、注意力可见范围、预训练目标和输出形式比较。
+
+回答模板：
+
+BERT 是 Encoder-only，使用双向自注意力和 MLM，输出上下文化表示，适合分类、检索重排、序列标注和抽取式问答。GPT 是 Decoder-only，使用因果自注意力和 next-token prediction，直接自回归生成文本，适合开放式生成和上下文学习。T5 是 Encoder-Decoder，Encoder 双向读取输入，Decoder 通过因果自注意力和 Cross-Attention 生成输出，并用 text-to-text 统一任务。三者的差异来自训练目标和信息流，不只是模型规模。
+
+### BERT 的局限是什么，什么场景仍适合使用？
+
+回答思路：先讲生成和上下文边界，再给出保留 BERT 的工程场景。
+
+回答模板：
+
+BERT 的主要局限是 MLM 与真实推理输入存在 `[MASK]` 差异，而且 Encoder-only 架构不能像 GPT 那样自然地做长文本自回归生成；经典 BERT 的上下文长度和预训练数据规模也限制了长文档与开放知识能力。但在文本分类、NER、抽取式问答、语义匹配和 Cross-Encoder 重排等判别式任务中，BERT 类模型仍然有结构直接、延迟和部署成本可控的优势。选型时应看任务是否需要生成，而不是因为生成式模型流行就一律替换。

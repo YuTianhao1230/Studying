@@ -7,8 +7,6 @@
 | GitHub 仓库 | [LB623/no-negative-echo](https://github.com/LB623/no-negative-echo) |
 | 仓库定位 | 帮助 Agent 根据最终结果生成标题、注释、commit、PR 和 handoff，减少工作过程中的无关信息残留。 |
 | 默认分支 | `main` |
-| 检查时仓库热度 | 约 857 stars；GitHub 数据会持续变化。 |
-| 本地安装位置 | `/mlx_devbox/users/yutianhao/.trae/skills/no-negative-echo/` |
 | 核心脚本 | `scripts/check_surface.py` |
 | 配套资料 | `references/high-assurance-finalization.md`、`agents/openai.yaml`、provenance 文件和图标资源 |
 
@@ -68,7 +66,7 @@ No Negative Echo 是一个交付表面整理 Skill。它要求 Agent 先确定�
 
 ```bash
 python3 -I \
-  /mlx_devbox/users/yutianhao/.trae/skills/no-negative-echo/scripts/check_surface.py \
+  <skill-dir>/scripts/check_surface.py \
   --terms-file /path/to/terms.txt \
   --root /path/to/project \
   README.md docs/overview.md
@@ -92,7 +90,32 @@ references/high-assurance-finalization.md
 - 必须保留的 API 名称、错误信息、测试快照、安全事实、审计记录和用户要求的对比内容不能为了表达简洁而删除。
 - 它不是普通的删除、弃用、迁移或排除工具；真实兼容性、准确性、安全和审计要求仍应写入最终产物。
 - `check_surface.py` 的零命中结果不能证明语义层面一定正确，最终交付前仍需要人工回读。
-- 本地文件安装成功不等于当前宿主已经热加载；Skill 列表和自动触发状态需要宿主单独验证。
+
+## 面试应对
+
+### No Negative Echo 解决的核心问题是什么？
+
+回答思路：先说明它处理的是交付表达而非业务逻辑，再讲过程信息如何污染标题、元数据和 handoff。
+
+回答模板：
+
+No Negative Echo 解决的是协作过程污染最终交付表面的问题。方案讨论中被放弃的选项、临时措辞和纠正过程可能残留在标题、文件名、注释、PR 或 handoff 中，让读者误解当前结果。它要求先确定最终接受状态和读者真正需要的事实，再从这个状态生成所有交付表面。它不替代业务判断和测试，只负责让最终表达与实际结果一致。
+
+### 如何判断一个排除说明是否应该保留？
+
+回答思路：以独立读者是否需要为判断标准，并列出安全、准确、兼容、审计和明确比较等例外。
+
+回答模板：
+
+我会问一个没有参与工作过程的读者是否需要这条排除说明。通常，只有省略会导致安全风险、事实不准确、兼容性误解、审计缺失，或者用户明确要求比较和变更记录时才保留。仅仅因为讨论过某个方案，不代表最终文档需要解释为什么没选它。若没有必要，我会从正向目标重写表面，而不是换一个委婉说法继续保留对比。
+
+### 为什么精确词面扫描不能代替最终回读？
+
+回答思路：区分字面命中与语义残留，再说明完整表面和变更后复检。
+
+回答模板：
+
+词面扫描只能发现给定词项和路径中的精确匹配，无法识别同义改写、语义暗示或结构上仍围绕旧方案组织的问题。因此我会先扫描正文、文件名和元数据，再人工回读标题、导语、索引、生成物和 handoff，确认它们都从最终状态出发。内容发生变化后还要重新检查，因为后续工具可能再次生成新的交付表面。
 
 ## 与当前工作区的结合
 

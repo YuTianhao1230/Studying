@@ -47,6 +47,33 @@ def traverse(root):
 - 需要先获得左右子树结果，再计算父节点：后序。
 - 需要按距离根节点的层数处理：层序 BFS。
 
+### 迭代遍历原则
+
+递归隐式使用调用栈，迭代写法则要显式保存“之后还要访问的节点”。中序遍历需要先沿左链入栈，弹栈访问后再转向右子树：
+
+```python
+def inorder_iterative(root):
+    stack, result = [], []
+    node = root
+
+    while stack or node is not None:
+        while node is not None:
+            stack.append(node)
+            node = node.left
+        node = stack.pop()
+        result.append(node.val)
+        node = node.right
+
+    return result
+```
+
+- 前序遍历用栈时先压右孩子、再压左孩子，才能先弹出左孩子。
+- 中序遍历的栈保存“左子树处理完后等待访问”的祖先。
+- 后序遍历可在栈中增加“是否展开”的标记，确保左右子树都处理后再访问根。
+- 层序遍历使用队列，节点入队时就标记或记录，避免重复加入。
+
+深度优先遍历时间复杂度为 `O(n)`，辅助栈最坏为 `O(h)`；层序遍历时间复杂度为 `O(n)`，队列最坏保存一层的 `O(w)` 个节点，其中 `h` 是树高、`w` 是最大宽度。
+
 ### 树形递归框架
 
 做树题前先明确递归函数的含义。例如判断平衡二叉树，可以让函数返回子树高度；一旦发现不平衡，返回特殊值：
@@ -72,6 +99,19 @@ def height(root) -> int:
 
 树形递归常见返回值包括高度、节点数、是否满足条件、子树最优值和目标节点。
 
+### 路径、LCA 与直径的返回值设计
+
+| 问题 | 递归函数返回给父节点的值 | 当前节点额外工作 |
+| --- | --- | --- |
+| 根到叶路径 | 是否找到目标，或满足条件的路径信息 | 进入时加入节点，离开时回溯删除 |
+| 最近公共祖先 LCA | 当前子树找到的 `p`、`q` 或 LCA | 左右返回都非空时，当前节点是 LCA |
+| 二叉树直径 | 从当前节点向下延伸的最大深度 | 用左深度加右深度更新全局直径 |
+| 最大路径和 | 能向父节点延伸的单支最大贡献 | 用左右两支与当前节点更新全局答案 |
+
+普通二叉树的 LCA 递归中，当前节点等于 `p` 或 `q` 时返回自身；若左右子树都返回非空，当前节点就是分叉点。若题目不保证两个目标都存在，还要额外返回找到目标的数量，不能把“只找到一个目标”误判为 LCA。
+
+直径题必须区分返回值与全局答案：父节点只能继续选择左、右中的一条向下路径，所以返回 `max(left_depth, right_depth) + 1`；经过当前节点的完整路径可以同时使用左右两支，只用于更新 `left_depth + right_depth`。这些 DFS 都访问每个节点一次，时间为 `O(n)`，递归栈为 `O(h)`。
+
 ### BST
 
 BST，Binary Search Tree，二叉搜索树满足：左子树节点值小于根节点，右子树节点值大于根节点，左右子树也分别是 BST。查找、插入、删除的平均复杂度是 O(log n)，但如果树退化成链表，最坏会变成 O(n)。
@@ -85,6 +125,46 @@ BST 操作：
 - 删除有两个孩子的节点：用中序后继或中序前驱替换，再删除对应节点。
 
 验证 BST 不能只比较节点与直接孩子，因为整个左子树都必须小于根，整个右子树都必须大于根。常见方法是中序遍历检查严格递增，或递归维护每个节点允许的取值上下界。
+
+使用上下界验证 BST 时，每个祖先的限制都会继续传给整棵子树：
+
+```python
+def valid_bst(root) -> bool:
+    def valid(node, lower, upper):
+        if node is None:
+            return True
+        if not lower < node.val < upper:
+            return False
+        return (valid(node.left, lower, node.val)
+                and valid(node.right, node.val, upper))
+
+    return valid(root, float("-inf"), float("inf"))
+```
+
+删除必须把递归后的子树根重新接回父节点。双孩子节点可复制右子树最小值，再从右子树删除这个后继：
+
+```python
+def delete_bst(root, key):
+    if root is None:
+        return None
+    if key < root.val:
+        root.left = delete_bst(root.left, key)
+    elif key > root.val:
+        root.right = delete_bst(root.right, key)
+    else:
+        if root.left is None:
+            return root.right
+        if root.right is None:
+            return root.left
+        successor = root.right
+        while successor.left is not None:
+            successor = successor.left
+        root.val = successor.val
+        root.right = delete_bst(root.right, successor.val)
+    return root
+```
+
+以上代码假设键值互异。若允许重复值，插入、验证和删除必须共同遵守同一策略，例如重复值统一放右侧或在节点内记录计数。
 
 ### 常见树形
 
@@ -107,6 +187,8 @@ AVL、红黑树、Trie、B 树和 B+ 树属于更具体的树结构，分别解�
 右孩子：2 * i + 2
 ```
 
+有 `n` 个节点的完全二叉树按层序存入数组时，下标恰为 `0` 到 `n-1`，判断孩子是否存在只需检查计算出的下标是否小于 `n`。若使用从 1 开始的编号，则左孩子、右孩子和父节点分别为 `2i`、`2i+1` 和 `i//2`，答题时不能混用两套公式。
+
 ### 易错点
 
 - 二叉树不等于二叉搜索树，普通二叉树没有大小关系。
@@ -115,9 +197,18 @@ AVL、红黑树、Trie、B 树和 B+ 树属于更具体的树结构，分别解�
 - 最近公共祖先在普通二叉树和 BST 中的解法不同。
 - 由遍历序列还原普通二叉树通常必须包含中序序列。
 
+## 笔试常考
+
+- 递归前、中、后序的差别是访问根节点的时机；迭代 DFS 用栈，层序 BFS 用队列。
+- BST 中序遍历严格递增的前提是键值互异；允许重复时必须明确统一策略。
+- 验证 BST 要维护整棵子树的上下界，不能只比较节点与直接孩子。
+- BST 删除双孩子节点时，可用中序前驱或后继替换，再在对应子树删除该节点。
+- LCA 返回子树中找到的目标，直径返回单支深度但用左右双支更新全局答案。
+- 完全二叉树从 0 编号时，左右孩子下标为 `2i+1` 和 `2i+2`。
 
 ## 面试应对
 
+### 为什么 BST 的中序遍历有序？
 
 回答思路：结合中序的左、根、右顺序和 BST 的大小关系。
 

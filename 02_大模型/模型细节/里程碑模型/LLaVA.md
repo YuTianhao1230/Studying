@@ -124,3 +124,27 @@ CLIP-like visual encoder -> projector -> LLM
 回答模板：
 
 LLaVA 的基本结构是 CLIP vision encoder 加 projector 加 LLM。图像先经过 CLIP ViT-L/14 等视觉编码器得到 patch-level visual features，再通过 linear projector 或 MLP projector 映射到 LLM 的 embedding 空间；文本指令经过 tokenizer 得到 text embeddings，视觉 token 和文本 token 一起送入 Vicuna/LLaMA 类语言模型自回归生成答案。训练一般分两阶段：先冻结视觉编码器和 LLM，只训练 projector 做视觉语言预对齐；再用视觉指令数据微调模型，让它学会图文问答和多轮对话。
+
+### LLaVA 的两阶段训练分别优化什么？
+
+回答思路：区分特征空间对齐和指令行为学习，并说明具体冻结范围随版本变化。
+
+回答模板：
+
+第一阶段用图像与描述数据训练视觉 projector，目标是在语言建模损失监督下把视觉编码器输出映射到 LLM 能消费的 embedding 空间，典型做法是冻结视觉编码器和 LLM。第二阶段使用视觉指令数据继续训练，让模型学习视觉问答、多轮对话和指令遵循，优化范围可以包含 projector 与 LLM 的部分或全部参数，具体取决于版本。第一阶段解决“视觉特征怎么接进来”，第二阶段解决“接入后怎样按指令回答”，不能把两者都概括成普通图文对齐。
+
+### LLaVA、BLIP-2 和 Flamingo 的连接方式有什么区别？
+
+回答思路：按连接器、视觉 token 注入方式和主要能力比较。
+
+回答模板：
+
+LLaVA 通常用线性层或 MLP projector 把视觉 patch 特征映射成 LLM 输入 token，结构简单，主要依赖视觉指令微调形成对话能力。BLIP-2 使用 Q-Former，通过可学习 Query 从冻结视觉编码器提取与语言相关的紧凑表示，再桥接冻结 LLM。Flamingo 使用 Perceiver Resampler 压缩视觉特征，并在语言模型层间插入 gated cross-attention，重点支持交错图文的 few-shot 上下文。三者都复用预训练视觉和语言主干，但信息压缩方式、注入位置和训练目标不同。
+
+### LLaVA 适合哪些场景，主要局限是什么？
+
+回答思路：先说明低成本视觉对话价值，再从视觉分辨率、连接器、数据与语言先验分析失败模式。
+
+回答模板：
+
+LLaVA 适合视觉问答、图片描述、多轮图文对话以及开源多模态研究，因为它用较简单的视觉编码器、projector 和 LLM 组合就能获得视觉指令能力。它的主要局限是视觉细节会受输入分辨率、视觉特征层和 token 数限制，简单 projector 的信息选择能力也弱于显式查询或多层 Cross-Attention；如果指令数据有偏差，LLM 还可能凭语言先验产生幻觉。因此 OCR、小目标、计数、空间关系和精确 grounding 等场景需要单独评测，不能只看通用对话表现。

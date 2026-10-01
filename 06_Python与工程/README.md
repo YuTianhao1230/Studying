@@ -2,19 +2,17 @@
 
 本目录回答“如何用通用语言、框架和工程工具完成实现”。内容覆盖 Python 基础、PyTorch、常用库、深度学习框架、算法刷题和方向无关的工程工具，不承担模型原理或业务算法知识。
 
-| 子目录 | 内容说明 |
+## 内容索引
+
+| 入口 | 内容说明 |
 | --- | --- |
 | [Python语法](<Python语法/README.md>) | ACM/OJ 输入输出、内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
+| [编程语言基础](<编程语言基础/README.md>) | Python、Java 与 C++ 的语言机制和面试知识卡。 |
 | [PyTorch](<PyTorch/README.md>) | PyTorch 基础、张量操作、torchvision 和 Beam Search。 |
 | [常用函数](<常用函数/README.md>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
 | [常用库](<常用库/README.md>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
 | [深度学习框架](<深度学习框架/README.md>) | PyTorch、TensorFlow、Hugging Face、训练脚手架和框架选型。 |
 | [算法刷题](<算法刷题/README.md>) | 高频算法模板、刷题技巧、回溯、并查集和典型实现题。 |
 | [工程工具](<工程工具/README.md>) | Docker 等与具体模型方向无关的通用工程工具。 |
-
-## 当前层文件
-
-| 文件 | 内容说明 |
-| --- | --- |
 | [编程与算法工程能力.md](<编程与算法工程能力.md>) | 面试中的编码能力、算法工程能力和工程实现意识。 |
 | [Python工程实践.md](<Python工程实践.md>) | GIL、并发模型、结构化日志、重试、测试、大文件处理和断点续跑。 |

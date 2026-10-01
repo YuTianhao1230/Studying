@@ -8,31 +8,10 @@
 | 仓库定位 | Agentic skills framework & software development methodology |
 | 许可证 | MIT |
 | 安装方式 | 以仓库中的 `skills/<skill-name>` 作为 Skill 目录安装 |
-| 本地安装位置 | `/mlx_devbox/users/yutianhao/.trae/skills/` |
-| 当前安装数量 | 14 个 Skill |
 
 ## 主要做什么
 
 Superpowers 为软件开发任务提供一套可组合的工作流程。它把“需求澄清、设计、计划、实现、测试、调试、代码审查和交付验证”拆成不同 Skill，让 Agent 在不同阶段采用明确的方法和检查点。
-
-当前安装的 Skill 包括：
-
-```text
-brainstorming
-writing-plans
-executing-plans
-test-driven-development
-systematic-debugging
-verification-before-completion
-using-git-worktrees
-using-superpowers
-requesting-code-review
-receiving-code-review
-subagent-driven-development
-dispatching-parallel-agents
-finishing-a-development-branch
-writing-skills
-```
 
 ## 解决什么问题
 
@@ -82,8 +61,8 @@ $verification-before-completion
 ### 本地检查
 
 ```bash
-find /mlx_devbox/users/yutianhao/.trae/skills -maxdepth 2 -name SKILL.md | sort
-sed -n "1,80p" /mlx_devbox/users/yutianhao/.trae/skills/brainstorming/SKILL.md
+find <skill-root> -maxdepth 2 -name SKILL.md | sort
+sed -n "1,80p" <skill-root>/brainstorming/SKILL.md
 ```
 
 ## 适用边界
@@ -91,7 +70,33 @@ sed -n "1,80p" /mlx_devbox/users/yutianhao/.trae/skills/brainstorming/SKILL.md
 - 适合软件开发、研究代码、复杂文档工程和需要明确验证的长任务。
 - `brainstorming` 的设计确认门槛较强，简单的一次性查询不需要套完整开发流程。
 - TDD 需要有可运行的测试环境；纯文档整理可以使用其验证思想，但不必虚构代码测试。
-- Superpowers 的 Skill 文件已安装并可读，不等于宿主当前会话已经热加载；重启 TraeCode 或开启新会话后再验证可用 Skill 列表。
+- Skill 文件可读不等于宿主当前会话已经加载；应通过宿主公开的能力列表或实际触发结果验证。
+
+## 面试应对
+
+### Superpowers 的核心价值是什么？
+
+回答思路：不要把它说成单一编码工具，按开发阶段和检查点说明其作用。
+
+回答模板：
+
+Superpowers 是一组面向软件工程生命周期的流程 Skill。它把需求澄清、设计、计划、实现、测试、调试、代码审查和交付验证拆成明确阶段，并为每个阶段设置进入条件和证据要求。核心价值不是让模型写更多代码，而是减少需求未确认就实现、遇错盲改和没有验证就宣布完成等流程失控问题。
+
+### 新功能和故障修复为什么要走不同流程？
+
+回答思路：对比未知点：新功能需要先确定目标和设计，故障需要先基于证据定位根因。
+
+回答模板：
+
+新功能的主要风险是目标和方案不清，因此先用 brainstorming 澄清需求、比较方案并获得设计确认，再制定计划和实现。故障修复的主要风险是误判根因，因此先用 systematic-debugging 稳定复现、收集证据和验证单一假设，再用测试驱动最小修复。两条流程最后都进入 completion verification，用新鲜测试结果支撑结论。
+
+### 如何避免流程 Skill 变成形式主义？
+
+回答思路：说明流程深度要与风险匹配，并要求每个产物服务于下一步决策或验证。
+
+回答模板：
+
+我会让流程深度与任务复杂度和风险匹配。小范围修改只需要简短设计、聚焦实现和对应验证；跨模块或高风险任务才需要完整规格、计划和审查。每个产物都必须服务于下一步，例如设计明确接口，计划明确可验证步骤，测试证明行为。如果某个文档既不减少歧义，也不支持执行或验收，就不应为了形式而创建。
 
 ## 与当前工作区的结合
 

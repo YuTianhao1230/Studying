@@ -94,34 +94,34 @@ KV cache 会占显存，并且随以下因素增长：
 
 ## 面试应对
 
-### KV_Cache与Prefill_Decode 是什么？
+### Prefill 和 Decode 的瓶颈为什么不同？
 
-回答思路：把三者串起来——自回归生成分 Prefill（一次算完输入并生成 KV）和 Decode（逐 token 生成），KV Cache 缓存历史 K/V 供 Decode 复用，是加速自回归的核心机制。
-
-回答模板：
-
-KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Prefill 是处理输入上下文，Decode 是逐 token 生成输出。GPT 类模型一次生成一个 token： 每生成一个新 token，都要基于之前所有 token。 它关注的核心不是提升模型本身能力，而是让已有模型在服务中更高吞吐、更低延迟、更稳定地运行。
-
-### KV_Cache与Prefill_Decode 解决什么问题？
-
-回答思路：抓住 KV cache 随上下文和输出长度线性增长导致长上下文易 OOM，说明为何用 max_tokens 限制 decode 步数、用 [PagedAttention](<vLLM.md>) 分块管理来控制显存。
+回答思路：从每步处理的 Token 数、并行度和主要资源约束比较。
 
 回答模板：
 
-因为 KV cache 随上下文长度增长。输入很长或输出很长，都会让缓存变大。max tokens 限制最大输出长度，能限制 decode 步数和 KV cache 继续增长。 在工程上通常要结合 p50/p95/p99 延迟、tokens/s、显存峰值、并发数和失败率来判断它是否有效。
+Prefill 一次处理整段输入，可以在 Token 维度并行，通常计算量大，更容易表现为计算瓶颈，并主要影响 TTFT。Decode 每轮只生成一个新 Token，步骤之间串行，还要反复读取权重和历史 KV Cache，通常更受显存带宽、调度和并发影响，并主要决定 TPOT。两阶段的负载特征不同，所以优化和调度不能只看一个总延迟。
 
-### KV_Cache与Prefill_Decode 的核心机制是什么？
+### KV Cache 为什么能加速自回归生成？
 
-回答思路：讲清 KV Cache 用“缓存历史 token 的 K/V、每步只算新 token 的 Q/K/V”避免重复计算，从而把 Decode 从重复全量计算变成增量计算、大幅提速。
-
-回答模板：
-
-KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Prefill 是处理输入上下文，Decode 是逐 token 生成输出。 这类机制的价值在于减少无效计算、降低显存碎片、提升 GPU 利用率或稳定服务调度。
-
-### KV_Cache与Prefill_Decode 有哪些限制？
-
-回答思路：指出 KV cache 显存随 batch、序列长度、层数、head 数、精度增长，长上下文/大 batch 会爆显存，排查时要看请求长度分布、max_tokens 设置和显存占用。
+回答思路：解释历史 Token 的 K/V 不随新 Token 改变，因此可以缓存并复用。
 
 回答模板：
 
-max tokens 限制最大输出长度，能限制 decode 步数和 KV cache 继续增长。 如果线上效果异常，需要检查请求长度分布、batch 配置、KV cache、显存利用率、并发策略和模型并行配置。
+在自回归 Decode 中，第 t 步仍需关注前 t-1 个 Token，但这些历史 Token 在各层算出的 Key 和 Value 已经固定。KV Cache 把它们保存下来，下一步只计算新 Token 的 Q、K、V，再让新 Query 与缓存的 Key、Value 做注意力。这样避免每一步重新计算整个历史序列，是用显存换计算；代价是缓存会随并发数和序列长度增长。
+
+### 为什么长上下文和大 Batch 容易导致 KV Cache OOM？
+
+回答思路：指出缓存规模受层数、KV Head、Head Dimension、精度、并发和总序列长度共同影响，再给出治理手段。
+
+回答模板：
+
+每个活跃请求都要在每一层保存历史 Token 的 K 和 V，因此缓存占用会随层数、KV Head 数、Head Dimension、元素字节数、并发请求数和上下文加输出长度近似线性增长。长上下文和大 Batch 会同时放大这些维度。工程上可以限制最大上下文与输出、使用 GQA/MQA 或低精度 KV、实施请求准入，并通过 PagedAttention 分页分配缓存以减少碎片。
+
+### PagedAttention 解决了什么问题？
+
+回答思路：区分“避免重复计算”和“改善缓存分配”：前者是 KV Cache，后者是分页管理。
+
+回答模板：
+
+普通连续分配需要为不确定长度的请求预留较大连续空间，容易产生内部浪费和外部碎片。PagedAttention 把 KV Cache 划分为固定大小的块，通过逻辑块到物理块的映射按需分配，使不同请求的缓存不必物理连续。它提高的是显存利用率和调度灵活性，并不会消除 KV Cache 随有效 Token 数增长这一事实。

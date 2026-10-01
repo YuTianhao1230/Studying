@@ -1,18 +1,5 @@
 # 训练 loss 异常怎么排查？
 
-## 直接回答
-
-训练 loss 异常时，不要一上来就调学习率。应该先确认现象，再按“数据 -> loss 计算 -> 优化配置 -> 数值精度 -> 分布式训练 -> 评测口径”的顺序排查。
-
-面试可以这样回答：
-
-```text
-我会先确认 loss 异常的类型，是 NaN、突然 spike、不下降、震荡，还是 train loss 下降但 eval 不提升。
-然后定位异常发生的 step、数据 shard、模型版本和配置变更。
-排查顺序上，我会先查数据和 label，再查 loss mask、label shift、padding mask，然后看学习率、warmup、grad norm、混合精度和分布式同步。
-最后用小数据单卡复现，逐步关闭复杂配置，判断是数据问题、代码问题还是分布式配置问题。
-```
-
 ## 常见 loss 异常类型
 
 ### loss 变成 NaN / Inf
@@ -105,9 +92,9 @@ SFT / 大模型训练里，mask 错非常常见。
 
 重点查：
 
-- 是否把 user prompt 也算进 loss。
-- assistant 部分是否被正确监督。
-- padding token 是否 mask 掉。
+- 先确认实际训练目标：预训练或 full-sequence causal LM 可能监督全部非 padding token；response-only SFT 通常只监督 assistant 回复；多轮 SFT 还要确认监督所有 assistant 轮次还是仅最后一轮。
+- prompt、system、user 和 assistant 各区间的 label 是否与上述目标一致，不能先验地把“prompt 计入 loss”判为错误。
+- padding token 是否从 loss 中排除，attention mask 与 loss mask 是否各自符合用途。
 - label shift 是否正确。
 - ignore index 是否一致。
 - packing 多条样本时，不同样本之间是否错误 attention。
@@ -192,20 +179,37 @@ Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，�
 - 只有某类数据异常：优先查数据质量和任务格式。
 - 训练指标正常但 eval 异常：优先查评测集、指标实现、推理参数。
 
-## 常见追问
+## 面试应对
 
-### 追问一：loss spike 一定要停训吗？
+### 训练 loss 异常时，你会怎么排查？
 
-回答：
+回答思路：先区分异常类型并定位首次偏离点，再按“数据 -> loss 计算 -> 优化配置 -> 数值精度 -> 分布式训练 -> 评测口径”收敛变量，最后用小数据单卡复现。
+
+回答模板：
+
+```text
+我会先确认 loss 异常的类型，是 NaN、突然 spike、不下降、震荡，还是 train loss 下降但 eval 不提升。
+然后定位异常发生的 step、数据 shard、模型版本和配置变更。
+排查顺序上，我会先查数据和 label，再查 loss mask、label shift、padding mask，然后看学习率、warmup、grad norm、混合精度和分布式同步。
+最后用小数据单卡复现，逐步关闭复杂配置，判断是数据问题、代码问题还是分布式配置问题。
+```
+
+### loss spike 一定要停训吗？
+
+回答思路：区分可恢复的偶发尖峰与持续发散，结合 grad norm、后续 loss 和 eval 指标决定是否停训。
+
+回答模板：
 
 ```text
 不一定。大模型训练中偶发 loss spike 可能来自长样本或难 batch，只要 grad norm 没失控、loss 能恢复、eval 不退化，可以继续观察。
 但如果 spike 后持续变差，或者出现 NaN、grad norm 爆炸、eval 大幅下降，就要暂停并定位数据、学习率、混合精度和异常 batch。
 ```
 
-### 追问二：train loss 下降但 eval 变差怎么办？
+### train loss 下降但 eval 变差怎么办？
 
-回答：
+回答思路：先排除数据切分、评测实现和推理配置问题，再判断是否过拟合或学到了任务捷径。
+
+回答模板：
 
 ```text
 这通常说明模型在训练集上拟合了，但没有泛化。
@@ -213,19 +217,24 @@ Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，�
 如果确认评测没问题，就要考虑过拟合、数据比例不合理、训练步数过多或模型学到了格式捷径。
 ```
 
-### 追问三：如何判断是不是 mask 错了？
+### 如何判断是不是 mask 错了？
 
-回答：
+回答思路：先确认训练目标，再把 token、label、loss mask 和 attention mask 对齐打印，逐项检查监督区间、padding、shift 与 packing 边界。
+
+回答模板：
 
 ```text
-我会抽样打印 token、label 和 loss mask，确认 user prompt、padding token、system prompt 是否被 mask 掉，只在 assistant 目标部分算 loss。
-如果用了 packing，还要检查样本之间是否错误互相 attention。
+我会先确认当前配置是全序列语言建模、response-only SFT，还是只监督特定 assistant 轮次，然后抽样对齐打印 token、role、label、loss mask 和 attention mask。
+全序列目标可以监督所有非 padding token；response-only 目标通常应屏蔽 system 和 user，只监督配置指定的 assistant 区间。两种口径不能混用。
+接着检查 padding、label shift、ignore index 和多轮边界；如果用了 packing，还要确认样本间的 attention 隔离及各样本 loss 区间都正确。
 mask 错通常会表现为 loss 异常、输出格式奇怪，或者模型学会复述用户输入。
 ```
 
-### 追问四：为什么要做小数据 overfit test？
+### 为什么要做小数据 overfit test？
 
-回答：
+回答思路：说明小数据过拟合测试用于区分训练链路错误与全量数据、超参数或分布式问题。
+
+回答模板：
 
 ```text
 小数据 overfit test 是判断训练链路是否正常的有效办法。
@@ -233,9 +242,11 @@ mask 错通常会表现为 loss 异常、输出格式奇怪，或者模型学会
 如果小数据能很快拟合，但全量数据不行，问题更可能在数据分布、数据质量、超参数或分布式配置。
 ```
 
-### 追问五：线上效果变差但训练 loss 正常，怎么排查？
+### 线上效果变差但训练 loss 正常，怎么排查？
 
-回答：
+回答思路：强调训练目标与线上指标并不等价，按评测覆盖、推理配置、服务版本、数据漂移和 bad case 分桶排查。
+
+回答模板：
 
 ```text
 训练 loss 正常只能说明训练目标在下降，不代表线上效果一定好。
