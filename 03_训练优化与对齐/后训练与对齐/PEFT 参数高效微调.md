@@ -32,7 +32,7 @@ PEFT 的思路是：**不要直接大幅改动基座模型，而是在它旁边�
 | --- | --- | --- | --- |
 | [LoRA / QLoRA](<LoRA 低秩适配.md>) | 线性层旁的低秩更新；QLoRA 额外量化冻结基座 | 工程成熟、适配能力强、可单独保存或合并 | rank、注入层和量化配置需要按任务验证 |
 | Prefix Tuning | 各层 Attention 前的连续 prefix | 参数量小，适合生成控制 | 表达能力通常弱于 LoRA |
-| Prompt Tuning / P-Tuning | 输入侧连续 soft prompt | 参数量极小，任务切换方便 | 对模型规模和任务格式较敏感 |
+| Prompt Tuning / P-Tuning | 早期方法主要在输入侧学习连续 soft prompt；P-Tuning v2（Deep Prompt Tuning）可在多层注入连续提示 | 参数量极小，任务切换方便 | 对模型规模和任务格式较敏感 |
 | [Adapter Tuning](<Adapter 参数高效微调.md>) | Transformer 层中的 bottleneck 模块 | 模块化强，适合多任务切换 | 增加一条推理计算路径 |
 
 LoRA 是当前 LLM [SFT](<SFT 监督微调.md>) 中最常用的 PEFT 路线；QLoRA 是其低显存训练变体，不是与 LoRA 并列的另一套适配原理。低秩公式、可训练参数量、`target_modules`、QLoRA 的 NF4/双重量化/分页优化器以及具体调参方法统一见 [LoRA 低秩适配](<LoRA 低秩适配.md>)。
@@ -95,7 +95,7 @@ PEFT 是 Parameter-Efficient Fine-Tuning，也就是参数高效微调。它不�
 
 回答模板：
 
-PEFT 是参数高效微调的一类方法，LoRA 是 PEFT 里最常用的一种。除了 LoRA，PEFT 还包括 Prefix Tuning、Prompt Tuning、Adapter Tuning、QLoRA 等。LoRA 的具体做法是冻结原始权重，只训练低秩矩阵产生的更新量 ΔW，所以它是 PEFT 思想的一种落地方式，而不是 PEFT 的全部。
+PEFT 是参数高效微调的一类方法，包括 LoRA、Prefix Tuning、Prompt Tuning、Adapter Tuning 等。LoRA 的具体做法是冻结原始权重，只训练低秩矩阵产生的更新量 ΔW，所以它是 PEFT 思想的一种落地方式，而不是 PEFT 的全部。QLoRA 则是量化加载冻结基座、仍训练 LoRA adapter 的低显存变体。
 
 ### 什么时候 PEFT 可能效果不好？
 
