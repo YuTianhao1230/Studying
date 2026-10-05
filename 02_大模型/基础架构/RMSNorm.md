@@ -52,7 +52,7 @@ $$\bar{x} = \frac{x}{\text{RMS}(x)} \cdot g$$
 
 ### 在 Qwen3 架构中的位置
 
-在你之前看的那张 Qwen3 架构图中，你会发现 **Pre-RMSNorm** 的字样：
+Qwen3 等现代大模型常采用 **Pre-RMSNorm**：
 *   **[Pre-Norm](<Pre-Norm vs Post-Norm.md>) (前置归一化)：** 意味着 RMSNorm 是放在 [Self-Attention](<Self-Attention.md>) 或 FFN 层**之前**的。
 *   这样做的目的是：让输入信号在进入计算层之前先被“标准化”，防止网络深处的信号畸变，这被认为是训练超深大模型（如 36 层、80 层甚至更多）的关键。
 

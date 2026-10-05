@@ -4,7 +4,7 @@
 
 ### 概述
 
-好的，我们来详细介绍一下 Python 中非常实用的 `collections` 模块。
+`collections` 是 Python 标准库中用于提供专用容器数据类型的模块。
 
 ### `collections` 模块概览
 
