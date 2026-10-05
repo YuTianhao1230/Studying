@@ -12,8 +12,7 @@
 | [Multi-Layer Perceptron.md](<Multi-Layer Perceptron.md>) | 多层感知机的结构、非线性表达能力和基础训练方式。 |
 | [Feature Map.md](<Feature Map.md>) | 特征图的含义，以及在 CNN/视觉模型中的空间表示作用。 |
 | [高阶特征.md](<高阶特征.md>) | 从低层纹理到高层语义特征的表示层级。 |
-| [常见激活函数.md](<常见激活函数.md>) | Sigmoid、Tanh、ReLU、GELU、SiLU 等非线性函数的性质与选择。 |
-| [GeLU.md](<GeLU.md>) | GELU 的数学形式、近似计算和 Transformer 应用。 |
+| [常见激活函数.md](<常见激活函数.md>) | Sigmoid、Tanh、ReLU、GELU、SiLU 的性质与选择，以及 GLU/SwiGLU 门控 FFN。 |
 | [常见分类损失函数.md](<常见分类损失函数.md>) | 交叉熵、Focal Loss、KL 散度等分类目标。 |
 | [常见回归损失函数.md](<常见回归损失函数.md>) | MSE、MAE、Huber、分位数损失等回归目标。 |
 | [参数初始化与数值稳定性.md](<参数初始化与数值稳定性.md>) | Xavier/He 初始化、稳定 Softmax、LogSumExp 和融合交叉熵。 |
