@@ -32,10 +32,13 @@ hidden state h
 
 可以写成：
 
-```text
-Adapter(h) = W_up * f(W_down * h)
-h' = h + Adapter(h)
-```
+$$
+\begin{aligned}
+\operatorname{Adapter}(h)
+&=W_{\mathrm{up}}f(W_{\mathrm{down}}h),\\
+h'&=h+\operatorname{Adapter}(h).
+\end{aligned}
+$$
 
 其中：
 
@@ -100,7 +103,7 @@ h -> Transformer block ----\
 | 方法 | 可训练对象 | 是否增加 hidden-state 计算 | 参数形式 | 主要特点 |
 | --- | --- | --- | --- | --- |
 | Adapter | bottleneck 模块 | 会增加一小段前向计算 | 小型神经网络 | 模块化、可插拔 |
-| LoRA | 低秩矩阵 `A/B` | 训练时增加旁路，merge 后可消除 | `Delta W = BA` | 参数少、工程最成熟 |
+| LoRA | 低秩矩阵 $A/B$ | 训练时增加旁路，merge 后可消除 | $\Delta W=BA$ | 参数少、工程最成熟 |
 | Prefix Tuning | 每层 prefix 的 K/V 或连续向量 | 会增加 prefix 序列计算 | 可学习 prefix | 适合控制生成条件 |
 | Prompt Tuning | 输入侧 soft prompt | 增加输入 token/向量 | 可学习 embedding | 参数极少，容量有限 |
 | BitFit | bias 参数 | 基本不增加结构 | 原模型 bias | 极轻量但表达能力有限 |
@@ -119,15 +122,15 @@ Prefix/Prompt Tuning 是可学习的连续提示。
 
 LoRA 直接改变某个线性层的权重更新：
 
-```text
-W' = W + B A
-```
+$$
+W'=W+BA.
+$$
 
 经典 Adapter 不改变原线性层权重，而是在 hidden state 路径上增加一个 bottleneck：
 
-```text
-h' = h + W_up f(W_down h)
-```
+$$
+h'=h+W_{\mathrm{up}}f(W_{\mathrm{down}}h).
+$$
 
 因此：
 
@@ -139,21 +142,19 @@ h' = h + W_up f(W_down h)
 
 ### Adapter 的参数量
 
-假设 Transformer hidden size 是 `d`，Adapter bottleneck 是 `m`，其中 `m << d`：
+假设 Transformer hidden size 是 $d$，Adapter bottleneck 是 $m$，其中 $m\ll d$：
 
-```text
-Adapter 参数量约为：
-  d * m + m * d
-  = 2 d m
-```
+$$
+d\,m+m\,d=2dm.
+$$
 
 如果每层 attention 和 FFN 后都插入 Adapter，再乘以层数和插入位置数量。
 
-当 `d=4096`、`m=64` 时，一个 Adapter 模块的参数量大约是：
+当 $d=4096$、$m=64$ 时，一个 Adapter 模块的参数量大约是：
 
-```text
-2 * 4096 * 64 ≈ 0.52M
-```
+$$
+2\times4096\times64\approx0.52\text{M}.
+$$
 
 相比数十亿参数的 base model，仍然很小。
 
@@ -284,7 +285,7 @@ Adapter 是参数高效微调的一种方法。它在预训练模型的 Transfor
 
 回答模板：
 
-LoRA 是在原始线性层旁边增加低秩矩阵，学习权重更新 `Delta W = BA`；Adapter 是在 Transformer hidden state 路径上插入一个 bottleneck 小网络，学习 `h' = h + W_up f(W_down h)`。LoRA 训练和部署生态更成熟，训练后通常可以 merge 到 base model，推理额外开销较小；Adapter 模块化和任务隔离更强，但推理时通常仍保留额外计算路径。两者都属于 PEFT，但适合的工程约束不同。
+LoRA 是在原始线性层旁边增加低秩矩阵，学习权重更新 $\Delta W=BA$；Adapter 是在 Transformer hidden state 路径上插入一个 bottleneck 小网络，学习 $h'=h+W_{\mathrm{up}}f(W_{\mathrm{down}}h)$。LoRA 训练和部署生态更成熟，训练后通常可以 merge 到 base model，推理额外开销较小；Adapter 模块化和任务隔离更强，但推理时通常仍保留额外计算路径。两者都属于 PEFT，但适合的工程约束不同。
 
 ### Adapter 为什么能节省显存？
 

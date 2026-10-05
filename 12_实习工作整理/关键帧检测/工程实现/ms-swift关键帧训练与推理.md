@@ -96,18 +96,18 @@ Full fine-tuning：
 
 #### Batch 和学习率
 
-```text
-effective_batch_size =
-per_device_train_batch_size
-* GPU 总数
-* gradient_accumulation_steps
-```
+$$
+B_{\text{effective}}
+= B_{\text{per-device}}
+\times N_{\text{GPU}}
+\times N_{\text{gradient accumulation}}
+$$
 
 当前默认是两台机器、每台八张 GPU：
 
-```text
-effective batch size = 1 * 16 * 2 = 32
-```
+$$
+B_{\text{effective}} = 1 \times 16 \times 2 = 32
+$$
 
 参数含义：
 
@@ -305,17 +305,18 @@ Direct SFT
 
 可以用结构化 reward 约束模型：
 
-```text
-R = R_time
-  + R_format
-  + R_boundary_evidence
-  - P_length
-```
+$$
+R
+= R_{\text{time}}
++ R_{\text{format}}
++ R_{\text{boundary\_evidence}}
+- P_{\text{length}}
+$$
 
-- `R_time`：时间误差是否小。
-- `R_format`：输出是否可解析。
-- `R_boundary_evidence`：是否引用了正确的完成态证据。
-- `P_length`：是否存在无效长输出、复读或绕路推理。
+- $R_{\text{time}}$：时间误差是否小。
+- $R_{\text{format}}$：输出是否可解析。
+- $R_{\text{boundary\_evidence}}$：是否引用了正确的完成态证据。
+- $P_{\text{length}}$：是否存在无效长输出、复读或绕路推理。
 
 GRPO 阶段通常还需要配置采样数量、生成长度、温度、KL 约束和 reward plugin。
 
@@ -383,7 +384,7 @@ Qwen3.5 视频模型
 
 回答模板：
 
-有效 batch size 等于单卡 batch 乘以全局 GPU 数，再乘以梯度累积步数。当前典型配置是两台机器、每台八张卡，单卡 batch 为 1，梯度累积为 2，所以有效 batch size 是 `1×16×2=32`。如果机器数、GPU 数或梯度累积发生变化，需要重新计算，学习率和训练稳定性也要一起观察。
+有效 batch size 等于单卡 batch 乘以全局 GPU 数，再乘以梯度累积步数。当前典型配置是两台机器、每台八张卡，单卡 batch 为 1，梯度累积为 2，所以有效 batch size 是 $1 \times 16 \times 2 = 32$。如果机器数、GPU 数或梯度累积发生变化，需要重新计算，学习率和训练稳定性也要一起观察。
 
 ### 为什么要使用 ZeRO-3、FlashAttention 和 gradient checkpointing？
 

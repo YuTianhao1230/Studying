@@ -88,11 +88,11 @@ OPD 的训练形态是：
 
 #### 3.2 学生生成 rollout
 
-对输入 `x`，学生按当前 policy 生成回答：
+对输入 $x$，学生按当前 policy 生成回答：
 
-```text
-y ~ π_student(y | x)
-```
+$$
+y\sim\pi_{\mathrm{student}}(y\mid x).
+$$
 
 训练中可以保留：
 
@@ -106,58 +106,70 @@ rollout 不应只保存最终文本，因为 OPD 的监督位置是学生实际�
 
 #### 3.3 教师计算软分布
 
-在学生生成的每个前缀 `y_<t` 上，教师输出下一 token 的 logits：
+在学生生成的每个前缀 $y_{<t}$ 上，教师输出下一 token 的 logits：
 
-```text
-p_teacher(. | x, y_<t)
-```
+$$
+p_{\mathrm{teacher}}(\cdot\mid x,y_{<t}).
+$$
 
 学生也在相同前缀上计算：
 
-```text
-p_student(. | x, y_<t)
-```
+$$
+p_{\mathrm{student}}(\cdot\mid x,y_{<t}).
+$$
 
 教师不需要认可学生已经生成的前缀。即使前缀包含错误，教师仍然可以判断在这个错误状态之后更合理的 token 分布。
 
 #### 3.4 计算蒸馏损失
 
-常见做法是对齐教师分布和学生分布。引入温度 `T` 后：
+常见做法是对齐教师分布和学生分布。引入温度 $T$ 后：
 
-```text
-p_T^T = softmax(z_teacher / T)
-p_S^T = softmax(z_student / T)
-
-L_OPD =
-  T^2 * KL(p_T^T || p_S^T)
-```
+$$
+\begin{aligned}
+p_T^{(T)}
+&=\operatorname{softmax}\left(\frac{z_{\mathrm{teacher}}}{T}\right),\\
+p_S^{(T)}
+&=\operatorname{softmax}\left(\frac{z_{\mathrm{student}}}{T}\right),\\
+L_{\mathrm{OPD}}
+&=T^2\operatorname{KL}\left(
+p_T^{(T)}\middle\|p_S^{(T)}
+\right).
+\end{aligned}
+$$
 
 对多个 token 和多个样本取平均：
 
-```text
-L_OPD =
-  E_{x, y~π_student}
-  [ sum_t m_t * KL(p_teacher,t || p_student,t) ]
-```
+$$
+L_{\mathrm{OPD}}
+=\mathbb E_{x,\,y\sim\pi_{\mathrm{student}}}
+\left[
+\sum_t m_t\,
+\operatorname{KL}\left(
+p_{\mathrm{teacher},t}
+\middle\|
+p_{\mathrm{student},t}
+\right)
+\right].
+$$
 
-其中 `m_t` 是 mask，用于只在回答 token、有效 token 或指定结构化字段上计算损失。
+其中 $m_t$ 是 mask，用于只在回答 token、有效 token 或指定结构化字段上计算损失。
 
 实际训练中常把 OPD 与硬标签或任务损失混合：
 
-```text
-L_total =
-  λ_opd * L_OPD
-  + λ_sft * L_SFT
-  + λ_task * L_task
-  + λ_reg * L_reg
-```
+$$
+L_{\mathrm{total}}
+=\lambda_{\mathrm{opd}}L_{\mathrm{OPD}}
++\lambda_{\mathrm{sft}}L_{\mathrm{SFT}}
++\lambda_{\mathrm{task}}L_{\mathrm{task}}
++\lambda_{\mathrm{reg}}L_{\mathrm{reg}}.
+$$
 
 各项含义：
 
-- `L_OPD`：学习教师在学生状态上的软分布。
-- `L_SFT`：保持人工标签、结构化输出和基本格式。
-- `L_task`：时间、分类、区域或其他任务级监督。
-- `L_reg`：控制模型偏移、长度、重复或其他约束。
+- $L_{\mathrm{OPD}}$：学习教师在学生状态上的软分布。
+- $L_{\mathrm{SFT}}$：保持人工标签、结构化输出和基本格式。
+- $L_{\mathrm{task}}$：时间、分类、区域或其他任务级监督。
+- $L_{\mathrm{reg}}$：控制模型偏移、长度、重复或其他约束。
 
 #### 3.5 更新学生并刷新 rollout
 
@@ -435,12 +447,14 @@ Vision-OPD 通常用同一个 MLLM 实例化两个条件策略：
 
 形式化表示：
 
-```text
-p_T(. | x_privileged, q)
-p_S(. | x_global, q)
-```
+$$
+\begin{aligned}
+p_T(\cdot\mid x_{\mathrm{privileged}},q),\\
+p_S(\cdot\mid x_{\mathrm{global}},q).
+\end{aligned}
+$$
 
-其中 `x_privileged` 不是答案文本，而是教师拥有的额外感知条件。它可以是：
+其中 $x_{\mathrm{privileged}}$ 不是答案文本，而是教师拥有的额外感知条件。它可以是：
 
 - 证据区域 crop。
 - crop 后的 2x 放大图。
@@ -454,9 +468,9 @@ p_S(. | x_global, q)
 
 训练样本可以表示为：
 
-```text
-(x_global, x_privileged, q)
-```
+$$
+(x_{\mathrm{global}},x_{\mathrm{privileged}},q).
+$$
 
 其中：
 
@@ -488,16 +502,18 @@ p_S(. | x_global, q)
 
 学生先在完整输入上生成自己的回答：
 
-```text
-y ~ p_S(. | x_global, q)
-```
+$$
+y\sim p_S(\cdot\mid x_{\mathrm{global}},q).
+$$
 
 然后对学生生成的每个 prefix，分别计算：
 
-```text
-p_T(. | x_privileged, q, y_<t)
-p_S(. | x_global, q, y_<t)
-```
+$$
+\begin{aligned}
+p_T(\cdot\mid x_{\mathrm{privileged}},q,y_{<t}),\\
+p_S(\cdot\mid x_{\mathrm{global}},q,y_{<t}).
+\end{aligned}
+$$
 
 训练目标是：
 

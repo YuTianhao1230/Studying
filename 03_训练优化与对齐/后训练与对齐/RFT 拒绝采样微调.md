@@ -49,11 +49,12 @@ RFT 没有直接做 policy gradient，也不需要 Critic。它可以作为 SFT 
 
 #### 2.1 生成候选
 
-给定 prompt `q`，由当前模型生成多个回答：
+给定 prompt $q$，由当前模型生成多个回答：
 
-```text
-y_1, y_2, ..., y_N ~ π_current(y | q)
-```
+$$
+y_1,y_2,\ldots,y_N
+\sim\pi_{\mathrm{current}}(y\mid q).
+$$
 
 为了获得有效候选，需要设置合理的：
 
@@ -79,9 +80,9 @@ y_1, y_2, ..., y_N ~ π_current(y | q)
 
 得到：
 
-```text
-score(y_i)
-```
+$$
+\operatorname{score}(y_i).
+$$
 
 评分不能只看表面文本相似度，应尽量与真实任务目标相关。
 
@@ -99,9 +100,14 @@ score(y_i)
 
 筛选后的数据是：
 
-```text
-D_RFT = {(q, y_i) | score(y_i) >= threshold}
-```
+$$
+\mathcal D_{\mathrm{RFT}}
+=\left\{
+(q,y_i)
+\mid
+\operatorname{score}(y_i)\ge\tau
+\right\}.
+$$
 
 #### 2.4 继续 SFT
 
@@ -115,9 +121,11 @@ D_RFT = {(q, y_i) | score(y_i) >= threshold}
 
 所以 RFT 的最后一步仍然是普通监督微调：
 
-```text
-RFT = 生成和筛选阶段 + SFT 阶段
-```
+$$
+\mathrm{RFT}
+=\text{生成和筛选阶段}
++\text{SFT 阶段}.
+$$
 
 ### 3. RFT 和其他方法的区别
 
@@ -164,9 +172,9 @@ RFT 更稳定，但探索能力较弱；GRPO 更有在线优化能力，但 rewa
 
 不只保留样本，还用 reward 作为 loss 权重：
 
-```text
-L = w(y) * L_SFT
-```
+$$
+L=w(y)L_{\mathrm{SFT}}.
+$$
 
 高 reward 样本权重大，低 reward 样本权重小。它比硬筛选保留更多数据，但要防止 reward scale 不稳定。
 

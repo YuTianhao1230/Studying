@@ -14,28 +14,37 @@ MI-FGSM 是在迭代梯度攻击中加入动量的迁移攻击方法，通过累
 
 梯度归一化：
 
-```text
-g_raw = grad_x L(f(x_adv_t), y)
-g_norm = g_raw / ||g_raw||_1
-```
+$$
+\begin{aligned}
+g_{\mathrm{raw}}^{(t)}
+&=\nabla_x L(f(x_{\mathrm{adv}}^{(t)}),y), \\
+g_{\mathrm{norm}}^{(t)}
+&=\frac{g_{\mathrm{raw}}^{(t)}}{\lVert g_{\mathrm{raw}}^{(t)}\rVert_1}.
+\end{aligned}
+$$
 
 动量更新：
 
-```text
-g_{t+1} = mu * g_t + g_norm
-```
+$$
+g^{(t+1)}=\mu g^{(t)}+g_{\mathrm{norm}}^{(t)}
+$$
 
 样本更新：
 
-```text
-x_adv_{t+1} = clip_{x, epsilon}(x_adv_t + alpha * sign(g_{t+1}))
-```
+$$
+x_{\mathrm{adv}}^{(t+1)}
+=\Pi_{B_\infty(x,\epsilon)}
+\left(
+x_{\mathrm{adv}}^{(t)}
++\alpha\,\operatorname{sign}(g^{(t+1)})
+\right)
+$$
 
 其中 `mu` 是动量衰减系数，常见取值接近 1。
 
 ### 完整流程
 
-1. 初始化 `x_adv = x`，`g = 0`。
+1. 初始化 $x_{\mathrm{adv}}=x$，$g=0$。
 2. 对当前对抗样本求输入梯度。
 3. 用 `L1` 范数归一化梯度，避免梯度尺度影响动量。
 4. 累积动量。
@@ -86,7 +95,7 @@ x_adv_{t+1} = clip_{x, epsilon}(x_adv_t + alpha * sign(g_{t+1}))
 
 回答模板：
 
-> MI-FGSM 先把当前输入梯度按 `L1` 范数归一化，再用 `g_{t+1}=mu*g_t+g_norm` 累积动量，最后按 `sign(g_{t+1})` 更新并投影。归一化避免某一步的梯度尺度主导历史方向，动量则强化多个迭代中一致的分量、抑制局部震荡。普通 I-FGSM 容易贴合源模型特有的局部边界，MI-FGSM 得到的方向更稳定，因此更可能命中不同模型共享的脆弱方向并提高黑盒迁移性。
+> MI-FGSM 先把当前输入梯度按 `L1` 范数归一化，再用 $g^{(t+1)}=\mu g^{(t)}+g_{\mathrm{norm}}^{(t)}$ 累积动量，最后按 $\operatorname{sign}(g^{(t+1)})$ 更新并投影。归一化避免某一步的梯度尺度主导历史方向，动量则强化多个迭代中一致的分量、抑制局部震荡。普通 I-FGSM 容易贴合源模型特有的局部边界，MI-FGSM 得到的方向更稳定，因此更可能命中不同模型共享的脆弱方向并提高黑盒迁移性。
 
 ### 2. MI-FGSM 与 I-FGSM、PGD 的核心差别是什么？
 

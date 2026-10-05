@@ -109,12 +109,12 @@ PASS
 
 #### 3.2 Effective Batch Size
 
-```text
-effective_batch_size =
-  per_device_batch_size
-  * global_gpu_count
-  * gradient_accumulation_steps
-```
+$$
+B_{\text{effective}}
+= B_{\text{per-device}}
+\times N_{\text{GPU}}
+\times N_{\text{gradient accumulation}}
+$$
 
 显存不足时：
 

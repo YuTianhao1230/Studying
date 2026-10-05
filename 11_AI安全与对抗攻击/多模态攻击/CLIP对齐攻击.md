@@ -24,15 +24,17 @@ similarity = cosine(image_embedding, text_embedding)
 
 降低正确图文对相似度：
 
-```text
-minimize cosine(E_I(x_adv), E_T(t_pos))
-```
+$$
+\min_{x_{\mathrm{adv}}}
+\cos\left(E_I(x_{\mathrm{adv}}), E_T(t_{\mathrm{pos}})\right)
+$$
 
 提高错误图文对相似度：
 
-```text
-maximize cosine(E_I(x_adv), E_T(t_neg))
-```
+$$
+\max_{x_{\mathrm{adv}}}
+\cos\left(E_I(x_{\mathrm{adv}}), E_T(t_{\mathrm{neg}})\right)
+$$
 
 检索任务中还可以直接优化 ranking loss，让正确 caption 或正确 image 排名下降。
 
@@ -77,7 +79,7 @@ maximize cosine(E_I(x_adv), E_T(t_neg))
 
 回答模板：
 
-> CLIP 把图像和文本编码为归一化 embedding，并用余弦相似度衡量匹配。非定向对齐攻击可以最小化 `cos(E_I(x_adv),E_T(t_pos))`，使正确图文对分离；定向攻击可以最大化与错误文本 `t_neg` 的相似度；检索场景还可用 margin 或 ranking loss，让负样本分数超过正样本。优化时必须说明正负样本构造、攻击哪一模态以及扰动预算，否则目标不可复现。
+> CLIP 把图像和文本编码为归一化 embedding，并用余弦相似度衡量匹配。非定向对齐攻击可以最小化 $\cos(E_I(x_{\mathrm{adv}}),E_T(t_{\mathrm{pos}}))$，使正确图文对分离；定向攻击可以最大化与错误文本 `t_neg` 的相似度；检索场景还可用 margin 或 ranking loss，让负样本分数超过正样本。优化时必须说明正负样本构造、攻击哪一模态以及扰动预算，否则目标不可复现。
 
 ### 2. CLIP 对齐攻击与普通分类攻击有什么不同，适用边界是什么？
 

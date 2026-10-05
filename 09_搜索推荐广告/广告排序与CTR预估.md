@@ -22,16 +22,18 @@
 ### CTR / CVR / eCPM
 
 - CTR：Click Through Rate，点击率。
-- CVR：Conversion Rate，转化率。以下定义为点击后的条件转化概率 `P(转化|点击, 曝光)`。
+- CVR：Conversion Rate，转化率。以下定义为点击后的条件转化概率 $P(\text{转化}\mid\text{点击}, \text{曝光})$。
 - eCPM：每千次曝光预期收益。
 
 先按计费事件统一到每千次曝光的预期价值。以 bid 近似单位事件价值时：
 
-```text
-CPC（按点击计费）：eCPM = 1000 * bid_CPC * pCTR
-CPA（按转化计费）：eCPM = 1000 * bid_CPA * pCTR * pCVR
-CPM（按千次曝光计费）：eCPM = bid_CPM
-```
+$$
+\begin{aligned}
+\text{CPC（按点击计费）：}\quad \mathrm{eCPM} &= 1000 \times \mathrm{bid}_{\mathrm{CPC}} \times \mathrm{pCTR} \\
+\text{CPA（按转化计费）：}\quad \mathrm{eCPM} &= 1000 \times \mathrm{bid}_{\mathrm{CPA}} \times \mathrm{pCTR} \times \mathrm{pCVR} \\
+\text{CPM（按千次曝光计费）：}\quad \mathrm{eCPM} &= \mathrm{bid}_{\mathrm{CPM}}
+\end{aligned}
+$$
 
 例如 CPC 出价 2 元、pCTR=0.02，得到 40 元/千次曝光；CPA 出价 100 元、pCTR=0.02、pCVR=0.03，得到 60 元/千次曝光。如果模型直接预测曝光到转化的 pCTCVR，则 CPA 公式直接乘 pCTCVR，不再重复乘 pCTR。
 

@@ -103,9 +103,10 @@ Qwen3-VL 的输入处理可以拆成六个阶段。[1, 3, 6, 7]
 
 纯文本输入的训练或推理目标仍然是自回归语言建模。下面的概率表达式是 decoder-only 语言模型的通用形式，不是 Qwen3-VL 论文中的专有公式。
 
-```text
-P(x_1, x_2, ..., x_n) = product_i P(x_i | x_<i)
-```
+$$
+P(x_1,x_2,\ldots,x_n)
+=\prod_i P(x_i\mid x_{<i}).
+$$
 
 因此，Qwen3-VL 的“VL”并不意味着每次都必须有视觉输入。没有图像和视频时，它仍然可以作为 Qwen3 语言模型使用。[4, 7]
 
@@ -190,26 +191,26 @@ Qwen3-VL 的典型视觉配置如下。以下是当前 Transformers 配置示例
 | Vision Transformer depth | `27` 层左右 | 逐层提取视觉特征 |
 | Vision attention heads | `16` 左右 | 视觉 patch 之间做多头注意力 |
 
-假设 resize 后图像尺寸为 `H' x W'`，且 `H'` 和 `W'` 都是 32 的倍数，那么：
+假设 resize 后图像尺寸为 $H'\times W'$，且 $H'$ 和 $W'$ 都是 32 的倍数，那么：
 
-```text
-patch 网格：
-  H_patch = H' / 16
-  W_patch = W' / 16
-
-Merger 后视觉 token 网格：
-  H_token = H' / 32
-  W_token = W' / 32
-
-图像视觉 token 数：
-  N_image = (H' / 32) * (W' / 32)
-```
+$$
+\begin{aligned}
+H_{\text{patch}}&=\frac{H'}{16},
+&W_{\text{patch}}&=\frac{W'}{16},\\
+H_{\text{token}}&=\frac{H'}{32},
+&W_{\text{token}}&=\frac{W'}{32},\\
+N_{\text{image}}
+&=\frac{H'}{32}\cdot\frac{W'}{32}.
+\end{aligned}
+$$
 
 例如，`672x448` 的图像经过尺寸对齐后，视觉 token 数大致为：
 
-```text
-(672 / 32) * (448 / 32) = 21 * 14 = 294
-```
+$$
+\frac{672}{32}\cdot\frac{448}{32}
+=21\cdot14
+=294.
+$$
 
 这里的 294 是由 patch 和 merge 配置推导出的视觉 token 数，不包括 `<|vision_start|>`、`<|vision_end|>` 和问题文本本身的 token。[3, 6, 8, 9]
 
@@ -320,11 +321,17 @@ do_sample_frames = True
 
 不同 checkpoint、推理框架和业务代码可能覆盖这些值。`fps` 与 `num_frames` 在该实现中不能同时设置。[5]
 
-用原视频 FPS 为 `F_video`、总帧数为 `N`、目标采样率为 `r` 时，抽帧数大致为。该式是对 `sample_frames()` 实现的简化表达：[5]
+用原视频 FPS 为 $F_{\text{video}}$、总帧数为 $N$、目标采样率为 $r$ 时，抽帧数大致为。该式是对 `sample_frames()` 实现的简化表达：[5]
 
-```text
-N_sample = clamp(floor(N / F_video * r), min_frames, max_frames)
-```
+$$
+N_{\text{sample}}
+=\operatorname{clamp}
+\left(
+\left\lfloor\frac{N}{F_{\text{video}}}r\right\rfloor,
+N_{\min},
+N_{\max}
+\right).
+$$
 
 当前实现使用 `np.linspace()` 生成均匀采样的 frame indices。[5] 真正做时间对齐时，必须保留。后四项是关键帧业务的工程要求：[10, 11]
 
@@ -341,11 +348,11 @@ N_sample = clamp(floor(N / F_video * r), min_frames, max_frames)
 
 视频的动态 resize 和图片有一个重要差别：视频通常需要控制的是**所有采样帧的总像素预算**，而不是单帧像素预算。[3, 5]
 
-如果采样后有 `T_frame` 帧，原始空间尺寸为 `H x W`，processor 会综合：
+如果采样后有 $T_{\text{frame}}$ 帧，原始空间尺寸为 $H\times W$，processor 会综合：
 
-```text
-T_frame * H' * W'
-```
+$$
+T_{\text{frame}}H'W'
+$$
 
 以及 `min_pixels`、`max_pixels` 或 `total_pixels` 来决定 `H'`、`W'`。当前实现会将空间尺寸对齐到：
 
@@ -386,12 +393,17 @@ video_grid_thw：
 
 随后每个空间 `2x2` patch 经过 Merger 合成一个语言侧视觉 token：[1, 5, 6, 8]
 
-```text
-视频视觉 token 数：
-  N_video_visual
-    = T_patch * (H_patch / 2) * (W_patch / 2)
-    = ceil(T_frame / 2) * (H' / 32) * (W' / 32)
-```
+$$
+\begin{aligned}
+N_{\text{video\_visual}}
+&=T_{\text{patch}}
+\cdot\frac{H_{\text{patch}}}{2}
+\cdot\frac{W_{\text{patch}}}{2}\\
+&=\left\lceil\frac{T_{\text{frame}}}{2}\right\rceil
+\cdot\frac{H'}{32}
+\cdot\frac{W'}{32}.
+\end{aligned}
+$$
 
 这个公式只计算视觉 `video_pad` 数量，不包含 timestamp 文本 token 和视觉边界 token。[5, 6, 8]
 

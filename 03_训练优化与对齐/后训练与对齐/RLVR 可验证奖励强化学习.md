@@ -106,15 +106,17 @@ RLVR 适合结果可以自动验证的任务：
 
 关键帧检测适合尝试 RLVR，因为最终时间和结构化输出都可以程序化验证。推荐从 Structured CoT SFT checkpoint 开始，让 policy 对同一个视频和 `task_type` 生成多条回答，再使用以下 reward：
 
-```text
-R_total =
-  w_time * R_time
-  + w_format * R_format
-  + w_boundary * R_boundary
-  + w_evidence * R_evidence
-  - w_length * P_length
-  - w_hallucination * P_hallucination
-```
+$$
+\begin{aligned}
+R_{\mathrm{total}}
+&=w_{\mathrm{time}}R_{\mathrm{time}}
++w_{\mathrm{format}}R_{\mathrm{format}}
++w_{\mathrm{boundary}}R_{\mathrm{boundary}}\\
+&\quad+w_{\mathrm{evidence}}R_{\mathrm{evidence}}
+-w_{\mathrm{length}}P_{\mathrm{length}}
+-w_{\mathrm{hallucination}}P_{\mathrm{hallucination}}.
+\end{aligned}
+$$
 
 其中：
 

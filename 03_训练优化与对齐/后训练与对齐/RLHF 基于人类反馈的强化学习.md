@@ -46,9 +46,17 @@ RLHF 试图把这些偏好转成可优化的奖励信号。
 
 实践中会加入 KL 约束，避免模型偏离 SFT 模型太远：
 
-```text
-reward = preference_reward - beta * KL(policy || reference_policy)
-```
+$$
+R
+=R_{\mathrm{preference}}
+-\beta\,
+\operatorname{KL}
+\left(
+\pi_{\mathrm{policy}}
+\middle\|
+\pi_{\mathrm{reference}}
+\right).
+$$
 
 ### 常见风险
 

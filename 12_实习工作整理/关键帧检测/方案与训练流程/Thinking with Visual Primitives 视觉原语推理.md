@@ -448,18 +448,19 @@ Accuracy RM
 
 论文使用平滑的相对误差奖励：
 
-```text
-R = alpha * exp(
-  - beta * abs(pred - gt) / (abs(gt) + 1)
-)
-```
+$$
+R
+= \alpha \exp\left(
+-\beta \frac{\left|\mathrm{pred}-\mathrm{gt}\right|}
+{\left|\mathrm{gt}\right|+1}
+\right)
+$$
 
 示例设置：
 
-```text
-alpha = 0.7
-beta = 3
-```
+$$
+\alpha = 0.7,\quad \beta = 3
+$$
 
 相较于完全正确得 1、错误得 0 的二值奖励，平滑 reward 能区分“差一个”和“差很多”的回答。
 
@@ -501,7 +502,7 @@ beta = 3
 
 #### 7.4 RL 数据难度分桶
 
-对每个样本生成 `N` 个 rollout，按照正确数量分桶：
+对每个样本生成 $N$ 个 rollout，按照正确数量分桶：
 
 ```text
 Easy：

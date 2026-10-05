@@ -103,30 +103,31 @@ GRPO 输入：视频 + human prompt + GT time + clean reference CoT。
 
 #### 2.1 组内相对比较
 
-给定一个 prompt `q`，当前 policy 生成 `G` 个回答：
+给定一个 prompt $q$，当前 policy 生成 $G$ 个回答：
 
-```text
-y_1, y_2, ..., y_G ~ π_old(y | q)
-```
+$$
+y_1, y_2, \ldots, y_G \sim \pi_{\mathrm{old}}(y \mid q)
+$$
 
 每个回答经过 reward function 得到：
 
-```text
-r_1, r_2, ..., r_G
-```
+$$
+r_1, r_2, \ldots, r_G
+$$
 
 组内 advantage 为：
 
-```text
-A_i = (r_i - mean(r_group))
-      / (std(r_group) + epsilon)
-```
+$$
+A_i
+= \frac{r_i - \operatorname{mean}(r_{\mathrm{group}})}
+{\operatorname{std}(r_{\mathrm{group}}) + \epsilon}
+$$
 
 含义是：
 
-- `A_i > 0`：这个回答比同题平均水平更好，增加其生成概率。
-- `A_i < 0`：这个回答比同题平均水平更差，降低其生成概率。
-- `A_i ≈ 0`：这个回答没有提供明显的相对学习信号。
+- $A_i > 0$：这个回答比同题平均水平更好，增加其生成概率。
+- $A_i < 0$：这个回答比同题平均水平更差，降低其生成概率。
+- $A_i \approx 0$：这个回答没有提供明显的相对学习信号。
 
 GRPO 不训练单独的 Critic/Value Model，而是用同一 prompt 下其他回答的 reward 作为相对 baseline。
 
@@ -145,34 +146,34 @@ GRPO 不训练单独的 Critic/Value Model，而是用同一 prompt 下其他回
 
 #### 2.3 带 clipping 和 KL 约束的目标
 
-GRPO 保留 [PPO](<../../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>) 类方法的策略更新约束。对回答中第 `t` 个 token，可以定义概率比：
+GRPO 保留 [PPO](<../../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>) 类方法的策略更新约束。对回答中第 $t$ 个 token，可以定义概率比：
 
-```text
-ρ_i,t(θ) =
-  π_θ(y_i,t | q, y_i,<t)
-  / π_old(y_i,t | q, y_i,<t)
-```
+$$
+\rho_{i,t}(\theta)
+= \frac{\pi_\theta(y_{i,t} \mid q, y_{i,<t})}
+{\pi_{\mathrm{old}}(y_{i,t} \mid q, y_{i,<t})}
+$$
 
 策略目标可简化表示为：
 
-```text
-L_policy =
-  - E[
-      min(
-        ρ_i,t * A_i,
-        clip(ρ_i,t, 1 - ε, 1 + ε) * A_i
-      )
-    ]
-  + β * KL(π_θ || π_ref)
-```
+$$
+\mathcal{L}_{\mathrm{policy}}
+= -\mathbb{E}\left[
+\min\left(
+\rho_{i,t} A_i,\,
+\operatorname{clip}(\rho_{i,t}, 1-\epsilon, 1+\epsilon) A_i
+\right)
+\right]
++ \beta\,\mathrm{KL}\!\left(\pi_\theta \,\|\, \pi_{\mathrm{ref}}\right)
+$$
 
 其中：
 
-- `π_θ`：当前正在更新的 policy。
-- `π_old`：生成当前 rollout 的旧 policy。
-- `π_ref`：参考模型，通常是 SFT checkpoint。
-- `ε`：限制一次更新幅度。
-- `β`：KL 惩罚系数。
+- $\pi_\theta$：当前正在更新的 policy。
+- $\pi_{\mathrm{old}}$：生成当前 rollout 的旧 policy。
+- $\pi_{\mathrm{ref}}$：参考模型，通常是 SFT checkpoint。
+- $\epsilon$：限制一次更新幅度。
+- $\beta$：KL 惩罚系数。
 
 不同框架对 KL 的具体估计和 loss 符号可能不同，但核心思想一致：
 
@@ -347,51 +348,54 @@ train / dev / test
 
 推荐总 reward：
 
-```text
-R_total =
-  w_time * R_time
-  + w_format * R_format
-  + w_boundary * R_boundary
-  + w_evidence * R_evidence
-  + w_task * R_task
-  - w_length * P_length
-  - w_hallucination * P_hallucination
-```
+$$
+\begin{aligned}
+R_{\text{total}}
+={}& w_{\text{time}}R_{\text{time}}
++ w_{\text{format}}R_{\text{format}}
++ w_{\text{boundary}}R_{\text{boundary}} \\
+&+ w_{\text{evidence}}R_{\text{evidence}}
++ w_{\text{task}}R_{\text{task}}
+- w_{\text{length}}P_{\text{length}}
+- w_{\text{hallucination}}P_{\text{hallucination}}
+\end{aligned}
+$$
 
 每个分项都应单独记录，不能只保存一个总分。
 
-#### 5.1 `R_time`：时间答案奖励
+#### 5.1 $R_{\text{time}}$：时间答案奖励
 
 时间 reward 应同时提供平滑信号和业务命中信号：
 
-```text
-e = abs(pred_time - gt_time)
-
-R_dense = exp(-e / τ)
-
-R_hit =
-  1.0, e <= business_tolerance
-  0.0, otherwise
-```
+$$
+\begin{aligned}
+e &= \left|t_{\text{pred}} - t_{\text{gt}}\right|, \\
+R_{\text{dense}} &= \exp\left(-\frac{e}{\tau}\right), \\
+R_{\text{hit}} &=
+\begin{cases}
+1.0, & e \leq \text{business\_tolerance}, \\
+0.0, & \text{otherwise}
+\end{cases}
+\end{aligned}
+$$
 
 可以组合为：
 
-```text
-R_time = a * R_dense + b * R_hit
-```
+$$
+R_{\text{time}} = aR_{\text{dense}} + bR_{\text{hit}}
+$$
 
 这样：
 
-- 差 `0.1s` 和差 `2s` 不会被视为同样错误。
+- 差 $0.1\,\mathrm{s}$ 和差 $2\,\mathrm{s}$ 不会被视为同样错误。
 - 接近正确边界的回答仍有学习信号。
 - 最终业务容忍阈值可以直接体现在 reward 中。
 
 如果不同任务的 early 和 late 代价不一样，可以拆成：
 
-```text
-P_early
-P_late
-```
+$$
+P_{\text{early}},\quad P_{\text{late}}
+$$
 
 而不是只使用绝对误差。
 
@@ -403,7 +407,7 @@ GT = -1 但 pred >= 0 -> 惩罚
 GT >= 0 但 pred = -1 -> 惩罚
 ```
 
-#### 5.2 `R_format`：结构和解析奖励
+#### 5.2 $R_{\text{format}}$：结构和解析奖励
 
 检查：
 
@@ -424,7 +428,7 @@ GT >= 0 但 pred = -1 -> 惩罚
 
 否则模型会学会只输出格式漂亮的错误答案。
 
-#### 5.3 `R_boundary`：首次完成边界奖励
+#### 5.3 $R_{\text{boundary}}$：首次完成边界奖励
 
 这是关键帧任务最重要的过程 reward：
 
@@ -441,12 +445,12 @@ after：
 
 可以拆成：
 
-```text
-R_before
-  + R_current
-  + R_after
-  + R_monotonic
-```
+$$
+R_{\text{before}}
++ R_{\text{current}}
++ R_{\text{after}}
++ R_{\text{monotonic}}
+$$
 
 检查内容：
 
@@ -467,7 +471,7 @@ R_before
 }
 ```
 
-#### 5.4 `R_evidence`：视觉证据奖励
+#### 5.4 $R_{\text{evidence}}$：视觉证据奖励
 
 证据 reward 要回答：
 
@@ -493,7 +497,7 @@ CoT 中说的 UI 元素是否在对应时间出现？
 
 参考 CoT anchor 可以作为辅助 reward，但不能成为唯一 reward。因为参考 CoT 也可能存在错误，过度奖励文本相似度会让模型复制教师噪声。
 
-#### 5.5 `R_task`：任务规则奖励
+#### 5.5 $R_{\text{task}}$：任务规则奖励
 
 不同 task_type 的完成态不同，应该支持任务级 verifier：
 
@@ -510,7 +514,7 @@ CoT 中说的 UI 元素是否在对应时间出现？
 
 任务 reward 不应只检查文本中是否出现“加载完成”，而要检查任务要求的实际区域和状态。
 
-#### 5.6 `P_length`：长度和重复惩罚
+#### 5.6 $P_{\text{length}}$：长度和重复惩罚
 
 长度惩罚需要有上下限：
 
@@ -527,7 +531,7 @@ CoT 中说的 UI 元素是否在对应时间出现？
 
 不能简单地“越短越好”，否则模型会直接跳过证据，只输出答案。
 
-#### 5.7 `P_hallucination`：幻觉惩罚
+#### 5.7 $P_{\text{hallucination}}$：幻觉惩罚
 
 惩罚：
 
@@ -541,15 +545,15 @@ CoT 中说的 UI 元素是否在对应时间出现？
 
 当前已有结构化 reward 可以抽象为：
 
-```text
-R_time
-  + R_format
-  + R_boundary
-  + R_cot_anchor
-  + R_group_consistency
-  + R_diversity
-  - P_length
-```
+$$
+R_{\text{time}}
++ R_{\text{format}}
++ R_{\text{boundary}}
++ R_{\text{cot\_anchor}}
++ R_{\text{group\_consistency}}
++ R_{\text{diversity}}
+- P_{\text{length}}
+$$
 
 当前第一版可以使用以下起始配置作为实验基线：
 
@@ -572,7 +576,7 @@ R_time
 
 适合作为第一版起点，但需要注意：
 
-1. `R_cot_anchor` 依赖 reference CoT，必须保证 reference CoT clean。
+1. $R_{\text{cot\_anchor}}$ 依赖 reference CoT，必须保证 reference CoT clean。
 2. 当前 parser 同时兼容 `<time>/<caption>/<think>` 和项目实际使用的 `<状态 时间="">`、`<事件 时间="">`；后者不要求 `名称` 属性。
 3. keyword-based boundary reward 可能误判，需要逐步替换为结构化 verifier。
 4. CVK 类一致性奖励不能鼓励所有回答使用同一个模板。
@@ -581,18 +585,18 @@ R_time
 
 建议第一轮优先保证：
 
-```text
-R_time + R_format + R_boundary
-```
+$$
+R_{\text{time}} + R_{\text{format}} + R_{\text{boundary}}
+$$
 
 确认模型能学到真实边界后，再逐步加入：
 
-```text
-R_evidence
-  + R_cot_anchor
-  + P_length
-  + P_hallucination
-```
+$$
+R_{\text{evidence}}
++ R_{\text{cot\_anchor}}
++ P_{\text{length}}
++ P_{\text{hallucination}}
+$$
 
 ### 7. 当前训练顺序
 

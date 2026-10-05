@@ -14,38 +14,54 @@ FGSM 解决的是“如何用最低成本生成对抗样本”的问题。它只
 
 非定向攻击：
 
-```text
-maximize L(f(x_adv), y)
-subject to ||x_adv - x||_inf <= epsilon
-```
+$$
+\begin{aligned}
+\max_{x_{\mathrm{adv}}}\quad
+& L(f(x_{\mathrm{adv}}),y) \\
+\text{s.t.}\quad
+& \lVert x_{\mathrm{adv}}-x\rVert_\infty\le\epsilon.
+\end{aligned}
+$$
 
 定向攻击：
 
-```text
-minimize L(f(x_adv), y_target)
-subject to ||x_adv - x||_inf <= epsilon
-```
+$$
+\begin{aligned}
+\min_{x_{\mathrm{adv}}}\quad
+& L(f(x_{\mathrm{adv}}),y_{\mathrm{target}}) \\
+\text{s.t.}\quad
+& \lVert x_{\mathrm{adv}}-x\rVert_\infty\le\epsilon.
+\end{aligned}
+$$
 
 ### 公式推导
 
 对损失函数做一阶泰勒展开：
 
-```text
-L(x + delta, y) ~= L(x, y) + delta^T grad_x L(x, y)
-```
+$$
+L(x+\delta,y)
+\approx L(x,y)+\delta^{\mathsf T}\nabla_x L(x,y)
+$$
 
-在 `||delta||_inf <= epsilon` 下，为了最大化内积，每个维度都取梯度符号方向：
+在 $\lVert\delta\rVert_\infty\le\epsilon$ 下，为了最大化内积，每个维度都取梯度符号方向：
 
-```text
-delta = epsilon * sign(grad_x L)
-x_adv = clip(x + delta)
-```
+$$
+\begin{aligned}
+\delta&=\epsilon\,\operatorname{sign}(\nabla_x L), \\
+x_{\mathrm{adv}}&=\operatorname{clip}(x+\delta).
+\end{aligned}
+$$
 
 定向攻击符号相反：
 
-```text
-x_adv = clip(x - epsilon * sign(grad_x L(f(x), y_target)))
-```
+$$
+x_{\mathrm{adv}}
+=\operatorname{clip}
+\left(
+x-\epsilon\,\operatorname{sign}
+\left(\nabla_x L(f(x),y_{\mathrm{target}})\right)
+\right)
+$$
 
 ### PyTorch 骨架
 
@@ -68,7 +84,7 @@ def fgsm_attack(model, images, labels, epsilon):
 
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
-| 公式推导 | 为什么是 `sign(gradient)` | 从一阶泰勒和 `L_inf` 约束推导 |
+| 公式推导 | 为什么是 $\operatorname{sign}(\nabla_x L)$ | 从一阶泰勒和 `L_inf` 约束推导 |
 | 定向攻击 | 定向和非定向符号区别 | 非定向增大真实标签 loss，定向减小目标标签 loss |
 | 预算理解 | `8/255` 是什么 | 图像归一化到 `[0,1]` 后每个像素最大变化 |
 | 方法局限 | FGSM 为什么弱 | 单步线性近似粗糙，不能充分探索局部高损失区域 |
@@ -88,7 +104,7 @@ def fgsm_attack(model, images, labels, epsilon):
 
 回答模板：
 
-> FGSM 是单步白盒攻击。非定向攻击写成 `x_adv = clip(x + epsilon * sign(grad_x L(f(x), y)))`。对损失做一阶展开后，增量近似为 `delta^T grad_x L`；在 `||delta||_inf <= epsilon` 下，每一维取 `epsilon` 乘梯度符号可以使这个内积最大，因此得到该更新式。定向攻击要减小目标标签损失，所以更新符号相反。最后还要同时保证扰动预算和合法像素范围。
+> FGSM 是单步白盒攻击。非定向攻击写成 $x_{\mathrm{adv}}=\operatorname{clip}(x+\epsilon\,\operatorname{sign}(\nabla_x L(f(x),y)))$。对损失做一阶展开后，增量近似为 $\delta^{\mathsf T}\nabla_x L$；在 $\lVert\delta\rVert_\infty\le\epsilon$ 下，每一维取 `epsilon` 乘梯度符号可以使这个内积最大，因此得到该更新式。定向攻击要减小目标标签损失，所以更新符号相反。最后还要同时保证扰动预算和合法像素范围。
 
 ### 2. FGSM 与 I-FGSM、PGD 有什么区别，分别适合什么场景？
 

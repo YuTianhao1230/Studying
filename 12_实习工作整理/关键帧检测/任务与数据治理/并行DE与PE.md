@@ -112,11 +112,11 @@ PE 暴露规则理解问题
 
 例如：
 
-```text
-R = R_time + R_format + R_boundary_evidence - P_length
-```
+$$
+R = R_{\text{time}} + R_{\text{format}} + R_{\text{boundary\_evidence}} - P_{\text{length}}
+$$
 
-这里 `R_boundary_evidence` 本质上依赖 PE 定义的证据标准，也依赖 DE 提供的可靠标注和验证数据。
+这里 $R_{\text{boundary\_evidence}}$ 本质上依赖 PE 定义的证据标准，也依赖 DE 提供的可靠标注和验证数据。
 
 ### 常见考法与解题方法
 

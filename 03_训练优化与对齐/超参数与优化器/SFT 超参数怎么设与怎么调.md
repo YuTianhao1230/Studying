@@ -19,9 +19,12 @@ gradient_accumulation_steps=2
 
 调参前必须先算出**有效 batch size**，因为大多数参数都是相对它来选的：
 
-```text
-EBS = per_device_train_batch_size × gradient_accumulation_steps × GPU 数
-```
+$$
+\mathrm{EBS}
+=\texttt{per\_device\_train\_batch\_size}
+\times\texttt{gradient\_accumulation\_steps}
+\times\text{GPU 数}.
+$$
 
 `gradient_accumulation_steps` 本身不改变梯度的数学结果，它只是**用时间换显存**：累积若干个 micro-batch 的梯度再更新一次，等价于 batch 大若干倍，但峰值显存只按单个 micro-batch 算。所以 `=2` 通常意味着"单卡显存塞不下想要的 batch，于是攒 2 步"。视频、多模态这类单条样本帧数多、token 长、显存吃紧的任务，累积很常见。
 

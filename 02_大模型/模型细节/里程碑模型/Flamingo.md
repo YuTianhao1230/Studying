@@ -68,9 +68,14 @@ Gated cross-attention 的作用是让模型在不破坏原语言模型能力的�
 
 Flamingo 在大规模多模态网页数据和图文交错数据上训练，保留语言模型已有能力，同时学习视觉条件生成。训练目标本质上仍是图文条件下的自回归语言建模：
 
-```text
-maximize P(text tokens | previous text tokens, visual tokens)
-```
+$$
+\max P(
+\text{text tokens}
+\mid
+\text{previous text tokens},
+\text{visual tokens}
+).
+$$
 
 ### 常见考法与解题方法
 

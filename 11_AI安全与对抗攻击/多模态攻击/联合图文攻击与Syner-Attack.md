@@ -18,10 +18,12 @@
 
 ### 视觉优化目标与执行流程
 
-```text
-L_visual(I', T) = lambda * L_feat(I', I)
-                + (1 - lambda) * L_align(I', T),  0 <= lambda <= 1
-```
+$$
+\mathcal{L}_{\mathrm{visual}}(I', T)
+= \lambda \mathcal{L}_{\mathrm{feat}}(I', I)
++ (1 - \lambda)\mathcal{L}_{\mathrm{align}}(I', T),
+\qquad 0 \le \lambda \le 1
+$$
 
 该目标只用于视觉阶段：
 
@@ -37,18 +39,24 @@ VGA 在图像攻击之后执行离散词替换。可见代码流程是先调用 
 
 1. 问题：VLM/MLLM 的[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md>)仍不稳定。
 2. 假设：多模态模型依赖视觉表征和图文对齐。
-3. 方法：视觉阶段联合优化 `lambda*L_feat+(1-lambda)*L_align`，随后由 VGA 执行离散文本替换。
+3. 方法：视觉阶段联合优化 $\lambda \mathcal{L}_{\mathrm{feat}} + (1-\lambda)\mathcal{L}_{\mathrm{align}}$，随后由 VGA 执行离散文本替换。
 4. 证据：image-only、text-only、joint、VGA、alignment loss、防御和 MLLM ASR 消融。
 
 ### 视觉引导文本攻击
 
 视觉引导文本攻击不是随机替换词，而是结合图像和文本对齐关系选择词：
 
-```text
-S_semantic_norm(i) = S_semantic(i) / max_j S_semantic(j)
-S_visual_norm(i) = S_visual(i) / max_j S_visual(j)
-S_VGA(i) = (1 - beta) * S_semantic_norm(i) + beta * S_visual_norm(i)
-```
+$$
+\begin{aligned}
+S_{\mathrm{semantic\_norm}}(i)
+&= \frac{S_{\mathrm{semantic}}(i)}{\max_j S_{\mathrm{semantic}}(j)}, \\
+S_{\mathrm{visual\_norm}}(i)
+&= \frac{S_{\mathrm{visual}}(i)}{\max_j S_{\mathrm{visual}}(j)}, \\
+S_{\mathrm{VGA}}(i)
+&= (1-\beta)S_{\mathrm{semantic\_norm}}(i)
++ \beta S_{\mathrm{visual\_norm}}(i).
+\end{aligned}
+$$
 
 这里的最大值在当前候选词集合上计算；实现时要对分母为零的边界做保护。归一化用于消除两类分数的量纲和尺度差异，使 `beta` 表示可解释的融合权重。VGA 再按融合后的语言语义重要性和视觉相关性排序词，并从离散候选中选择替换词。优先替换：
 
@@ -79,7 +87,7 @@ S_VGA(i) = (1 - beta) * S_semantic_norm(i) + beta * S_visual_norm(i)
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
 | 动机题 | 为什么同时攻击图文 | 单模态可能被另一模态纠正 |
-| 公式题 | 视觉阶段 loss 怎么写 | `lambda*L_feat+(1-lambda)*L_align` |
+| 公式题 | 视觉阶段 loss 怎么写 | $\lambda \mathcal{L}_{\mathrm{feat}}+(1-\lambda)\mathcal{L}_{\mathrm{align}}$ |
 | 创新题 | 如何回应拼接质疑 | 用机制解释和消融证据 |
 | 约束题 | 文本扰动如何公平 | 替换率、语义相似度、实体关系保护 |
 | 评估题 | MLLM 怎么评估 | 固定 prompt、ASR 规则、人审或 LLM judge |
@@ -99,7 +107,7 @@ S_VGA(i) = (1 - beta) * S_semantic_norm(i) + beta * S_visual_norm(i)
 
 回答模板：
 
-> Syner-Attack 的可微联合目标属于视觉阶段，即 `L_visual=lambda*L_feat+(1-lambda)*L_align`。其中 `L_feat` 使对抗图像偏离干净视觉表征，`L_align` 削弱对抗图像与配对文本的对齐。视觉优化完成后，VGA 先分别对候选词的语义重要性和视觉相关性做最大值归一化，再按 `beta` 融合排序并执行离散候选替换。项目代码也按这个顺序先运行 `Image_Attack`，再运行 `img_guided_attack`。协同体现在双损失视觉优化与视觉引导文本替换按阶段配合，共同削弱视觉表征和图文对应关系。
+> Syner-Attack 的可微联合目标属于视觉阶段，即 $\mathcal{L}_{\mathrm{visual}}=\lambda \mathcal{L}_{\mathrm{feat}}+(1-\lambda)\mathcal{L}_{\mathrm{align}}$。其中 `L_feat` 使对抗图像偏离干净视觉表征，`L_align` 削弱对抗图像与配对文本的对齐。视觉优化完成后，VGA 先分别对候选词的语义重要性和视觉相关性做最大值归一化，再按 `beta` 融合排序并执行离散候选替换。项目代码也按这个顺序先运行 `Image_Attack`，再运行 `img_guided_attack`。协同体现在双损失视觉优化与视觉引导文本替换按阶段配合，共同削弱视觉表征和图文对应关系。
 
 ### 2. 如何回应“Syner-Attack 只是图像攻击和文本攻击的拼接”？
 

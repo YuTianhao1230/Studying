@@ -97,15 +97,17 @@ checkpoint_2000
 
 最简单的方法是权重平均：
 
-```text
-W_merge = α * W1 + (1 - α) * W2
-```
+$$
+W_{\mathrm{merge}}
+=\alpha W_1+(1-\alpha)W_2.
+$$
 
 如果多个模型：
 
-```text
-W_merge = α1 * W1 + α2 * W2 + α3 * W3
-```
+$$
+W_{\mathrm{merge}}
+=\alpha_1W_1+\alpha_2W_2+\alpha_3W_3.
+$$
 
 适合模型来源接近、训练目标不冲突的情况。优点是简单，缺点是容易把不同任务的有效更新互相冲掉。
 
@@ -113,15 +115,19 @@ W_merge = α1 * W1 + α2 * W2 + α3 * W3
 
 Task Arithmetic 先计算每个任务模型相对 base model 的“任务向量”：
 
-```text
-task_vector = W_task - W_base
-```
+$$
+\Delta W_{\mathrm{task}}
+=W_{\mathrm{task}}-W_{\mathrm{base}}.
+$$
 
 然后把多个任务向量加到 base 上：
 
-```text
-W_merge = W_base + α1 * ΔW_task1 + α2 * ΔW_task2
-```
+$$
+W_{\mathrm{merge}}
+=W_{\mathrm{base}}
++\alpha_1\Delta W_{\mathrm{task1}}
++\alpha_2\Delta W_{\mathrm{task2}}.
+$$
 
 直观理解：每个微调模型相对 base 的变化量，表示它为某个任务学到的方向；合并时就是把这些能力方向组合起来。
 
@@ -212,7 +218,7 @@ Model Merging 最好要求模型来自同一个 base，因为合并本质是在�
 
 回答模板：
 
-Task Arithmetic 是一种模型合并方法。它先把任务模型减去 base model，得到这个任务带来的权重变化量，也就是 task vector：`ΔW = W_task - W_base`。合并时再把多个任务向量加回 base：`W_merge = W_base + α1ΔW1 + α2ΔW2`。直观上，每个 task vector 表示模型为了某个任务学到的能力方向，合并就是把这些方向组合起来。
+Task Arithmetic 是一种模型合并方法。它先把任务模型减去 base model，得到这个任务带来的权重变化量，也就是 task vector：$\Delta W=W_{\mathrm{task}}-W_{\mathrm{base}}$。合并时再把多个任务向量加回 base：$W_{\mathrm{merge}}=W_{\mathrm{base}}+\alpha_1\Delta W_1+\alpha_2\Delta W_2$。直观上，每个 task vector 表示模型为了某个任务学到的能力方向，合并就是把这些方向组合起来。
 
 ### Model Merging 有哪些风险？
 

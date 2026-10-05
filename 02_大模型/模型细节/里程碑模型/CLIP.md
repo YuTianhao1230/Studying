@@ -101,9 +101,10 @@ CLIP 不是一个只有单一尺寸的 checkpoint，面试时要区分“论文�
 
 给定 batch 内 `N` 个图文对，将两塔投影后的向量分别做 L2 归一化，再计算 `N x N` 相似度矩阵：
 
-```text
-logits = image_embeddings @ text_embeddings.T / temperature
-```
+$$
+\operatorname{logits}
+=\frac{E_{\text{image}}E_{\text{text}}^\top}{\tau}.
+$$
 
 目标是让第 `i` 张图和第 `i` 句文本相似度最高：
 
@@ -115,17 +116,24 @@ logits = image_embeddings @ text_embeddings.T / temperature
 
 可以把目标写成：
 
-```text
-L_i2t = CrossEntropy(logits_per_image, target=[0, 1, ..., N-1])
-L_t2i = CrossEntropy(logits_per_text, target=[0, 1, ..., N-1])
-L_clip = (L_i2t + L_t2i) / 2
-```
+$$
+\begin{aligned}
+L_{\mathrm{i2t}}
+&=\operatorname{CrossEntropy}
+\left(\operatorname{logits}_{\mathrm{image}},[0,1,\ldots,N-1]\right),\\
+L_{\mathrm{t2i}}
+&=\operatorname{CrossEntropy}
+\left(\operatorname{logits}_{\mathrm{text}},[0,1,\ldots,N-1]\right),\\
+L_{\mathrm{CLIP}}
+&=\frac{L_{\mathrm{i2t}}+L_{\mathrm{t2i}}}{2}.
+\end{aligned}
+$$
 
-其中 `logits[i][j]` 表示第 `i` 张图和第 `j` 条文本的缩放相似度，正确配对在对角线上。温度 `τ > 0` 与 OpenAI 实现中的可学习参数 `logit_scale` 满足 `exp(logit_scale) = 1/τ`：
+其中 `logits[i][j]` 表示第 $i$ 张图和第 $j$ 条文本的缩放相似度，正确配对在对角线上。温度 $\tau>0$ 与 OpenAI 实现中的可学习参数 `logit_scale` 满足 $\exp(\texttt{logit\_scale})=1/\tau$：
 
 - 温度越低，或 `logit_scale` 越大，softmax 越尖锐，模型越强调得分较高的候选；过大缩放可能放大困难负例和错配的影响。
-- 温度越高，或 `logit_scale` 越小，softmax 越平滑。例如相似度 `[1, 0]` 在 `τ=1` 时概率约为 `[0.7311, 0.2689]`，在 `τ=0.5` 时约为 `[0.8808, 0.1192]`。
-- 固定温度时，单行交叉熵对原始相似度的梯度为 `(p_j - y_j)/τ`；不能仅凭“概率更尖锐”就断言每个样本的梯度都变大。
+- 温度越高，或 `logit_scale` 越小，softmax 越平滑。例如相似度 $[1,0]$ 在 $\tau=1$ 时概率约为 $[0.7311,0.2689]$，在 $\tau=0.5$ 时约为 $[0.8808,0.1192]$。
+- 固定温度时，单行交叉熵对原始相似度的梯度为 $(p_j-y_j)/\tau$；不能仅凭“概率更尖锐”就断言每个样本的梯度都变大。
 
 CLIP 的负样本主要来自 batch 内其他图文对，因此 batch size 和跨卡 all-gather 会直接影响负样本数量和对比学习质量。
 

@@ -214,7 +214,7 @@ class CatDogDataset(Dataset):
 1.  **常用变换**:
     *   `Resize(size)`: 将输入图片调整到指定尺寸。
     *   `ToTensor()`: **至关重要**。将 PIL Image 或 NumPy `ndarray` (H x W x C) 转换为 PyTorch Tensor (C x H x W)，并将像素值从 `[0, 255]` 缩放到 `[0.0, 1.0]`。
-    *   `Normalize(mean, std)`: 用给定的均值和标准差对 Tensor 进行归一化。公式是 `output = (input - mean) / std`。`mean` 和 `std` 通常是 ImageNet 数据集的统计值，以匹配预训练模型。
+    *   `Normalize(mean, std)`: 用给定的均值和标准差对 Tensor 进行归一化。公式是 $\text{output}=(\text{input}-\text{mean})/\text{std}$。`mean` 和 `std` 通常是 ImageNet 数据集的统计值，以匹配预训练模型。
     *   `RandomHorizontalFlip(p=0.5)`: 以概率 `p` 水平翻转图片。
     *   `RandomRotation(degrees)`: 在 `(-degrees, +degrees)` 范围内随机旋转图片。
     *   `ColorJitter(...)`: 随机改变图片的亮度、对比度、饱和度和色调。

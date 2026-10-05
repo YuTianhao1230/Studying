@@ -149,10 +149,12 @@ swift sft \
 
 有效 batch size 要按这个公式算：
 
-```text
-effective_batch_size =
-per_device_train_batch_size * GPU 数 * gradient_accumulation_steps
-```
+$$
+\text{effective batch size}
+=\text{per-device batch size}
+\times\text{GPU 数量}
+\times\text{gradient accumulation steps}.
+$$
 
 ### 训练数据格式示例
 

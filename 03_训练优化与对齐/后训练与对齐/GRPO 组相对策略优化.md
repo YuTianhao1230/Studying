@@ -61,41 +61,55 @@ Rollout 不是训练标签，而是模型当前策略在线探索出的候选；
 
 ### GRPO 的训练目标
 
-对同一个 prompt `q` 采样 `G` 个回答：
+对同一个 prompt $q$ 采样 $G$ 个回答：
 
-```text
-y_1, y_2, ..., y_G ~ π_old(y | q)
-```
+$$
+y_1,y_2,\ldots,y_G
+\sim\pi_{\mathrm{old}}(y\mid q).
+$$
 
-每个回答经过 reward function 得到 `r_i`，再计算组内相对 advantage：
+每个回答经过 reward function 得到 $r_i$，再计算组内相对 advantage：
 
-```text
-A_i = (r_i - mean(r_group))
-      / (std(r_group) + eps_norm)
-```
+$$
+A_i
+=\frac{
+r_i-\operatorname{mean}(r_{\mathrm{group}})
+}{
+\operatorname{std}(r_{\mathrm{group}})
++\epsilon_{\mathrm{norm}}
+}.
+$$
 
 策略更新可以简化表示为：
 
-```text
-L =
-  - E[
-      min(
-        ρ_i,t * A_i,
-        clip(ρ_i,t, 1 - ε, 1 + ε) * A_i
-      )
-    ]
-  + β * KL(π_policy || π_reference)
-```
+$$
+\begin{aligned}
+L
+&=-\mathbb E\left[
+\min\left(
+\rho_{i,t}A_i,
+\operatorname{clip}(\rho_{i,t},1-\epsilon,1+\epsilon)A_i
+\right)
+\right]\\
+&\quad+\beta\,
+\operatorname{KL}
+\left(
+\pi_{\mathrm{policy}}
+\middle\|
+\pi_{\mathrm{reference}}
+\right).
+\end{aligned}
+$$
 
 其中：
 
-- `ρ_i,t = πθ(y_i,t | q, y_i,<t) / π_old(y_i,t | q, y_i,<t)`：在相同前缀上，当前与采样旧策略的 token 概率比。
-- `ε`：surrogate 的裁剪阈值；`eps_norm > 0` 是奖励归一化的数值稳定项，两者用途不同。
-- `π_old`：生成本批回答的旧策略，本批多个 epoch 内旧 log-prob 和优势保持固定，下次采样时刷新。
-- `π_reference`：KL 正则的锚点，通常是冻结的初始 SFT checkpoint，也可为 Base 或其他选定模型；它不随每批 rollout 刷新，不能替代 ratio 分母。
-- `β`：KL 正则系数，可取 0；对 reference 的 KL 与对旧策略的更新幅度监控是不同量。
+- $\rho_{i,t}=\frac{\pi_\theta(y_{i,t}\mid q,y_{i,<t})}{\pi_{\mathrm{old}}(y_{i,t}\mid q,y_{i,<t})}$：在相同前缀上，当前与采样旧策略的 token 概率比。
+- $\epsilon$：surrogate 的裁剪阈值；$\epsilon_{\mathrm{norm}}>0$ 是奖励归一化的数值稳定项，两者用途不同。
+- $\pi_{\mathrm{old}}$：生成本批回答的旧策略，本批多个 epoch 内旧 log-prob 和优势保持固定，下次采样时刷新。
+- $\pi_{\mathrm{reference}}$：KL 正则的锚点，通常是冻结的初始 SFT checkpoint，也可为 Base 或其他选定模型；它不随每批 rollout 刷新，不能替代 ratio 分母。
+- $\beta$：KL 正则系数，可取 0；对 reference 的 KL 与对旧策略的更新幅度监控是不同量。
 
-上式的期望包含 prompt、旧策略采样回答和有效 token。常见目标先对每条回答的有效 token 求平均，再对组内回答求平均；也有不同长度归一化变体，必须说明口径。序列级奖励得到的同一个 `A_i` 通常广播到整条回答的 token，不能据此认为每一步推理都被独立验证。KL 通常在采样前缀上估计，具体采样估计式与精确 KL 不应混写。
+上式的期望包含 prompt、旧策略采样回答和有效 token。常见目标先对每条回答的有效 token 求平均，再对组内回答求平均；也有不同长度归一化变体，必须说明口径。序列级奖励得到的同一个 $A_i$ 通常广播到整条回答的 token，不能据此认为每一步推理都被独立验证。KL 通常在采样前缀上估计，具体采样估计式与精确 KL 不应混写。
 
 ### 二元奖励与组内优势手算
 
@@ -114,9 +128,9 @@ L =
 
 GRPO 学习的是相对差异。如果同一个 group 中所有回答 reward 都相同：
 
-```text
-std(r_group) ≈ 0
-```
+$$
+\operatorname{std}(r_{\mathrm{group}})\approx0.
+$$
 
 完全同分时，clipped policy 项的组内信号为 0，不代表总损失必无梯度；仅接近同分时还需检查稳定项、浮点精度和噪声放大。常见原因：
 
@@ -142,15 +156,17 @@ format_parse_rate
 
 业务需要时，reward 可以由多个分项构成；可靠的单一二元结果奖励也可以使用：
 
-```text
-R_total =
-  R_answer
-  + R_process
-  + R_format
-  + R_evidence
-  - P_length
-  - P_hallucination
-```
+$$
+\begin{aligned}
+R_{\mathrm{total}}
+&=R_{\mathrm{answer}}
++R_{\mathrm{process}}
++R_{\mathrm{format}}
++R_{\mathrm{evidence}}\\
+&\quad-P_{\mathrm{length}}
+-P_{\mathrm{hallucination}}.
+\end{aligned}
+$$
 
 设计时要遵循：
 

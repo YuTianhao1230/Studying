@@ -14,23 +14,29 @@ I-FGSM 从原始样本出发，可能受单一起点限制。PGD 在扰动球内
 
 随机初始化：
 
-```text
-x_adv_0 = x + Uniform(-epsilon, epsilon)
-```
+$$
+x_{\mathrm{adv}}^{(0)}=x+u,
+\qquad
+u\sim\operatorname{Uniform}([-\epsilon,\epsilon]^d)
+$$
 
 迭代更新：
 
-```text
-x_adv_{t+1} = Proj_{B_inf(x, epsilon)}(
-    x_adv_t + alpha * sign(grad_x L(f(x_adv_t), y))
-)
-```
+$$
+x_{\mathrm{adv}}^{(t+1)}
+=\Pi_{B_\infty(x,\epsilon)}
+\left(
+x_{\mathrm{adv}}^{(t)}
++\alpha\,\operatorname{sign}
+\left(\nabla_x L(f(x_{\mathrm{adv}}^{(t)}),y)\right)
+\right)
+$$
 
 最后还要裁剪到合法像素范围：
 
-```text
-x_adv = clip(x_adv, 0, 1)
-```
+$$
+x_{\mathrm{adv}}=\operatorname{clip}(x_{\mathrm{adv}},0,1)
+$$
 
 ### PyTorch 骨架
 
@@ -69,9 +75,14 @@ def pgd_linf_attack(model, images, labels, epsilon, alpha, steps):
 
 对抗训练可以写成 min-max：
 
-```text
-min_theta E[ max_{||delta||<=epsilon} L(f_theta(x + delta), y) ]
-```
+$$
+\min_{\theta}\;
+\mathbb{E}_{(x,y)}
+\left[
+\max_{\lVert\delta\rVert\le\epsilon}
+L(f_\theta(x+\delta),y)
+\right]
+$$
 
 PGD 近似求内层最大化，模型参数优化外层最小化。因此 PGD adversarial training 是经典鲁棒训练方法。
 
@@ -99,7 +110,7 @@ PGD 近似求内层最大化，模型参数优化外层最小化。因此 PGD ad
 
 回答模板：
 
-> PGD 先在 `B_inf(x,epsilon)` 内随机初始化，再反复执行 `x_adv <- Proj(x_adv + alpha*sign(grad_x L))`。多步更新能沿非线性损失面持续搜索，随机起点和随机重启则减少固定起点陷入较差局部区域的风险，因此它通常比 FGSM 和固定起点的 I-FGSM 更适合作为一阶白盒基线。不过 PGD 只是在给定梯度、步数和重启次数下近似求解内层最大化，不能宣称一定找到全局最坏扰动。
+> PGD 先在 $B_\infty(x,\epsilon)$ 内随机初始化，再反复执行 $x_{\mathrm{adv}}\leftarrow\Pi(x_{\mathrm{adv}}+\alpha\,\operatorname{sign}(\nabla_x L))$。多步更新能沿非线性损失面持续搜索，随机起点和随机重启则减少固定起点陷入较差局部区域的风险，因此它通常比 FGSM 和固定起点的 I-FGSM 更适合作为一阶白盒基线。不过 PGD 只是在给定梯度、步数和重启次数下近似求解内层最大化，不能宣称一定找到全局最坏扰动。
 
 ### 2. PGD 在攻击评估和对抗训练中分别扮演什么角色？
 
@@ -107,7 +118,7 @@ PGD 近似求内层最大化，模型参数优化外层最小化。因此 PGD ad
 
 回答模板：
 
-> 在鲁棒评估中，模型参数固定，PGD 用来近似寻找预算内使损失最大的扰动，以检验模型是否存在局部脆弱点。在对抗训练中，目标是 `min_theta E[max_{||delta||<=epsilon} L(f_theta(x+delta),y)]`：PGD 近似求内层最大化，优化器再对生成的对抗样本更新 `theta`，完成外层最小化。两者使用同一类攻击，但训练关注模型参数学习，评估关注在充分攻击下测得可信的 robust accuracy。
+> 在鲁棒评估中，模型参数固定，PGD 用来近似寻找预算内使损失最大的扰动，以检验模型是否存在局部脆弱点。在对抗训练中，目标是 $\min_\theta\mathbb{E}[\max_{\lVert\delta\rVert\le\epsilon}L(f_\theta(x+\delta),y)]$：PGD 近似求内层最大化，优化器再对生成的对抗样本更新 `theta`，完成外层最小化。两者使用同一类攻击，但训练关注模型参数学习，评估关注在充分攻击下测得可信的 robust accuracy。
 
 ### 3. 防御没有被 PGD 打穿，为什么仍不能直接认定鲁棒？
 

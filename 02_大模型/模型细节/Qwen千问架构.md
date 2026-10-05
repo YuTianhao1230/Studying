@@ -522,9 +522,13 @@ General RL 关注泛化和鲁棒性，优化：
 
 对关键帧任务，可以迁移成：
 
-```text
-R = R_time + R_format + R_boundary_evidence - P_length
-```
+$$
+R
+=R_{\text{time}}
++R_{\text{format}}
++R_{\text{boundary evidence}}
+-P_{\text{length}}.
+$$
 
 也就是同时奖励时间准确、格式可解析、边界证据完整，并惩罚冗长或无效推理。
 

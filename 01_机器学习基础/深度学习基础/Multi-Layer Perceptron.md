@@ -84,11 +84,13 @@ MLP由**输入层、隐藏层（至少1层）、输出层**组成，每层包含
 ### **2. 前向传播（Forward Propagation）**
 数据从输入层逐层传递到输出层，每层计算如下：  
 
-![image](https://github.com/user-attachments/assets/ee0e8322-78a2-47e3-9092-7154daf3cb23)
+$$
+\mathbf{h}^{(l)}=\sigma\left(\mathbf{W}^{(l)}\mathbf{h}^{(l-1)}+\mathbf{b}^{(l)}\right)
+$$
 
-• ![image](https://github.com/user-attachments/assets/ccf9fb56-471b-4628-8be2-d7b9b92f6e77)：第l-1层的输出（输入层时![image](https://github.com/user-attachments/assets/e86fa92a-672b-444a-911c-fa6350941df9)）。  
-• ![image](https://github.com/user-attachments/assets/fca52fb1-b3ee-4bfa-ba9f-3997637708a9)：第l层的权重矩阵和偏置向量。  
-• ![image](https://github.com/user-attachments/assets/6d0461c1-8561-4d22-8ce9-e527472e25fa)：激活函数（如ReLU、Sigmoid），引入非线性能力。
+• $\mathbf{h}^{(l-1)}$：第l-1层的输出（输入层时 $\mathbf{h}^{(0)}=\mathbf{x}$）。  
+• $\mathbf{W}^{(l)},\mathbf{b}^{(l)}$：第l层的权重矩阵和偏置向量。  
+• $\sigma$：激活函数（如ReLU、Sigmoid），引入非线性能力。
 
 **作用**：  
 • **线性变换**：通过权重矩阵W和偏置b对输入加权求和。  
@@ -98,22 +100,28 @@ MLP由**输入层、隐藏层（至少1层）、输出层**组成，每层包含
 激活函数决定了神经元的输出是否被激活。常用函数：  
 • **ReLU（Rectified Linear Unit）**：  
 
-![image](https://github.com/user-attachments/assets/927a0b69-0c4c-4a52-b8dd-a18a1b093548)
+$$
+\sigma(z)=\max(0,z)
+$$
  
   **优点**：计算高效，缓解梯度消失问题。  
 • **Sigmoid**：  
 
-![image](https://github.com/user-attachments/assets/ef1ef51d-5add-4e10-b6c8-b6270316426f)
+$$
+\sigma(z)=\frac{1}{1+e^{-z}}
+$$
   
   **用途**：输出层二分类（概率映射到[0,1]）。  
 • **Softmax**：  
 
-   ![image](https://github.com/user-attachments/assets/cde2ba15-5615-4a0a-93a2-27e38b15bd89)
+$$
+\sigma(z_i)=\frac{e^{z_i}}{\sum_j e^{z_j}}
+$$
 
   **用途**：输出层多分类（概率归一化）。
 
 **为什么需要非线性激活函数？**  
-若使用线性激活函数（如![image](https://github.com/user-attachments/assets/411038eb-df59-479e-81ee-57d2d9816e03)），多层网络等效于单层线性变换，失去深层意义。
+若使用线性激活函数（如 $\sigma(z)=z$），多层网络等效于单层线性变换，失去深层意义。
 
 ### **4. 损失函数（Loss Function）**
 根据任务类型定义损失函数，衡量预测值与真实值的差距：  
@@ -125,21 +133,33 @@ MLP由**输入层、隐藏层（至少1层）、输出层**组成，每层包含
 ### **5. 反向传播（Backpropagation）**
 利用链式法则，从输出层到输入层逐层计算损失函数对权重的梯度，并更新参数。  
 **步骤**：  
-1. **计算损失梯度**：从输出层反向传播误差，计算每层权重\(\mathbf{W}^{(l)}\)和偏置\(\mathbf{b}^{(l)}\)的梯度。  
+1. **计算损失梯度**：从输出层反向传播误差，计算每层权重 $\mathbf{W}^{(l)}$ 和偏置 $\mathbf{b}^{(l)}$ 的梯度。
 2. **参数更新**：使用优化算法（如SGD、Adam）按梯度下降方向更新参数。
 
 **数学核心**：  
 
-![image](https://github.com/user-attachments/assets/63155455-b0f3-424a-9c4a-a90797a2e778)
+$$
+\frac{\partial\mathcal{L}}{\partial\mathbf{W}^{(l)}}
+=
+\frac{\partial\mathcal{L}}{\partial\mathbf{h}^{(l)}}
+\cdot
+\frac{\partial\mathbf{h}^{(l)}}{\partial\mathbf{W}^{(l)}}
+$$
 
 通过链式法则逐层传递梯度。
 
 ### **6. 优化过程**
 • **梯度下降（Gradient Descent）**：  
 
-  ![image](https://github.com/user-attachments/assets/e7c55c02-62f2-4f97-9cca-7aeb622254fe)
+$$
+\mathbf{W}^{(l)}
+\leftarrow
+\mathbf{W}^{(l)}
+-
+\eta\frac{\partial\mathcal{L}}{\partial\mathbf{W}^{(l)}}
+$$
 
-  ![image](https://github.com/user-attachments/assets/53cd9900-1621-4af1-8fcb-efd158f0e8db)为学习率，控制参数更新步长。  
+  $\eta$ 为学习率，控制参数更新步长。  
 • **优化器扩展**：  
   使用动量（Momentum）、自适应学习率（Adam）等技术加速收敛并避免局部极小值。
 

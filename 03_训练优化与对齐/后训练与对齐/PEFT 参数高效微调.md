@@ -30,14 +30,16 @@ PEFT 的思路是：**不要直接大幅改动基座模型，而是在它旁边�
 
 #### LoRA
 
-LoRA（Low-Rank Adaptation）冻结原始权重 `W0`，只训练低秩更新量：
+LoRA（Low-Rank Adaptation）冻结原始权重 $W_0$，只训练低秩更新量：
 
-```text
-W = W0 + ΔW
-ΔW = B * A
-```
+$$
+\begin{aligned}
+W&=W_0+\Delta W,\\
+\Delta W&=BA.
+\end{aligned}
+$$
 
-其中 `A` 和 `B` 是低秩矩阵，参数量远小于原始权重矩阵。LoRA 常插在 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 的线性层上，比如 `q_proj`、`v_proj`、`o_proj`、`up_proj`、`down_proj` 等。
+其中 $A$ 和 $B$ 是低秩矩阵，参数量远小于原始权重矩阵。LoRA 常插在 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 的线性层上，比如 `q_proj`、`v_proj`、`o_proj`、`up_proj`、`down_proj` 等。
 
 特点：
 

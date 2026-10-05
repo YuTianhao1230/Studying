@@ -14,16 +14,24 @@ FGSM/PGD 通常固定扰动预算并最大化损失。CW 攻击换了思路：�
 
 以 `L_2` CW 攻击为例：
 
-```text
-minimize ||delta||_2^2 + c * f(x + delta)
-subject to x + delta in [0, 1]
-```
+$$
+\begin{aligned}
+\min_{\delta}\quad
+& \lVert \delta \rVert_2^2+c\,f(x+\delta) \\
+\text{s.t.}\quad
+& x+\delta \in [0,1].
+\end{aligned}
+$$
 
 其中 `f` 是攻击损失。定向攻击常用 logit margin：
 
-```text
-f(x_adv) = max(max_{i != t} Z_i(x_adv) - Z_t(x_adv), -kappa)
-```
+$$
+f(x_{\mathrm{adv}})
+= \max\left\{
+\max_{i\ne t} Z_i(x_{\mathrm{adv}})-Z_t(x_{\mathrm{adv}}),
+-\kappa
+\right\}
+$$
 
 - `Z_i`：第 `i` 类 logit。
 - `t`：目标类别。
@@ -34,9 +42,9 @@ f(x_adv) = max(max_{i != t} Z_i(x_adv) - Z_t(x_adv), -kappa)
 
 为了保证像素范围合法，CW 常用 `tanh` 变换，把无约束变量 `w` 映射到 `[0,1]`：
 
-```text
-x_adv = 1/2 * (tanh(w) + 1)
-```
+$$
+x_{\mathrm{adv}}=\frac{1}{2}\left(\tanh(w)+1\right)
+$$
 
 这样优化器可以直接优化 `w`，不用每一步手动 clip 像素。
 
@@ -62,14 +70,14 @@ x_adv = 1/2 * (tanh(w) + 1)
 
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
-| 公式题 | CW 优化目标是什么 | `||delta|| + c * attack_loss` |
+| 公式题 | CW 优化目标是什么 | $\lVert\delta\rVert+c\,\mathcal{L}_{\mathrm{attack}}$ |
 | 机制题 | 为什么不用 cross entropy | logit margin 更直接控制目标类别超过其他类别 |
 | 约束题 | 如何保证像素合法 | 用 `tanh` 变量变换或显式裁剪 |
 | 对比题 | CW 和 PGD 区别 | 固定预算攻击 vs 小扰动优化攻击 |
 
 ### 易错点
 
-- 只写 `||delta||`，不写攻击成功损失。
+- 只写 $\lVert\delta\rVert$，不写攻击成功损失。
 - 把 `c` 当学习率；它是扰动和攻击目标的权衡。
 - 忽略 `kappa`，说不清 confidence 的作用。
 - 认为 CW 一定适合大规模迁移实验；它通常成本较高。
@@ -82,7 +90,7 @@ x_adv = 1/2 * (tanh(w) + 1)
 
 回答模板：
 
-> CW 把攻击写成 `min ||delta||_2^2 + c*f(x+delta)`：第一项要求扰动尽量小，第二项用 logit margin 约束攻击成功。定向攻击中，`f` 可写成 `max(max_{i!=t} Z_i-Z_t,-kappa)`。`c` 是扰动大小与攻击成功之间的权衡系数，通常通过搜索确定，不是学习率；`kappa` 要求目标类别建立更大的 logit 间隔，提高攻击置信度，但往往需要更大扰动。
+> CW 把攻击写成 $\min_{\delta}\lVert\delta\rVert_2^2+c\,f(x+\delta)$：第一项要求扰动尽量小，第二项用 logit margin 约束攻击成功。定向攻击中，`f` 可写成 $\max\{\max_{i\ne t}Z_i-Z_t,-\kappa\}$。`c` 是扰动大小与攻击成功之间的权衡系数，通常通过搜索确定，不是学习率；`kappa` 要求目标类别建立更大的 logit 间隔，提高攻击置信度，但往往需要更大扰动。
 
 ### 2. CW 与 PGD 的优化方式和适用场景有什么不同？
 

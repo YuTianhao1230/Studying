@@ -18,7 +18,7 @@ Greedy Search 每一步只选概率最高的 token，计算便宜，但早期选
 
 ### 方法原理
 
-假设 `beam size = k`。生成时，Beam Search 会维护 k 个候选序列。每一步对每个候选序列扩展下一个 token，计算扩展后的累计 log probability，然后从所有扩展结果中选出得分最高的 k 个继续保留。
+假设 $\text{beam size}=k$。生成时，Beam Search 会维护 k 个候选序列。每一步对每个候选序列扩展下一个 token，计算扩展后的累计 log probability，然后从所有扩展结果中选出得分最高的 k 个继续保留。
 
 因为 log probability 会随着序列变长不断累加，Beam Search 经常需要 length penalty 或长度归一化，避免模型系统性偏向过短或过长的序列。
 

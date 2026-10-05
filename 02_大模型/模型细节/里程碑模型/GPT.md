@@ -44,17 +44,17 @@ input tokens
 
 GPT 使用 causal mask，每个位置只能看见自己和之前的 token：
 
-```text
-P(x) = product_t P(x_t | x_1, ..., x_{t-1})
-```
+$$
+P(x)=\prod_t P(x_t\mid x_1,\ldots,x_{t-1}).
+$$
 
 ### 训练目标
 
 GPT 的基础目标是 next-token prediction：
 
-```text
-maximize sum_t log P(x_t | x_<t)
-```
+$$
+\max\sum_t\log P(x_t\mid x_{<t}).
+$$
 
 后续助手模型通常继续做：
 
@@ -88,7 +88,7 @@ GPT 的预训练目标只是预测下一个 token，不保证事实正确、推�
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
 | 架构题 | GPT 为什么是 decoder-only | 因为目标是自回归生成，只需要 causal self-attention |
-| 目标题 | next-token prediction 公式 | 写 `P(x_t \| x_<t)` 并说明 teacher forcing |
+| 目标题 | next-token prediction 公式 | 写 $P(x_t\mid x_{<t})$ 并说明 teacher forcing |
 | 对比题 | GPT 和 [BERT](<BERT.md>) 区别 | 生成 vs 理解，causal mask vs bidirectional attention |
 | 后训练题 | ChatGPT 为什么比 GPT-3 好用 | SFT + [RLHF](<../../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>) 让模型遵循指令和偏好 |
 
@@ -107,7 +107,7 @@ GPT 的预训练目标只是预测下一个 token，不保证事实正确、推�
 
 回答模板：
 
-GPT 是 Decoder-only Transformer。输入经过 BPE tokenization 和 embedding 后，进入多层 masked self-attention block，每个 token 只能 attend 到自己和之前的 token，最后通过 LM head 预测下一个 token。GPT-1 是 12 层、768 hidden、12 heads，GPT-3 公开规格是 96 层、hidden size 12288、96 heads、175B 参数。它的基础训练目标是最大化 `P(x_t | x_<t)`。ChatGPT 这类助手模型还需要 SFT 和 RLHF 等后训练，让模型从单纯续写变成会遵循指令的助手。
+GPT 是 Decoder-only Transformer。输入经过 BPE tokenization 和 embedding 后，进入多层 masked self-attention block，每个 token 只能 attend 到自己和之前的 token，最后通过 LM head 预测下一个 token。GPT-1 是 12 层、768 hidden、12 heads，GPT-3 公开规格是 96 层、hidden size 12288、96 heads、175B 参数。它的基础训练目标是最大化 $P(x_t\mid x_{<t})$。ChatGPT 这类助手模型还需要 SFT 和 RLHF 等后训练，让模型从单纯续写变成会遵循指令的助手。
 
 ### GPT 与 BERT、T5 的关键区别是什么？
 

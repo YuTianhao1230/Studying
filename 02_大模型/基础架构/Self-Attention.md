@@ -24,30 +24,38 @@
 
 **公式**：  
 
-![image](https://github.com/user-attachments/assets/47493b2a-9807-42f2-8017-10ea17978399)
+$$
+Q=XW^Q,\qquad K=XW^K,\qquad V=XW^V
+$$
  
-• ![image](https://github.com/user-attachments/assets/a4e345af-3647-4586-bd81-b664aa32e84c)：输入序列（n为序列长度，d为特征维度）。  
-• ![image](https://github.com/user-attachments/assets/2455f9fd-64b9-47e5-8ed5-aec75d3c2ea5)：可学习的权重矩阵。
+• $X\in\mathbb{R}^{n\times d}$：输入序列（n为序列长度，d为特征维度）。  
+• $W^Q,W^K,W^V\in\mathbb{R}^{d\times d_k}$：可学习的权重矩阵。
 
 #### **Step 2：计算注意力分数**
 通过点积（Dot-Product）衡量Query与Key的相似度，得到注意力分数矩阵：  
 
-![image](https://github.com/user-attachments/assets/2a2883ff-279f-4cf5-a937-4b24ce8deedf)
+$$
+\text{注意力分数}=QK^T\in\mathbb{R}^{n\times n}
+$$
   
 • **物理意义**：元素i对元素j的重要性得分。
 
 #### **Step 3：缩放与Softmax归一化**
 为防止点积结果过大导致梯度不稳定，对分数进行缩放并归一化为概率分布：  
 
-![image](https://github.com/user-attachments/assets/a079ee5d-cbbf-416e-928c-98a36f04dd8d)
+$$
+\text{注意力权重}=\operatorname{Softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)
+$$
  
-• ![image](https://github.com/user-attachments/assets/eb4bd9cf-f0bd-46e0-9b09-ab0636bb0990)：缩放因子，![image](https://github.com/user-attachments/assets/770d677c-d16f-4299-bcba-a5058fc67eb8)为Key的维度。  
+• $\sqrt{d_k}$：缩放因子，$d_k$ 为Key的维度。  
 • **Softmax**：按行归一化，使每个元素关注其他元素的权重和为1。
 
 #### **Step 4：加权聚合Value**
 用注意力权重对Value向量加权求和，得到最终输出：  
 
-![image](https://github.com/user-attachments/assets/33a0a851-f8d4-47c6-8477-baa7f4d9edf6)
+$$
+\text{输出}=\text{注意力权重}\cdot V\in\mathbb{R}^{n\times d_v}
+$$
  
 • 每个位置的输出是所有位置Value的加权组合。
 
@@ -58,10 +66,15 @@
 
 **公式**：  
 
-![image](https://github.com/user-attachments/assets/3ad53438-80bb-4bd2-8d0e-151cab1f0e30)
+$$
+\operatorname{MultiHead}(Q,K,V)=\operatorname{Concat}(\operatorname{head}_1,\ldots,\operatorname{head}_h)W^O
+$$
  
-• ![image](https://github.com/user-attachments/assets/a8d75d39-23fc-498d-927c-dca510966b4b)
-• ![image](https://github.com/user-attachments/assets/f86898d1-ac7c-4637-914f-6f7ca3cc0f1a)：输出投影矩阵。
+$$
+\operatorname{head}_i=\operatorname{Attention}(QW_i^Q,KW_i^K,VW_i^V)
+$$
+
+• $W^O\in\mathbb{R}^{h d_v\times d}$：输出投影矩阵。
 
 **优势**：  
 • 允许模型同时关注不同位置的不同语义模式（如语法结构、关键词）。  
@@ -100,11 +113,13 @@
 
 **示例**：  
 
-![image](https://github.com/user-attachments/assets/b2c7b9ac-0470-4bd3-ae52-2c42250e007a)
+$$
+X_{\mathrm{final}}=X_{\mathrm{embed}}+X_{\mathrm{position}}
+$$
 
 ### **7. 自注意力的局限性**
 #### **(1) 计算复杂度高**
-• 注意力矩阵的尺寸为\(O(n^2)\)，处理长序列（如长文本、高分辨率图像）时消耗显存和算力。
+• 注意力矩阵的尺寸为 $O(n^2)$，处理长序列（如长文本、高分辨率图像）时消耗显存和算力。
 
 #### **(2) 局部细节建模不足**
 • 过度关注全局可能导致局部模式（如图像的边缘、纹理）被稀释，需结合CNN或层次化注意力改进。
@@ -129,16 +144,20 @@
 在Transformer模型中，**Q（Query）、K（Key）、V（Value）** 是自注意力机制（Self-Attention）的三个核心向量，它们共同决定了模型如何关注输入序列中的不同位置，从而捕捉长距离依赖和上下文信息。以下是它们的详细解释：
 
 ### **1. Q、K、V的由来**
-- **输入**：自注意力机制的输入是一组向量（例如，词嵌入向量或图像块的嵌入向量），假设输入序列长度为 \( N \)，每个向量的维度为 \( D \)，则输入矩阵为  
+- **输入**：自注意力机制的输入是一组向量（例如，词嵌入向量或图像块的嵌入向量），假设输入序列长度为 $N$，每个向量的维度为 $D$，则输入矩阵为
 
-![image](https://github.com/user-attachments/assets/b171b328-2b01-4e20-a575-c48dbb1d1b08)
+$$
+X\in\mathbb{R}^{N\times D}
+$$
 
 - **生成方式**：通过三个独立的线性变换（全连接层），将输入向量映射为Q、K、V：  
 
-![image](https://github.com/user-attachments/assets/3c16842e-83fb-4d37-9b42-8fa3d3e7898d)
+$$
+Q=X\cdot W_Q,\qquad K=X\cdot W_K,\qquad V=X\cdot W_V
+$$
 
   其中：  
-  - ![image](https://github.com/user-attachments/assets/b36c87dd-3989-4d0d-a993-e3d929064088)是可训练的权重矩阵。  
+  - $W_Q,W_K,W_V\in\mathbb{R}^{D\times D}$ 是可训练的权重矩阵。  
   - 每个输入的向量都会被独立映射为对应的Q、K、V向量。
 
 ### **2. Q、K、V的作用**
@@ -160,15 +179,19 @@
 通过Q、K、V计算自注意力的步骤如下：
 1. **计算注意力分数**：  
 
-![image](https://github.com/user-attachments/assets/8b9fba1f-3b4c-48d3-adfe-e5fe9483d5b1)
+$$
+\text{Attention Scores}=\operatorname{Softmax}\left(\frac{Q\cdot K^T}{\sqrt{D}}\right)
+$$
 
-   - **点积**（\( Q \cdot K^T \)）：衡量每个Query和Key的相似度。  
-   - **缩放因子**（\( \sqrt{D} \)）：防止点积结果过大导致Softmax梯度消失。  
+   - **点积**（$Q\cdot K^\top$）：衡量每个Query和Key的相似度。
+   - **缩放因子**（$\sqrt{D}$）：防止点积结果过大导致Softmax梯度消失。
    - **Softmax**：将分数归一化为概率分布，表示每个位置的重要性权重。
 
 2. **聚合Value信息**：  
 
-![image](https://github.com/user-attachments/assets/3d0750a8-87ca-442d-ad2b-ce71595440d1)
+$$
+\text{Output}=\text{Attention Scores}\cdot V
+$$
   
    - 用注意力权重对Value向量加权求和，得到最终的输出向量。
 
@@ -197,7 +220,7 @@
 ### **6. 多头注意力（Multi-Head Attention）**
 • **核心思想**：使用多组Q、K、V（即多个“头”），每组独立学习不同的关注模式。
 - **操作**：  
-  1. 将输入映射为 \( h \) 组不同的Q、K、V（h是头的数量）。  
+  1. 将输入映射为 $h$ 组不同的Q、K、V（h是头的数量）。
   2. 每组独立计算自注意力，得到h个输出。  
   3. 将所有头的输出拼接后，通过线性层融合。 
 - **优势**：  
@@ -235,7 +258,9 @@ QKV机制是Transformer的核心创新，通过动态计算权重，使模型能
 • **方法**：为序列中的每个位置生成一个唯一编码向量，将其与词嵌入相加。  
 • **公式**（原始Transformer）：  
 
-  ![image](https://github.com/user-attachments/assets/c81c8427-0f44-4143-b258-c7e41d5484c7)
+$$
+PE_{(pos,2i)}=\sin\left(\frac{pos}{10000^{2i/d}}\right),\qquad PE_{(pos,2i+1)}=\cos\left(\frac{pos}{10000^{2i/d}}\right)
+$$
  
   •pos：位置索引，i：维度索引，d：编码维度。  
 • **效果**：模型通过输入的合成向量（词嵌入 + 位置编码）同时感知内容和位置。
@@ -244,9 +269,11 @@ QKV机制是Transformer的核心创新，通过动态计算权重，使模型能
 • **方法**：在计算注意力分数时，显式引入元素之间的相对位置偏差（如距离为k的元素对权重衰减）。  
 • **示例**（如Transformer-XL）：  
 
-  ![image](https://github.com/user-attachments/assets/c7706d4f-8604-4592-abcd-d047d15d86d6)
+$$
+\text{注意力分数}=\frac{QK^T}{\sqrt{d}}+B_{i-j}
+$$
  
-  • ![image](https://github.com/user-attachments/assets/549f433f-a808-4ada-91e1-99ede745608c)：表示元素i和j之间的相对位置偏置。
+  • $B_{i-j}$：表示元素i和j之间的相对位置偏置。
 
 ### **3. 为什么不将位置信息内置到自注意力中？**
 #### **(1) 灵活性需求**
@@ -289,15 +316,21 @@ QKV机制是Transformer的核心创新，通过动态计算权重，使模型能
 
 首先根据来自target的Q重新聚合来自reference的KV特征（Ks和Vs）的视觉信息，这与KV注入相同。我们将这种注意力输出视为理想的风格化。我们可以使用所提出的AD loss通过梯度下降来优化随机潜在噪声，从而在输出中产生生动的纹理或风格再现。随着不断优化，Q和Ks之间的差距逐渐缩小，使得注意力越来越准确，最终，特征被正确聚合以产生期望的视觉细节。
 
-![image](https://github.com/user-attachments/assets/268c1a4c-0441-4e77-b76b-d68044b8214b)
+$$
+\mathcal{L}_{\mathrm{AD}}=\left\lVert\operatorname{Self-Attn}(Q,K,V)-\operatorname{Self-Attn}(Q,K_s,V_s)\right\rVert_1\tag{3}
+$$
 
 利用AD loss提取的纹理和风格，我们可以使用内容损失进一步将合成内容与另一个参考图像对齐。这种优化允许在保留目标内容的同时合成变换一个图像的视觉元素的图像，从而实现诸如风格转移、外观转移等任务。
 
 特别地，在target查询Q和reference查询Qc之间计算的L1损失公式化内容损失：
 
-![image](https://github.com/user-attachments/assets/93695459-a325-42a9-a35b-d19750eca6b5)
+$$
+\mathcal{L}_{\mathrm{content}}=\left\lVert Q-Q_c\right\rVert_1
+$$
 
-![image](https://github.com/user-attachments/assets/ab3f51a4-b7d0-4e3a-baf9-f393d7b380fc)
+$$
+\mathcal{L}_{\mathrm{total}}=\mathcal{L}_{\mathrm{AD}}+\lambda\mathcal{L}_{\mathrm{content}}
+$$
 
 ## 面试应对
 

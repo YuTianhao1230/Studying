@@ -326,11 +326,11 @@ Student rollout
 
 还应记录 `region-to-global gap`：
 
-```text
-gap =
-  特权局部视图准确率
-  - 线上完整输入准确率
-```
+$$
+\mathrm{gap}
+= \text{特权局部视图准确率}
+- \text{线上完整输入准确率}
+$$
 
 只有 Teacher gap 明显存在，且 OPD 后 Student gap 收敛，才能说明模型真正内化了局部证据能力，而不是只拟合了训练数据或特权输入偏置。
 
@@ -427,22 +427,24 @@ Student 和 Teacher 的输出坐标口径
 
 #### 5.2 教师窗口生成
 
-对于有完成态的样本，设 GT 时间为 `t*`，推荐先使用：
+对于有完成态的样本，设 GT 时间为 $t^*$，推荐先使用：
 
-```text
-window_start = max(0, t* - 1.5s)
-window_end   = min(duration, t* + 1.5s)
-```
+$$
+\begin{aligned}
+t_{\text{window\_start}} &= \max(0, t^* - 1.5\,\mathrm{s}), \\
+t_{\text{window\_end}} &= \min(t_{\text{duration}}, t^* + 1.5\,\mathrm{s})
+\end{aligned}
+$$
 
 后续根据任务类型调整：
 
 | 任务类型 | 建议窗口 | 原因 |
 | --- | --- | --- |
-| 页面加载 | `[-2.0s, +2.0s]` | 需要看局部异步和稳定性 |
-| 购物车角标 | `[-1.0s, +1.0s]` | 重点是数字首次变化 |
-| 头图滑动 | `[-1.5s, +1.5s]` | 需要判断停稳和居中 |
-| SKU 面板加载 | `[-2.0s, +2.0s]` | 需要确认核心区域完整出现 |
-| 二次刷新任务 | `[-2.0s, +3.0s]` | 需要看后续替换是否推翻当前状态 |
+| 页面加载 | $[-2.0\,\mathrm{s}, +2.0\,\mathrm{s}]$ | 需要看局部异步和稳定性 |
+| 购物车角标 | $[-1.0\,\mathrm{s}, +1.0\,\mathrm{s}]$ | 重点是数字首次变化 |
+| 头图滑动 | $[-1.5\,\mathrm{s}, +1.5\,\mathrm{s}]$ | 需要判断停稳和居中 |
+| SKU 面板加载 | $[-2.0\,\mathrm{s}, +2.0\,\mathrm{s}]$ | 需要确认核心区域完整出现 |
+| 二次刷新任务 | $[-2.0\,\mathrm{s}, +3.0\,\mathrm{s}]$ | 需要看后续替换是否推翻当前状态 |
 
 教师窗口使用更高的采样密度，例如：
 
@@ -639,9 +641,9 @@ Teacher 和 Student 的任务语义、输出 schema 和时间坐标必须一致�
 
 对每个输入样本：
 
-```text
-y ~ p_S(. | x_global, q)
-```
+$$
+y \sim p_S(\cdot \mid x_{\text{global}}, q)
+$$
 
 ![Off-policy 与 on-policy 蒸馏的状态分布错配和误差累积对比](<assets/offpolicy_vs_onpolicy.png>)
 
@@ -663,7 +665,7 @@ SFT 或离线蒸馏在标注/教师 prefix 上训练，但部署时 Student 必�
 
 #### 7.2 Teacher 和 Student 前向
 
-对每个 student prefix `y_<t`：
+对每个 student prefix $y_{<t}$：
 
 ```text
 teacher_logits =
@@ -689,19 +691,19 @@ loss = divergence(teacher_logits, student_logits)
 
 ![SFT、纯 OPSD 与 JSD 加 CE 联合损失的逐 token 训练对比](<assets/opsd_joint_loss_training.png>)
 
-\[
+$$
 \mathcal{L}_{total}
 =
 \lambda \mathcal{L}_{OPD}
 +(1-\lambda)\mathcal{L}_{CE}
 +\mu\mathcal{L}_{ref}
-\]
+$$
 
 其中：
 
-- `L_OPD`：JSD 或 reverse KL。
-- `L_CE`：GT 时间和 clean CoT 的硬标签监督。
-- `L_ref`：可选的 Student 与起始 CoT-SFT checkpoint 的 KL 约束。
+- $\mathcal{L}_{OPD}$：JSD 或 reverse KL。
+- $\mathcal{L}_{CE}$：GT 时间和 clean CoT 的硬标签监督。
+- $\mathcal{L}_{ref}$：可选的 Student 与起始 CoT-SFT checkpoint 的 KL 约束。
 
 推荐初始值：
 
@@ -749,13 +751,13 @@ L_content：
 
 第一轮可以使用：
 
-```text
-L_total =
-  0.2 * L_structure
-  + 0.4 * L_boundary
-  + 0.3 * L_time
-  + 0.1 * L_content
-```
+$$
+\mathcal{L}_{total}
+= 0.2\mathcal{L}_{structure}
++ 0.4\mathcal{L}_{boundary}
++ 0.3\mathcal{L}_{time}
++ 0.1\mathcal{L}_{content}
+$$
 
 这不是固定结论，最终以困难集指标和格式稳定性调节。
 
@@ -765,21 +767,21 @@ L_total =
 
 这是最容易写代码的原型版本。
 
-Student 生成 token `y_t` 后，只查询 Teacher 和 Student 对该 token 的 log-prob：
+Student 生成 token $y_t$ 后，只查询 Teacher 和 Student 对该 token 的 log-prob：
 
-\[
+$$
 r_t^{KD}
 =
-\log p_T(y_t|s_t)-\log p_S(y_t|s_t)
-\]
+\log p_T(y_t \mid s_t)-\log p_S(y_t \mid s_t)
+$$
 
 或者使用：
 
-\[
+$$
 \mathcal{L}_{sample}
 =
-\log p_S(y_t|s_t)-\log p_T(y_t|s_t)
-\]
+\log p_S(y_t \mid s_t)-\log p_T(y_t \mid s_t)
+$$
 
 优点：
 

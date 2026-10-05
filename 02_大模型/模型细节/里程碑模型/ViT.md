@@ -43,9 +43,9 @@ image: H x W x C
 
 patch 数量：
 
-```text
-N = (H / P) * (W / P)
-```
+$$
+N=\frac{H}{P}\cdot\frac{W}{P}.
+$$
 
 例如 `224 x 224` 图像使用 `16 x 16` patch，会得到 `14 x 14 = 196` 个 patch token，再加一个 `[CLS]` token。
 
@@ -95,7 +95,7 @@ image -> ViT patch tokens -> projector/Q-Former/cross-attention -> LLM
 | 考法 | 怎么考 | 怎么解 |
 | --- | --- | --- |
 | 架构题 | ViT 怎么处理图像 | patch 切分、线性投影、位置编码、Transformer Encoder |
-| 计算题 | patch token 数量 | `N=(H/P)*(W/P)` |
+| 计算题 | patch token 数量 | $N=(H/P)(W/P)$ |
 | 对比题 | ViT 和 CNN 区别 | 局部卷积 vs 全局 attention，归纳偏置和数据规模 |
 | 多模态题 | 为什么 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) 常用 ViT | token 输出形式和语言 Transformer 更容易连接 |
 

@@ -14,11 +14,13 @@ DIM 和 TIM 是提升视觉对抗样本迁移性的常见方法。DIM 通过随�
 
 DIM 全称 Diverse Input Method。核心是在每次求梯度前，对输入做随机变换：
 
-```text
-x_input = random_transform(x_adv)
-gradient = grad_x L(f(x_input), y)
-x_adv = update(x_adv, gradient)
-```
+$$
+\begin{aligned}
+x_{\mathrm{input}}&=\mathcal{T}_{\mathrm{random}}(x_{\mathrm{adv}}), \\
+g&=\nabla_x L(f(x_{\mathrm{input}}),y), \\
+x_{\mathrm{adv}}&=\operatorname{update}(x_{\mathrm{adv}},g).
+\end{aligned}
+$$
 
 常见变换：
 
@@ -33,10 +35,13 @@ x_adv = update(x_adv, gradient)
 
 TIM 全称 Translation-Invariant Method。它把梯度和一个卷积核做卷积，得到平滑后的梯度：
 
-```text
-g_smooth = W * grad_x L
-x_adv = x_adv + alpha * sign(g_smooth)
-```
+$$
+\begin{aligned}
+g_{\mathrm{smooth}}&=W * \nabla_x L, \\
+x_{\mathrm{adv}}&\leftarrow
+x_{\mathrm{adv}}+\alpha\,\operatorname{sign}(g_{\mathrm{smooth}}).
+\end{aligned}
+$$
 
 其中 `W` 可以是均值核或高斯核。直觉是让扰动在空间平移后仍有效，减少对某个具体位置的依赖。
 
@@ -88,7 +93,7 @@ M-DI-TI-FGSM
 
 回答模板：
 
-> DIM 在每次求梯度前以一定概率对当前对抗样本做随机 resize、padding 等可微变换，使更新方向同时适应多种输入形态，减少对固定尺寸和预处理的过拟合。TIM 不直接模糊图像，而是用核 `W` 对输入梯度卷积，得到 `g_smooth=W*grad_x L`，使攻击方向对空间平移更稳定。二者分别提升输入变换鲁棒性和空间位置鲁棒性，因此常能改善跨模型迁移。
+> DIM 在每次求梯度前以一定概率对当前对抗样本做随机 resize、padding 等可微变换，使更新方向同时适应多种输入形态，减少对固定尺寸和预处理的过拟合。TIM 不直接模糊图像，而是用核 `W` 对输入梯度卷积，得到 $g_{\mathrm{smooth}}=W * \nabla_x L$，使攻击方向对空间平移更稳定。二者分别提升输入变换鲁棒性和空间位置鲁棒性，因此常能改善跨模型迁移。
 
 ### 2. DIM、TIM 与 MI-FGSM 如何组合，是否总是越多越好？
 

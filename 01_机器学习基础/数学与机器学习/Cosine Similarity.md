@@ -18,13 +18,19 @@
 
 给定两个向量 A 和 B，它们的余弦相似度计算公式如下：
 
-![image](https://github.com/user-attachments/assets/51fe2aee-b791-41d2-a0f9-25226f65e4da)
+$$
+\operatorname{CosSim}(\mathbf{A},\mathbf{B})
+=
+\frac{\mathbf{A}\cdot\mathbf{B}}{\lVert\mathbf{A}\rVert\,\lVert\mathbf{B}\rVert}
+=
+\frac{\sum_{i=1}^{n}a_i b_i}{\sqrt{\sum_{i=1}^{n}a_i^2}\sqrt{\sum_{i=1}^{n}b_i^2}}
+$$
 
 其中：
 
-*   `A ⋅ B` 是向量 A 和 B 的**点积 (Dot Product)**。如果 A = [A₁, A₂, ..., An] 且 B = [B₁, B₂, ..., Bn]，则 `A ⋅ B = Σ(Ai * Bi)` (即对应元素相乘后求和)。
-*   `||A||` 是向量 A 的**欧几里得范数 (Euclidean Norm)** 或**模长 (Magnitude)**。`||A|| = √(Σ(Ai²))` (即每个元素平方后求和再开方)。
-*   `||B||` 是向量 B 的**欧几里得范数 (Euclidean Norm)** 或**模长 (Magnitude)**。`||B|| = √(Σ(Bi²))`。
+*   $A\cdot B$ 是向量 A 和 B 的**点积 (Dot Product)**。如果 $A=[A_1,A_2,\ldots,A_n]$ 且 $B=[B_1,B_2,\ldots,B_n]$，则 $A\cdot B=\sum_i A_iB_i$（即对应元素相乘后求和）。
+*   $\lVert A\rVert$ 是向量 A 的**欧几里得范数 (Euclidean Norm)** 或**模长 (Magnitude)**。$\lVert A\rVert=\sqrt{\sum_i A_i^2}$（即每个元素平方后求和再开方）。
+*   $\lVert B\rVert$ 是向量 B 的**欧几里得范数 (Euclidean Norm)** 或**模长 (Magnitude)**。$\lVert B\rVert=\sqrt{\sum_i B_i^2}$。
 
 **值的范围**
 

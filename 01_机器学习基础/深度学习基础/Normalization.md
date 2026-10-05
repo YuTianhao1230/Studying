@@ -9,13 +9,17 @@
 ### **核心方法**
 1. **最小-最大归一化（Min-Max Normalization）**  
 
-![image](https://github.com/user-attachments/assets/da9492b1-3e01-48ff-8974-d1176bc5a907)
+$$
+x_{\mathrm{norm}}=\frac{x-x_{\min}}{x_{\max}-x_{\min}}
+$$
 
    将数据线性缩放到 [0, 1] 区间，适合数据分布无明显边界的情况（如像素值）。
 
 2. **均值方差归一化（Z-Score 标准化）**  
 
-![image](https://github.com/user-attachments/assets/e087a5bd-5534-4725-aac3-70520136a6a8)
+$$
+x_{\mathrm{std}}=\frac{x-\mu}{\sigma}
+$$
 
    将数据转换为均值为 0、标准差为 1 的分布，适合数据符合正态分布的情况。
 
@@ -95,10 +99,10 @@
 ### **示例分析**
 假设输入图像像素值为 [0, 255]，权重初始化为均值为 0、标准差为 0.01 的高斯分布：
 - **未归一化时**：  
-  输入与权重相乘后，激活值范围为 \(0 \times 0.01 \pm \text{噪声}\) 到 \(255 \times 0.01 \pm \text{噪声}\)（即约 0-2.55），可能落入 Sigmoid 的线性区，但若权重初始化不当或学习率过大，仍可能进入饱和区。
+  输入与权重相乘后，激活值范围为 $0\times0.01\pm\text{噪声}$ 到 $255\times0.01\pm\text{噪声}$（即约 0-2.55），可能落入 Sigmoid 的线性区，但若权重初始化不当或学习率过大，仍可能进入饱和区。
   
 - **归一化到 [0, 1] 后**：  
-  激活值范围变为 \(0 \times 0.01 \pm \text{噪声}\) 到 \(1 \times 0.01 \pm \text{噪声}\)（约 0-0.01），此时 Sigmoid 的梯度接近最大值（0.25），反向传播效率更高。
+  激活值范围变为 $0\times0.01\pm\text{噪声}$ 到 $1\times0.01\pm\text{噪声}$（约 0-0.01），此时 Sigmoid 的梯度接近最大值（0.25），反向传播效率更高。
 
 ### **总结**
 将像素值归一化到 [0, 1] 的作用本质是：
@@ -119,20 +123,27 @@
    - **归一化维度**：在**特征维度**（即每个样本的所有特征）上计算均值和方差。
 
 2. **计算步骤**  
-   对于一个样本在某一层的输出向量 ![image](https://github.com/user-attachments/assets/80176298-16d4-44a7-8ea0-17a0e7bf4b6f)（\(d\) 为特征数）：  
+   对于一个样本在某一层的输出向量 $\mathbf{x}\in\mathbb{R}^d$（$d$ 为特征数）：
    - **计算均值与方差**：  
 
-![image](https://github.com/user-attachments/assets/19f60a2a-a091-4807-8257-62a277e7c75f)
+$$
+\mu=\frac{1}{d}\sum_{i=1}^{d}x_i,\qquad
+\sigma^2=\frac{1}{d}\sum_{i=1}^{d}(x_i-\mu)^2
+$$
 
    - **归一化**：  
 
-![image](https://github.com/user-attachments/assets/88a59781-1d03-48d7-bb43-5c04aa5ddeb7)
+$$
+\hat{x}_i=\frac{x_i-\mu}{\sqrt{\sigma^2+\epsilon}}\qquad(\epsilon\text{ 为防除零的小常数})
+$$
 
    - **缩放与平移**：  
 
-![image](https://github.com/user-attachments/assets/4c18e13f-2432-41cc-aa7e-0ccc9508261c)
+$$
+y_i=\gamma\hat{x}_i+\beta
+$$
 
-   其中，![image](https://github.com/user-attachments/assets/c5511bd8-bf2b-4ad8-9656-c103a223da21)和![image](https://github.com/user-attachments/assets/e4bfcac5-4127-427f-9a66-cf7738476ea7)是可学习的参数，用于保留网络的表达能力。
+   其中，$\gamma$ 和 $\beta$ 是可学习的参数，用于保留网络的表达能力。
 
 ### **与BatchNorm的关键区别**
 | **特性**       | **LayerNorm**                            | **BatchNorm**                            |
@@ -187,22 +198,24 @@
 
 ### **注意事项**
 1. **参数初始化**  
-   - 初始化缩放参数![image](https://github.com/user-attachments/assets/c493e797-97e6-4fb4-9e3c-2a753f3d3d35)为1，平移参数![image](https://github.com/user-attachments/assets/16727d0c-3308-4896-884d-6dd86beb19f1)为0，确保初始阶段归一化不改变数据分布。
+   - 初始化缩放参数 $\gamma$ 为 1，平移参数 $\beta$ 为 0，确保初始阶段归一化不改变数据分布。
 
 2. **与残差连接的协同**  
    - LayerNorm通常与残差连接（Residual Connection）配合使用，顺序一般为：
 
-![image](https://github.com/user-attachments/assets/8ba6cfc6-8344-4747-bdb8-77aa39a067bb)
+$$
+\text{输出}=\operatorname{LayerNorm}(x+\operatorname{Sublayer}(x))
+$$
      
    这种设计（如Transformer）能进一步稳定梯度传播。
 
 3. **计算开销**  
-   - 对特征维度计算均值和方差，计算复杂度为![image](https://github.com/user-attachments/assets/756103dd-f784-4687-af72-4147ef13b393)，在特征维度较大时可能影响速度。
+   - 对特征维度计算均值和方差，计算复杂度为 $O(d)$，在特征维度较大时可能影响速度。
 
 ### **数学直观解释**
 假设某一层的输出特征因某些神经元激活值过大或过小，导致后续层难以有效学习。LayerNorm通过以下两步解决问题：
 1. **去中心化与缩放**：将特征强制调整为均值为0、方差为1的标准分布，消除极端值影响。
-2. **可学习变换**：通过![image](https://github.com/user-attachments/assets/415beae7-775f-4581-be95-d7be9efef470)和![image](https://github.com/user-attachments/assets/a82b322b-eefc-4614-a6dd-821d118b3e8f)重新赋予模型调整分布的能力，避免丢失非线性特性。
+2. **可学习变换**：通过 $\gamma$ 和 $\beta$ 重新赋予模型调整分布的能力，避免丢失非线性特性。
 
 **总结**：LayerNorm通过标准化每个样本的特征分布，解决了BatchNorm在序列模型和小批量场景下的局限性，是Transformer、RNN等模型的核心组件之一。其设计平衡了稳定性与灵活性，成为现代深度学习中的基础技术。
 

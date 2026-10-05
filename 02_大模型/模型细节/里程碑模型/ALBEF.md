@@ -135,11 +135,12 @@ ALBEF 维护 image/text encoder 的 momentum teacher，并把历史 batch 的 em
 
 动量更新可以抽象成：
 
-```text
-theta_m = m * theta_m + (1 - m) * theta
-```
+$$
+\theta_m\leftarrow
+m\theta_m+(1-m)\theta.
+$$
 
-其中 `theta` 是在线模型参数，`theta_m` 是动量模型参数。动量模型变化更平滑，生成的 soft target 不容易因为当前 batch 噪声突然抖动。
+其中 $\theta$ 是在线模型参数，$\theta_m$ 是动量模型参数。动量模型变化更平滑，生成的 soft target 不容易因为当前 batch 噪声突然抖动。
 
 #### ITM 与 hard negative
 

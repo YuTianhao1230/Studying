@@ -16,9 +16,9 @@ Optimizer -> 根据 grad 更新参数
 
 最朴素的更新公式是：
 
-```text
-参数 = 参数 - 学习率 * 梯度
-```
+$$
+\theta\leftarrow\theta-\eta\nabla_\theta L.
+$$
 
 不同 optimizer 的区别，本质上就是**如何利用当前梯度、历史梯度、梯度尺度和正则项来更新参数**。
 
@@ -45,9 +45,9 @@ SGD 全称是 **Stochastic Gradient Descent，随机梯度下降**。
 
 最基础形式是：
 
-```text
-w = w - lr * grad
-```
+$$
+w\leftarrow w-\eta g.
+$$
 
 对 mini-batch $B_t$，随机梯度可写为：
 
@@ -87,10 +87,12 @@ Momentum 是在 SGD 上加“历史惯性”。
 
 普通 SGD 每一步只看当前梯度，容易被当前 batch 的噪声带偏。Momentum 会维护一个历史方向：
 
-```text
-历史方向 = momentum * 历史方向 + 当前梯度
-参数 = 参数 - lr * 历史方向
-```
+$$
+\begin{aligned}
+v_t&=\mu v_{t-1}+g_t,\\
+\theta_{t+1}&=\theta_t-\eta v_t.
+\end{aligned}
+$$
 
 直观理解：
 
@@ -214,7 +216,7 @@ Optimizer 决定模型如何根据梯度更新参数。训练时先前向计算 
 
 回答模板：
 
-SGD 是随机梯度下降，基本公式就是 `w = w - lr * grad`，沿着当前 mini-batch 梯度的反方向更新参数。它优点是简单、状态少，有些任务泛化不错；缺点是收敛慢、对学习率敏感，而且不同参数尺度差异大时不好调。大模型微调里参数量大、梯度分布复杂，所以一般不用纯 SGD，而是优先用 AdamW 这种自适应优化器。
+SGD 是随机梯度下降，基本公式就是 $w\leftarrow w-\eta g$，沿着当前 mini-batch 梯度的反方向更新参数。它优点是简单、状态少，有些任务泛化不错；缺点是收敛慢、对学习率敏感，而且不同参数尺度差异大时不好调。大模型微调里参数量大、梯度分布复杂，所以一般不用纯 SGD，而是优先用 AdamW 这种自适应优化器。
 
 ### Momentum 解决了 SGD 的什么问题？
 

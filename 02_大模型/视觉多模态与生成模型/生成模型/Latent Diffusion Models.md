@@ -37,7 +37,7 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 
    • 输入：原始图像x（像素空间）和条件信息（如文本、语义图、图像表示等）。  
 
-   • 输出：去噪后的生成图像![image](https://github.com/user-attachments/assets/a523bb74-ca11-4ab3-9a52-fb96fc9456be)（像素空间）。
+   • 输出：去噪后的生成图像 $\tilde{x}$（像素空间）。
 
 3. 核心模块  
    • 像素空间（Pixel Space）：原始高分辨率图像（如512×512×3）。  
@@ -51,20 +51,22 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 **分步骤流程解析**
 
 **1. 编码阶段（像素空间 → 潜在空间）**
-   • 输入：原始图像x通过编码器![image](https://github.com/user-attachments/assets/caff44fd-7319-4d26-a995-a167e5e88c14)压缩为低维潜在表示![image](https://github.com/user-attachments/assets/3d9b1456-83a9-4787-bbed-4dfa8ac52ee0)。  
+   • 输入：原始图像x通过编码器 $\mathcal{E}$ 压缩为低维潜在表示 $z=\mathcal{E}(x)$。  
 
    • 目的：消除人眼不可感知的冗余细节（如高频噪声），保留语义信息，降低后续扩散过程的计算量。
 
 **2. 扩散过程（潜在空间加噪）**
    
-   • 噪声注入：在潜在空间z中，通过多步前向扩散过程逐步添加噪声，生成带噪声的潜在表示![image](https://github.com/user-attachments/assets/80348d2c-8504-4b1a-bf16-32a50e583e12)。  
+   • 噪声注入：在潜在空间z中，通过多步前向扩散过程逐步添加噪声，生成带噪声的潜在表示 $z_T$。  
 
-![image](https://github.com/user-attachments/assets/bfae4fe4-72ec-4926-82dd-6ee887682471)
+$$
+z_t=\sqrt{\alpha_t}z_{t-1}+\sqrt{1-\alpha_t}\epsilon\qquad\left(\epsilon\sim\mathcal{N}(0,1)\right)
+$$
 
    • 时间步t：控制噪声强度（t=0为原始数据，t=T为纯噪声）。
 
 **3. 去噪阶段（U-Net + 条件控制）**
-   • 输入：带噪声的潜在表示![image](https://github.com/user-attachments/assets/f3990d34-e1d1-4e43-b4d7-b4bf7dd62b1c)和条件信息（文本、语义图等）。  
+   • 输入：带噪声的潜在表示 $z_T$ 和条件信息（文本、语义图等）。  
 
    • 去噪 U-Net：  
 
@@ -72,17 +74,19 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 
    ◦ 条件融合：  
 
-   ◦ 交叉注意力（Cross-Attention）：将条件信息（如文本编码![image](https://github.com/user-attachments/assets/b226bcca-e2ad-44b6-b405-35e17262d219)）通过QKV机制注入 U-Net。  
+   ◦ 交叉注意力（Cross-Attention）：将条件信息（如文本编码 $\tau_\theta(y)$）通过QKV机制注入 U-Net。  
 
-![image](https://github.com/user-attachments/assets/d52d02be-4248-4167-ae94-dbf0038eee2c)
+$$
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
+$$
 
    ◦ 拼接（Concat）：直接将条件信息与潜在表示拼接（用于简单条件，如类别标签）。  
 
-   • 输出：逐步去噪后的潜在表示![image](https://github.com/user-attachments/assets/d5f8f543-a860-4786-b83d-061b35bfe351)。
+   • 输出：逐步去噪后的潜在表示 $z_{T-1},z_{T-2},\ldots,z_0$。
 
 **4. 解码阶段（潜在空间 → 像素空间）**
   
-  • 解码器D：将去噪后的潜在表示![image](https://github.com/user-attachments/assets/e26a239b-5e8f-4c67-aac0-958f35ff3f93)解码为像素空间的生成图像![image](https://github.com/user-attachments/assets/057f3ade-2470-48c9-99e1-f82e707fea4c)。  
+  • 解码器D：将去噪后的潜在表示 $z_0$ 解码为像素空间的生成图像 $\tilde{x}=\mathcal{D}(z_0)$。  
 
    • 保真度：得益于潜在空间的语义保留，生成图像细节丰富且分辨率高（如1024×1024）。
 
@@ -90,7 +94,7 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 1. 条件控制机制  
    • 交叉注意力层（紫色模块）：  
 
-     ◦ 输入：条件信息（文本、语义图等）通过![image](https://github.com/user-attachments/assets/243a05cd-b90d-48fa-aba7-214498cfe29d)编码为键值对(K, V)，与 U-Net 的查询（Q）交互。  
+     ◦ 输入：条件信息（文本、语义图等）通过 $\tau_\theta(y)$ 编码为键值对(K, V)，与 U-Net 的查询（Q）交互。  
 
      ◦ 动态权重：注意力权重决定条件信息对去噪过程的控制强度。  
 
@@ -117,33 +121,35 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 ### **核心公式**
 
 该公式为潜在扩散模型（Latent Diffusion Model, LDM）的训练目标函数，用于指导模型学习如何从噪声中逐步重建数据。公式定义如下：
-![image](https://github.com/user-attachments/assets/7385a8f2-2997-461d-baa1-1bbbf332ba5b)
+$$
+\mathcal{L}_{DM}=\mathbb{E}_{x,\epsilon\sim\mathcal{N}(0,1),t}\left[\left\lVert\epsilon-\epsilon_\theta(x_t,t)\right\rVert_2^2\right]
+$$
 
 **符号解析**
 | 符号             | 含义                                                                 |
 |----------------------|--------------------------------------------------------------------------|
-| ![image](https://github.com/user-attachments/assets/98be7a15-422d-4842-abfb-eb6618dd0066)        | 期望值，表示对![image](https://github.com/user-attachments/assets/5018f694-b825-43cf-91fc-eb526d6bc0b9)的联合分布取平均。               |
+| $\mathbb{E}$        | 期望值，表示对 $x,\epsilon,t$ 的联合分布取平均。               |
 | x                | 原始数据（如图像），经过自编码器压缩到潜在空间后的表示。                 |
-| ![image](https://github.com/user-attachments/assets/0793bcd0-0804-42c7-a96d-2becfa45eda6) | 标准正态分布采样的随机噪声。                                             |
+| $\epsilon\sim\mathcal{N}(0,1)$ | 标准正态分布采样的随机噪声。                                             |
 | t                | 时间步（扩散过程的阶段），控制噪声添加的强度。                           |
-| ![image](https://github.com/user-attachments/assets/9c7c5fef-45de-47ee-9b69-3ee147b99526)              | 数据在时间步t时的噪声版本（潜在空间中的加噪状态）。                  |
-| ![image](https://github.com/user-attachments/assets/6a6c9d9a-19a2-4191-808a-ca639ed60285) | 神经网络的预测噪声，参数为![image](https://github.com/user-attachments/assets/9c58f70a-91a1-476e-a882-9556287e0ed3)，输入是![image](https://github.com/user-attachments/assets/35f98ef7-db00-4727-988a-f59bff760e40)和t。             |
-| ![image](https://github.com/user-attachments/assets/a38b4e39-e666-4075-a9b9-f52a5437a165)  | L2范数的平方，衡量预测噪声与真实噪声的差异。                              |
+| $x_t$              | 数据在时间步t时的噪声版本（潜在空间中的加噪状态）。                  |
+| $\epsilon_\theta(x_t,t)$ | 神经网络的预测噪声，参数为 $\theta$，输入是 $x_t$ 和t。             |
+| $\lVert\cdot\rVert_2^2$  | L2范数的平方，衡量预测噪声与真实噪声的差异。                              |
 
 **与潜在扩散模型（LDM）的关联**
 1. 潜在空间的高效性  
-   • ![image](https://github.com/user-attachments/assets/0636495b-8a31-4545-a1ae-4db9edb4b7fc)并非原始像素空间的数据，而是自编码器压缩后的低维潜在表示（如64×64维度）。  
+   • $x_t$ 并非原始像素空间的数据，而是自编码器压缩后的低维潜在表示（如64×64维度）。  
 
    • 在潜在空间中操作，避免了像素级冗余计算（如高频噪声建模），显著降低计算成本。
 
-2. 时间步\(t\)的动态控制  
-   • 不同\(t\)对应不同的噪声强度（由调度器定义，如线性或余弦调度）。  
+2. 时间步 $t$ 的动态控制
+   • 不同 $t$ 对应不同的噪声强度（由调度器定义，如线性或余弦调度）。
 
-   • 模型需根据\(t\)自适应调整去噪策略，例如：  
+   • 模型需根据 $t$ 自适应调整去噪策略，例如：
 
-     ◦ 早期\(t\)（大噪声）：关注全局结构恢复。  
+     ◦ 早期 $t$（大噪声）：关注全局结构恢复。
 
-     ◦ 后期\(t\)（小噪声）：细化局部细节。
+     ◦ 后期 $t$（小噪声）：细化局部细节。
 
 **实际效果**
 • 高质量生成：通过逐级去噪，模型能生成细节丰富的图像（如1024×1024分辨率）。  

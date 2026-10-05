@@ -102,11 +102,13 @@ GT 更新时保留原始标注。建立 `v1 -> v2` 版本差异，记录变更�
 
 #### 分类指标
 
-```text
-precision = TP / (TP + FP)
-recall    = TP / (TP + FN)
-F1        = 2 * precision * recall / (precision + recall)
-```
+$$
+\begin{aligned}
+\mathrm{precision} &= \frac{TP}{TP + FP} \\
+\mathrm{recall} &= \frac{TP}{TP + FN} \\
+F_1 &= \frac{2 \times \mathrm{precision} \times \mathrm{recall}}{\mathrm{precision} + \mathrm{recall}}
+\end{aligned}
+$$
 
 D2C 需要分别计算缺陷发现、缺陷类型、组件匹配和严重级别，并支持页面级与组件级下钻。
 

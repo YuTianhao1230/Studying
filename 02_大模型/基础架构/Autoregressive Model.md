@@ -16,9 +16,12 @@
 #### 数学原理：条件概率分解
 自回归模型通过链式法则将联合概率分布分解为条件概率的乘积：
 
-![image](https://github.com/user-attachments/assets/8cfd6338-e7cf-4e52-b4e8-d13b9c054d16)
+$$
+P(x_1, x_2, \ldots, x_T)
+= P(x_1) \cdot P(x_2 \mid x_1) \cdot P(x_3 \mid x_1, x_2) \cdots P(x_T \mid x_1, x_2, \ldots, x_{T-1})
+$$
 
-其中![image](https://github.com/user-attachments/assets/5150b004-a2ba-410b-8045-8a02acdf57bf)是序列中的元素。模型通过最大化训练数据的对数似然来学习这些条件概率。
+其中 $x_1, x_2, \ldots, x_T$ 是序列中的元素。模型通过最大化训练数据的对数似然来学习这些条件概率。
 
 #### 自回归模型的结构类型
 1. **基于循环神经网络（RNN/LSTM）**  

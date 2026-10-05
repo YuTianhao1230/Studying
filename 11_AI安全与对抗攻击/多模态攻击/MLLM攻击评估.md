@@ -23,9 +23,10 @@ MLLM 攻击评估关注开放式多模态输出下如何定义攻击成功率、
 
 ASR 通常写成：
 
-```text
-ASR = successful_attacks / attackable_samples
-```
+$$
+\mathrm{ASR}
+= \frac{\text{successful attacks}}{\text{attackable samples}}
+$$
 
 其中 attackable samples 应该是 clean 输入下原本回答正确或语义一致的样本。
 
@@ -100,7 +101,7 @@ LLM Judge：
 
 回答模板：
 
-> MLLM 输出是开放文本，ASR 必须先绑定任务成功条件。VQA 可定义为 clean 正确而攻击后答案错误，caption 可定义为关键对象、属性或关系出现事实性错误，OCR 则看关键字段是否识别错误。统计式是 `ASR=successful_attacks/attackable_samples`，分母只能包含 clean 输入下原本正确且满足攻击前提的样本。措辞变化、等价改写或正常拒答不能自动算攻击成功，判定规则要在实验前固定。
+> MLLM 输出是开放文本，ASR 必须先绑定任务成功条件。VQA 可定义为 clean 正确而攻击后答案错误，caption 可定义为关键对象、属性或关系出现事实性错误，OCR 则看关键字段是否识别错误。统计式是 $\mathrm{ASR}=\frac{\text{successful attacks}}{\text{attackable samples}}$，分母只能包含 clean 输入下原本正确且满足攻击前提的样本。措辞变化、等价改写或正常拒答不能自动算攻击成功，判定规则要在实验前固定。
 
 ### 2. 人工、规则和 LLM Judge 应如何选择，怎样控制 Judge 偏差？
 

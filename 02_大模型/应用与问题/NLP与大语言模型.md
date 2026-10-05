@@ -10,7 +10,7 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 
 1. Tokenization 是什么？BPE、WordPiece、SentencePiece 有什么区别？
 2. [Transformer](<../基础架构/Transformer.md>) 的 Encoder、Decoder、[Encoder-Decoder](<../基础架构/Decoder-only vs Encoder-Decoder.md>) 架构分别适合什么任务？
-3. [Self-Attention](<../基础架构/Self-Attention.md>) 的计算过程是什么？为什么要除以 `sqrt(d_k)`？
+3. [Self-Attention](<../基础架构/Self-Attention.md>) 的计算过程是什么？为什么要除以 $\sqrt{d_k}$？
 4. Multi-Head Attention 为什么有效？
 5. 位置编码有什么作用？绝对位置编码、[RoPE](<../基础架构/RoPE.md>)、ALiBi 有什么区别？
 6. [GPT](<../模型细节/里程碑模型/GPT.md>)、[BERT](<../模型细节/里程碑模型/BERT.md>)、[T5](<../模型细节/里程碑模型/T5.md>) 的训练目标和适用场景有什么不同？
@@ -36,7 +36,7 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 #### 回答要点
 
 - Attention 通过 Q 和 K 的相似度得到权重，再对 V 加权求和。
-- 除以 `sqrt(d_k)` 是为了控制点积方差，避免 softmax 输入过大导致梯度过小。
+- 除以 $\sqrt{d_k}$ 是为了控制点积方差，避免 softmax 输入过大导致梯度过小。
 - 多头注意力允许模型在不同子空间关注不同关系，例如局部、全局、语义、位置关系。
 - GPT 是自回归生成模型，BERT 是双向表征模型，T5 将任务统一为 text-to-text。
 - 幻觉来源包括训练分布缺陷、解码随机性、知识过期、上下文冲突、模型缺少不确定性表达。

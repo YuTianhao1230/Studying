@@ -14,15 +14,21 @@ FGSM 只做一次线性近似，攻击方向可能不够精细。I-FGSM/BIM 通�
 
 初始化：
 
-```text
-x_adv_0 = x
-```
+$$
+x_{\mathrm{adv}}^{(0)}=x
+$$
 
 每一步更新：
 
-```text
-x_adv_{t+1} = clip_{x, epsilon}(x_adv_t + alpha * sign(grad_x L(f(x_adv_t), y)))
-```
+$$
+x_{\mathrm{adv}}^{(t+1)}
+= \Pi_{B_\infty(x,\epsilon)}
+\left(
+x_{\mathrm{adv}}^{(t)}
++\alpha\,\operatorname{sign}
+\left(\nabla_x L(f(x_{\mathrm{adv}}^{(t)}),y)\right)
+\right)
+$$
 
 其中：
 
@@ -72,7 +78,7 @@ x_adv_{t+1} = clip_{x, epsilon}(x_adv_t + alpha * sign(grad_x L(f(x_adv_t), y)))
 
 回答模板：
 
-> I-FGSM/BIM 从 `x_adv_0=x` 出发，每一步执行 `x_adv_{t+1}=Proj_{B_inf(x,epsilon)}(x_adv_t+alpha*sign(grad_x L))`。`alpha` 控制单步搜索幅度，`epsilon` 限制相对原图的总扰动。每步重新计算梯度可以沿非线性损失面逐渐逼近高损失区域；投影则保证多次更新后的样本仍满足同一威胁模型。像素范围裁剪和扰动球投影解决的是两个不同约束，二者都不能省略。
+> I-FGSM/BIM 从 $x_{\mathrm{adv}}^{(0)}=x$ 出发，每一步执行 $x_{\mathrm{adv}}^{(t+1)}=\Pi_{B_\infty(x,\epsilon)}(x_{\mathrm{adv}}^{(t)}+\alpha\,\operatorname{sign}(\nabla_x L))$。`alpha` 控制单步搜索幅度，`epsilon` 限制相对原图的总扰动。每步重新计算梯度可以沿非线性损失面逐渐逼近高损失区域；投影则保证多次更新后的样本仍满足同一威胁模型。像素范围裁剪和扰动球投影解决的是两个不同约束，二者都不能省略。
 
 ### 2. I-FGSM/BIM 与 FGSM、PGD 的差别是什么？
 
