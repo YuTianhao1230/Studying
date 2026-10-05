@@ -105,7 +105,7 @@ GPU 擅长大规模并行计算，如果一次只处理一个很小的请求，�
 
 回答模板：
 
-Dynamic batching 是在一个很短的时间窗口（比如 5ms）内收集到达的请求，动态凑成一个 batch 一起执行，粒度是"整批同进同出"，适合请求长度差不多的场景。Continuous batching 是针对 LLM 生成长度差异大的问题：它允许请求在 decode 过程中动态进出正在执行的 batch，某个请求生成完就立刻退出、把新请求补进来，不用等整批都结束。所以 continuous batching 能大幅减少 decode 阶段的 GPU 空转，是 [vLLM](<vLLM.md>) 这类 LLM 推理引擎提升吞吐的关键。
+Dynamic batching 是在一个很短的时间窗口（比如 5ms）内收集到达的请求，动态凑成一个 batch 一起执行，粒度是"整批同进同出"，适合请求长度差不多的场景。Continuous batching 是针对 LLM 生成长度差异大的问题：它允许请求在 decode 过程中动态进出正在执行的 batch，某个请求生成完就立刻退出、把新请求补进来，不用等整批都结束。所以 continuous batching 能大幅减少 decode 阶段的 GPU 空转，是 [vLLM](<vLLM.md#vllm>) 这类 LLM 推理引擎提升吞吐的关键。
 
 ### batching 会不会增加延迟？
 
@@ -117,7 +117,7 @@ Dynamic batching 是在一个很短的时间窗口（比如 5ms）内收集到�
 
 ### LLM 推理中为什么 batching 比普通模型更复杂？
 
-回答思路：从变长、[KV Cache](<KV_Cache与Prefill_Decode.md>) 和动态调度三点说。
+回答思路：从变长、[KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 和动态调度三点说。
 
 回答模板：
 

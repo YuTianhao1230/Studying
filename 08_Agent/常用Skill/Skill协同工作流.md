@@ -10,9 +10,9 @@ Skill 协同不是把所有能力同时加载，而是根据任务阶段选择�
 
 | 能力 | 主要职责 | 典型产物 |
 | --- | --- | --- |
-| [Superpowers](<Superpowers.md>) | 约束软件开发流程，覆盖设计、计划、实现、测试、调试、审查和完成验证。 | 设计结论、实现计划、测试证据和审查结果。 |
-| [Planning with Files](<Planning_with_Files.md>) | 持久化长任务的目标、发现、阶段状态、错误和下一步。 | `task_plan.md`、`findings.md`、`progress.md`。 |
-| [No Negative Echo](<No_Negative_Echo.md>) | 根据最终接受状态整理标题、正文、元数据和交接表面。 | 与最终结果一致的文档、说明和 handoff。 |
+| [Superpowers](<Superpowers.md#superpowers>) | 约束软件开发流程，覆盖设计、计划、实现、测试、调试、审查和完成验证。 | 设计结论、实现计划、测试证据和审查结果。 |
+| [Planning with Files](<Planning_with_Files.md#planning-with-files>) | 持久化长任务的目标、发现、阶段状态、错误和下一步。 | `task_plan.md`、`findings.md`、`progress.md`。 |
+| [No Negative Echo](<No_Negative_Echo.md#no-negative-echo>) | 根据最终接受状态整理标题、正文、元数据和交接表面。 | 与最终结果一致的文档、说明和 handoff。 |
 
 三者解决的问题不同：Superpowers 决定开发阶段采用什么方法，Planning with Files 保存跨阶段状态，No Negative Echo 在交付前检查读者实际看到的表面。它们可以组合，但不能互相替代。
 

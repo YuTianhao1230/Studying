@@ -6,5 +6,5 @@
 
 | 文件 | 内容说明 |
 | --- | --- |
-| [UNet.md](<UNet.md>) | UNet 的编码器-解码器结构、跳连和视觉生成任务中的作用。 |
-| [Latent Diffusion Models.md](<Latent Diffusion Models.md>) | 在 latent space 中做扩散建模的思路和效率优势。 |
+| [UNet.md](<UNet.md#unet>) | UNet 的编码器-解码器结构、跳连和视觉生成任务中的作用。 |
+| [Latent Diffusion Models.md](<Latent Diffusion Models.md#latent-diffusion-models>) | 在 latent space 中做扩散建模的思路和效率优势。 |

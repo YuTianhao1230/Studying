@@ -6,7 +6,7 @@
 
 Workflow 是预先设计好的多步骤执行流程，用代码或配置把 LLM、工具和规则串起来，让系统按确定路径完成任务。
 
-本卡片统一说明 Workflow、Planning、ReAct 及常见编排模式的定义与选型。LangGraph 中的 state、node、edge、reducer、checkpoint 和 D2C 实现约束见[《Workflow 与 LangGraph 编排》](<../实战落地/Workflow与LangGraph编排.md>)。
+本卡片统一说明 Workflow、Planning、ReAct 及常见编排模式的定义与选型。LangGraph 中的 state、node、edge、reducer、checkpoint 和 D2C 实现约束见[《Workflow 与 LangGraph 编排》](<../实战落地/Workflow与LangGraph编排.md#workflow-与-langgraph-编排>)。
 
 ### Workflow 和 Agent 的区别
 
@@ -16,7 +16,7 @@ Workflow 更强调“流程预定义”：
 步骤 A -> 步骤 B -> 步骤 C -> 输出
 ```
 
-[Agent](<Agent.md>) 更强调“模型动态决策”：
+[Agent](<Agent.md#agent>) 更强调“模型动态决策”：
 
 ```text
 观察状态 -> 模型决定下一步 -> 执行 -> 再观察 -> 再决策

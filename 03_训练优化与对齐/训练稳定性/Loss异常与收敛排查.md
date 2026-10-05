@@ -44,7 +44,7 @@
 - eval 指标实现有问题。
 - 推理参数和训练目标不一致。
 - 数据泄漏导致训练表现虚高。
-- [SFT](<../后训练与对齐/SFT 监督微调.md>) 学到了格式，但没有学到真实能力。
+- [SFT](<../后训练与对齐/SFT 监督微调.md#sft-监督微调>) 学到了格式，但没有学到真实能力。
 
 ## 排查流程
 
@@ -128,12 +128,12 @@ $$
 - 是否出现 overflow。
 - loss scaling 是否异常。
 - attention logits 是否过大。
-- 某些[算子](<../../05_推理部署与系统/推理工程/算子.md>)是否不稳定。
+- 某些[算子](<../../05_推理部署与系统/推理工程/算子.md#算子>)是否不稳定。
 - 是否有 rank 先 NaN，随后扩散到全局。
 
 大模型训练中，BF16 通常比 FP16 更稳。
 
-Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，避免显式计算大指数或 `log(0)`；基础公式见[参数初始化与数值稳定性](<../../01_机器学习基础/深度学习基础/参数初始化与数值稳定性.md>)。FP16 发生 overflow 时还需检查动态 loss scaling，不能仅靠加入 epsilon 掩盖异常。
+Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，避免显式计算大指数或 `log(0)`；基础公式见[参数初始化与数值稳定性](<../../01_机器学习基础/深度学习基础/参数初始化与数值稳定性.md#参数初始化与数值稳定性>)。FP16 发生 overflow 时还需检查动态 loss scaling，不能仅靠加入 epsilon 掩盖异常。
 
 ### 检查分布式训练
 
@@ -141,7 +141,7 @@ Softmax、LogSumExp 和交叉熵应使用接受 logits 的稳定融合实现，�
 
 - global batch size 是否算错。
 - gradient accumulation step 是否一致。
-- DDP / [FSDP](<../训练框架与并行/FSDP.md>) 参数同步是否正常。
+- DDP / [FSDP](<../训练框架与并行/FSDP.md#fsdp>) 参数同步是否正常。
 - sampler 是否重复或漏样本。
 - 每个 rank 的数据分布是否一致。
 - checkpoint 是否完整恢复参数、optimizer、scheduler 和随机种子。

@@ -8,7 +8,7 @@ TCL（Triple Contrastive Learning，三重对比学习）是视觉语言预训�
 
 ### 解决的问题
 
-[CLIP](<CLIP.md>)、[ALBEF](<ALBEF.md>) 等方法使用图文对比进行 Cross-Modal Alignment（CMA，跨模态对齐）。TCL 论文指出，只做 CMA 仍有两个局限：
+[CLIP](<CLIP.md#clip>)、[ALBEF](<ALBEF.md#albef>) 等方法使用图文对比进行 Cross-Modal Alignment（CMA，跨模态对齐）。TCL 论文指出，只做 CMA 仍有两个局限：
 
 - 图像与文本通常不能完整描述彼此。只拉近二者的共享语义，可能忽略各模态中未被另一模态描述的信息。
 - Web 图文对存在噪声，仅依赖配对监督可能使单模态表示退化，无法保证同模态语义相近的样本仍然接近。

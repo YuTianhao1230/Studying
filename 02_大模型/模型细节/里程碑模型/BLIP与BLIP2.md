@@ -23,7 +23,7 @@ BLIP-2 解决的问题是：
 
 #### BLIP 架构
 
-BLIP 使用 Multimodal Mixture of [Encoder-Decoder](<../../基础架构/Decoder-only vs Encoder-Decoder.md>)，简称 MED。它通过共享部分 [Transformer](<../../基础架构/Transformer.md>) 层，使模型同时支持三种功能：
+BLIP 使用 Multimodal Mixture of [Encoder-Decoder](<../../基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)，简称 MED。它通过共享部分 [Transformer](<../../基础架构/Transformer.md#transformer>) 层，使模型同时支持三种功能：
 
 ```text
 image
@@ -97,7 +97,7 @@ Q-Former 的作用是用少量 query token 从图像特征中抽取与语言相�
 
 ### 做了什么改变
 
-BLIP 相比 [ALBEF](<ALBEF.md>)：
+BLIP 相比 [ALBEF](<ALBEF.md#albef>)：
 
 - 不只做理解，也做生成。
 - 用 captioner/filter 改善 web caption 噪声。

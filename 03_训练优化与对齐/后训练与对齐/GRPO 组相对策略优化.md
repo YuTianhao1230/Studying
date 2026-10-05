@@ -8,7 +8,7 @@ GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**�
 
 ### 背景
 
-传统 [RLHF](<RLHF 基于人类反馈的强化学习.md>) 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。
+传统 [RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。
 
 这个链路的问题在于 Critic 很重。在大模型训练里，Critic 往往和 policy 同规模，意味着额外的显存、额外的前向计算、额外的训练稳定性问题。PPO 本身也比较难调，学习率、KL 系数、clip range、reward scale、rollout 配置都会影响训练稳定性。GRPO 的提出就是为了降低这部分复杂度：**既保留强化学习的在线探索能力，又尽量去掉 Critic 带来的系统成本。**
 
@@ -16,7 +16,7 @@ GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**�
 
 高于同题组内平均奖励的回答得到正优势，低于均值的回答得到负优势，分别提供提高与降低生成概率的激励。优势不是“正确标签”：奖励为 0 也可能产生负优势，所有回答奖励都高也可能没有组内相对信号。
 
-GRPO 沿用 [PPO](<PPO 近端策略优化.md>) 类的 clipped surrogate，但用组内奖励统计替换常见 Actor-Critic 实现中的优势估计。Clip 裁剪的是 surrogate 激励，不是实际概率比或 KL 的硬约束。组均值包含当前样本、标准差也来自随机采样，因此不能直接套用状态 baseline 无偏证明；相关推导见 [强化学习基础](<../../01_机器学习基础/概率与序列决策/强化学习基础.md>)。
+GRPO 沿用 [PPO](<PPO 近端策略优化.md#ppo-近端策略优化>) 类的 clipped surrogate，但用组内奖励统计替换常见 Actor-Critic 实现中的优势估计。Clip 裁剪的是 surrogate 激励，不是实际概率比或 KL 的硬约束。组均值包含当前样本、标准差也来自随机采样，因此不能直接套用状态 baseline 无偏证明；相关推导见 [强化学习基础](<../../01_机器学习基础/概率与序列决策/强化学习基础.md#强化学习基础>)。
 
 ### Rollout、Verifier 和 Reward 的分工
 
@@ -194,7 +194,7 @@ GRPO 可以直接从 Base Model 开始，算法本身不要求 SFT 冷启动。�
 
 ### 和 PPO、DPO 的区别
 
-GRPO、PPO、[DPO](<DPO 直接偏好优化.md>) 都服务于模型对齐或能力提升，但它们的训练范式不同。
+GRPO、PPO、[DPO](<DPO 直接偏好优化.md#dpo-直接偏好优化>) 都服务于模型对齐或能力提升，但它们的训练范式不同。
 
 常见 PPO 使用 Actor-Critic 并在线采样；典型 DPO 直接使用 `(prompt, chosen, rejected)` 离线偏好对训练；GRPO 则在线采样多条候选并用组内奖励构造优势。GRPO 省去 Critic 成本，但总成本还取决于组大小、回答长度和 verifier 开销，不能仅凭算法名排序。
 
@@ -209,7 +209,7 @@ GRPO、PPO、[DPO](<DPO 直接偏好优化.md>) 都服务于模型对齐或能�
 
 ### 适用场景
 
-GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 [Agent](<../../08_Agent/基础概念/Agent.md>) 任务。
+GRPO 特别适合 **RLVR**，也就是 Reinforcement Learning with Verifiable Rewards。典型场景包括数学推理、代码生成、结构化输出、工具调用和部分 [Agent](<../../08_Agent/基础概念/Agent.md#agent>) 任务。
 
 数学题可以检查最终答案是否正确，代码题可以跑单测，格式任务可以做 JSON schema 校验，工具调用任务可以检查执行结果是否达成目标。这些任务的共同点是 reward 相对明确，不完全依赖人类主观偏好，因此更适合用 GRPO 这类在线 RL 方法强化模型的推理路径。
 
@@ -240,7 +240,7 @@ GRPO 省去了 Critic 的参数、优化器状态及训练计算，并能直接�
 
 ### 相关概念
 
-[PPO](<PPO 近端策略优化.md>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
+[PPO](<PPO 近端策略优化.md#ppo-近端策略优化>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md#dpo-直接偏好优化>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
 
 ## 面试应对
 
@@ -332,4 +332,4 @@ GRPO 最大风险仍然是 reward 质量。如果 reward 只看最终答案，�
 
 回答模板：
 
-我会先确认任务是否有可靠 reward，比如数学答案、代码单测或工具执行结果。然后设置 baseline，比如 [SFT](<SFT 监督微调.md>)、DPO 或不做 RL 的模型，对比 GRPO 是否提升目标能力。评测时不能只看平均分，还要看题型、难度、长度、领域的分桶结果，并抽查 bad case。同时要监控 KL、reward 分布、response 长度、pass rate、训练吞吐和显存成本，防止 reward hacking 或能力退化。只有目标指标提升、护栏指标稳定、成本可接受，才说明 GRPO 真的有效。
+我会先确认任务是否有可靠 reward，比如数学答案、代码单测或工具执行结果。然后设置 baseline，比如 [SFT](<SFT 监督微调.md#sft-监督微调>)、DPO 或不做 RL 的模型，对比 GRPO 是否提升目标能力。评测时不能只看平均分，还要看题型、难度、长度、领域的分桶结果，并抽查 bad case。同时要监控 KL、reward 分布、response 长度、pass rate、训练吞吐和显存成本，防止 reward hacking 或能力退化。只有目标指标提升、护栏指标稳定、成本可接受，才说明 GRPO 真的有效。

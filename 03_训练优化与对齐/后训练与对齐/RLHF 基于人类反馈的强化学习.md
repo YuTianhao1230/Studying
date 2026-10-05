@@ -19,7 +19,7 @@ RLHF，Reinforcement Learning from Human Feedback，是用人类偏好训练奖�
 
 ### 为什么需要 RLHF
 
-[SFT](<SFT 监督微调.md>) 能让模型学会回答格式，但不一定能优化这些偏好：
+[SFT](<SFT 监督微调.md#sft-监督微调>) 能让模型学会回答格式，但不一定能优化这些偏好：
 
 - 有帮助。
 - 真实可靠。
@@ -32,7 +32,7 @@ RLHF 试图把这些偏好转成可优化的奖励信号。
 
 ### Reward Model
 
-[Reward Model](<Reward Model 与 Grader 奖励模型与评分器.md>) 输入 prompt 和 answer，输出一个分数，表示该回答有多符合偏好。
+[Reward Model](<Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>) 输入 prompt 和 answer，输出一个分数，表示该回答有多符合偏好。
 
 训练数据通常来自：
 
@@ -42,7 +42,7 @@ RLHF 试图把这些偏好转成可优化的奖励信号。
 
 ### PPO 阶段
 
-[PPO](<PPO 近端策略优化.md>) 把语言模型看成策略模型，通过 Reward Model 给出的奖励进行优化。
+[PPO](<PPO 近端策略优化.md#ppo-近端策略优化>) 把语言模型看成策略模型，通过 Reward Model 给出的奖励进行优化。
 
 实践中会加入 KL 约束，避免模型偏离 SFT 模型太远：
 
@@ -69,7 +69,7 @@ $$
 ### 和 DPO 的区别
 
 - RLHF + PPO：显式训练 Reward Model，再强化学习优化。
-- [DPO](<DPO 直接偏好优化.md>)：直接用偏好对优化策略，不单独训练 Reward Model。
+- [DPO](<DPO 直接偏好优化.md#dpo-直接偏好优化>)：直接用偏好对优化策略，不单独训练 Reward Model。
 
 DPO 更简单稳定，但表达能力和可控性取决于数据和目标设计。
 

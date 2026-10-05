@@ -4,9 +4,9 @@
 
 ### 概述
 
-Guardrails 是 [Agent](<Agent.md>) 系统的安全边界和质量约束；Human-in-the-Loop 是在关键节点引入人工确认、审核或接管。
+Guardrails 是 [Agent](<Agent.md#agent>) 系统的安全边界和质量约束；Human-in-the-Loop 是在关键节点引入人工确认、审核或接管。
 
-本卡片是 Guardrails/HITL 的通用控制机制说明，统一定义输入输出校验、工具权限、执行预算、dry-run、人工确认和审计。生产环境中的威胁模型、Secret、Sandbox、多租户隔离和部署实现见[《安全、权限与生产部署》](<../实战落地/安全权限与生产部署.md>)。
+本卡片是 Guardrails/HITL 的通用控制机制说明，统一定义输入输出校验、工具权限、执行预算、dry-run、人工确认和审计。生产环境中的威胁模型、Secret、Sandbox、多租户隔离和部署实现见[《安全、权限与生产部署》](<../实战落地/安全权限与生产部署.md#安全权限与生产部署>)。
 
 ### 为什么需要 Guardrails
 

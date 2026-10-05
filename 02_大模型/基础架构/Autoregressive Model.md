@@ -4,7 +4,7 @@
 
 ### 概述
 
-自回归模型（Autoregressive Model）的核心思想是：当前数据点由过去若干数据点决定。它最初用于时间序列分析（如 ARIMA），后来被扩展为生成模型，通过逐步预测下一个 token 来生成序列，广泛应用于文本、图像、音频等生成任务，也是 [GPT](<../模型细节/里程碑模型/GPT.md>) 类大语言模型的基础范式。
+自回归模型（Autoregressive Model）的核心思想是：当前数据点由过去若干数据点决定。它最初用于时间序列分析（如 ARIMA），后来被扩展为生成模型，通过逐步预测下一个 token 来生成序列，广泛应用于文本、图像、音频等生成任务，也是 [GPT](<../模型细节/里程碑模型/GPT.md#gpt>) 类大语言模型的基础范式。
 
 ### 自回归模型详解及应用
 
@@ -26,11 +26,11 @@ $$
 #### 自回归模型的结构类型
 1. **基于循环神经网络（RNN/LSTM）**  
    • **原理**：利用隐状态传递历史信息，逐个生成序列元素。  
-   • **示例**：早期文本生成模型（如[LSTM](<../../01_机器学习基础/深度学习基础/LSTM.md>)语言模型）。
+   • **示例**：早期文本生成模型（如[LSTM](<../../01_机器学习基础/深度学习基础/LSTM.md#lstm>)语言模型）。
    • **局限**：难以捕捉长距离依赖，生成速度慢。
 
-2. **基于[Transformer](<Transformer.md>)的解码器**  
-   • **原理**：通过自注意力机制（[Self-Attention](<Self-Attention.md>)）捕捉全局依赖关系。  
+2. **基于[Transformer](<Transformer.md#transformer>)的解码器**  
+   • **原理**：通过自注意力机制（[Self-Attention](<Self-Attention.md#self-attention>)）捕捉全局依赖关系。  
    • **示例**：GPT系列（GPT-3、ChatGPT）、BART（仅解码器部分）。  
    • **优势**：并行训练（通过掩码实现），生成质量高。
 
@@ -46,7 +46,7 @@ $$
 
 2. **推理阶段**  
    • **自回归生成**：每一步将当前生成的元素作为下一步的输入，无法并行。  
-   • **解码策略**：贪心搜索（Greedy Search）、束搜索（[Beam Search](<../../06_Python与工程/PyTorch/Beam_Search.md>)）、Top-k采样、核采样（Nucleus Sampling）等。
+   • **解码策略**：贪心搜索（Greedy Search）、束搜索（[Beam Search](<../../06_Python与工程/PyTorch/Beam_Search.md#beam-search>)）、Top-k采样、核采样（Nucleus Sampling）等。
 
 #### 自回归模型的典型应用
 1. **文本生成**  
@@ -119,7 +119,7 @@ $$
 
 ### 自回归模型和 Masked LM 有什么区别？
 
-回答思路：从训练目标和适用任务区分 GPT 与 [BERT](<../模型细节/里程碑模型/BERT.md>)。
+回答思路：从训练目标和适用任务区分 GPT 与 [BERT](<../模型细节/里程碑模型/BERT.md#bert>)。
 
 回答模板：
 

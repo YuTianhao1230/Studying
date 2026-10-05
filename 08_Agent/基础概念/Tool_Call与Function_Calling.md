@@ -6,7 +6,7 @@
 
 Tool Call 或 Function Calling 是让模型以结构化方式表达“需要调用外部能力”的机制。模型不直接执行函数，而是生成调用意图；外层编排器负责校验参数、检查权限、执行工具、处理错误，再把结构化结果返回给模型或下游节点。
 
-本卡片是 Tool Call/Function Calling 与 MCP 的通用机制说明，统一定义调用链路、Tool Schema、MCP 对象、结构化结果和错误模型。生产环境中的传输选型、身份授权、审批、审计和工具治理见[《Tool 与 MCP 链路、授权和治理》](<../实战落地/Tool与MCP链路、授权和治理.md>)。
+本卡片是 Tool Call/Function Calling 与 MCP 的通用机制说明，统一定义调用链路、Tool Schema、MCP 对象、结构化结果和错误模型。生产环境中的传输选型、身份授权、审批、审计和工具治理见[《Tool 与 MCP 链路、授权和治理》](<../实战落地/Tool与MCP链路、授权和治理.md#tool-与-mcp-链路授权和治理>)。
 
 ### 为什么需要 Tool Call
 

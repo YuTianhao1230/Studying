@@ -48,7 +48,7 @@ Grounding 是多模态可靠性和可解释性的基础。
 
 在屏幕截图中定位按钮、输入框、菜单等交互元素。
 
-这和 GUI [Agent](<../../../08_Agent/基础概念/Agent.md>)、Computer Use 关系很强。
+这和 GUI [Agent](<../../../08_Agent/基础概念/Agent.md#agent>)、Computer Use 关系很强。
 
 ### 关键能力
 

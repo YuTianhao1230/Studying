@@ -8,7 +8,7 @@
 
 | 文件 | 内容 |
 | --- | --- |
-| [基础架构核心训练](<基础架构核心训练.md>) | Transformer、Self-Attention、QKV、Decoder-only、自回归、RoPE、Pre/Post-Norm 和 RMSNorm。 |
-| [高效架构与推理训练](<高效架构与推理训练.md>) | KV Cache、Prefill/Decode、MHA/MQA/GQA/MLA、MoE、长上下文、量化和推理吞吐。 |
-| [预训练与生成策略训练](<预训练与生成策略训练.md>) | Tokenizer、预训练目标、数据处理、Scaling Law、长上下文和采样策略。 |
-| [应用、多模态与模型选型训练](<应用、多模态与模型选型训练.md>) | RAG、Prompt、CoT、幻觉、模型架构选型、VLM、Grounding、视频和扩散模型。 |
+| [基础架构核心训练](<基础架构核心训练.md#基础架构核心训练>) | Transformer、Self-Attention、QKV、Decoder-only、自回归、RoPE、Pre/Post-Norm 和 RMSNorm。 |
+| [高效架构与推理训练](<高效架构与推理训练.md#高效架构与推理训练>) | KV Cache、Prefill/Decode、MHA/MQA/GQA/MLA、MoE、长上下文、量化和推理吞吐。 |
+| [预训练与生成策略训练](<预训练与生成策略训练.md#预训练与生成策略训练>) | Tokenizer、预训练目标、数据处理、Scaling Law、长上下文和采样策略。 |
+| [应用、多模态与模型选型训练](<应用、多模态与模型选型训练.md#应用多模态与模型选型训练>) | RAG、Prompt、CoT、幻觉、模型架构选型、VLM、Grounding、视频和扩散模型。 |

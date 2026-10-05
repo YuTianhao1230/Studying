@@ -4,7 +4,7 @@
 
 ### 概述
 
-Megatron-LM 是 NVIDIA 开源的大模型训练框架，核心价值是提供张量并行、流水并行、序列并行等能力，用于训练超大规模 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 模型。
+Megatron-LM 是 NVIDIA 开源的大模型训练框架，核心价值是提供张量并行、流水并行、序列并行等能力，用于训练超大规模 [Transformer](<../../02_大模型/基础架构/Transformer.md#transformer>) 模型。
 
 ### 为什么重要
 
@@ -23,7 +23,7 @@ Megatron-LM 主要解决：
 
 把单层矩阵计算切到多张 GPU 上。
 
-例如 Transformer 中的 MLP 或 [Attention](<../../02_大模型/基础架构/Self-Attention.md>) 权重矩阵，可以按列或行切分。
+例如 Transformer 中的 MLP 或 [Attention](<../../02_大模型/基础架构/Self-Attention.md#self-attention>) 权重矩阵，可以按列或行切分。
 
 适合：
 
@@ -85,7 +85,7 @@ Data Parallel
 ### 和 DeepSpeed 的关系
 
 - Megatron-LM 更强调模型并行，尤其是 Tensor Parallel 和 Pipeline Parallel。
-- [DeepSpeed](<DeepSpeed.md>) 更强调 [ZeRO](<ZeRO.md>)、优化器状态切分、训练加速和系统工程。
+- [DeepSpeed](<DeepSpeed.md#deepspeed>) 更强调 [ZeRO](<ZeRO.md#zero>)、优化器状态切分、训练加速和系统工程。
 - 实际训练中常见 Megatron-DeepSpeed 组合。
 
 ### 常见瓶颈

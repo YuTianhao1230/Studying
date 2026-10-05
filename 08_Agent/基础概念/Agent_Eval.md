@@ -4,9 +4,9 @@
 
 ### 概述
 
-[Agent](<Agent.md>) Eval 是评估 Agent 是否能稳定完成任务的体系，不只评最终答案，还要评规划、工具调用、轨迹、成本、安全和可恢复性。
+[Agent](<Agent.md#agent>) Eval 是评估 Agent 是否能稳定完成任务的体系，不只评最终答案，还要评规划、工具调用、轨迹、成本、安全和可恢复性。
 
-本卡片是 Agent Eval 的通用机制说明，统一定义 Harness、trajectory、评测维度、回放、版本比较和失败分类。D2C 数据集、GT 版本、VLM 指标及受控写回见[《评测、Harness 与 GT 回流》](<../实战落地/评测Harness与GT回流.md>)。
+本卡片是 Agent Eval 的通用机制说明，统一定义 Harness、trajectory、评测维度、回放、版本比较和失败分类。D2C 数据集、GT 版本、VLM 指标及受控写回见[《评测、Harness 与 GT 回流》](<../实战落地/评测Harness与GT回流.md#评测harness-与-gt-回流>)。
 
 ### 和普通模型评测的区别
 
@@ -171,7 +171,7 @@ Agent 是否高效。
 
 #### Classification Metrics
 
-对分类或缺陷检测任务，常用 Precision、Recall、F1 和 Accuracy。公式、零分母及宏/微平均规则统一见[指标与统计计算](<../../04_评测实验与数据质量/指标与统计计算.md>)；Agent 评测还必须能下钻到 case、任务类型、错误类别和轨迹步骤，避免平均值掩盖严重回归。
+对分类或缺陷检测任务，常用 Precision、Recall、F1 和 Accuracy。公式、零分母及宏/微平均规则统一见[指标与统计计算](<../../04_评测实验与数据质量/指标与统计计算.md#指标与统计计算>)；Agent 评测还必须能下钻到 case、任务类型、错误类别和轨迹步骤，避免平均值掩盖严重回归。
 
 ### 评测样例类型
 
@@ -187,7 +187,7 @@ Agent 是否高效。
 - LLM Judge：让模型按 rubric 评分。
 - Trace Review：人工或模型审查 trajectory。
 - Golden Set：固定任务集回归。
-- A/B Test：比较两个 Agent、Prompt、[Skill](<Skill.md>) 或模型版本。
+- A/B Test：比较两个 Agent、Prompt、[Skill](<Skill.md#skill>) 或模型版本。
 
 ### 回放与版本比较
 

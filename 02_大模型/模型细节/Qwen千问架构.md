@@ -35,11 +35,11 @@ SigLIP-2-based Vision Encoder
 Qwen3 负责强文本理解、推理和生成；Qwen3-VL 在它前面接入视觉编码和视觉 token 对齐，让图像、视频、文档、OCR、GUI 截图也能进入同一个自回归解码器统一推理。
 ```
 
-如果要专门理解“文本、图像和视频到底怎样经过 processor 并进入模型”，请继续阅读[Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。该文进一步区分了原始帧与 temporal patch，并展开说明视频 timestamp、`video_grid_thw`、Interleaved-MRoPE 和 DeepStack 的工程链路。
+如果要专门理解“文本、图像和视频到底怎样经过 processor 并进入模型”，请继续阅读[Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>)。该文进一步区分了原始帧与 temporal patch，并展开说明视频 timestamp、`video_grid_thw`、Interleaved-MRoPE 和 DeepStack 的工程链路。
 
 ### Qwen3 文本模型架构
 
-Qwen3 文本模型仍然是主流的 **[Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md>) [Transformer](<../基础架构/Transformer.md>)**：
+Qwen3 文本模型仍然是主流的 **[Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>) [Transformer](<../基础架构/Transformer.md#transformer>)**：
 
 ```text
 token ids
@@ -56,12 +56,12 @@ token ids
 | --- | --- | --- |
 | Token embedding | hidden size 约 4096 | 把 token id 映射为连续向量 |
 | Decoder block | 约 36 层 | 堆叠 attention 和 FFN 形成深层语义建模 |
-| [Attention](<../基础架构/Self-Attention.md>) | 32 query heads，8 KV heads | [GQA](<../基础架构/GQA.md>)，降低 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 和推理成本 |
-| Position encoding | [RoPE](<../基础架构/RoPE.md>) | 注入位置信息，支撑长上下文 |
+| [Attention](<../基础架构/Self-Attention.md#self-attention>) | 32 query heads，8 KV heads | [GQA](<../基础架构/GQA.md#mha-mqa-gqa>)，降低 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 和推理成本 |
+| Position encoding | [RoPE](<../基础架构/RoPE.md#rope>) | 注入位置信息，支撑长上下文 |
 | Attention stabilization | QK-Norm | 对 query/key 做归一化，提高注意力稳定性 |
 | Norm | Pre-RMSNorm | 子层前归一化，训练更稳定 |
 | FFN | SwiGLU-style MLP，中间维度约 3 x hidden size | 门控前馈网络，增强非线性表达 |
-| Output | final [RMSNorm](<../基础架构/RMSNorm.md>) + linear output layer，词表约 151k | 输出 next-token logits |
+| Output | final [RMSNorm](<../基础架构/RMSNorm.md#rmsnorm>) + linear output layer，词表约 151k | 输出 next-token logits |
 | Context | 支持长上下文，例如 128k 级别 | 长文档、长视频、多轮对话会共同消耗上下文 |
 
 ![Qwen3-8B Decoder 架构图](assets/qwen3-vl/qwen3_8b_decoder.png)
@@ -96,18 +96,18 @@ x
 - **RoPE**：把位置信息注入 query/key，适合相对位置建模和长上下文扩展。
 - **QK-Norm**：对 query/key 做归一化，缓解 attention logits 过大或不稳定的问题。
 - **Pre-RMSNorm**：每个子层前先归一化，让深层 Transformer 更稳定。
-- **[SwiGLU](<../../01_机器学习基础/深度学习基础/常见激活函数.md>)**：门控 FFN，表达能力通常比普通 MLP 更强。
+- **[SwiGLU](<../../01_机器学习基础/深度学习基础/常见激活函数.md#常见激活函数>)**：门控 FFN，表达能力通常比普通 MLP 更强。
 
 ### Qwen3 为什么仍然是 Decoder-only
 
-Qwen3 和 [GPT](<里程碑模型/GPT.md>)、[Llama](<里程碑模型/Llama.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>) 等主流生成模型一样采用 Decoder-only，原因是：
+Qwen3 和 [GPT](<里程碑模型/GPT.md#gpt>)、[Llama](<里程碑模型/Llama.md#llama-架构>)、[DeepSeek](<里程碑模型/DeepSeek.md#deepseek-架构>) 等主流生成模型一样采用 Decoder-only，原因是：
 
 1. **任务统一**：对话、代码、数学推理、工具调用、结构化输出都可以统一成 next-token prediction。
 2. **训练目标简单**：预训练直接做自回归语言建模，不需要 encoder-decoder 两套结构。
-3. **推理工程成熟**：[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[Continuous Batching](<../../05_推理部署与系统/推理工程/Batching.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、[量化](<../../05_推理部署与系统/推理工程/量化.md>)、张量并行都主要围绕 decoder-only 优化。
-4. **后训练方便**：[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md>)、长 [CoT](<../应用与问题/CoT.md>) 蒸馏都能直接作用在生成序列上。
+3. **推理工程成熟**：[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、[Continuous Batching](<../../05_推理部署与系统/推理工程/Batching.md#batching>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md#vllm>)、[量化](<../../05_推理部署与系统/推理工程/量化.md#量化>)、张量并行都主要围绕 decoder-only 优化。
+4. **后训练方便**：[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md#dpo-直接偏好优化>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>)、长 [CoT](<../应用与问题/CoT.md#cot>) 蒸馏都能直接作用在生成序列上。
 
-代价是：它不是专门的表示模型，所以检索、向量[召回](<../../09_搜索推荐广告/召回粗排精排重排.md>)、排序任务通常会用 Qwen Embedding / Reranker 这类专门模型。
+代价是：它不是专门的表示模型，所以检索、向量[召回](<../../09_搜索推荐广告/召回粗排精排重排.md#召回粗排精排与重排>)、排序任务通常会用 Qwen Embedding / Reranker 这类专门模型。
 
 ### Instruct 与 Thinking 模式
 
@@ -155,7 +155,7 @@ image / video frames
 
 | 模块 | 输入 | 核心机制 | 输出 |
 | --- | --- | --- | --- |
-| Vision Encoder | 图像、视频帧、动态分辨率视觉张量 | SigLIP-2-based [ViT](<里程碑模型/ViT.md>)、动态分辨率、3D patch embedding、视觉位置编码、DeepStack | 视觉 patch/token 表示 |
+| Vision Encoder | 图像、视频帧、动态分辨率视觉张量 | SigLIP-2-based [ViT](<里程碑模型/ViT.md#vit>)、动态分辨率、3D patch embedding、视觉位置编码、DeepStack | 视觉 patch/token 表示 |
 | Merger | Vision Encoder 输出特征 | 空间 token 合并 + MLP 投影 | 与 Qwen3 hidden size 对齐的视觉 embedding |
 | Qwen3 LLM | 文本 token、视觉占位 token、视觉 embedding、位置/时间信息 | Decoder-only Transformer，Dense/MoE 版本，自回归建模 | 文本答案、时间戳、坐标、结构化输出或工具调用 |
 
@@ -165,7 +165,7 @@ image / video frames
 
 Qwen3-VL 的视觉侧基于 SigLIP-2 视觉编码器继续训练和适配。
 
-SigLIP-2 可以理解为更强的视觉语言编码器，相比传统 [CLIP](<里程碑模型/CLIP.md>) 式 softmax contrastive loss，SigLIP 把 batch 内图文配对看成独立二分类问题；SigLIP-2 进一步强化多语言、OCR、定位、dense features 等能力。
+SigLIP-2 可以理解为更强的视觉语言编码器，相比传统 [CLIP](<里程碑模型/CLIP.md#clip>) 式 softmax contrastive loss，SigLIP 把 batch 内图文配对看成独立二分类问题；SigLIP-2 进一步强化多语言、OCR、定位、dense features 等能力。
 
 ![SigLIP-2 训练框架图](assets/qwen3-vl/siglip2_training_recipe.png)
 
@@ -195,7 +195,7 @@ visual tokens
   -> residual
 ```
 
-所以它本质上还是 [ViT](<里程碑模型/ViT.md>)：先把图像/视频切 patch，再用带视觉位置编码的 Transformer 处理 patch 序列。Qwen3-VL 的特殊点在于：它把普通二维图像 ViT 扩展到视频时空 patch，并通过 DeepStack 和 Merger 让视觉 token 更适合接入 Qwen3 decoder；进入 LLM 多模态序列后，再由 Interleaved-MRoPE 编码文本与视觉 token 的多维位置。
+所以它本质上还是 [ViT](<里程碑模型/ViT.md#vit>)：先把图像/视频切 patch，再用带视觉位置编码的 Transformer 处理 patch 序列。Qwen3-VL 的特殊点在于：它把普通二维图像 ViT 扩展到视频时空 patch，并通过 DeepStack 和 Merger 让视觉 token 更适合接入 Qwen3 decoder；进入 LLM 多模态序列后，再由 Interleaved-MRoPE 编码文本与视觉 token 的多维位置。
 
 ### 多模态输入流与位置建模
 
@@ -209,7 +209,7 @@ video -> frame sampling -> 3D patch -> Vision Encoder --+-> Merger -> visual emb
 
 文本 token 与视觉 embedding 在同一自回归序列中建模。图像和视频采用动态分辨率与 token 预算；视频额外保留时间结构。Interleaved-MRoPE 在 LLM 侧编码视觉 token 的时间、高度和宽度结构，绝对视频时间则由文本时间戳表达。
 
-processor 字段、`image_grid_thw`/`video_grid_thw`、视觉 token 计算、动态 resize 参数、Interleaved-MRoPE 细节以及逐 temporal patch 的视频时间戳流程统一见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。
+processor 字段、`image_grid_thw`/`video_grid_thw`、视觉 token 计算、动态 resize 参数、Interleaved-MRoPE 细节以及逐 temporal patch 的视频时间戳流程统一见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>)。
 
 ### DeepStack
 
@@ -322,11 +322,11 @@ On-Policy Distillation 在线策略蒸馏：
 学生先生成 response，再用教师分布或评分约束学生，常用 KL 散度对齐。
 ```
 
-详细方法见 [On-Policy Distillation 在线策略蒸馏](<../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md>)。
+详细方法见 [On-Policy Distillation 在线策略蒸馏](<../../03_训练优化与对齐/后训练与对齐/On-Policy Distillation 在线策略蒸馏.md#on-policy-distillation-在线策略蒸馏>)。
 
 在关键帧任务中，可以对应为：
 
-- 先用强 [VLM](<../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>) / 强 reasoning model 生成结构化关键帧 CoT。
+- 先用强 [VLM](<../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) / 强 reasoning model 生成结构化关键帧 CoT。
 - 再用学生模型自己的输出做二次过滤和纠偏。
 - 对齐时既看最终时间，也看边界证据是否成立。
 
@@ -368,7 +368,7 @@ Qwen3-VL 对关键帧任务有几个直接启发：
 
 | Qwen3-VL 机制 | 对关键帧任务的启发 |
 | --- | --- |
-| [输入处理与时间对齐](<Qwen3-VL输入处理逻辑.md>) | 采样必须覆盖关键事件，训练与评测使用一致时间坐标，并在细节与视觉 token 成本间取舍 |
+| [输入处理与时间对齐](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>) | 采样必须覆盖关键事件，训练与评测使用一致时间坐标，并在细节与视觉 token 成本间取舍 |
 | DeepStack | OCR、局部 UI 控件、角标等细节不能只靠最后层视觉特征 |
 | Merger | 视觉 token 压缩会影响细节保留，尤其长视频 |
 | Thinking / Long-CoT | 适合难例边界判断，但线上输出不一定保留长 CoT |
@@ -387,10 +387,10 @@ Qwen3-VL 对关键帧任务有几个直接启发：
 
 使用 Qwen3 / Qwen3-VL 做训练或推理时，要重点确认：
 
-- 具体版本：Qwen3 dense / [MoE](<../基础架构/MoE.md>)、Qwen3-VL dense / MoE、Instruct / Thinking 不能混说。
+- 具体版本：Qwen3 dense / [MoE](<../基础架构/MoE.md#moe>)、Qwen3-VL dense / MoE、Instruct / Thinking 不能混说。
 - tokenizer 和 chat template 是否和训练一致。
-- 图像/视频的 processor、采样、网格、时间戳和 token 预算按 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>) 核对。
-- [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>) adapter 是否和 base model、vision encoder、processor 版本匹配。
+- 图像/视频的 processor、采样、网格、时间戳和 token 预算按 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>) 核对。
+- [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>) adapter 是否和 base model、vision encoder、processor 版本匹配。
 - 推理框架是否支持对应 VL 输入格式，不要把纯文本 vLLM 用法直接套到视频模型上。
 - Thinking 输出是否需要裁剪，避免影响结构化解析和线上延迟。
 
@@ -426,7 +426,7 @@ Qwen3-VL 是三模块架构：第一部分是 SigLIP-2-based Vision Encoder，�
 
 回答模板：
 
-纯文本经过 tokenizer 直接进入 Qwen3 LLM；图像和视频先经过动态预处理与 patch 化，再由 Vision Encoder 编码、Merger 压缩并投影成视觉 embedding，最后与文本 token 一起进入 Qwen3 decoder。视频还需要保留时间结构，模型结合文本时间戳和多维位置编码理解事件顺序。具体 processor 字段、动态尺寸、视觉 token 数、网格计算、Interleaved-MRoPE 和视频时间对齐见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。
+纯文本经过 tokenizer 直接进入 Qwen3 LLM；图像和视频先经过动态预处理与 patch 化，再由 Vision Encoder 编码、Merger 压缩并投影成视觉 embedding，最后与文本 token 一起进入 Qwen3 decoder。视频还需要保留时间结构，模型结合文本时间戳和多维位置编码理解事件顺序。具体 processor 字段、动态尺寸、视觉 token 数、网格计算、Interleaved-MRoPE 和视频时间对齐见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>)。
 
 ### Qwen3-VL 的训练流程怎么理解？
 

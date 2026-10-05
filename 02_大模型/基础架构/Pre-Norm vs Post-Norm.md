@@ -2,7 +2,7 @@
 
 ## 直接回答
 
-在 [Transformer](<Transformer.md>) 架构中，**Pre-Norm** 和 **Post-Norm** 指的是层归一化（Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)）相对于残差连接（Residual Connection）和子层（如 Multi-Head [Attention](<Self-Attention.md>) 或 FFN）的放置位置。
+在 [Transformer](<Transformer.md#transformer>) 架构中，**Pre-Norm** 和 **Post-Norm** 指的是层归一化（Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md#normalization>)）相对于残差连接（Residual Connection）和子层（如 Multi-Head [Attention](<Self-Attention.md#self-attention>) 或 FFN）的放置位置。
 
 这是深度学习模型架构设计中的一个关键细节，直接决定了模型能否加深以及训练的难易程度。
 
@@ -57,7 +57,7 @@
 | 特性 | Pre-Norm | Post-Norm |
 | :--- | :--- | :--- |
 | **公式** | $x + \text{Sub}(LN(x))$ | $LN(x + \text{Sub}(x))$ |
-| **主流代表** | GPT-3, Llama, BLOOM | Transformer (原版), [BERT](<../模型细节/里程碑模型/BERT.md>) |
+| **主流代表** | GPT-3, Llama, BLOOM | Transformer (原版), [BERT](<../模型细节/里程碑模型/BERT.md#bert>) |
 | **梯度路径** | 存在跨层恒等路径，通常更稳定 | LayerNorm 位于必经路径，深层可能梯度衰减或失衡 |
 | **残差流尺度** | 未逐层归一化，范数或方差可能累积 | 每个子层输出经 LayerNorm 重新归一化 |
 | **优化要求** | 通常对初始化和 Warm-up 较不敏感 | 通常需要更谨慎的初始化、Warm-up 或残差缩放 |

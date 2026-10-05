@@ -4,7 +4,7 @@
 
 ### 概述
 
-本卡片聚焦 LangGraph 的生产实现：state、node、edge、并行合并、持久化与执行约束。Prompt Chaining、Routing、Parallelization、Orchestrator-Workers、Evaluator-Optimizer、Planning 和 ReAct 的通用定义与选型见[《Workflow》](<../基础概念/Workflow.md>)。
+本卡片聚焦 LangGraph 的生产实现：state、node、edge、并行合并、持久化与执行约束。Prompt Chaining、Routing、Parallelization、Orchestrator-Workers、Evaluator-Optimizer、Planning 和 ReAct 的通用定义与选型见[《Workflow》](<../基础概念/Workflow.md#workflow>)。
 
 D2C 视觉一致性评估采用“已知任务类型进入显式专家图，未知目标进入受限规划节点”的实现。颜色、圆角、尺寸、字号、字重和间距检测共享采集与组件匹配结果，然后写入独立分支字段并统一合并。
 

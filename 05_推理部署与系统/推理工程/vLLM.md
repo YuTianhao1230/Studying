@@ -12,7 +12,7 @@ vLLM 是一个高吞吐的大语言模型推理和服务框架，核心特点是
 
 - 多用户并发请求长度不同。
 - 每个请求生成长度不同。
-- [KV cache](<KV_Cache与Prefill_Decode.md>) 占用大量显存。
+- [KV cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 占用大量显存。
 - 静态 batch 容易浪费计算。
 - 长上下文容易造成显存碎片。
 
@@ -30,7 +30,7 @@ OpenAI-compatible API / 离线推理入口
   -> 流式或批量输出
 ```
 
-vLLM 组合采用 PagedAttention 与 Continuous Batching：前者负责 KV Cache 的显存管理，后者负责动态请求调度，两者共同服务于变长、高并发负载；分页机制详见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md>)，调度机制详见 [Batching](<Batching.md>)。
+vLLM 组合采用 PagedAttention 与 Continuous Batching：前者负责 KV Cache 的显存管理，后者负责动态请求调度，两者共同服务于变长、高并发负载；分页机制详见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，调度机制详见 [Batching](<Batching.md#batching>)。
 
 ### vLLM 适合什么场景
 
@@ -187,7 +187,7 @@ LLM 推理的难点在于请求长度和结束时间不确定，同时还要为�
 
 回答模板：
 
-PagedAttention 属于 KV Cache 显存管理机制，Continuous Batching 属于动态请求调度机制。vLLM 把两者组合在统一执行框架中，让缓存分配和请求进出能够协同工作；具体分页原理见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md>)，批处理策略见 [Batching](<Batching.md>)。
+PagedAttention 属于 KV Cache 显存管理机制，Continuous Batching 属于动态请求调度机制。vLLM 把两者组合在统一执行框架中，让缓存分配和请求进出能够协同工作；具体分页原理见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，批处理策略见 [Batching](<Batching.md#batching>)。
 
 ### 使用 vLLM 需要关注哪些参数和风险？
 

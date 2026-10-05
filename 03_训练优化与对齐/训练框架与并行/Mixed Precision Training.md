@@ -56,7 +56,7 @@
 *   **如果你的显卡是 A100, H100, 3090, 4090 或更新的：**
     可优先测试 BF16，但仍应确认具体 GPU、框架和算子的 BF16 支持，并比较吞吐、收敛和最终精度。
 *   **如果你的显卡比较老（如 V100, T4, 2080Ti）：**
-    这些显卡通常不提供原生 BF16 Tensor Core 路径；做混合精度训练时一般选择 **FP16**，并建议启用动态 Loss Scaling（如 PyTorch AMP 的 `GradScaler` 或 [DeepSpeed](<DeepSpeed.md>) 配置）。
+    这些显卡通常不提供原生 BF16 Tensor Core 路径；做混合精度训练时一般选择 **FP16**，并建议启用动态 Loss Scaling（如 PyTorch AMP 的 `GradScaler` 或 [DeepSpeed](<DeepSpeed.md#deepspeed>) 配置）。
 *   **全精度 (FP32) 什么时候用？**
     FP32 仍用于数值敏感算子、稳定性排查、缺少低精度加速的硬件，以及规模允许的训练；混合精度训练也通常保留 FP32 参数或优化器状态用于更新。
 

@@ -61,7 +61,7 @@ Modified ResNet：
   2. 下采样使用 anti-aliased blur pooling，减少平移敏感。
   3. 最后不用全局平均池化，而是 attention pooling，让图像区域按注意力聚合。
 
-Vision [Transformer](<../../基础架构/Transformer.md>)：
+Vision [Transformer](<../../基础架构/Transformer.md#transformer>)：
 
 - 常见公开版本包括 ViT-B/32、ViT-B/16、ViT-L/14。
 - ViT-B 通常是 12 层、hidden size 768、12 heads。
@@ -81,7 +81,7 @@ CLIP 文本编码器是 Transformer：
 - 使用 causal self-attention mask。
 - 取 `[EOS]` token 的 hidden state 作为文本句子表示，再投影到共享 embedding 空间。
 
-这里容易被问：CLIP 文本分支不是 [BERT](<BERT.md>)。它更接近 [GPT](<GPT.md>) 式 causal Transformer，但目标不是生成，而是为整句文本输出 embedding。
+这里容易被问：CLIP 文本分支不是 [BERT](<BERT.md#bert>)。它更接近 [GPT](<GPT.md#gpt>) 式 causal Transformer，但目标不是生成，而是为整句文本输出 embedding。
 
 ### CLIP 的典型配置怎么记
 
@@ -137,7 +137,7 @@ $$
 
 CLIP 的负样本主要来自 batch 内其他图文对，因此 batch size 和跨卡 all-gather 会直接影响负样本数量和对比学习质量。
 
-同一图片的多个描述或语义等价图片可能构成假负例。应先处理重复/多正例关系，再决定是否采用多正例目标；盲目增大 batch 不保证收益。若面试要求手写损失，先检查两塔归一化、相似度矩阵转置、目标索引和两个方向的平均，交叉熵梯度推导见[数学基础](<../../../01_机器学习基础/数学与机器学习/数学基础.md>)。
+同一图片的多个描述或语义等价图片可能构成假负例。应先处理重复/多正例关系，再决定是否采用多正例目标；盲目增大 batch 不保证收益。若面试要求手写损失，先检查两塔归一化、相似度矩阵转置、目标索引和两个方向的平均，交叉熵梯度推导见[数学基础](<../../../01_机器学习基础/数学与机器学习/数学基础.md#数学基础>)。
 
 ### CLIP 为什么能从 noisy web data 学到能力
 
@@ -160,7 +160,7 @@ CLIP 使用的是互联网图文对，不要求每条文本都是严格人工标
 - 用图文对比学习替代人工类别监督。
 - 学到开放词表的视觉语义空间。
 
-相比单塔 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)：
+相比单塔 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)：
 
 - CLIP 不做 early fusion，图像和文本分开编码。
 - 适合检索和 zero-shot，但不直接生成自然语言答案。
@@ -204,9 +204,9 @@ a photo of a dog
 
 CLIP 的视觉编码器和图文 embedding 空间影响很大：
 
-- [LLaVA](<LLaVA.md>) 等模型常用 CLIP [ViT](<ViT.md>) 作为视觉编码器。
+- [LLaVA](<LLaVA.md#llava>) 等模型常用 CLIP [ViT](<ViT.md#vit>) 作为视觉编码器。
 - 图文检索、开放词表分类、grounding 和 VLM 评测常用 CLIPScore。
-- [多模态对抗攻击](<../../../11_AI安全与对抗攻击/多模态对抗攻击.md>)常攻击 CLIP 对齐空间，因为它代表图文语义绑定。
+- [多模态对抗攻击](<../../../11_AI安全与对抗攻击/多模态对抗攻击.md#多模态对抗攻击>)常攻击 CLIP 对齐空间，因为它代表图文语义绑定。
 
 ### 常见考法与解题方法
 
@@ -215,7 +215,7 @@ CLIP 的视觉编码器和图文 embedding 空间影响很大：
 | 架构题 | CLIP 图像和文本分支分别是什么 | 图像是 Modified ResNet/ViT，文本是 12 层 causal Transformer |
 | 目标题 | CLIP loss 怎么写 | batch 内 `N x N` 图文相似度，双向 cross entropy |
 | 应用题 | CLIP 如何 zero-shot 分类 | 类别名写成 prompt，与图像 embedding 做相似度 |
-| 对比题 | CLIP 和 [ALBEF](<ALBEF.md>) 区别 | CLIP 双塔对比，ALBEF 先对齐再融合 |
+| 对比题 | CLIP 和 [ALBEF](<ALBEF.md#albef>) 区别 | CLIP 双塔对比，ALBEF 先对齐再融合 |
 | 项目题 | 为什么攻击 CLIP 有意义 | CLIP 对齐空间是很多 VLM 的共享基础 |
 
 ### 易错点

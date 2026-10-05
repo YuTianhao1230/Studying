@@ -8,12 +8,12 @@
 
 | 文件 | 内容说明 |
 | --- | --- |
-| [Mixed Precision Training.md](<Mixed Precision Training.md>) | fp16/bf16、loss scaling 和混合精度训练稳定性。 |
-| [Checkpoint.md](<Checkpoint.md>) | 模型、优化器、调度器和训练状态保存/恢复机制。 |
-| [ZeRO.md](<ZeRO.md>) | 参数、梯度、优化器状态切分的显存优化机制。 |
-| [FSDP.md](<FSDP.md>) | PyTorch Fully Sharded Data Parallel 的 sharding 和通信流程。 |
-| [DeepSpeed.md](<DeepSpeed.md>) | DeepSpeed 训练框架、ZeRO、优化器和大模型训练工程能力。 |
-| [Megatron_LM.md](<Megatron_LM.md>) | Megatron-LM 的张量并行、流水线并行和大模型训练范式。 |
-| [多GPU并行通信与吞吐优化.md](<多GPU并行通信与吞吐优化.md>) | 多 GPU 并行策略、集合通信、通信计算重叠、吞吐分析和通信损耗优化。 |
-| [分布式训练通信与故障排查.md](<分布式训练通信与故障排查.md>) | 并行策略、NCCL 集合通信、慢节点、Hang、OOM 和故障恢复。 |
-| [JAX与XLA.md](<JAX与XLA.md>) | JAX/XLA 的编译式训练、函数式编程和性能优化特点。 |
+| [Mixed Precision Training.md](<Mixed Precision Training.md#mixed-precision-training>) | fp16/bf16、loss scaling 和混合精度训练稳定性。 |
+| [Checkpoint.md](<Checkpoint.md#checkpoint>) | 模型、优化器、调度器和训练状态保存/恢复机制。 |
+| [ZeRO.md](<ZeRO.md#zero>) | 参数、梯度、优化器状态切分的显存优化机制。 |
+| [FSDP.md](<FSDP.md#fsdp>) | PyTorch Fully Sharded Data Parallel 的 sharding 和通信流程。 |
+| [DeepSpeed.md](<DeepSpeed.md#deepspeed>) | DeepSpeed 训练框架、ZeRO、优化器和大模型训练工程能力。 |
+| [Megatron_LM.md](<Megatron_LM.md#megatronlm>) | Megatron-LM 的张量并行、流水线并行和大模型训练范式。 |
+| [多GPU并行通信与吞吐优化.md](<多GPU并行通信与吞吐优化.md#多-gpu-并行通信与吞吐优化>) | 多 GPU 并行策略、集合通信、通信计算重叠、吞吐分析和通信损耗优化。 |
+| [分布式训练通信与故障排查.md](<分布式训练通信与故障排查.md#分布式训练通信与故障排查>) | 并行策略、NCCL 集合通信、慢节点、Hang、OOM 和故障恢复。 |
+| [JAX与XLA.md](<JAX与XLA.md#jax与xla>) | JAX/XLA 的编译式训练、函数式编程和性能优化特点。 |

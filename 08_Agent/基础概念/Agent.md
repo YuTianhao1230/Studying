@@ -4,7 +4,7 @@
 
 ### 概述
 
-Agent 是以大模型为决策核心，围绕目标感知环境、选择行动、调用工具、观察结果并迭代到结束状态的系统。本卡片保留 Agent 的定义、组成和紧凑开发框架；需求契约、架构决策、发布与运维见[《实战总览：从问题到生产 Agent》](<../实战落地/实战总览：从问题到生产Agent.md>)。
+Agent 是以大模型为决策核心，围绕目标感知环境、选择行动、调用工具、观察结果并迭代到结束状态的系统。本卡片保留 Agent 的定义、组成和紧凑开发框架；需求契约、架构决策、发布与运维见[《实战总览：从问题到生产 Agent》](<../实战落地/实战总览：从问题到生产Agent.md#实战总览从问题到生产-agent>)。
 
 ### 和普通 Chatbot 的区别
 
@@ -64,13 +64,13 @@ Observe -> Plan -> Act -> Observe -> Reflect -> ...
 | 概念 | 核心职责 | 适合处理 |
 | --- | --- | --- |
 | Agent | 根据目标和反馈动态决策 | 路径不固定的多步任务 |
-| [Workflow](<Workflow.md>) | 固定节点、分支与安全边界 | 稳定、可复现的流程 |
-| [Tool Call](<Tool_Call与Function_Calling.md>) | 结构化请求外部能力 | 查询或改变外部环境 |
-| [Context Engineering](<Context_Engineering.md>) | 组织当前模型可见信息 | 上下文质量与成本控制 |
+| [Workflow](<Workflow.md#workflow>) | 固定节点、分支与安全边界 | 稳定、可复现的流程 |
+| [Tool Call](<Tool_Call与Function_Calling.md#tool-call-与-function-calling>) | 结构化请求外部能力 | 查询或改变外部环境 |
+| [Context Engineering](<Context_Engineering.md#contextengineering>) | 组织当前模型可见信息 | 上下文质量与成本控制 |
 | Memory | 保存可复用长期信息 | 偏好、经验和跨会话状态 |
 | Guardrails | 限制风险与不合规行为 | 权限、预算、确认和输出校验 |
 | Trajectory | 记录完整执行过程 | 复现、审计和 bad case 归因 |
-| [Agent Eval](<Agent_Eval.md>) | 验证能力与可靠性 | 离线回归和版本比较 |
+| [Agent Eval](<Agent_Eval.md#agent-evaltrajectory-与-harness>) | 验证能力与可靠性 | 离线回归和版本比较 |
 
 生产系统通常由 Workflow 固定主链路，只在局部开放节点使用 Agent，并通过 Tool 契约访问外部系统。
 

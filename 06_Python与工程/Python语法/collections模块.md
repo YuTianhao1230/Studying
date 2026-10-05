@@ -16,7 +16,7 @@
 
 1.  **`namedtuple`**: 带字段名的元组，增强代码可读性。
 2.  **`deque`**: 双端队列，在两端添加和删除元素都很快。
-3.  **[`Counter`](<Counter类.md>)**: 字典的子类，用于统计可哈希对象的频率。
+3.  **[`Counter`](<Counter类.md#counter类>)**: 字典的子类，用于统计可哈希对象的频率。
 4.  **`defaultdict`**: 带有默认值的字典，访问不存在的键时不会抛出 `KeyError`。
 5.  **`OrderedDict`**: 记住元素插入顺序的字典。
 6.  **`ChainMap`**: 将多个字典或映射组合成一个单一、可更新的视图。
@@ -291,7 +291,7 @@ process_data(my_list)
 
 - 需要**可读性强的元组**？用 `namedtuple`。
 - 需要**高效的队列或栈**？用 `deque`。
-- 需要**统计元素频率**？见 [`Counter`](<Counter类.md>)。
+- 需要**统计元素频率**？见 [`Counter`](<Counter类.md#counter类>)。
 - 想要**避免处理缺失键的麻烦**？用 `defaultdict`。
 - 需要**管理分层配置**？用 `ChainMap`。
 - 需要**明确保证顺序或移动元素**？`OrderedDict` 依然有其价值。
@@ -306,7 +306,7 @@ process_data(my_list)
 
 回答模板：
 
-`collections` 是 Python 标准库中提供高效专用容器的数据结构模块。它不是替代 `list`、`dict`、`tuple`，而是在特定场景下提供更清晰或更高效的表达。常用类型包括 [`Counter`](<Counter类.md>) 做频次统计，`defaultdict` 简化默认值逻辑，`deque` 做队列和双端队列，`namedtuple` 提供轻量结构化记录，`OrderedDict` 在需要显式顺序语义时使用。
+`collections` 是 Python 标准库中提供高效专用容器的数据结构模块。它不是替代 `list`、`dict`、`tuple`，而是在特定场景下提供更清晰或更高效的表达。常用类型包括 [`Counter`](<Counter类.md#counter类>) 做频次统计，`defaultdict` 简化默认值逻辑，`deque` 做队列和双端队列，`namedtuple` 提供轻量结构化记录，`OrderedDict` 在需要显式顺序语义时使用。
 
 ### `defaultdict` 和 `deque` 分别适合什么场景？
 

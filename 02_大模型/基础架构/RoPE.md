@@ -4,19 +4,19 @@
 
 ### 概述
 
-**RoPE (Rotary Positional Embedding，旋转位置编码)** 是目前大语言模型（LLM）中最主流、最成功的位置编码技术之一。它由苏剑林（Zhuiyi Technology）在 2021 年的论文《Roformer: Enhanced [Transformer](<Transformer.md>) with Rotary Position Embedding》中提出。
+**RoPE (Rotary Positional Embedding，旋转位置编码)** 是目前大语言模型（LLM）中最主流、最成功的位置编码技术之一。它由苏剑林（Zhuiyi Technology）在 2021 年的论文《Roformer: Enhanced [Transformer](<Transformer.md#transformer>) with Rotary Position Embedding》中提出。
 
-目前几乎所有顶级的开源模型，如 **Llama (1/2/3)、Mistral、Mixtral、PaLM、[Qwen](<../模型细节/Qwen千问架构.md>)、InternLM** 等，都采用了 RoPE 而非原始 Transformer 中的绝对位置编码。
+目前几乎所有顶级的开源模型，如 **Llama (1/2/3)、Mistral、Mixtral、PaLM、[Qwen](<../模型细节/Qwen千问架构.md#qwen3-与-qwen3-vl-架构>)、InternLM** 等，都采用了 RoPE 而非原始 Transformer 中的绝对位置编码。
 
 以下是关于 RoPE 的详细介绍，从为什么需要它到它的数学直觉：
 
 ### 为什么需要 RoPE？（背景与动机）
 
-在 Transformer 架构中，不含位置编码的 [Self-Attention](<Self-Attention.md>) 是**置换等变**的：如果按同一种置换重排输入 token，输出也会按相同方式重排，而不是逐位置保持完全不变。为了让模型区分顺序，必须引入**位置编码**。
+在 Transformer 架构中，不含位置编码的 [Self-Attention](<Self-Attention.md#self-attention>) 是**置换等变**的：如果按同一种置换重排输入 token，输出也会按相同方式重排，而不是逐位置保持完全不变。为了让模型区分顺序，必须引入**位置编码**。
 
 传统的位置编码主要有两种：
 *   **绝对位置编码（Absolute PE）：** 给每个位置一个固定的向量（如 Sinusoidal 或可学习的 Embedding）。缺点是难以处理超出训练长度的序列，且没有显式建模相对距离。
-*   **相对位置编码（Relative PE）：** 关注单词之间的相对距离（如 [T5](<../模型细节/里程碑模型/T5.md>), XLNet）。虽然效果好，但计算复杂度高，且通常需要修改 Attention 矩阵的计算逻辑。
+*   **相对位置编码（Relative PE）：** 关注单词之间的相对距离（如 [T5](<../模型细节/里程碑模型/T5.md#t5>), XLNet）。虽然效果好，但计算复杂度高，且通常需要修改 Attention 矩阵的计算逻辑。
 
 **RoPE 的目标：** 寻找一种方式，通过给 $Q$（Query）和 $K$（Key）注入**绝对**位置信息，使得它们的内积（Attention Score）自然包含**相对**位置信息。
 

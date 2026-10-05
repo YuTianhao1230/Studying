@@ -8,7 +8,7 @@ ALBEF 是视觉语言预训练模型，核心思想是 Align before Fuse：先�
 
 ### 解决的问题
 
-ALBEF 主要解决 [CLIP](<CLIP.md>) 式双塔模型和早期融合模型的不足：
+ALBEF 主要解决 [CLIP](<CLIP.md#clip>) 式双塔模型和早期融合模型的不足：
 
 - 只做全局图文对比，细粒度理解不足。
 - 直接融合 noisy web 图文对，容易被弱匹配或错误 caption 干扰。
@@ -26,7 +26,7 @@ ALBEF 常见公开实现：
 | 动量模型 | image encoder、text encoder、multimodal encoder 的 EMA 版本 |
 | 主要预训练目标 | ITC、ITM、MLM |
 
-不同代码实现可能在初始化 checkpoint、image resolution、queue size 上有差异，面试时重点讲清“[ViT](<ViT.md>) + [BERT](<BERT.md>) split + multimodal encoder + momentum distillation”。
+不同代码实现可能在初始化 checkpoint、image resolution、queue size 上有差异，面试时重点讲清“[ViT](<ViT.md#vit>) + [BERT](<BERT.md#bert>) split + multimodal encoder + momentum distillation”。
 
 ### 完整架构
 
@@ -192,7 +192,7 @@ ALBEF 同时有图文对比和融合模块，很适合验证多模态攻击：
 - 攻击 ITC 可以破坏全局图文对齐。
 - 攻击 ITM 可以破坏图文匹配判断。
 - 攻击 MLM 或融合表示可以影响细粒度语言理解。
-- 作为源模型时，能测试扰动是否迁移到双塔和融合型 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)。
+- 作为源模型时，能测试扰动是否迁移到双塔和融合型 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
 
 ### 常见考法与解题方法
 

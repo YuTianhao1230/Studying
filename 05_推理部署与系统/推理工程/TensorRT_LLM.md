@@ -4,7 +4,7 @@
 
 ### 概述
 
-TensorRT-LLM 是 NVIDIA 面向大语言模型推理优化的高性能推理框架，重点利用 GPU kernel 优化、[量化](<量化.md>)、并行和 batching 来降低延迟、提升吞吐。
+TensorRT-LLM 是 NVIDIA 面向大语言模型推理优化的高性能推理框架，重点利用 GPU kernel 优化、[量化](<量化.md#量化>)、并行和 batching 来降低延迟、提升吞吐。
 
 ### 为什么大厂 JD 会提到
 
@@ -24,11 +24,11 @@ TensorRT-LLM 属于解决这些问题的工程工具之一。
 
 #### Kernel 优化
 
-把 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 中常见计算做高性能实现，例如：
+把 [Transformer](<../../02_大模型/基础架构/Transformer.md#transformer>) 中常见计算做高性能实现，例如：
 
 - GEMM。
-- [Attention](<../../02_大模型/基础架构/Self-Attention.md>)。
-- LayerNorm / [RMSNorm](<../../02_大模型/基础架构/RMSNorm.md>)。
+- [Attention](<../../02_大模型/基础架构/Self-Attention.md#self-attention>)。
+- LayerNorm / [RMSNorm](<../../02_大模型/基础架构/RMSNorm.md#rmsnorm>)。
 - MLP。
 - Softmax。
 
@@ -64,11 +64,11 @@ TensorRT-LLM 属于解决这些问题的工程工具之一。
 
 #### KV Cache 管理
 
-推理系统需要高效管理 [KV Cache](<KV_Cache与Prefill_Decode.md>)，避免显存碎片和重复计算。
+推理系统需要高效管理 [KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，避免显存碎片和重复计算。
 
 ### 和 vLLM 的关系
 
-- vLLM 更常被用于易用、高吞吐 serving，核心代表是 [PagedAttention](<vLLM.md>) 和 continuous batching。
+- vLLM 更常被用于易用、高吞吐 serving，核心代表是 [PagedAttention](<vLLM.md#pagedattention-和-continuous-batching-分别做什么>) 和 continuous batching。
 - TensorRT-LLM 更强调 NVIDIA GPU 上的底层推理性能优化。
 
 实际系统中可能按场景选择，也可能组合使用不同组件。

@@ -146,7 +146,7 @@ GRPO 不训练单独的 Critic/Value Model，而是用同一 prompt 下其他回
 
 #### 2.3 带 clipping 和 KL 约束的目标
 
-GRPO 保留 [PPO](<../../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md>) 类方法的策略更新约束。对回答中第 $t$ 个 token，可以定义概率比：
+GRPO 保留 [PPO](<../../../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md#ppo-近端策略优化>) 类方法的策略更新约束。对回答中第 $t$ 个 token，可以定义概率比：
 
 $$
 \rho_{i,t}(\theta)
@@ -612,7 +612,7 @@ M0：Direct SFT checkpoint
   -> Temporal-OPSD On-Policy 蒸馏或 answer-only distillation
 ```
 
-Temporal-OPSD 的完整数据、训练器、loss、准入准出和面试回答见[OPD 训练方案设计.md](<OPD 训练方案设计.md>)。
+Temporal-OPSD 的完整数据、训练器、loss、准入准出和面试回答见[OPD 训练方案设计.md](<OPD 训练方案设计.md#关键帧检测opd-temporal-opsd-训练方案>)。
 
 #### 7.1 进入 GRPO 的准入条件
 

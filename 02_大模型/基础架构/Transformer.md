@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文整理 Transformer 的提出背景、[Encoder-Decoder](<Decoder-only vs Encoder-Decoder.md>) 架构、自注意力、多头注意力、位置编码、前馈网络、残差连接、归一化、复杂度和主要局限。
+本文整理 Transformer 的提出背景、[Encoder-Decoder](<Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>) 架构、自注意力、多头注意力、位置编码、前馈网络、残差连接、归一化、复杂度和主要局限。
 
 ### 原始论文规格
 
@@ -14,13 +14,13 @@
 
 #### 核心思想：为什么需要Transformer？
 
-在Transformer出现之前，处理序列数据（如文本、代码）的主流模型是**循环神经网络（RNN）**及其变体（[LSTM](<../../01_机器学习基础/深度学习基础/LSTM.md>), GRU）。
+在Transformer出现之前，处理序列数据（如文本、代码）的主流模型是**循环神经网络（RNN）**及其变体（[LSTM](<../../01_机器学习基础/深度学习基础/LSTM.md#lstm>), GRU）。
 
 RNN的主要问题：
 *   **无法并行计算**：RNN的计算是串行的，必须处理完当前时间步的输入才能处理下一个，这在处理长序列时非常慢。
 *   **长距离依赖问题**：虽然LSTM等模型缓解了梯度消失问题，但对于非常长的序列（比如几千个单词或代码行），要捕捉两个相距很远的元素之间的关系仍然非常困难。
 
-**Transformer的核心思想是：彻底抛弃RNN的循环结构，完全依赖一种叫做自注意力（[Self-Attention](<Self-Attention.md>)）的机制来捕捉序列内任意两个位置之间的依赖关系，并实现完全并行计算。**
+**Transformer的核心思想是：彻底抛弃RNN的循环结构，完全依赖一种叫做自注意力（[Self-Attention](<Self-Attention.md#self-attention>)）的机制来捕捉序列内任意两个位置之间的依赖关系，并实现完全并行计算。**
 
 #### 整体架构：Encoder-Decoder结构
 
@@ -47,7 +47,7 @@ X\rightarrow(Q,K,V)\rightarrow
 \operatorname{Softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V.
 $$
 
-$QK^\top$ 产生位置两两之间的相关性分数，Softmax 将其归一化后对 $V$ 加权求和。除以 $\sqrt{d_k}$ 是因为点积方差会随维度增大；缩放可避免 logits 过大使 Softmax 过度饱和，从而稳定梯度。完整的矩阵维度、逐步推导、位置性质与复杂度见 [Self-Attention](<Self-Attention.md>)。
+$QK^\top$ 产生位置两两之间的相关性分数，Softmax 将其归一化后对 $V$ 加权求和。除以 $\sqrt{d_k}$ 是因为点积方差会随维度增大；缩放可避免 logits 过大使 Softmax 过度饱和，从而稳定梯度。完整的矩阵维度、逐步推导、位置性质与复杂度见 [Self-Attention](<Self-Attention.md#self-attention>)。
 
 **c. 增强版Attention：Multi-Head Attention（多头注意力）**
 
@@ -64,7 +64,7 @@ Multi-Head Attention 将表示投影到多个子空间，各个头独立执行�
 2.  一个**多头交叉注意力层**（Multi-Head Cross-Attention），它的Q来自解码器自身，而K和V来自编码器的最终输出。这是连接Encoder和Decoder的桥梁。
 3.  一个**前馈神经网络**。
 
-在每个子层的周围，都使用了**残差连接（Residual Connection）**和**层归一化（Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md>)）**。这都是深度学习中的标准技巧，用于帮助训练更深的网络，避免梯度消失，并加速收敛。
+在每个子层的周围，都使用了**残差连接（Residual Connection）**和**层归一化（Layer [Normalization](<../../01_机器学习基础/深度学习基础/Normalization.md#normalization>)）**。这都是深度学习中的标准技巧，用于帮助训练更深的网络，避免梯度消失，并加速收敛。
 
 **e. Decoder的特殊之处：Masked Self-Attention**
 
@@ -72,7 +72,7 @@ Multi-Head Attention 将表示投影到多个子空间，各个头独立执行�
 
 #### 总结
 
-Transformer通过自注意力机制实现了对序列内部长距离依赖的强大捕捉能力，并通过并行计算大大提高了训练效率，成为了现代大语言模型（如[BERT](<../模型细节/里程碑模型/BERT.md>), [GPT](<../模型细节/里程碑模型/GPT.md>)系列）的基石。
+Transformer通过自注意力机制实现了对序列内部长距离依赖的强大捕捉能力，并通过并行计算大大提高了训练效率，成为了现代大语言模型（如[BERT](<../模型细节/里程碑模型/BERT.md#bert>), [GPT](<../模型细节/里程碑模型/GPT.md#gpt>)系列）的基石。
 
 ### 后续影响
 
@@ -102,7 +102,7 @@ Transformer通过自注意力机制实现了对序列内部长距离依赖的强
 
 #### **问题2：简单解释一下Attention机制中的Query, Key, Value是什么？**
 
-Query 表示当前位置需要什么信息，Key 表示各位置可供匹配的索引，Value 是实际被聚合的内容。模型用 $QK^\top$ 计算相关性，经缩放和 Softmax 得到权重，再对 $V$ 加权求和。完整推导见 [Self-Attention](<Self-Attention.md>)。
+Query 表示当前位置需要什么信息，Key 表示各位置可供匹配的索引，Value 是实际被聚合的内容。模型用 $QK^\top$ 计算相关性，经缩放和 Softmax 得到权重，再对 $V$ 加权求和。完整推导见 [Self-Attention](<Self-Attention.md#self-attention>)。
 
 #### **问题3：为什么Transformer需要Positional Encoding（位置编码）？**
 
@@ -177,7 +177,7 @@ BERT和GPT是Transformer架构在不同方向上的两个最成功的应用，�
 
 回答模板：
 
-Transformer 是一种以 Self-Attention 为核心的序列建模架构，最早用于机器翻译，后来成为大语言模型的基础结构。它不依赖 RNN 的循环计算，而是通过注意力机制让每个 token 直接和其他 token 建立关系，并通过 FFN、残差连接、归一化和位置编码组成多层网络。GPT、BERT、[T5](<../模型细节/里程碑模型/T5.md>) 以及多数现代 LLM 都是在 Transformer 架构上发展出来的。
+Transformer 是一种以 Self-Attention 为核心的序列建模架构，最早用于机器翻译，后来成为大语言模型的基础结构。它不依赖 RNN 的循环计算，而是通过注意力机制让每个 token 直接和其他 token 建立关系，并通过 FFN、残差连接、归一化和位置编码组成多层网络。GPT、BERT、[T5](<../模型细节/里程碑模型/T5.md#t5>) 以及多数现代 LLM 都是在 Transformer 架构上发展出来的。
 
 ### Transformer 为什么比 RNN 更适合大规模训练？
 
@@ -201,4 +201,4 @@ RNN 处理序列时必须按时间步串行计算，训练长序列时效率低�
 
 回答模板：
 
-Transformer 的主要限制是标准 attention 对序列长度的计算和显存复杂度较高，长上下文训练和推理成本都很大。对于 decoder-only 模型，训练可以并行，但生成阶段仍是自回归逐 token decode，因此延迟受输出长度影响很大。另外，模型规模上去后还会面临优化稳定性、显存、通信和数据质量问题，所以实际系统需要 FlashAttention、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、并行训练和推理调度等配套优化。
+Transformer 的主要限制是标准 attention 对序列长度的计算和显存复杂度较高，长上下文训练和推理成本都很大。对于 decoder-only 模型，训练可以并行，但生成阶段仍是自回归逐 token decode，因此延迟受输出长度影响很大。另外，模型规模上去后还会面临优化稳定性、显存、通信和数据质量问题，所以实际系统需要 FlashAttention、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、并行训练和推理调度等配套优化。

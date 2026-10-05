@@ -8,7 +8,7 @@
 
 你可以把 `Counter` 想象成一个**增强版的字典**，它的键（key）是你要计数的元素，值（value）是该元素出现的次数。
 
-本卡集中说明缺失键、`most_common()`、多重集合算术和典型示例；模块级选型入口见 [`collections` 模块](<collections模块.md>)。
+本卡集中说明缺失键、`most_common()`、多重集合算术和典型示例；模块级选型入口见 [`collections` 模块](<collections模块.md#collections模块>)。
 
 ### 核心功能：它解决了什么问题？
 

@@ -4,7 +4,7 @@
 
 ### 概述
 
-CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语言，常用于为深度学习模型实现高性能自定义[算子](<算子.md>)。
+CUDA 是 NVIDIA GPU 编程平台；Triton 是更高层的 GPU kernel 编写语言，常用于为深度学习模型实现高性能自定义[算子](<算子.md#算子>)。
 
 ### 为什么算法工程师要知道
 
@@ -67,7 +67,7 @@ Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。
 - 自定义 MatMul。
 - LayerNorm。
 - Softmax。
-- [Attention](<../../02_大模型/基础架构/Self-Attention.md>)。
+- [Attention](<../../02_大模型/基础架构/Self-Attention.md#self-attention>)。
 - Quantization kernel。
 - 算子融合。
 
@@ -86,13 +86,13 @@ Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。
 
 - Prefill 阶段 attention 计算重。
 - Decode 阶段 batch 小、访存重。
-- [KV Cache](<KV_Cache与Prefill_Decode.md>) 读写占显存带宽。
+- [KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 读写占显存带宽。
 - 小算子太多导致 kernel launch overhead。
 
 优化方向：
 
 - FlashAttention。
-- [PagedAttention](<vLLM.md>)。
+- [PagedAttention](<vLLM.md#pagedattention-和-continuous-batching-分别做什么>)。
 - Kernel fusion。
 - Quantization。
 - CUDA Graph。

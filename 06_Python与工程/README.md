@@ -6,13 +6,13 @@
 
 | 入口 | 内容说明 |
 | --- | --- |
-| [Python语法](<Python语法/README.md>) | ACM/OJ 输入输出、内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
-| [编程语言基础](<编程语言基础/README.md>) | Python、Java 与 C++ 的语言机制和面试知识卡。 |
-| [PyTorch](<PyTorch/README.md>) | PyTorch 基础、张量操作、torchvision 和 Beam Search。 |
-| [常用函数](<常用函数/README.md>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
-| [常用库](<常用库/README.md>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
-| [深度学习框架](<深度学习框架/README.md>) | PyTorch、TensorFlow、Hugging Face、训练脚手架和框架选型。 |
-| [算法刷题](<算法刷题/README.md>) | 高频算法模板、刷题技巧、回溯、并查集和典型实现题。 |
-| [工程工具](<工程工具/README.md>) | Docker 等与具体模型方向无关的通用工程工具。 |
-| [编程与算法工程能力.md](<编程与算法工程能力.md>) | 面试中的编码能力、算法工程能力和工程实现意识。 |
-| [Python工程实践.md](<Python工程实践.md>) | GIL、并发模型、结构化日志、重试、测试、大文件处理和断点续跑。 |
+| [Python语法](<Python语法/README.md#python语法>) | ACM/OJ 输入输出、内置函数、异常、字典、推导式、collections、lambda 等 Python 基础。 |
+| [编程语言基础](<编程语言基础/README.md#编程语言基础>) | Python、Java 与 C++ 的语言机制和面试知识卡。 |
+| [PyTorch](<PyTorch/README.md#pytorch>) | PyTorch 基础、张量操作、torchvision 和 Beam Search。 |
+| [常用函数](<常用函数/README.md#常用函数>) | detach、enumerate、inference_mode 等常用函数和 IDE 技巧。 |
+| [常用库](<常用库/README.md#常用库>) | argparse、re、tqdm、DataLoader、可视化等工程常用库。 |
+| [深度学习框架](<深度学习框架/README.md#深度学习框架>) | PyTorch、TensorFlow、Hugging Face、训练脚手架和框架选型。 |
+| [算法刷题](<算法刷题/README.md#算法刷题>) | 高频算法模板、刷题技巧、回溯、并查集和典型实现题。 |
+| [工程工具](<工程工具/README.md#工程工具>) | Docker 等与具体模型方向无关的通用工程工具。 |
+| [编程与算法工程能力.md](<编程与算法工程能力.md#编程与算法工程能力>) | 面试中的编码能力、算法工程能力和工程实现意识。 |
+| [Python工程实践.md](<Python工程实践.md#python-工程实践>) | GIL、并发模型、结构化日志、重试、测试、大文件处理和断点续跑。 |

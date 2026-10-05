@@ -4,7 +4,7 @@
 
 ### 概述
 
-本卡片聚焦 D2C 视觉评估的生产流程：构造可复现 case，管理 GT 版本，验收 VLM 报告，分析业务指标，并在明确授权后回流结果。Harness、trajectory、通用指标、回放和失败分类见[《Agent Eval、Trajectory 与 Harness》](<../基础概念/Agent_Eval.md>)。
+本卡片聚焦 D2C 视觉评估的生产流程：构造可复现 case，管理 GT 版本，验收 VLM 报告，分析业务指标，并在明确授权后回流结果。Harness、trajectory、通用指标、回放和失败分类见[《Agent Eval、Trajectory 与 Harness》](<../基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)。
 
 ### D2C 评测对象
 
@@ -85,7 +85,7 @@ GT 更新时保留原始标注。建立 `v1 -> v2` 版本差异，记录变更�
 
 ### D2C 轨迹与产物
 
-D2C Harness 在[《Agent Eval、Trajectory 与 Harness》](<../基础概念/Agent_Eval.md>)定义的通用 trajectory 之上，只追加业务扩展字段：
+D2C Harness 在[《Agent Eval、Trajectory 与 Harness》](<../基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)定义的通用 trajectory 之上，只追加业务扩展字段：
 
 - 采集批次 ID，以及 `page_id`、`viewport`、`state_id` 等采集状态标识。
 - Figma 节点、设计截图和资源 checksum 等 Figma artifact。

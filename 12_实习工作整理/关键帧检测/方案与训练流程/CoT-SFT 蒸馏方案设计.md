@@ -4,7 +4,7 @@
 
 ### 概述
 
-CoT-SFT 将人工判断关键帧的过程组织成“两步法”：第一步用 State/Event 视频原语描述完整视频时间轴；第二步结合任务规则，引用与答案相关的原语进行推理并输出时间。[Direct SFT](<SFT 训练方案设计.md>) 监督最终时间点，CoT-SFT 进一步监督视频理解、证据引用与业务判定之间的关系。数据经过视频及原语质量过滤、时间校验、推理引用检查和标签信息清理后，用于 Structured CoT SFT。
+CoT-SFT 将人工判断关键帧的过程组织成“两步法”：第一步用 State/Event 视频原语描述完整视频时间轴；第二步结合任务规则，引用与答案相关的原语进行推理并输出时间。[Direct SFT](<SFT 训练方案设计.md#1-direct-sft-解决什么问题>) 监督最终时间点，CoT-SFT 进一步监督视频理解、证据引用与业务判定之间的关系。数据经过视频及原语质量过滤、时间校验、推理引用检查和标签信息清理后，用于 Structured CoT SFT。
 
 ```text
 Direct SFT checkpoint
@@ -14,7 +14,7 @@ Direct SFT checkpoint
   -> 可选 RFT / GRPO
 ```
 
-相关方法：[RFT](<../../../03_训练优化与对齐/后训练与对齐/RFT 拒绝采样微调.md>)、[GRPO](<../../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md>)。
+相关方法：[RFT](<../../../03_训练优化与对齐/后训练与对齐/RFT 拒绝采样微调.md#rft-拒绝采样微调>)、[GRPO](<../../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md#grpo-组相对策略优化>)。
 
 ### 1. 为什么 Direct SFT 不够
 
@@ -68,11 +68,11 @@ Direct SFT：
 | 来源 | 作用 |
 | --- | --- |
 | 高质量人工 GT | 提供可靠完成态标准 |
-| [Direct SFT](<SFT 训练方案设计.md>) 数据 | 保持业务覆盖和基础任务格式 |
+| [Direct SFT](<SFT 训练方案设计.md#1-direct-sft-解决什么问题>) 数据 | 保持业务覆盖和基础任务格式 |
 | 低 ACC 指标 | 针对能力缺口采样 |
 | bad case | 覆盖 early/late、二次刷新和证据幻觉 |
 | GT 附近 hard negative | 区分接近完成和首次完成 |
-| [Video Primitive](<Thinking with Visual Primitives 视觉原语推理.md>) | 提供客观时间轴 |
+| [Video Primitive](<Thinking with Visual Primitives 视觉原语推理.md#thinking-with-visual-primitives视觉原语推理>) | 提供客观时间轴 |
 | 强教师模型 | 生成结构化状态、事件和边界解释 |
 
 CoT 数据不是越多越好，优先保证：
@@ -86,7 +86,7 @@ CoT 数据不是越多越好，优先保证：
 
 ### 4. Video Primitive
 
-详见[Thinking with Visual Primitives 视觉原语推理.md](<Thinking with Visual Primitives 视觉原语推理.md>)。
+详见[Thinking with Visual Primitives 视觉原语推理.md](<Thinking with Visual Primitives 视觉原语推理.md#thinking-with-visual-primitives视觉原语推理>)。
 
 #### 4.1 State Primitive
 
@@ -356,13 +356,13 @@ CoT-SFT：
   让模型生成多个候选，用 reward 选择和强化更好的路径。
 ```
 
-详细方法见 [GRPO 训练方案设计.md](<GRPO 训练方案设计.md>)。
+详细方法见 [GRPO 训练方案设计.md](<GRPO 训练方案设计.md#关键帧检测grpo-训练方案>)。
 
 进入 GRPO 前应确认：
 
 - CoT 格式解析率稳定。
 - answer.time 可提取。
-- verifier 与人工判断一致，具体机制见 [GRPO 训练方案设计.md](<GRPO 训练方案设计.md>)。
+- verifier 与人工判断一致，具体机制见 [GRPO 训练方案设计.md](<GRPO 训练方案设计.md#关键帧检测grpo-训练方案>)。
 - group 内存在正确和错误的回答差异。
 
 ### 10. 常见问题

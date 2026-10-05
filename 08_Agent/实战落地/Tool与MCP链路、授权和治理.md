@@ -4,7 +4,7 @@
 
 ### 概述
 
-本卡片聚焦 Tool/MCP 在生产环境中的接入链路、传输、身份、资源授权、凭证、审批、审计和治理。Tool Call/MCP 的通用区别、对象模型、Tool Schema、结构化结果和错误模型见[《Tool Call 与 Function Calling》](<../基础概念/Tool_Call与Function_Calling.md>)。
+本卡片聚焦 Tool/MCP 在生产环境中的接入链路、传输、身份、资源授权、凭证、审批、审计和治理。Tool Call/MCP 的通用区别、对象模型、Tool Schema、结构化结果和错误模型见[《Tool Call 与 Function Calling》](<../基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>)。
 
 ### 六层链路
 
@@ -41,7 +41,7 @@
 
 ### D2C 适配与状态门禁
 
-D2C Tool Adapter 沿用[《Tool Call 与 Function Calling》](<../基础概念/Tool_Call与Function_Calling.md>)中的通用 schema 原则，并为 Lynx 页面采集固定业务契约：
+D2C Tool Adapter 沿用[《Tool Call 与 Function Calling》](<../基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>)中的通用 schema 原则，并为 Lynx 页面采集固定业务契约：
 
 ```json
 {

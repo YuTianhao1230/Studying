@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文横向比较 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等当前主流模型族的能力、边界和选型。这里的“SOTA”表示某个时间点、任务或能力维度上的代表性路线，不等于永久的排行榜第一；版本沿革统一见 [大模型发展历史与 SOTA 迭代时间线](<../大模型发展历史与SOTA迭代框架.md>)。
+本文横向比较 [GPT](<里程碑模型/GPT.md#gpt>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md#qwen3-与-qwen3-vl-架构>)、[DeepSeek](<里程碑模型/DeepSeek.md#deepseek-架构>)、[Llama](<里程碑模型/Llama.md#llama-架构>)、Mistral 等当前主流模型族的能力、边界和选型。这里的“SOTA”表示某个时间点、任务或能力维度上的代表性路线，不等于永久的排行榜第一；版本沿革统一见 [大模型发展历史与 SOTA 迭代时间线](<../大模型发展历史与SOTA迭代框架.md#大模型发展历史与-sota-迭代时间线2017-2026>)。
 
 ### 先建立 SOTA 模型坐标系
 
@@ -12,11 +12,11 @@
 
 | 维度 | 典型路线 | 解决的问题 |
 | --- | --- | --- |
-| 基座架构 | [Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md>)、[MoE](<../基础架构/MoE.md>)、GQA/MLA、长上下文 | 语言建模、成本、上下文和吞吐 |
-| 后训练 | [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、RLHF/RLAIF、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、RLVR/GRPO | 指令跟随、偏好、安全、数学代码推理 |
+| 基座架构 | [Decoder-only](<../基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)、[MoE](<../基础架构/MoE.md#moe>)、GQA/MLA、长上下文 | 语言建模、成本、上下文和吞吐 |
+| 后训练 | [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、RLHF/RLAIF、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md#dpo-直接偏好优化>)、RLVR/GRPO | 指令跟随、偏好、安全、数学代码推理 |
 | 多模态 | 视觉编码器 + projector/Q-Former/cross-attention/原生多模态 | 图像、视频、音频、OCR、GUI |
 | 推理时计算 | thinking mode、test-time compute、多采样、自检 | 复杂数学、代码、规划和科学推理 |
-| [Agent](<../../08_Agent/基础概念/Agent.md>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
+| [Agent](<../../08_Agent/基础概念/Agent.md#agent>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
 | 部署生态 | 开源权重、API、端侧小模型、私有化部署 | 成本、可控性、数据安全和工程落地 |
 
 ### 主流模型族横向比较
@@ -26,9 +26,9 @@
 | OpenAI GPT / o | 闭源通用旗舰；覆盖多模态、结构化输出、工具调用与推理时计算 | 复杂推理、代码、科学任务、通用 Agent 和多模态 API | 结构与训练细节不透明；深度推理通常更慢、更贵 |
 | Anthropic Claude | 长上下文、写作、代码工作流、安全对齐和 computer use | 长文档、代码库、研究分析、长周期工具任务 | 闭源；电脑操作需权限隔离、审计、回滚和人工确认 |
 | Google Gemini | 原生多模态、长上下文和 Pro/Flash/Lite 能力成本分层 | 长视频、长音频、文档、代码库与 Google 生态 Agent | 长上下文不保证可靠利用；引用、污染与推理成本仍需评测 |
-| Alibaba [Qwen](<Qwen千问架构.md>) | 开放模型谱系完整，中文、多语言、代码、数学、VL 与 Agent 均衡 | 私有部署、中文业务、多模态/OCR/GUI、微调与实验复现 | 开放权重不等于训练 recipe 完整公开；部署需核对版本与资源 |
-| [DeepSeek](<里程碑模型/DeepSeek.md>) | MoE、MLA、RLVR/GRPO 与蒸馏驱动的高性价比推理路线 | 数学、代码、可验证推理及成本敏感部署 | MoE 通信、负载均衡和长推理成本复杂；可能过度思考 |
-| Meta [Llama](<里程碑模型/Llama.md>) | 开放权重与社区生态强，多尺寸、量化和推理框架支持广 | 研究、可控微调、企业私有化和生态兼容 | 效果依赖数据、微调、量化与安全工程；许可和版本能力需核对 |
+| Alibaba [Qwen](<Qwen千问架构.md#qwen3-与-qwen3-vl-架构>) | 开放模型谱系完整，中文、多语言、代码、数学、VL 与 Agent 均衡 | 私有部署、中文业务、多模态/OCR/GUI、微调与实验复现 | 开放权重不等于训练 recipe 完整公开；部署需核对版本与资源 |
+| [DeepSeek](<里程碑模型/DeepSeek.md#deepseek-架构>) | MoE、MLA、RLVR/GRPO 与蒸馏驱动的高性价比推理路线 | 数学、代码、可验证推理及成本敏感部署 | MoE 通信、负载均衡和长推理成本复杂；可能过度思考 |
+| Meta [Llama](<里程碑模型/Llama.md#llama-架构>) | 开放权重与社区生态强，多尺寸、量化和推理框架支持广 | 研究、可控微调、企业私有化和生态兼容 | 效果依赖数据、微调、量化与安全工程；许可和版本能力需核对 |
 | Mistral | 高效小模型、开放 MoE、专项代码/视觉模型与企业自托管 | 资源受限部署、欧洲生态、代码与企业私有化 | MoE 服务和专家并行复杂；不同专项模型能力不宜混为一体 |
 
 ### 当前 SOTA 的共同趋势

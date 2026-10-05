@@ -37,7 +37,7 @@ VGA 在图像攻击之后执行离散词替换。可见代码流程是先调用 
 
 可以按四层讲：
 
-1. 问题：VLM/MLLM 的[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md>)仍不稳定。
+1. 问题：VLM/MLLM 的[黑盒迁移攻击](<../迁移与通用攻击/黑盒迁移攻击.md#黑盒迁移攻击>)仍不稳定。
 2. 假设：多模态模型依赖视觉表征和图文对齐。
 3. 方法：视觉阶段联合优化 $\lambda \mathcal{L}_{\mathrm{feat}} + (1-\lambda)\mathcal{L}_{\mathrm{align}}$，随后由 VGA 执行离散文本替换。
 4. 证据：image-only、text-only、joint、VGA、alignment loss、防御和 MLLM ASR 消融。

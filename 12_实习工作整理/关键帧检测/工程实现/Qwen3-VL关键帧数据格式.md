@@ -113,7 +113,7 @@ answer = {"time": time}
 ...
 ```
 
-`<video>` 是文本中的模态占位符，告诉 [Qwen3-VL](<../../../02_大模型/模型细节/Qwen千问架构.md>)：视频特征要插入到这里。
+`<video>` 是文本中的模态占位符，告诉 [Qwen3-VL](<../../../02_大模型/模型细节/Qwen千问架构.md#qwen3-vl-总体架构>)：视频特征要插入到这里。
 
 #### 2. 视频路径放到 `videos`
 
@@ -242,7 +242,7 @@ human.value 的 <video>
 - `task_type_en` 可以由中文到英文的映射表补充，是元数据，不会重新生成 prompt。
 - `original_images` 是为了兼容图片字段保留的空列表，对当前视频任务没有视觉内容。
 - `fps`、`max_frames`、`max_pixels` 即使写在样本顶层，也不会自动被所有训练/推理框架读取；必须由数据管线显式映射到 processor，或按所用版本的接口参数传入。
-- `input_size` 是预处理尺寸记录，不代表 Qwen3-VL 要求所有图片固定成这个尺寸。Qwen3-VL 的动态 resize、像素预算和视觉 token 计算见 [Qwen千问架构.md](<../../../02_大模型/模型细节/Qwen千问架构.md>)。
+- `input_size` 是预处理尺寸记录，不代表 Qwen3-VL 要求所有图片固定成这个尺寸。Qwen3-VL 的动态 resize、像素预算和视觉 token 计算见 [Qwen千问架构.md](<../../../02_大模型/模型细节/Qwen千问架构.md#qwen3-与-qwen3-vl-架构>)。
 
 ms-swift 常用的是 `messages` 加顶层 `videos` 的多模态数据格式。使用 ms-swift 时，应由转换层把内部 `conversations` 映射为 `messages`，并按当前版本支持的接口传递视频采样参数，不能仅凭内部字段名假定框架会自动识别。
 
@@ -306,7 +306,7 @@ human = 问题和任务约束
 gpt   = 目标输出
 ```
 
-这样可以直接用于 [SFT](<../../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>) 的 teacher forcing：模型根据用户轮生成助手轮，loss 主要落在答案 token 上。
+这样可以直接用于 [SFT](<../../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>) 的 teacher forcing：模型根据用户轮生成助手轮，loss 主要落在答案 token 上。
 
 #### 用 `<video>` 和 `videos` 分离模态位置与文件资源
 
@@ -319,7 +319,7 @@ videos：告诉数据处理器从哪里读取视频
 
 #### 输出只保留时间 JSON
 
-当前无 [CoT](<../../../02_大模型/应用与问题/CoT.md>) 的 prompt 版本，目标是让模型稳定学习：
+当前无 [CoT](<../../../02_大模型/应用与问题/CoT.md#cot>) 的 prompt 版本，目标是让模型稳定学习：
 
 ```text
 视频 + 业务规则

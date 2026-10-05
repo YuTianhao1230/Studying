@@ -4,7 +4,7 @@
 
 ### 概述
 
-本卡片聚焦 D2C 视觉一致性场景中的 Skill 生产落地，包括任务拆分、路由描述、目录骨架、工具接入、上线顺序和 bad case 迭代。Skill 的通用定义、渐进式加载、Skill/Tool 边界、评测和版本机制见[《Skill》](<../基础概念/Skill.md>)。
+本卡片聚焦 D2C 视觉一致性场景中的 Skill 生产落地，包括任务拆分、路由描述、目录骨架、工具接入、上线顺序和 bad case 迭代。Skill 的通用定义、渐进式加载、Skill/Tool 边界、评测和版本机制见[《Skill》](<../基础概念/Skill.md#skill>)。
 
 ### D2C Skill 的生产拆分
 

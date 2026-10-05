@@ -8,7 +8,7 @@ KV Cache 是大模型自回归生成时缓存历史 token 的 Key 和 Value；Pr
 
 ### 自回归生成是什么
 
-[GPT](<../../02_大模型/模型细节/里程碑模型/GPT.md>) 类模型一次生成一个 token：
+[GPT](<../../02_大模型/模型细节/里程碑模型/GPT.md#gpt>) 类模型一次生成一个 token：
 
 ```text
 输入: 今天天气
@@ -44,7 +44,7 @@ Decode 从第一个输出 token 开始，每次生成一个 token。
 
 ### KV Cache 是什么
 
-[Transformer](<../../02_大模型/基础架构/Transformer.md>) attention 中每层都会计算 Q、K、V。
+[Transformer](<../../02_大模型/基础架构/Transformer.md#transformer>) attention 中每层都会计算 Q、K、V。
 
 生成第 `t` 个 token 时，新 token 需要关注之前所有 token。如果每一步都重新计算所有历史 token 的 K/V，会非常浪费。
 
