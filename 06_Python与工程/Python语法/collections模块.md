@@ -16,7 +16,7 @@
 
 1.  **`namedtuple`**: 带字段名的元组，增强代码可读性。
 2.  **`deque`**: 双端队列，在两端添加和删除元素都很快。
-3.  **`Counter`**: 字典的子类，用于计算可哈希对象的频率。
+3.  **[`Counter`](<Counter类.md>)**: 字典的子类，用于统计可哈希对象的频率。
 4.  **`defaultdict`**: 带有默认值的字典，访问不存在的键时不会抛出 `KeyError`。
 5.  **`OrderedDict`**: 记住元素插入顺序的字典。
 6.  **`ChainMap`**: 将多个字典或映射组合成一个单一、可更新的视图。
@@ -118,48 +118,6 @@ for i in range(10):
 ### deque([2, 3, 4, 5, 6], maxlen=5) <-- 1 被挤出
 ### ...
 ### deque([5, 6, 7, 8, 9], maxlen=5)
-```
-
-### `Counter`：计数器
-
-**是什么？**
-`Counter` 是 `dict` 的一个子类，用于计算可哈希对象的出现次数。它的键是元素，值是该元素的计数。
-
-**解决了什么问题？**
-在没有 `Counter` 的情况下，要统计一个列表中元素的频率，你需要写一个循环，并用字典来处理键是否存在的情况。`Counter` 将这个常见模式简化为一行代码。
-
-**如何使用？**
-
-```python
-from collections import Counter
-
-### 从可迭代对象创建 Counter
-word_list = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple']
-c = Counter(word_list)
-print(f"词频统计: {c}") # 输出: Counter({'apple': 3, 'banana': 2, 'orange': 1})
-
-### 访问计数
-print(f"apple 的数量: {c['apple']}") # 输出: 3
-print(f"grape 的数量: {c['grape']}")   # 输出: 0 (访问不存在的键返回 0，而不是 KeyError)
-
-### most_common(n) 方法：返回最常见的 n 个元素及其计数
-print(f"最常见的 2 个词: {c.most_common(2)}") # 输出: [('apple', 3), ('banana', 2)]
-
-### Counter 之间可以进行数学运算
-c1 = Counter(a=4, b=2, c=0, d=-2)
-c2 = Counter(a=1, b=2, c=3, d=4)
-
-print(f"c1 + c2: {c1 + c2}") # 加法：各项计数相加
-### 输出: Counter({'a': 5, 'b': 4, 'c': 3})
-
-print(f"c1 - c2: {c1 - c2}") # 减法：只保留正数结果
-### 输出: Counter({'a': 3})
-
-print(f"c1 & c2: {c1 & c2}") # 交集：取最小计数 (min(c1[x], c2[x]))
-### 输出: Counter({'b': 2, 'a': 1})
-
-print(f"c1 | c2: {c1 | c2}") # 并集：取最大计数 (max(c1[x], c2[x]))
-### 输出: Counter({'d': 4, 'a': 4, 'c': 3, 'b': 2})
 ```
 
 ### `defaultdict`：带默认值的字典
@@ -333,7 +291,7 @@ process_data(my_list)
 
 - 需要**可读性强的元组**？用 `namedtuple`。
 - 需要**高效的队列或栈**？用 `deque`。
-- 需要**统计元素频率**？用 `Counter`。
+- 需要**统计元素频率**？见 [`Counter`](<Counter类.md>)。
 - 想要**避免处理缺失键的麻烦**？用 `defaultdict`。
 - 需要**管理分层配置**？用 `ChainMap`。
 - 需要**明确保证顺序或移动元素**？`OrderedDict` 依然有其价值。
@@ -348,15 +306,15 @@ process_data(my_list)
 
 回答模板：
 
-`collections` 是 Python 标准库中提供高效专用容器的数据结构模块。它不是替代 `list`、`dict`、`tuple`，而是在特定场景下提供更清晰或更高效的表达。常用类型包括 `Counter` 做计数，`defaultdict` 简化默认值逻辑，`deque` 做队列和双端队列，`namedtuple` 提供轻量结构化记录，`OrderedDict` 在需要显式顺序语义时使用。
+`collections` 是 Python 标准库中提供高效专用容器的数据结构模块。它不是替代 `list`、`dict`、`tuple`，而是在特定场景下提供更清晰或更高效的表达。常用类型包括 [`Counter`](<Counter类.md>) 做频次统计，`defaultdict` 简化默认值逻辑，`deque` 做队列和双端队列，`namedtuple` 提供轻量结构化记录，`OrderedDict` 在需要显式顺序语义时使用。
 
-### `Counter`、`defaultdict` 和 `deque` 分别适合什么场景？
+### `defaultdict` 和 `deque` 分别适合什么场景？
 
-回答思路：用“计数、分组、队列”三个关键词回答。
+回答思路：用“分组、队列”两个关键词回答。
 
 回答模板：
 
-`Counter` 适合统计频次，比如词频、类别数量、Top-K 计数。`defaultdict` 适合分组和构建邻接表，可以避免每次判断 key 是否存在。`deque` 适合队列、栈、滑动窗口和 BFS，因为它在两端插入和弹出都是 O(1)。面试或工程里选择这些结构，核心是让代码意图更明确，并减少手写样板逻辑。
+`defaultdict` 适合分组和构建邻接表，可以避免每次判断 key 是否存在。`deque` 适合队列、栈、滑动窗口和 BFS，因为它在两端插入和弹出都是 O(1)。面试或工程里选择这些结构，核心是让代码意图更明确，并减少手写样板逻辑。
 
 ### 使用 `collections` 有哪些注意事项？
 
@@ -364,4 +322,4 @@ process_data(my_list)
 
 回答模板：
 
-使用 `defaultdict` 时要注意访问不存在的 key 会自动创建默认值，某些场景可能意外改变字典内容。`Counter` 的减法和零/负计数行为也需要了解，避免统计结果误判。`deque` 适合两端操作，但如果频繁按索引随机访问，就不如 list。工程上我会优先选择能表达问题语义的数据结构，但不会为了炫技牺牲可读性。
+使用 `defaultdict` 时要注意访问不存在的 key 会自动创建默认值，某些场景可能意外改变字典内容。`deque` 适合两端操作，但如果频繁按索引随机访问，就不如 list。工程上我会优先选择能表达问题语义的数据结构，但不会为了炫技牺牲可读性。

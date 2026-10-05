@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文整理如何把一次性 Python 脚本改造成可测试、可观测、可恢复的程序，包括并发模型、结构化日志、异常重试、配置管理、测试、大文件处理和断点续跑。
+本文是 Python 工程落地方法的权威正文，整理如何把一次性脚本改造成可测试、可观测、可恢复、可复现的程序，包括并发模型、结构化日志、异常重试、配置管理、测试、大文件处理和断点续跑。能力盘点与算法工程维度见[编程与算法工程能力](<编程与算法工程能力.md>)。
 
 ### GIL 与并发模型
 
@@ -22,23 +22,32 @@ CPython 的 GIL 保证同一进程内同一时刻通常只有一个线程执行 
 ### 线程池与超时
 
 ```python
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, wait
 
 
-def run_io_tasks(items, worker, max_workers=8):
+def run_io_tasks(items, worker, max_workers=8, timeout=30):
     results = {}
-    with ThreadPoolExecutor(max_workers=max_workers) as pool:
-        futures = {pool.submit(worker, item): item for item in items}
-        for future in as_completed(futures):
-            item = futures[future]
-            try:
-                results[item] = future.result(timeout=30)
-            except Exception as exc:
-                results[item] = {"error": str(exc)}
+    pool = ThreadPoolExecutor(max_workers=max_workers)
+    futures = {pool.submit(worker, item): item for item in items}
+    done, pending = wait(futures, timeout=timeout)
+
+    for future in done:
+        item = futures[future]
+        try:
+            results[item] = future.result()
+        except Exception as exc:
+            results[item] = {"error": str(exc)}
+
+    for future in pending:
+        item = futures[future]
+        future.cancel()
+        results[item] = {"error": "timeout"}
+
+    pool.shutdown(wait=False, cancel_futures=True)
     return results
 ```
 
-生产代码还需要限制提交队列、区分可重试异常、记录失败项，并避免多个线程无锁写同一个文件。
+这里的 `timeout` 限制整批等待时间；`cancel()` 只能取消尚未开始的任务，已经运行的线程不能被 Python 安全强制终止。需要硬超时时应使用可终止的进程或让底层网络/IO 调用自身支持超时。生产代码还需要限制提交队列、区分可重试异常、记录失败项，并避免多个线程无锁写同一个文件。
 
 ### 结构化日志
 

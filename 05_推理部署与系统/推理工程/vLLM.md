@@ -18,49 +18,19 @@ vLLM 是一个高吞吐的大语言模型推理和服务框架，核心特点是
 
 vLLM 通过更高效的 KV cache 管理和请求调度提升吞吐。
 
-### 核心概念：PagedAttention
+### 框架架构与机制组合
 
-传统 KV cache 通常为每个请求分配连续显存。问题是：
-
-- 不同请求长度差异大。
-- 输出长度事先不确定。
-- 容易产生显存浪费和碎片。
-
-PagedAttention 借鉴操作系统分页思想，把 KV cache 切成 block 管理。
-
-直观理解：
+从职责上看，vLLM 可以分为服务入口、请求调度、模型执行和缓存管理几层：
 
 ```text
-传统方式：
-每个请求占一大段连续显存。
-
-PagedAttention：
-每个请求由多个小 block 组成，按需分配和回收。
+OpenAI-compatible API / 离线推理入口
+  -> Scheduler：请求排队、准入和 Continuous Batching
+  -> Model Executor：单卡或多卡模型执行
+       <-> KV Cache Manager：PagedAttention 分块管理缓存
+  -> 流式或批量输出
 ```
 
-好处：
-
-- 降低显存浪费。
-- 更容易支持长上下文。
-- 更适合动态并发请求。
-
-### 核心概念：Continuous Batching
-
-传统 batching 可能是：
-
-```text
-等一批请求全部生成结束，再处理下一批。
-```
-
-问题是有些请求很短，有些很长，短请求完成后 GPU 位置空出来但不能马上补新请求。
-
-[Continuous Batching](<Batching.md>) 的思想是：
-
-```text
-某个请求生成结束后，马上把新请求插入 batch。
-```
-
-这样可以提升 GPU 利用率和整体吞吐。
+vLLM 组合采用 PagedAttention 与 Continuous Batching：前者负责 KV Cache 的显存管理，后者负责动态请求调度，两者共同服务于变长、高并发负载；分页机制详见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md>)，调度机制详见 [Batching](<Batching.md>)。
 
 ### vLLM 适合什么场景
 
@@ -205,11 +175,11 @@ vLLM 是一个面向大语言模型推理和服务的高吞吐框架。它不改
 
 ### vLLM 解决什么推理瓶颈？
 
-回答思路：从请求长度不一致、生成长度不可预知、KV cache 占用大和 batch 利用率低展开。
+回答思路：从动态请求带来的缓存管理和调度问题展开，说明框架如何组合专门机制。
 
 回答模板：
 
-LLM 推理的难点在于请求是动态的：不同用户 prompt 长度不同，生成长度也不确定，而每个请求都要维护 KV cache。传统静态 batching 容易出现短请求等长请求、显存连续分配浪费、GPU 空转等问题。vLLM 通过更细粒度的 KV cache 分页管理和持续批处理，把完成的请求及时移出 batch，把新请求补进来，从而提升吞吐并降低显存碎片。
+LLM 推理的难点在于请求长度和结束时间不确定，同时还要为每个活跃请求维护 KV Cache。vLLM 在同一框架内组合 PagedAttention 的缓存管理与 Continuous Batching 的请求调度，并由 Scheduler、Model Executor 和 KV Cache Manager 协同处理动态负载，从而提高显存和计算资源利用率。
 
 ### PagedAttention 和 Continuous Batching 分别做什么？
 
@@ -217,7 +187,7 @@ LLM 推理的难点在于请求是动态的：不同用户 prompt 长度不同�
 
 回答模板：
 
-PagedAttention 主要解决 KV cache 的显存管理问题。它把 KV cache 切成固定大小的 block，按需分配和回收，类似操作系统分页，因此不要求每个请求占用连续的大块显存，能减少碎片和预留浪费。Continuous Batching 解决的是请求调度问题：当 batch 中某些序列生成结束后，系统可以立即加入新的请求，而不是等整批全部结束。前者提升显存利用率，后者提升 GPU 计算利用率，两者合起来让 vLLM 更适合高并发 LLM 服务。
+PagedAttention 属于 KV Cache 显存管理机制，Continuous Batching 属于动态请求调度机制。vLLM 把两者组合在统一执行框架中，让缓存分配和请求进出能够协同工作；具体分页原理见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md>)，批处理策略见 [Batching](<Batching.md>)。
 
 ### 使用 vLLM 需要关注哪些参数和风险？
 

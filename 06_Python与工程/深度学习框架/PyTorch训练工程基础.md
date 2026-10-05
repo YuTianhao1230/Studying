@@ -34,7 +34,35 @@ Dataset 和 [DataLoader](<../常用库/DataLoader.md>) 负责数据管线。Data
 8. 清空梯度：`optimizer.zero_grad()`。
 9. 记录 loss、lr、grad norm、吞吐等日志。
 
-评估阶段要用 `model.eval()`，并配合 `torch.no_grad()` 或 `torch.inference_mode()`，避免构建计算图，节省显存和时间。
+一个可执行的基础工程循环应显式处理 device、梯度清零、裁剪和调度器：
+
+```python
+model.train()
+for step, (inputs, labels) in enumerate(train_loader):
+    inputs = inputs.to(device, non_blocking=True)
+    labels = labels.to(device, non_blocking=True)
+    optimizer.zero_grad(set_to_none=True)
+
+    logits = model(inputs)
+    loss = loss_fn(logits, labels)
+    loss.backward()
+    grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+    optimizer.step()
+    scheduler.step()
+
+    if step % log_interval == 0:
+        logger.info(
+            "step=%d loss=%.6f lr=%.3e grad_norm=%.4f",
+            step,
+            loss.item(),
+            scheduler.get_last_lr()[0],
+            float(grad_norm),
+        )
+```
+
+混合精度、梯度累积和分布式训练会改变 `backward/step` 的调用位置，应分别按对应方案调整，不能直接在该骨架上叠加调用。
+
+评估阶段先调用 `model.eval()` 切换 Dropout、BatchNorm 等模块行为；纯推理优先配合 `torch.inference_mode()`，后续仍需接入梯度计算时使用 `torch.no_grad()`。版本计数、view tracking 和推理张量限制见 [`torch.inference_mode()`](<../常用函数/torch.inference_mode().md>)。
 
 ### 工程注意点
 
@@ -78,11 +106,11 @@ PyTorch 中参数的 `.grad` 默认是累积的，也就是说每次 `loss.backw
 
 ### `torch.no_grad()` 和 `torch.inference_mode()` 有什么区别？
 
-回答思路：先讲共同点，再讲 inference_mode 更彻底但限制更多。
+回答思路：这里只回答使用规则，具体行为边界链接专题卡。
 
 回答模板：
 
-二者都用于不需要反向传播的场景，可以减少显存和计算图开销。`torch.no_grad()` 是关闭 autograd 记录；`torch.inference_mode()` 更进一步，还会关闭一些版本计数和 view tracking，因此推理更快、开销更低。但 inference_mode 更严格，适合纯推理；如果后面还要把结果接回需要梯度的计算，使用 no_grad 更稳。
+纯验证、测试和部署推理优先使用 `torch.inference_mode()`；如果上下文中的结果之后还要参与需要梯度的计算，使用 `torch.no_grad()` 更稳。二者都不能替代 `model.eval()`。详细机制和限制见 [`torch.inference_mode()`](<../常用函数/torch.inference_mode().md>)。
 
 ### PyTorch 训练 OOM 你会怎么排查？
 

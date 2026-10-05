@@ -6,6 +6,8 @@
 
 Workflow 是预先设计好的多步骤执行流程，用代码或配置把 LLM、工具和规则串起来，让系统按确定路径完成任务。
 
+本卡片统一说明 Workflow、Planning、ReAct 及常见编排模式的定义与选型。LangGraph 中的 state、node、edge、reducer、checkpoint 和 D2C 实现约束见[《Workflow 与 LangGraph 编排》](<../实战落地/Workflow与LangGraph编排.md>)。
+
 ### Workflow 和 Agent 的区别
 
 Workflow 更强调“流程预定义”：
@@ -66,6 +68,8 @@ Thought -> Action -> Observation -> Thought -> ...
 复杂任务通常采用混合方式：先制定阶段性计划，每一步执行后根据观察结果修正。
 
 ### 常见 Workflow 模式
+
+这些模式描述控制关系，可以独立实现，也可以组合在同一系统中；具体框架只负责承载模式，不改变它们的语义。
 
 #### Prompt Chaining
 
