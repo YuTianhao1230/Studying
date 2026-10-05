@@ -110,7 +110,7 @@ Prompt的形式可以非常多样：
 1.  **思维链 (Chain-of-Thought, CoT) Prompting 及其变体**
     *   **CoT**: 通过在Prompt中引导模型“一步一步思考”（Let's think step by step）或提供包含详细推理步骤的示例，来显著提高模型在复杂推理任务（如数学问题、逻辑推理）上的表现。
     *   **Zero-shot CoT**: 无需示例，直接在Prompt末尾加上“Let's think step by step.” 就能激发模型的推理能力。
-    *   **Auto-CoT**: 自动化地为一系列问题生成思维链示例，通常会先用Zero-shot CoT生成多个推理路径，然后选择那些能导出正确答案的路径作为优质示例。
+    *   **Auto-CoT**: 先对问题按语义或复杂度聚类，从各簇选择代表性问题，再用Zero-shot CoT自动生成推理链，组成多样化的 few-shot CoT 示例。
     *   **Self-Consistency with CoT**: 生成多个不同的思维链推理路径，然后对这些路径得出的最终答案进行投票，选择最一致的答案。这显著提高了CoT的鲁棒性和准确性。
     *   **Least-to-Most Prompting**: 将复杂问题分解为一系列更简单的子问题，然后按顺序解决这些子问题，并将前一个子问题的答案作为下一个子问题Prompt的一部分。
     *   **Tree of Thoughts (ToT)**: 将CoT从线性链条扩展为树状结构。模型在每一步推理时，会生成多个可能的“想法”（thoughts），并对这些想法进行评估，然后选择最有希望的想法进行扩展，允许模型进行探索、回溯和更全局的规划。
@@ -129,8 +129,8 @@ Prompt的形式可以非常多样：
 
 4.  **参数高效微调 (Parameter-Efficient Fine-Tuning, [PEFT](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md>)) 中的软提示 (Soft Prompts)**
     *   这与我们通常说的手动编写“硬提示”（discrete text prompts）不同。
-    *   **Prompt Tuning**: 不是调整整个模型的参数，而是在模型的输入层（或每一层）前面添加一小段可学习的连续向量（“软提示”或“提示嵌入”）。在微调时，只更新这些提示嵌入的参数，模型主体参数保持冻结。这使得为每个任务定制“提示”变得非常高效。
-    *   **Prefix Tuning**: 类似于Prompt Tuning，但在[Transformer](<../基础架构/Transformer.md>)的每一层前面都添加可学习的前缀向量。
+    *   **Prompt Tuning**: 不是调整整个模型的参数，而是只在输入 embedding 序列前添加一小段可学习的连续向量（“软提示”或“提示嵌入”）。微调时只更新这些提示嵌入，模型主体参数保持冻结。
+    *   **Prefix Tuning**: 不只修改输入层，而是为 [Transformer](<../基础架构/Transformer.md>) 各层注意力注入可学习的 prefix key/value 状态，使前缀在每层参与注意力计算。
     *   **P-Tuning (v1 & v2)**: 探索了不同方式将可学习的连续提示嵌入整合到模型中，v2版本在更多任务和模型规模上表现更稳定。
     *   **[LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>) (Low-Rank Adaptation)**: 虽然不直接是“提示”调优，但它是常用的 PEFT 方法，通过在模型层中注入可训练的低秩矩阵来适配模型。有时与软提示方法结合，或作为软提示的替代方案。
 
@@ -139,7 +139,7 @@ Prompt的形式可以非常多样：
     *   通过从外部知识库（如向量数据库）检索与用户查询最相关的信息块，并将这些信息块动态地插入到Prompt中作为上下文，来增强LLM回答的准确性、事实性和时效性。优化RAG中的检索策略、文档分块、Prompt中上下文的整合方式等，都是SOTA实践。
 
 6.  **结构化提示与框架 (Structured Prompts & Frameworks)**
-    *   **DSPy (Demonstrate-Search-Predict)**: 这是一个非常前沿的框架，它将Prompt Engineering从“手工艺术”转变为更系统化的“编程”。开发者可以用DSPy定义模块（如`ChainOfThought`、`ReAct`），然后DSPy的编译器可以自动优化这些模块的提示（通过少量示例进行“编译”），甚至选择最佳的LLM。它将提示视为可以组合和优化的程序。
+    *   **DSPy**: 这是一个用于模块化编写并优化语言模型程序的框架。开发者可以用DSPy定义模块（如`ChainOfThought`、`ReAct`），再由优化器基于示例和指标选择或改进提示、示范等参数。
     *   **XML/JSON格式的Prompts**: 对于需要复杂指令和结构化输出的任务，使用XML或JSON等标记语言来组织Prompt内容，可以帮助模型更好地理解不同部分的意图（如指令、上下文、示例、用户输入等）。
 
 7.  **基于反馈的迭代优化**

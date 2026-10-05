@@ -68,9 +68,11 @@ KV cache 会占显存，并且随以下因素增长：
 - batch size。
 - 序列长度。
 - 模型层数。
-- hidden size。
-- attention head 数。
+- `num_key_value_heads`。
+- `head_dim`。
 - 数据类型，如 FP16/BF16。
+
+忽略分页和对齐开销时，容量近似为 `2 * batch_size * sequence_length * num_layers * num_key_value_heads * head_dim * bytes_per_element`，其中 2 代表 K 和 V。
 
 直观理解：
 

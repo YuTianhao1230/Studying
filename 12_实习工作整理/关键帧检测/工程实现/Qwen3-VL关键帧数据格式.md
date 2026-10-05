@@ -4,7 +4,7 @@
 
 ### 这套数据格式的结论
 
-你当前 `video_eval_keyframe -> qwen3` 数据链路，最终不是 OpenAI API 那种直接的 `messages` 格式，而是项目内部的 `MllmData` JSONL 格式：
+你当前 `video_eval_keyframe -> qwen3` 数据链路使用项目内部的 `MllmData` JSONL 格式；它是内部中间格式，不是 Qwen3-VL 或 ms-swift 的官方标准格式：
 
 ```text
 一行 JSON = 一个训练样本
@@ -45,7 +45,7 @@
   -> 训练/评测数据
 ```
 
-### 第一层：任务生成后的标准样本
+### 第一层：任务生成后的内部样本
 
 任务数据构造阶段为每条样本构造一个 `MllmData`：
 
@@ -241,8 +241,10 @@ human.value 的 <video>
 
 - `task_type_en` 可以由中文到英文的映射表补充，是元数据，不会重新生成 prompt。
 - `original_images` 是为了兼容图片字段保留的空列表，对当前视频任务没有视觉内容。
-- `fps`、`max_frames`、`max_pixels` 的顶层副本方便训练/推理框架读取，和 `infos` 中的配置保持一致。
+- `fps`、`max_frames`、`max_pixels` 即使写在样本顶层，也不会自动被所有训练/推理框架读取；必须由数据管线显式映射到 processor，或按所用版本的接口参数传入。
 - `input_size` 是预处理尺寸记录，不代表 Qwen3-VL 要求所有图片固定成这个尺寸。Qwen3-VL 的动态 resize、像素预算和视觉 token 计算见 [Qwen千问架构.md](<../../../02_大模型/模型细节/Qwen千问架构.md>)。
+
+ms-swift 常用的是 `messages` 加顶层 `videos` 的多模态数据格式。使用 ms-swift 时，应由转换层把内部 `conversations` 映射为 `messages`，并按当前版本支持的接口传递视频采样参数，不能仅凭内部字段名假定框架会自动识别。
 
 ### Qwen3-VL 实际接收什么
 
@@ -252,7 +254,7 @@ human.value 的 <video>
 
 ```text
 1. videos[0]
-   视频文件，processor 从路径读取视频并按 fps / max_frames / max_pixels 采样和预处理。
+   视频文件，processor 从路径读取视频；fps / max_frames / max_pixels 需由数据管线显式映射或按版本接口传参后才控制采样和预处理。
 
 2. human.value
    <video> 占位符 + 关键帧判断规则 + task_type 对应的任务描述 + 输出格式要求。
@@ -356,7 +358,7 @@ videos：告诉数据处理器从哪里读取视频
 
 回答模板：
 
-`<video>` 是 human 文本中的模态占位符，表示视频特征要插入对话的这个位置；`videos[0]` 是数据处理器实际读取的视频文件路径。两者必须一一对应，前者解决“视频在序列中的位置”，后者解决“从哪里取视频”。processor 会读取 `videos[0]`，按 fps、最大帧数和像素预算采样，再把视觉 token 插入 `<video>` 对应的位置。
+`<video>` 是 human 文本中的模态占位符，表示视频特征要插入对话的这个位置；`videos[0]` 是数据处理器实际读取的视频文件路径。两者必须一一对应，前者解决“视频在序列中的位置”，后者解决“从哪里取视频”。processor 会读取 `videos[0]`；fps、最大帧数和像素预算只有经过数据管线显式映射或按当前版本接口传参后，才会控制采样，再把视觉 token 插入 `<video>` 对应的位置。
 
 ### `infos` 里的 task_type、fps、max_frames 会直接作为模型输入吗？
 
@@ -364,7 +366,7 @@ videos：告诉数据处理器从哪里读取视频
 
 回答模板：
 
-不完全是。`task_type` 会参与生成 task prompt，任务的完成态规则最终会写进 human 文本，所以模型能看到的是完整任务描述，而不是只看到一个字段名。`fps`、`max_frames`、`max_pixels` 主要控制视频 processor 的采样和 token 预算；`id`、`video_info`、`answer_obj` 主要用于数据追踪、统计和评测，通常不会作为自然语言直接拼到 prompt 里。
+不完全是。`task_type` 会参与生成 task prompt，任务的完成态规则最终会写进 human 文本，所以模型能看到的是完整任务描述，而不是只看到一个字段名。`fps`、`max_frames`、`max_pixels` 只有经数据管线映射或按版本接口传参后才控制视频 processor 的采样和 token 预算；`id`、`video_info`、`answer_obj` 主要用于数据追踪、统计和评测，通常不会作为自然语言直接拼到 prompt 里。
 
 ### 为什么答案用 `<answer>{"time": ...}</answer>`？
 

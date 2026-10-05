@@ -12,7 +12,7 @@
 
 ### 为什么需要 RoPE？（背景与动机）
 
-在 Transformer 架构中，[Attention](<Self-Attention.md>) 机制是“置换不变”的，也就是说，如果你打乱输入句子的顺序，模型输出的结果是一样的。为了让模型知道单词之间的顺序，必须引入**位置编码**。
+在 Transformer 架构中，不含位置编码的 [Self-Attention](<Self-Attention.md>) 是**置换等变**的：如果按同一种置换重排输入 token，输出也会按相同方式重排，而不是逐位置保持完全不变。为了让模型区分顺序，必须引入**位置编码**。
 
 传统的位置编码主要有两种：
 *   **绝对位置编码（Absolute PE）：** 给每个位置一个固定的向量（如 Sinusoidal 或可学习的 Embedding）。缺点是难以处理超出训练长度的序列，且没有显式建模相对距离。
@@ -94,12 +94,18 @@ $$
 $$\text{Score}(m, n) = (R_m q) \cdot (R_n k)$$
 
 #### 数学推导（以 2D 为例）
-我们将向量看作**复数**（复数乘法本质就是旋转）：
-*   $q$ 表示为 $q \cdot e^{i(m\theta)}$
-*   $k$ 表示为 $k \cdot e^{i(n\theta)}$
+我们将二维向量写成**复数**（复数乘法本质就是旋转）：
+*   $q=q_1+iq_2$，旋转后为 $q e^{im\theta}$
+*   $k=k_1+ik_2$，旋转后为 $k e^{in\theta}$
 
-内积在复数运算中相当于一个向量乘以另一个向量的共轭。计算过程如下：
-$$(q \cdot e^{im\theta}) \cdot (k \cdot e^{in\theta})^* = q \cdot k \cdot e^{im\theta} \cdot e^{-in\theta} = q \cdot k \cdot \mathbf{e^{i(m-n)\theta}}$$
+二维实向量内积对应复数乘积取实部，即 $\langle q,k\rangle=\operatorname{Re}(q\overline{k})$。因此旋转后的内积为：
+$$
+\begin{aligned}
+\left\langle q e^{im\theta},k e^{in\theta}\right\rangle
+&=\operatorname{Re}\left[(q e^{im\theta})\overline{(k e^{in\theta})}\right]\\
+&=\operatorname{Re}\left[q\overline{k}e^{i(m-n)\theta}\right].
+\end{aligned}
+$$
 
 **神奇的事情发生了：**
 原本的绝对位置 $m$ 和 $n$ 在指数运算中相减了，变成了 **$(m-n)$**！

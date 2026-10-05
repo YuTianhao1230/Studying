@@ -23,10 +23,10 @@ Qwen3-VL 多模态模型：
 SigLIP-2-based Vision Encoder
   + Native Dynamic Resolution
   + 3D Patch Embedding
-  + Interleaved-MRoPE
+  + 视觉位置编码
   + DeepStack
   + MLP-based Vision-Language Merger
-  + Qwen3 LLM Backbone
+  + Qwen3 LLM Backbone 中的 Interleaved-MRoPE
 ```
 
 一句话总结：
@@ -155,7 +155,7 @@ image / video frames
 
 | 模块 | 输入 | 核心机制 | 输出 |
 | --- | --- | --- | --- |
-| Vision Encoder | 图像、视频帧、动态分辨率视觉张量 | SigLIP-2-based [ViT](<里程碑模型/ViT.md>)、动态分辨率、3D patch embedding、Interleaved-MRoPE、DeepStack | 视觉 patch/token 表示 |
+| Vision Encoder | 图像、视频帧、动态分辨率视觉张量 | SigLIP-2-based [ViT](<里程碑模型/ViT.md>)、动态分辨率、3D patch embedding、视觉位置编码、DeepStack | 视觉 patch/token 表示 |
 | Merger | Vision Encoder 输出特征 | 空间 token 合并 + MLP 投影 | 与 Qwen3 hidden size 对齐的视觉 embedding |
 | Qwen3 LLM | 文本 token、视觉占位 token、视觉 embedding、位置/时间信息 | Decoder-only Transformer，Dense/MoE 版本，自回归建模 | 文本答案、时间戳、坐标、结构化输出或工具调用 |
 
@@ -179,7 +179,7 @@ Qwen3-VL 视觉编码器可以按下面这张表记：
 | ViT body | **27 层 Transformer blocks** | 对视觉 token 做多层 self-attention 和 FFN 建模 |
 | Hidden size | 约 `1152` | 视觉 token 的特征维度 |
 | Attention heads | 约 `16` 个 head | 在视觉 token 之间建模空间/时间关系 |
-| Position encoding | Interleaved-MRoPE | 同时编码文本位置、图像 H/W 和视频时间 T |
+| Position encoding | Vision Encoder 内的视觉位置编码 | 在视觉编码阶段表示 patch 的空间与时间位置 |
 | DeepStack | 常取中间层特征，如第 8/16/24 层附近 | 把中间视觉特征注入 LLM 早期层，保留 OCR、按钮、局部控件细节 |
 | Merger | `spatial_merge_size=2` + MLP | 合并相邻视觉 token，并投影到 Qwen3 hidden size |
 
@@ -188,14 +188,14 @@ Qwen3-VL 视觉编码器可以按下面这张表记：
 ```text
 visual tokens
   -> Norm
-  -> Multi-Head Self-Attention + Interleaved-MRoPE
+  -> Multi-Head Self-Attention + 视觉位置编码
   -> residual
   -> Norm
   -> MLP / FFN
   -> residual
 ```
 
-所以它本质上还是 [ViT](<里程碑模型/ViT.md>)：先把图像/视频切 patch，再用 Transformer 处理 patch 序列。Qwen3-VL 的特殊点在于：它把普通二维图像 ViT 扩展到视频时空 patch，并通过 Interleaved-MRoPE、DeepStack 和 Merger 让视觉 token 更适合接入 Qwen3 decoder。
+所以它本质上还是 [ViT](<里程碑模型/ViT.md>)：先把图像/视频切 patch，再用带视觉位置编码的 Transformer 处理 patch 序列。Qwen3-VL 的特殊点在于：它把普通二维图像 ViT 扩展到视频时空 patch，并通过 DeepStack 和 Merger 让视觉 token 更适合接入 Qwen3 decoder；进入 LLM 多模态序列后，再由 Interleaved-MRoPE 编码文本与视觉 token 的多维位置。
 
 Qwen3-VL 里 Vision Encoder 的输入处理流程是：
 
@@ -304,7 +304,7 @@ video_grid_thw = [T, H, W]
 
 ### Interleaved-MRoPE
 
-Qwen3-VL 使用 Interleaved-MRoPE 来表达多维位置。
+Qwen3-VL 在送入 LLM 的文本与视觉 token 多模态序列上使用 Interleaved-MRoPE 来表达多维位置；Vision Encoder 内部使用视觉位置编码，两者处于不同阶段。
 
 普通文本 RoPE 只需要一维 token 位置；多模态输入则有：
 
@@ -409,7 +409,7 @@ Qwen3-VL 能做秒级视频定位，不是因为模型真的连续看完每一�
 
 1. **采样帧携带时间顺序**：输入视频经过 fps/num_frames 采样形成帧序列。
 2. **video_grid_thw 保留时间维度**：视觉 token 不是无序图片集合，而是有时间网格信息。
-3. **Interleaved-MRoPE 编码 T/H/W**：时间和空间位置一起进入位置编码。
+3. **LLM 中的 Interleaved-MRoPE 编码 T/H/W**：时间和空间位置随多模态 token 一起进入语言模型的位置编码。
 4. **视频时间戳对齐训练**：训练中学习“文本时间戳 - 视频事件边界”的对应关系。
 5. **LLM 统一推理**：Qwen3 decoder 在文本条件、视觉 token 和时间位置共同约束下生成秒数或结构化答案。
 
@@ -616,7 +616,7 @@ Qwen3-VL 通常不是固定输入分辨率的模型，不要求所有图片都�
 
 回答模板：
 
-Interleaved-MRoPE 解决的是多模态位置编码问题。视频和图像不只有文本的一维位置，还有时间、高度、宽度三个维度；Interleaved-MRoPE 把 T/H/W 交错分布到位置编码频段里，让模型更稳定地理解空间布局和时间顺序。DeepStack 解决的是视觉细节丢失问题：只用 ViT 最后一层可能会丢掉 OCR、小按钮、边缘控件等低层细节，所以它从 ViT 多个中间层抽取特征，并注入到 LLM 早期层，让低层细节和高层语义都能参与推理。
+Interleaved-MRoPE 解决的是 LLM 多模态序列的位置编码问题。视频和图像不只有文本的一维位置，还有时间、高度、宽度三个维度；视觉特征经 Vision Encoder 和 Merger 进入 LLM 后，Interleaved-MRoPE 把 T/H/W 交错分布到位置编码频段里，让模型更稳定地理解空间布局和时间顺序。Vision Encoder 内部使用视觉位置编码。DeepStack 解决的是视觉细节丢失问题：只用 ViT 最后一层可能会丢掉 OCR、小按钮、边缘控件等低层细节，所以它从 ViT 多个中间层抽取特征，并注入到 LLM 早期层，让低层细节和高层语义都能参与推理。
 
 ### Qwen3-VL 为什么能做视频时间定位？
 
@@ -624,7 +624,7 @@ Interleaved-MRoPE 解决的是多模态位置编码问题。视频和图像不�
 
 回答模板：
 
-Qwen3-VL 能做视频时间定位，是因为视频输入不是无序图片集合。采样帧保留时间顺序，`video_grid_thw` 记录时间、高度、宽度网格，Interleaved-MRoPE 把时间和空间位置编码进视觉 token，训练时又学习了“视频事件边界”和“文本时间戳”的对应关系。最后 Qwen3 decoder 在文本问题、视觉 token 和时间位置信息共同约束下生成秒数或时间段。所以它不是连续逐帧扫描，而是在采样和 token budget 下学习时间事件对齐。
+Qwen3-VL 能做视频时间定位，是因为视频输入不是无序图片集合。采样帧保留时间顺序，`video_grid_thw` 记录时间、高度、宽度网格；视觉特征进入 LLM 多模态序列后，Interleaved-MRoPE 编码时间和空间位置，训练时又学习了“视频事件边界”和“文本时间戳”的对应关系。最后 Qwen3 decoder 在文本问题、视觉 token 和时间位置信息共同约束下生成秒数或时间段。所以它不是连续逐帧扫描，而是在采样和 token budget 下学习时间事件对齐。
 
 ### Qwen3-VL 的训练流程怎么理解？
 

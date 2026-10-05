@@ -42,7 +42,7 @@ Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student �
 | 必备条件 | 教师 logit/log-prob，或至少可复现教师前向 | 可用 verifier 和有区分度的 reward |
 | 当前项目适配 | 需要定制双视频训练链路 | 已有 reward plugin 和 verifier 基础 |
 
-#### 1.2 SFT、RFT、OPD 与 OPSD 的统一关系
+#### 1.2 SFT、RFT、GRPO 与 OPD/OPSD 的统一关系
 
 ![SFT、RFT、OPD 与 OPSD 的统一关系](<assets/opd_method_relationships.png>)
 
@@ -62,11 +62,13 @@ Temporal-OPSD 位于 Structured CoT SFT 和评测回流之后，使用 Student �
 | 方法 | 轨迹来源 | 监督信号 | 核心能力与局限 |
 | --- | --- | --- | --- |
 | SFT | 标注或教师轨迹 | one-hot CE | 稳定高效，但 Student 犯错后会进入未见状态 |
-| RFT / GRPO | Student rollout | 序列级 reward | 可以探索并直接优化业务目标，但反馈稀疏 |
-| OPD | Student rollout | 外部 Teacher token 分布 | 在真实状态上获得稠密监督，但需要外部强 Teacher |
-| OPSD | Student rollout | 带特权信息的 Self-Teacher token 分布 | 不依赖外部教师，但特权信息必须避免泄漏标签 |
+| RFT | 采样后经 reward/verifier 筛选或加权的固定回答 | 选中回答上的监督 CE | 实现简单，但训练本身不是组相对策略梯度，状态覆盖取决于采样和迭代刷新 |
+| GRPO | 当前策略的同题多条 rollout | 组内相对 advantage 与序列级 reward | 可以探索并直接优化业务目标，但反馈较稀疏且依赖组内差异 |
+| OPD / OPSD | Student rollout | Teacher token 分布 | 在 Student 实际状态上获得稠密监督；Teacher 可以是冻结、EMA、同模型特权视图或外部模型 |
 
-OPD/OPSD 不是“每道题必须采多条 rollout”才有效。对 token-level 蒸馏而言，一条 Student rollout 已提供该轨迹上每个 token 的监督；增加 rollout 数主要扩大状态覆盖，而不是增加同一状态的监督密度。相反，GRPO 需要同题多个回答构成相对比较组，若组内没有 reward 差异，学习信号会退化。
+RFT 与 GRPO 不能混称：RFT 通常先采样、按 reward/verifier 筛选或加权，再对保留回答做监督微调；GRPO 则在当前策略的同题多条 rollout 上计算组相对 advantage 并进行策略优化。OPD/OPSD 不是“每道题必须采多条 rollout”才有效。对 token-level 蒸馏而言，一条 Student rollout 已提供该轨迹上每个 token 的监督；增加 rollout 数主要扩大状态覆盖，而不是增加同一状态的监督密度。GRPO 需要同题多个回答构成相对比较组，若组内没有 reward 差异，学习信号会退化。
+
+本文不把 OPD 与 OPSD 按“外部 Teacher”和“同模型 Teacher”作硬性划分；不同工作中的命名口径可能不同。Teacher 的来源与更新方式是独立配置轴，方法是否属于严格 token-level on-policy distillation，取决于是否在 Student rollout prefix 上对齐 Teacher 分布。
 
 在关键帧主流程中按以下条件进入 OPD：
 
@@ -143,10 +145,13 @@ Teacher 在 Student 自己的 rollout prefix 上提供 token 分布
 Vision-OPD 的基本设定是：
 
 ```text
-同一个模型看局部 crop：
+Teacher 看局部 crop：
   关键区域清楚，答案更容易正确。
 
-同一个模型看完整图像：
+Student 看带目标红框 overlay 的完整图像，并接受 bbox/区域空间约束：
+  保留全局上下文和目标位置。
+
+Student 仅凭完整视图进行判断时：
   关键区域被全局视觉 token 淹没，可能回答错误。
 ```
 
@@ -155,9 +160,9 @@ Vision-OPD 的基本设定是：
 | 策略 | 视觉输入 | 作用 |
 | --- | --- | --- |
 | Teacher | 证据中心 crop、放大图或清晰局部视图 | 提供特权感知 |
-| Student | 完整图像 | 学习在普通输入中恢复局部能力 |
+| Student | 带目标红框 overlay 的完整图像，并保留 bbox/区域空间约束 | 在全局上下文中定位同一区域并恢复局部能力 |
 
-学生先生成自己的回答，教师再在学生的 prefix 上提供下一 token 分布。
+Student 与 Teacher 必须引用同一目标区域：红框 overlay、bbox 坐标和 crop 映射保持一致。学生先生成自己的回答，教师再在学生的 prefix 上提供下一 token 分布。
 
 #### 3.2 关键帧任务中的对应关系
 
@@ -188,11 +193,7 @@ Temporal Evidence：
 Temporal-OPSD
 ```
 
-如果教师是外部强模型，而不是同一个模型的特权输入版本，则称为：
-
-```text
-Temporal-OPD
-```
+本文沿用 `Temporal-OPSD` 作为项目方案名，但不以 Teacher 是否为外部模型决定 OPD/OPSD 名称；外部、冻结同源和 EMA Teacher 都只是可独立选择的 Teacher 配置。
 
 ### 4. 模型角色和输入定义
 
@@ -257,15 +258,15 @@ after：
 建议分三版实现：
 
 ```text
-V1 Frozen Temporal-OPSD：
+V1 Frozen Teacher：
   Teacher 和 Student 初始参数相同。
   Teacher 使用冻结的 CoT-SFT checkpoint。
 
-V2 EMA Temporal-OPSD：
+V2 EMA Teacher：
   Teacher 初始为 CoT-SFT checkpoint。
   后续使用 Student 参数的 EMA 更新。
 
-V3 External Temporal-OPD：
+V3 External Teacher：
   Teacher 是更强的外部 VLM 或关键帧专家模型。
 ```
 
@@ -279,7 +280,7 @@ OPD 的核心不是固定使用 crop，而是让 Teacher 在不改变任务语�
 
 | 路线 | Student 视图 | Teacher 特权视图 | 主要解决的问题 |
 | --- | --- | --- | --- |
-| Vision-OPD | 整图 | 目标区域 crop + `2x` 放大 | 小目标像素不足、局部细节不清楚 |
+| Vision-OPD | 带目标红框 overlay 的整图 + bbox/区域空间约束 | 同一目标区域 crop + `2x` 放大 | 保留全局定位，同时增强小目标像素与局部细节 |
 | UI-OPSD 空间路线 | 原图 | 同尺寸原图 + 目标红框 + 背景高斯模糊 | 目标区域被背景和其他 UI 元素干扰 |
 | Temporal-OPSD 时间路线 | 完整视频 | 完成态附近的高密度时间窗口 | 短暂状态转移、边界帧和局部刷新被全局时间采样稀释 |
 
@@ -314,7 +315,7 @@ Student rollout
 | 路线 | Teacher 特权信息 | 优势来源 | 主要泄漏风险 |
 | --- | --- | --- | --- |
 | 文本 OPSD | `teacher_prompt`，如题目 + 参考解答 | Teacher 已知答案或更完整推理上下文 | 参考解答直接包含最终答案 |
-| Vision-OPD | `teacher_images`，如 evidence crop + 放大 | 视觉局部更清晰 | crop / bbox 直接暴露目标区域 |
+| Vision-OPD | Student 使用全图红框 overlay 与空间约束，Teacher 使用对应 evidence crop + 放大 | 视觉局部更清晰且师生区域一致 | 红框、crop 或 bbox 直接暴露目标区域 |
 | UI-OPSD | 同尺寸图像 + 红框 + 背景模糊 | 干扰被抑制、注意力被指向 | 红框与标签高度相关 |
 | Temporal-OPSD | GT 附近高密度时间窗口 | 状态转移更完整、边界更清晰 | 窗口中心或 GT 相对位置泄漏 |
 
@@ -763,7 +764,7 @@ $$
 
 ### 8. 两种 OPD 实现路线
 
-#### 8.1 路线 A：Sampled-token reverse KL
+#### 8.1 路线 A：Sampled-token reverse-KL 策略梯度估计
 
 这是最容易写代码的原型版本。
 
@@ -775,13 +776,27 @@ r_t^{KD}
 \log p_T(y_t \mid s_t)-\log p_S(y_t \mid s_t)
 $$
 
-或者使用：
+令 sampled token 的 log-ratio advantage 为：
+
+$$
+A_t
+=
+\operatorname{stopgrad}\!\left[
+\log p_S(y_t \mid s_t)-\log p_T(y_t \mid s_t)
+\right]
+$$
+
+最小化 reverse KL 的单样本策略梯度估计可写为：
 
 $$
 \mathcal{L}_{sample}
 =
-\log p_S(y_t \mid s_t)-\log p_T(y_t \mid s_t)
+A_t\,\log p_S(y_t \mid s_t)
 $$
+
+等价地，也可令 $r_t^{KD}=\log p_T-\log p_S$，使用
+$-\operatorname{stopgrad}(r_t^{KD})\log p_S$。采样 token 和 advantage 必须停止梯度；不能直接把
+$\log p_S(y_t\mid s_t)-\log p_T(y_t\mid s_t)$ 当作普通可微 loss，否则忽略了采样分布对 Student 参数的依赖，得到的不是 reverse KL 的正确梯度估计。
 
 优点：
 
@@ -868,7 +883,7 @@ temporal_opd_logits.py
   在相同 prefix 上计算 Teacher/Student logits。
 
 temporal_opd_loss.py
-  实现 sampled-token KL、Top-K KL、JSD 和 CE 混合。
+  实现 sampled-token reverse-KL 策略梯度估计、Top-K KL、JSD 和 CE 混合。
 
 temporal_opd_trainer.py
   负责 rollout、前向、反向、优化器和 EMA。
@@ -1002,7 +1017,7 @@ late bad case
 1,000-2,000 条高质量样本
 以 early/late/边界难例为主
 先使用 Frozen Teacher
-先使用 sampled-token reverse KL
+先使用带 stop-gradient advantage 的 sampled-token reverse-KL 策略梯度估计
 rollout_max_tokens = 256-512
 num_train_epochs = 0.1-0.3
 ```
@@ -1276,7 +1291,7 @@ Recall 很高但 Precision 很低。
 
 #### OPD 可以完全替代 GRPO 吗？
 
-Temporal-OPSD 可以作为 GRPO 之后的 On-Policy 优化阶段，但前提是有可靠的 Teacher logits 或 log-prob，以及质量稳定的局部时间教师。它不能替代 verifier，因为 OPD 主要迁移教师行为，可能继承教师错误；GRPO 则直接优化时间、格式和业务证据 reward。两者在主流程中分别承担业务 reward 优化和局部时间证据蒸馏。
+Temporal-OPSD 可以作为 GRPO 的替代或互补 On-Policy 优化阶段，但前提是有可靠的 Teacher logits 或 log-prob，以及质量稳定的局部时间教师。它不能替代 verifier，因为 OPD 主要迁移教师行为，可能继承教师错误；GRPO 则直接优化时间、格式和业务证据 reward。两者分别提供局部时间证据蒸馏和业务 reward 优化信号，不要求固定先后顺序。
 
 #### 为什么教师不能只看 GT 关键帧？
 

@@ -137,7 +137,7 @@ RAG 落地的重点是把当前任务需要的事实、规则、样例和证据�
 至少拆成：
 
 - Retrieval Recall：正确证据是否被召回。
-- Precision：召回中无关片段占比。
+- Precision：相关检索片段数 / 检索片段总数。
 - Groundedness：结论能否由证据支持。
 - Context Utility：注入后是否改善任务。
 - Freshness：是否使用了最新有效版本。

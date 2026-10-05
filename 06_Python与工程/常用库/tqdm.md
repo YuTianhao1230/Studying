@@ -76,7 +76,7 @@ from tqdm import tqdm
 import time
 
 total_steps = 500
-### 必须提供 total 参数，tqdm 才知道总数是多少
+### 提供 total 后可以显示完成比例和 ETA
 with tqdm(total=total_steps, desc="手动更新示例") as pbar:
     completed_steps = 0
     while completed_steps < total_steps:
@@ -91,7 +91,7 @@ print("手动控制循环完成!")
 ```
 
 **关键点:**
-*   创建 `tqdm` 对象时，必须指定 `total` 参数。
+*   `total` 并非总是必须：包装具有长度的可迭代对象时会自动推断；手动更新或处理未知长度迭代器时可以省略，但此时通常不显示百分比和 ETA。
 *   在循环内部，使用 `pbar.update(n)` 来更新进度条，`n` 是这次更新所完成的迭代次数（通常是 1，但也可以是其他值）。
 *   使用 `with` 语句可以确保在循环结束后自动关闭（清理）进度条 (`pbar.close()`)。如果你不使用 `with`，则需要在循环结束后手动调用 `pbar.close()`。
 

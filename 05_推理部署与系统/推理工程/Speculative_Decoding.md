@@ -21,7 +21,7 @@ Speculative Decoding 的思路是：
 ```text
 小模型 draft 多个 token
   -> 大模型一次性验证
-  -> 接受正确 token
+  -> 按 Target/Draft 概率比随机接受
   -> 拒绝后回退
 ```
 
@@ -29,8 +29,8 @@ Speculative Decoding 的思路是：
 
 1. Draft Model 根据当前上下文生成若干候选 token。
 2. Target Model 对这些候选 token 做验证。
-3. 如果候选 token 与 Target Model 分布一致或满足采样规则，则接受。
-4. 如果某个位置不通过，则从该位置回退，用 Target Model 生成。
+3. 严格推测采样以 $\min(1, p_{\text{target}}(x) / p_{\text{draft}}(x))$ 的概率接受候选；接受表示通过采样规则，不表示该 token 客观“正确”。
+4. 如果某个位置被拒绝，则从 Target 与 Draft 的修正分布采样，以保持最终输出服从 Target Model 的分布。
 5. 重复直到完成。
 
 ### 为什么能加速

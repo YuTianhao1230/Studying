@@ -104,7 +104,7 @@ Python 的异常被组织成一个层次结构。几乎所有常见的异常都�
         ```
 
 *   **`SyntaxError` / `IndentationError`**
-    *   **特殊说明**：这些是语法错误，通常**不能被 `try...except` 捕获**，因为它们在代码运行之前（解析阶段）就会导致程序失败。
+    *   **特殊说明**：当前源文件自身的语法错误发生在执行前的解析阶段，不能由该文件内部的 `try...except` 捕获；运行时调用 `compile()`、`eval()` 或 `exec()` 解析动态代码时抛出的 `SyntaxError` 可以被外层捕获。
     *   **`SyntaxError` 示例**：
         ```python
         print("hello"  # 缺少右括号，语法错误
@@ -166,8 +166,8 @@ Python内置异常用于表达运行时错误类型，比如 `ValueError`、`Typ
 
 ### Python内置异常 常见坑是什么？
 
-回答思路：抓住裸 except 吞错、多异常要用元组且父类放最后、SyntaxError 无法被 try 捕获这几个点。
+回答思路：抓住裸 except 吞错、多异常要用元组且父类放最后、当前源文件的 SyntaxError 无法由文件内部捕获但动态编译时可以捕获这几个点。
 
 回答模板：
 
-内置异常的坑：一是别用裸 `except:` 或笼统的 `except Exception` 吞掉一切，这会连你没预料的 bug 一起吃掉、还难排查，应该捕获具体异常并保留上下文（注意 `KeyboardInterrupt`、`SystemExit` 继承自 BaseException，`except Exception` 抓不到）。二是捕获多个异常要用元组 `except (KeyError, IndexError)`，而且父类 `Exception` 要放在最后，否则前面就把子类全拦了，后面的分支永远命中不到。三是 `SyntaxError`、`IndentationError` 属于解析阶段错误，`try/except` 根本捕获不了。
+内置异常的坑：一是别用裸 `except:` 或笼统的 `except Exception` 吞掉一切，这会连你没预料的 bug 一起吃掉、还难排查，应该捕获具体异常并保留上下文（注意 `KeyboardInterrupt`、`SystemExit` 继承自 BaseException，`except Exception` 抓不到）。二是捕获多个异常要用元组 `except (KeyError, IndexError)`，而且父类 `Exception` 要放在最后，否则前面就把子类全拦了，后面的分支永远命中不到。三是当前源文件自身的 `SyntaxError`、`IndentationError` 无法由文件内部的 `try/except` 捕获，但运行时 `compile()`、`eval()`、`exec()` 解析动态代码时抛出的 `SyntaxError` 可以由外层捕获。

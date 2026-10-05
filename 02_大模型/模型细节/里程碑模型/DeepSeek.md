@@ -10,7 +10,8 @@ DeepSeek 是以高性价比大模型、MoE、注意力显存优化和推理后�
 
 ```text
 DeepSeek-V2/V3：
-DeepSeekMoE + MLA + MTP
+DeepSeekMoE + MLA
+  + V3 新增 MTP 训练目标
   -> 在较低激活计算和 KV Cache 成本下扩大模型容量
 
 DeepSeek-R1：
@@ -33,16 +34,17 @@ token ids
        -> MLA
        -> residual
        -> RMSNorm
-       -> DeepSeekMoE FFN
+       -> dense FFN（V2 首层 / V3 前三层）
+          或 DeepSeekMoE FFN（其余层）
        -> residual
   -> LM head
   -> next-token logits
 ```
 
-每层主要由两部分组成：
+每层主要由注意力和 FFN 两部分组成：
 
 - **MLA（Multi-head Latent Attention）**：压缩 K/V 表示，降低 KV Cache。
-- **DeepSeekMoE**：每个 token 只路由到少数专家，扩大总参数容量但控制激活计算。
+- **FFN**：DeepSeek-V2 的首层、DeepSeek-V3 的前三层使用 dense FFN，其余层使用 DeepSeekMoE，让每个 token 只路由到少数专家，在扩大总参数容量的同时控制激活计算。
 
 ### MLA 解决什么问题
 
@@ -51,8 +53,8 @@ token ids
 ```text
 K/V hidden states
   -> 低秩压缩到 latent vector
-  -> 缓存 latent representation
-  -> 注意力计算时恢复需要的表示
+  -> 缓存 latent representation 和解耦的 RoPE Key 分支
+  -> 将内容投影吸收到 Query/输出投影中，直接基于 latent 计算
 ```
 
 MLA 还需要处理 RoPE 和内容表示的兼容问题，常见做法是把内容部分和位置部分解耦：
@@ -99,7 +101,7 @@ DeepSeekMoE 的重点：
 
 ### MTP：Multi-Token Prediction
 
-DeepSeek-V3 还使用 Multi-Token Prediction（MTP）作为训练和推理相关的增强方向。它不只训练模型预测下一个 token，还让模型学习预测后续多个 token：
+Multi-Token Prediction（MTP）是 DeepSeek-V3 相比 V2 新增的训练目标。它不只训练模型预测下一个 token，还让模型学习预测后续多个 token：
 
 ```text
 当前 hidden state
@@ -155,11 +157,11 @@ DeepSeek-V3 base
 
 ### DeepSeek-V2/V3 的架构重点是什么？
 
-回答思路：用“MoE 控制激活计算，MLA 压缩 KV Cache，MTP 增强多 token 预测”三点回答。
+回答思路：先区分 V2/V3 的 dense FFN 与 MoE 层，再说明 MLA 压缩 KV Cache，并指出 MTP 是 V3 新增训练目标。
 
 回答模板：
 
-DeepSeek-V2/V3 的核心不是单个 decoder block，而是三条效率路线。第一是 DeepSeekMoE，通过 router 让每个 token 只激活少数 routed experts，并保留 shared experts，在控制计算量的同时扩大总参数容量；第二是 MLA，把 K/V 表示压缩成 latent 并缓存，降低长上下文推理的 KV Cache 和显存带宽压力；第三是 MTP，让模型学习预测多个后续 token，为训练信号和推理加速提供支持。三者分别对应模型容量、KV Cache 和多 token 效率。
+DeepSeek-V2/V3 都采用 MLA 和 DeepSeekMoE，但不是每层 FFN 都是 MoE：V2 首层使用 dense FFN，V3 前三层使用 dense FFN，其余层才使用 DeepSeekMoE。MoE 通过 router 让每个 token 只激活少数 routed experts，并保留 shared experts，在控制计算量的同时扩大总参数容量；MLA 把 K/V 表示压缩成 latent 并缓存，降低长上下文推理的 KV Cache 和显存带宽压力。MTP 则是 V3 新增的训练目标，让模型学习预测多个后续 token，可提供更丰富的训练信号并支持推理加速。
 
 ### MLA 和 GQA 有什么区别？
 
@@ -167,7 +169,7 @@ DeepSeek-V2/V3 的核心不是单个 decoder block，而是三条效率路线。
 
 回答模板：
 
-GQA 是让多个 Query head 共享较少的 Key/Value head，通过减少 K/V head 数量来降低 KV Cache；MLA 则进一步把 K/V 信息压缩成低维 latent representation，推理时主要缓存 latent，需要计算时再恢复使用。GQA 的结构更直观、兼容性更好；MLA 的 KV Cache 压缩潜力更大，但位置编码解耦、权重结构和推理实现更复杂。两者的共同目标都是降低长上下文 decode 阶段的显存和带宽成本。
+GQA 是让多个 Query head 共享较少的 Key/Value head，通过减少 K/V head 数量来降低 KV Cache；MLA 则进一步把 K/V 信息压缩成低维 latent representation，高效推理通过投影吸收直接基于 latent 计算，无需显式物化完整的多头 K/V。GQA 的结构更直观、兼容性更好；MLA 的 KV Cache 压缩潜力更大，但位置编码解耦、权重结构和推理实现更复杂。两者的共同目标都是降低长上下文 decode 阶段的显存和带宽成本。
 
 ### DeepSeekMoE 为什么能降低计算成本？
 

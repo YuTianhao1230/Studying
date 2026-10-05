@@ -61,7 +61,7 @@ GQA: [Q1,Q2]->[K1,V1] | [Q3,Q4]->[K2,V2]         (分组共用)
 
 GQA 现在已经成为高性能大模型的**标配**。
 
-*   **Llama 2 / Llama 3**：Llama 2 的 70B 版本使用了 GQA，而 Llama 3 的所有版本（8B, 70B, 400B）都全面采用了 GQA。
+*   **Llama 2 / Llama 3**：Llama 2 的 70B 版本使用了 GQA；Llama 3 初版包含 8B、70B，Llama 3.1 扩展为 8B、70B、405B，这些版本均采用 GQA。
 *   **Mistral / Mixtral**：Mistral 7B 和 Mixtral 8x7B 也使用了这种技术。
 *   **其他**：像通义千问 ([Qwen](<../模型细节/Qwen千问架构.md>))、Gemma 等现代模型也纷纷采用 GQA。
 

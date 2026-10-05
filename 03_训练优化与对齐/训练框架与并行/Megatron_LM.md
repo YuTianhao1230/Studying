@@ -64,9 +64,11 @@ GPU3: Layer 25-32
 
 #### Sequence Parallel
 
-进一步切分序列维度，降低 activation 显存压力。
+在 Tensor Parallel 组内沿序列维切分 LayerNorm、Dropout 等原本重复保存的激活，降低 activation 显存压力；它通常与 Tensor Parallel 配合，不负责把完整注意力的长上下文独立分摊到各卡。
 
-常用于长上下文训练。
+#### Context Parallel
+
+沿序列维切分模型输入和各层注意力计算，使不同 rank 只保存一段上下文，并通过通信交换注意力所需的 K/V。它直接面向超长上下文，通信模式和 Sequence Parallel 不同。
 
 ### 3D Parallelism
 
@@ -107,7 +109,7 @@ Megatron-LM 是 NVIDIA 开源的大模型训练框架，核心价值是提供张
 
 ### Megatron_LM 的核心机制是什么？
 
-回答思路：分层讲清 TP 切单层矩阵解决宽度、PP 按层切解决深度、DP 复制同步梯度、SP 切序列维省激活，四者组合成 3D 并行，并点出各自的通信/bubble 代价。
+回答思路：分层讲清 TP 切单层矩阵解决宽度、PP 按层切解决深度、DP 复制同步梯度、SP 在 TP 组内切分部分激活、CP 切分完整上下文和注意力计算，并点出各自的通信/bubble 代价。
 
 回答模板：
 

@@ -8,8 +8,8 @@
 
 1.  **`dataset` (必须)**：
     *   **作用**：这是 `DataLoader` 要加载的数据集对象。这个对象通常是你自定义的 `torch.utils.data.Dataset` 类的实例，或者 PyTorch 内置的一些数据集 (如 `torchvision.datasets.MNIST`)。
-    *   **类型**：`Dataset` 对象。
-    *   **要求**：`Dataset` 类必须实现 `__len__()` 方法（返回数据集大小）和 `__getitem__(idx)` 方法（根据索引 `idx` 返回一个数据样本）。
+    *   **类型**：map-style `Dataset` 或 `IterableDataset` 对象。
+    *   **要求**：map-style `Dataset` 通常实现 `__len__()` 和 `__getitem__(idx)`；流式或无法随机索引的数据可用 `IterableDataset`，主要实现 `__iter__()`，不要求实现前两者。
 
 2.  **`batch_size` (可选)**：
     *   **作用**：指定每个批次加载多少个样本。
@@ -33,7 +33,7 @@
         *   设置多少合适？通常可以设置为 CPU 的核心数，但需要实验找到最佳值，过多的 `num_workers` 可能会因为进程间通信开销而降低效率。
 
 5.  **`pin_memory` (可选)**：
-    *   **作用**：如果为 `True`，`DataLoader` 会在返回张量之前将它们复制到 CUDA 的固定内存（pinned memory）中。
+    *   **作用**：如果为 `True`，`DataLoader` 会在返回张量之前将它们复制到 CPU 页锁定内存（pinned memory）中。
     *   **类型**：`bool`。
     *   **默认值**：`False`。
     *   **说明**：当使用 GPU 训练时，将数据从 CPU 内存传输到 GPU 显存是一个耗时操作。使用固定内存可以加快这个传输速度。通常在 `num_workers > 0` 且数据最终要传输到 GPU 时设置为 `True`。

@@ -207,9 +207,9 @@ class UNet(nn.Module):
         # 编码器
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2)
+            nn.ReLU()
         )
+        self.pool = nn.MaxPool2d(2)
         # 解码器
         self.decoder = nn.Sequential(
             nn.ConvTranspose2d(64, 64, kernel_size=2, stride=2),
@@ -219,9 +219,10 @@ class UNet(nn.Module):
         self.final_conv = nn.Conv2d(128, 1, kernel_size=1)  # 输入通道128=64+64
 
     def forward(self, x):
-        x1 = self.encoder(x)        # 编码器输出：64通道
-        x2 = self.decoder(x1)        # 解码器输出：64通道
-        x = torch.cat([x1, x2], dim=1)  # 拼接后：128通道
+        x1 = self.encoder(x)              # 池化前特征：[B, 64, H, W]
+        x2 = self.decoder(self.pool(x1))
+        x2 = F.interpolate(x2, size=x1.shape[-2:], mode="bilinear", align_corners=False)
+        x = torch.cat([x1, x2], dim=1)    # 拼接后：[B, 128, H, W]
         return self.final_conv(x)
 ```
 
