@@ -4,7 +4,7 @@
 
 ### 概述
 
-本文按技术路线和代表性阶段整理 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等模型系列。这里的“SOTA”表示某个时间点、任务或能力维度上的代表性路线，不等于永久的排行榜第一；实际选型必须以具体模型版本、评测集、成本和部署约束为准。
+本文横向比较 [GPT](<里程碑模型/GPT.md>)/o 系列、Claude、Gemini、[Qwen](<Qwen千问架构.md>)、[DeepSeek](<里程碑模型/DeepSeek.md>)、[Llama](<里程碑模型/Llama.md>)、Mistral 等当前主流模型族的能力、边界和选型。这里的“SOTA”表示某个时间点、任务或能力维度上的代表性路线，不等于永久的排行榜第一；版本沿革统一见 [大模型发展历史与 SOTA 迭代时间线](<../大模型发展历史与SOTA迭代框架.md>)。
 
 ### 先建立 SOTA 模型坐标系
 
@@ -19,213 +19,17 @@
 | [Agent](<../../08_Agent/基础概念/Agent.md>) 能力 | tool use、function calling、computer use、IDE/CLI agent | 从回答问题到执行任务 |
 | 部署生态 | 开源权重、API、端侧小模型、私有化部署 | 成本、可控性、数据安全和工程落地 |
 
-### OpenAI GPT / o 系列
-
-#### 解决的问题
-
-OpenAI 系列的主线是从通用语言生成走向“统一助手 + 推理模型 + 多模态 Agent”。GPT-3 解决少样本泛化，InstructGPT/ChatGPT 解决指令对齐，GPT-4 解决复杂推理和可靠性，GPT-4o 解决实时多模态，o 系列解决需要长思考的数学、代码和规划问题。
-
-#### 架构与训练特点
-
-公开细节有限，但从产品形态和技术报告可以归纳为：
-
-```text
-large decoder-only / multimodal foundation model
-  -> large-scale pretraining
-  -> instruction tuning
-  -> preference alignment / safety alignment
-  -> reasoning-oriented post-training for o-series
-  -> tool use / multimodal API / agent runtime
-```
-
-关键特点：
-
-- [GPT](<里程碑模型/GPT.md>) 主线偏通用助手与多模态统一。
-- o 系列偏推理时计算，适合复杂数学、代码、科学和规划。
-- GPT-4o 强调文本、图像、音频的低延迟统一交互。
-- API 生态强调 function calling、structured output、tools 和多模态输入。
-
-#### 能力边界
-
-- 闭源模型无法完全确认训练数据、结构参数和后训练细节。
-- 推理模型通常更强但更慢、更贵，需要控制 reasoning budget。
-- 多模态强但仍会有视觉幻觉、细粒度定位和长视频理解问题。
-
-### Anthropic Claude
-
-#### 解决的问题
-
-Claude 系列强调安全对齐、长上下文、写作与代码能力。Claude 3.5/4 之后，重点转向 coding agent、computer use、长周期任务和更可靠的工具调用。
-
-#### 架构与训练特点
-
-```text
-large language model
-  -> constitutional / preference-based alignment
-  -> long-context training
-  -> tool/computer-use post-training
-  -> coding and agent workflow optimization
-```
-
-核心特点：
-
-- Constitutional AI：用原则和 AI feedback 强化 helpful、harmless、honest。
-- 长上下文：适合长文档、代码库和研究材料阅读。
-- Computer use：模型能观察屏幕并执行点击、输入等操作。
-- Claude Code：面向真实软件工程任务的 Agent 产品形态。
-
-#### 能力边界
-
-Claude 在长文档、写作和代码工作流中表现强，但闭源细节有限。电脑使用和 Agent 执行仍需要权限隔离、审计、回滚和人类确认。
-
-### Google Gemini
-
-#### 解决的问题
-
-Gemini 系列强调原生多模态、长上下文和 Agentic 工作流。它从设计上覆盖文本、图像、音频、视频，并把长上下文、多模态理解和工具使用作为核心能力。
-
-#### 架构与训练特点
-
-```text
-native multimodal model family
-  -> text / image / audio / video inputs
-  -> long-context attention / memory mechanisms
-  -> tool use and agentic capabilities
-  -> Pro / Flash / Lite capability-cost tiers
-```
-
-核心特点：
-
-- Pro：偏旗舰能力和复杂推理。
-- Flash：偏低延迟、高吞吐和性价比。
-- 长上下文：适合长文档、长视频、长音频和代码库。
-- Thinking 模式：把推理时计算纳入主线能力。
-
-#### 能力边界
-
-长上下文不等于长文档一定可靠。实际使用仍要关注检索定位、信息遗忘、引用准确性、上下文污染和推理成本。
-
-### Alibaba Qwen
-
-#### 解决的问题
-
-Qwen 系列解决中文/多语言强开源模型、多模态、代码、数学、长上下文和 Agent 能力的综合需求。它的特点是模型谱系完整，覆盖 dense、MoE、VL、Audio、Omni、Embedding、Reranker、Coder、Math 和 Guard。
-
-#### 架构与训练特点
-
-```text
-Qwen LLM base/instruct
-  -> decoder-only transformer
-  -> GQA / long context / multilingual data
-  -> SFT and preference alignment
-
-Qwen-VL / Qwen2.5-VL / Qwen3-VL
-  -> vision encoder
-  -> visual token compression / dynamic resolution
-  -> LLM backbone
-  -> vision instruction tuning
-
-Qwen3 / QwQ / Qwen Coder
-  -> thinking / non-thinking modes
-  -> RL-oriented reasoning or coding post-training
-  -> tool use and agentic coding
-```
-
-核心特点：
-
-- 中文、多语言、代码和数学能力均衡。
-- 开源生态强，适合私有化部署、微调和实验复现。
-- VL 系列覆盖 OCR、文档、视频、GUI 和视觉 Agent。
-- Qwen3 之后强调混合思考模式：简单任务快速答，复杂任务深度推理。
-
-#### 能力边界
-
-开源权重不等于完整可复现，训练数据 recipe、清洗策略、后训练数据和 RL 细节仍是关键壁垒。部署时还要关注上下文长度、显存、吞吐和[量化](<../../05_推理部署与系统/推理工程/量化.md>)精度损失。
-
-### DeepSeek
-
-#### 解决的问题
-
-DeepSeek 的主线是以更低成本训练和推理获得接近闭源 SOTA 的能力，尤其在 MoE、[MLA](<../基础架构/MLA.md>)、代码、数学推理和 RLVR/GRPO 方向影响很大。
-
-#### 架构与训练特点
-
-```text
-DeepSeek base model
-  -> decoder-only / MoE architecture
-  -> efficient attention such as MLA
-  -> large-scale pretraining
-  -> SFT
-  -> reasoning-oriented RL such as GRPO/RLVR
-  -> distillation to smaller dense models
-```
-
-关键概念：
-
-- MoE：每个 token 只激活部分专家，在较低推理成本下扩大总参数容量。
-- MLA：通过压缩 KV 表示降低长上下文 [KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 成本。
-- GRPO/RLVR：用可验证奖励强化数学、代码等任务中的推理能力。
-- Distillation：把强推理模型能力蒸馏到更小模型中，降低部署成本。
-
-#### 能力边界
-
-DeepSeek 代表“高性价比推理模型”路线，但 MoE 的训练稳定性、专家负载均衡、通信开销、服务部署和长链路推理成本仍是工程重点。推理模型也可能出现长度偏置、过度思考和 reward hacking。
-
-### Meta Llama
-
-#### 解决的问题
-
-Llama 系列的核心价值是开放权重生态。它降低了研究、微调、私有部署和推理优化门槛，使 [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>)、[QLoRA](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md>)、量化、[RAG](<../应用与问题/RAG.md>) 和企业私有化应用快速发展。
-
-#### 架构与训练特点
-
-```text
-decoder-only transformer
-  -> large-scale curated pretraining
-  -> instruct tuning and safety tuning
-  -> long context and tool-use variants
-  -> vision / multimodal variants in later versions
-```
-
-核心特点：
-
-- 多尺寸覆盖，便于不同资源下部署。
-- 社区生态强，适合微调和应用实验。
-- Llama 3 之后在 tokenizer、数据规模、[GQA](<../基础架构/GQA.md>)、长上下文和 instruct 能力上明显增强。
-- Llama 4 路线引入多模态和 MoE，代表开放模型继续追赶闭源前沿。
-
-#### 能力边界
-
-开放模型的优势是可控和可部署，但效果高度依赖微调数据、推理框架、量化方式和安全策略。企业落地时要补足内容安全、权限、监控和评测闭环。
-
-### Mistral
-
-#### 解决的问题
-
-Mistral 系列强调小而强、开源友好和高效推理。Mixtral 代表稀疏 MoE 在开放模型中的重要应用。
-
-#### 架构与训练特点
-
-```text
-dense small language models
-  -> efficient decoder-only architecture
-  -> sliding window / grouped-query attention variants
-
-Mixtral
-  -> sparse mixture-of-experts
-  -> router selects experts per token
-  -> larger capacity with limited active parameters
-```
-
-核心特点：
-
-- 7B/8x7B/8x22B 等模型强调性价比。
-- MoE 扩大总容量但保持较低激活参数。
-- 适合部署、微调、欧洲生态和私有化场景。
-
-#### 能力边界
-
-MoE 推理部署比 dense 模型复杂，专家并行、路由负载、KV Cache、批处理和显存布局都需要工程优化。
+### 主流模型族横向比较
+
+| 模型族 | 当前定位与优势 | 典型适用场景 | 主要边界 |
+| --- | --- | --- | --- |
+| OpenAI GPT / o | 闭源通用旗舰；覆盖多模态、结构化输出、工具调用与推理时计算 | 复杂推理、代码、科学任务、通用 Agent 和多模态 API | 结构与训练细节不透明；深度推理通常更慢、更贵 |
+| Anthropic Claude | 长上下文、写作、代码工作流、安全对齐和 computer use | 长文档、代码库、研究分析、长周期工具任务 | 闭源；电脑操作需权限隔离、审计、回滚和人工确认 |
+| Google Gemini | 原生多模态、长上下文和 Pro/Flash/Lite 能力成本分层 | 长视频、长音频、文档、代码库与 Google 生态 Agent | 长上下文不保证可靠利用；引用、污染与推理成本仍需评测 |
+| Alibaba [Qwen](<Qwen千问架构.md>) | 开放模型谱系完整，中文、多语言、代码、数学、VL 与 Agent 均衡 | 私有部署、中文业务、多模态/OCR/GUI、微调与实验复现 | 开放权重不等于训练 recipe 完整公开；部署需核对版本与资源 |
+| [DeepSeek](<里程碑模型/DeepSeek.md>) | MoE、MLA、RLVR/GRPO 与蒸馏驱动的高性价比推理路线 | 数学、代码、可验证推理及成本敏感部署 | MoE 通信、负载均衡和长推理成本复杂；可能过度思考 |
+| Meta [Llama](<里程碑模型/Llama.md>) | 开放权重与社区生态强，多尺寸、量化和推理框架支持广 | 研究、可控微调、企业私有化和生态兼容 | 效果依赖数据、微调、量化与安全工程；许可和版本能力需核对 |
+| Mistral | 高效小模型、开放 MoE、专项代码/视觉模型与企业自托管 | 资源受限部署、欧洲生态、代码与企业私有化 | MoE 服务和专家并行复杂；不同专项模型能力不宜混为一体 |
 
 ### 当前 SOTA 的共同趋势
 
@@ -237,6 +41,18 @@ MoE 推理部署比 dense 模型复杂，专家并行、路由负载、KV Cache�
 | 原生多模态 | GPT-4o、Gemini、Qwen-VL/Omni、Llama Vision | 图像、音频、视频和 GUI | 从外挂视觉模块转向统一交互 |
 | Agent 化 | Claude Code、Codex、Qwen Coder、Gemini Agent | 模型只回答不执行 | 工具、环境、权限、审计成为能力一部分 |
 | 小模型/蒸馏 | GPT mini/nano、Qwen 小模型、DeepSeek Distill | 成本和延迟 | 强模型教小模型，服务高频场景 |
+
+### 选型顺序
+
+| 需求或现象 | 优先路线 | 判断依据 |
+| --- | --- | --- |
+| 零样本和少样本仍缺基础理解或推理能力 | 更换更强底座或专项模型 | 后训练难凭少量数据补出底座没有的能力 |
+| 已具备能力，但格式、风格或流程不稳定 | SFT 或偏好优化 | 问题属于行为对齐，不一定需要更大模型 |
+| 依赖私有知识、实时信息或可追溯证据 | RAG / 搜索 | 动态知识不应只依赖模型参数记忆 |
+| 需要查询、计算、操作软件或长流程执行 | 工具调用 / Agent | 外部执行能力不等同于语言模型静态知识 |
+| 高频、低延迟、成本敏感 | 小模型、蒸馏或模型路由 | 用任务分层避免所有请求都调用旗舰模型 |
+
+确定路线后，再在相同提示词、解码参数、工具权限和推理预算下，用真实业务集比较效果、失败类型、稳定性、延迟与单位成本。公开榜单只用于候选初筛。
 
 ### 常见考法与解题方法
 

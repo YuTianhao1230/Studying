@@ -1,130 +1,8 @@
-# 大模型发展历史与SOTA迭代框架（2017-2026）
+# 大模型发展历史与 SOTA 迭代时间线（2017-2026）
 
 > 来源：https://bytedance.larkoffice.com/docx/FUjKdPEdioj73ox8KzMcTWn6ntg
 
-> **核心结论：**大模型的发展不是模型越大越强一条线，而是由 **预训练规模化**、**数据质量**、**架构效率**、**后训练对齐**、**推理时计算**、**多模态统一** 和 **[Agent](<../08_Agent/基础概念/Agent.md>) 工程闭环** 共同推进。理解历史时建议同时看两条线：一条是业内 SOTA 按时间如何迭代，另一条是同一家模型系列如何一代代优化。
-
-## 先建立完整思维框架
-## 业内 SOTA 模型进化时间轴：从 Transformer 到 2026 Agent
-> **读图方法：**这张时间轴按能力主线组织，而不是只按公司罗列。每个节点都代表行业在解决一个新瓶颈：规模化、指令对齐、开放权重、多模态、推理时计算、长上下文、Agent 工具使用、实时交互。
-
-```mermaid
-flowchart LR
-  A[2017 Transformer<br>解决: RNN难并行与长依赖] --> B[2018 GPT/BERT<br>解决: 任务专用模型迁移弱]
-  B --> C[2019 GPT-2/T5<br>解决: 生成式预训练规模不足]
-  C --> D[2020 GPT-3<br>解决: 每个任务都微调成本高<br>提出: in-context learning]
-  D --> E[2021 CLIP/Codex/FLAN<br>解决: 图文、代码、指令泛化不足]
-  E --> F[2022 Chinchilla/InstructGPT/ChatGPT<br>解决: 数据算力配比不清 + Base不会当助手]
-  F --> G[2023 GPT-4/Claude/LLaMA/Qwen/Mistral/Gemini1<br>解决: 复杂推理、多模态、开放生态]
-  G --> H[2024 GPT-4o/Gemini1.5/Llama3/Qwen2.5/DeepSeek-V3/o1<br>解决: 实时多模态、长上下文、低成本MoE、推理]
-  H --> I[2025 GPT-5/Claude4/Gemini3/Qwen3/DeepSeek-R1/Llama4/Mistral3<br>解决: 统一模型、RLVR推理、开放多模态MoE、代码Agent]
-  I --> J[2026 GPT-5.5/Gemini3.5/ClaudeFable5/Qwen3.7/DeepSeek-V4<br>解决: 长周期Agent、1M上下文、跨工具执行、实时多模态工作流]
-
-  F -. 后训练主线 .-> F1[SFT + RLHF<br>从续写器到助手]
-  F1 --> H1[DPO/偏好优化<br>降低偏好对齐复杂度]
-  H1 --> I1[RLVR/GRPO<br>用可验证奖励强化数学、代码、任务指标]
-
-  G -. 开放权重主线 .-> G1[LLaMA/Qwen/Mistral<br>开放基座和微调生态]
-  G1 --> H2[DeepSeek/Qwen/MoE<br>低成本高性能]
-  H2 --> I2[Llama4/Qwen3/DeepSeek-V4/Mistral3<br>开放多模态、长上下文、Agent]
-
-  G -. 多模态主线 .-> G2[GPT-4V/LLaVA/Qwen-VL/Gemini<br>看图说话和视觉指令]
-  G2 --> H3[GPT-4o/Qwen2.5-VL/Gemini2<br>实时多模态、视频、GUI]
-  H3 --> J
-
-  I -. Agent主线 .-> I3[Codex/Claude Code/Qwen Code/Antigravity<br>模型进入IDE、终端、浏览器]
-  I3 --> J
-```
-
-| 阶段 | 代表节点 | 本阶段解决的问题 | 下一个瓶颈 |
-|-|-|-|-|
-| 架构统一 | [Transformer](<基础架构/Transformer.md>), [GPT](<模型细节/里程碑模型/GPT.md>), [BERT](<模型细节/里程碑模型/BERT.md>) | 用预训练模型替代任务专用模型，解决迁移能力弱和训练难并行 | 模型会语言建模，但不一定会生成好答案或遵循指令 |
-| 规模化泛化 | GPT-2, [T5](<模型细节/里程碑模型/T5.md>), GPT-3, PaLM | 扩大参数、数据和算力，获得 few-shot / in-context 能力 | 成本高、不可控、事实性弱，仍像续写器 |
-| 助手化对齐 | InstructGPT, ChatGPT, Claude | 通过 [SFT](<../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md>)、[RLHF](<../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md>)、RLAIF 让模型听指令、更安全、更像助手 | RLHF 贵且不稳，主观偏好不等于客观正确 |
-| 开放生态追赶 | LLaMA, [Qwen](<模型细节/Qwen千问架构.md>), Mistral, DeepSeek | 开放权重、[LoRA](<../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>)、[量化](<../05_推理部署与系统/推理工程/量化.md>)、[vLLM](<../05_推理部署与系统/推理工程/vLLM.md>) 降低训练和部署门槛 | 复现依赖数据 recipe 和后训练细节，开源不等于完全可复现 |
-| 多模态扩展 | GPT-4V, Gemini, [LLaVA](<模型细节/里程碑模型/LLaVA.md>), Qwen-VL, GPT-4o | 从文本扩展到图像、视频、OCR、文档、GUI 和实时音频 | 视觉幻觉、细粒度 grounding、视频时间理解仍难 |
-| 推理模型 | o1/o3, DeepSeek-R1, Gemini 2.5/3, Qwen3 | 用推理时计算和可验证奖励提升数学、代码、科学推理 | 延迟和成本上升，reward 设计、长度控制和蒸馏成为关键 |
-| Agent 工作流 | GPT-5.5, Claude Fable 5, Gemini 3.5, Qwen3.7, DeepSeek-V4 | 模型进入 IDE、终端、浏览器、文档、表格和多工具环境，执行长周期任务 | 可靠性、权限、安全、审计、失败恢复和真实业务闭环成为新瓶颈 |
-
-> **一句话路线：**行业 SOTA 的主线已经从“更大的聊天模型”转向“统一路由模型 + 推理模型 + 多模态模型 + Agent 工具执行”。对垂类训练来说，不要只问用不用 DPO/GRPO，而要先判断当前瓶颈是格式、偏好、可验证指标、长上下文、多模态 grounding，还是工具执行。
-
----
-
-> **读图方法：**这张图不是按公司罗列模型，而是按能力路线看行业如何演进：先解决“学语言”，再解决“会泛化”，再解决“听指令”，之后进入“多模态、开放权重、推理模型、Agent 工作流”并行推进。
-
-```mermaid
-flowchart LR
-  A[2017 Transformer<br>解决: RNN难并行和长依赖] --> B[2018 GPT/BERT<br>解决: 任务专用模型迁移弱]
-  B --> C[2019 GPT-2/T5<br>解决: 规模化生成能力不足]
-  C --> D[2020 GPT-3<br>解决: 每个任务都微调成本高]
-  D --> E[2021 CLIP/Codex/FLAN<br>解决: 图文、代码、指令泛化不足]
-  E --> F[2022 InstructGPT/ChatGPT/Chinchilla<br>解决: Base模型不会当助手 + 训练配比不清]
-  F --> G[2023 GPT-4/Claude/LLaMA/Qwen/Mistral<br>解决: 复杂推理、多模态、开放生态不足]
-  G --> H[2024 GPT-4o/Gemini1.5/Llama3/Qwen2.5/DeepSeek-V3/o1<br>解决: 实时多模态、长上下文、低成本和推理不足]
-  H --> I[2025 DeepSeek-R1/Gemini2.5/Qwen3/Claude4/o3<br>解决: 数学代码推理和可验证任务强化]
-  I --> J[2026 Qwen3.6/3.7 等 Agent模型<br>解决: 长周期工具调用和真实工作流自动化]
-
-  F -. 后训练主线 .-> F1[SFT + RLHF<br>从续写器到助手]
-  F1 --> I1[DPO/偏好优化<br>更稳更便宜地对齐]
-  I1 --> I2[RLVR/GRPO<br>用可验证奖励强化推理]
-
-  G -. 开放权重主线 .-> G1[LLaMA/Qwen/Mistral<br>开放基座和微调生态]
-  G1 --> H1[DeepSeek/Qwen/MoE<br>低成本高性能]
-
-  G -. 多模态主线 .-> G2[GPT-4V/LLaVA/Qwen-VL<br>看图说话和视觉指令]
-  G2 --> H2[GPT-4o/Gemini/Qwen-VL<br>原生多模态和视频理解]
-
-  H -. Agent主线 .-> H3[工具调用/代码Agent<br>模型进入环境]
-  H3 --> J
-```
-
-| 阶段 | 代表节点 | 本阶段主要解决的问题 | 进化到下一阶段后暴露的新问题 |
-|-|-|-|-|
-| 架构统一 | Transformer, GPT, BERT | 用预训练模型替代任务专用模型，解决迁移能力弱和训练难并行 | 模型会语言建模，但不一定会生成好答案或遵循指令 |
-| 规模化泛化 | GPT-2, T5, GPT-3, PaLM | 通过扩大参数、数据和算力获得 few-shot / in-context 能力 | 成本高、不可控、事实性弱，仍像续写器 |
-| 助手化对齐 | InstructGPT, ChatGPT, Claude | 通过 SFT、RLHF、RLAIF 让模型听指令、更安全、更像助手 | RLHF 贵且不稳，主观偏好不等于客观正确 |
-| 开放生态追赶 | LLaMA, Qwen, Mistral, DeepSeek | 用开放权重、LoRA、量化、vLLM 等降低训练和部署门槛 | 开源模型强依赖数据 recipe 和后训练细节，复现仍不完整 |
-| 多模态扩展 | [Flamingo](<模型细节/里程碑模型/Flamingo.md>), BLIP-2, LLaVA, GPT-4V, Qwen-VL, Gemini | 让模型从文本扩展到图像、视频、OCR、文档和 GUI | 视觉幻觉、细粒度 grounding、视频时间理解仍难 |
-| 推理模型 | o1/o3, DeepSeek-R1, Gemini 2.5, Qwen3 | 用推理时计算和可验证奖励提升数学、代码、科学推理 | 延迟和成本上升，reward 设计和长度控制成为关键 |
-| Agent 工作流 | Claude Computer Use, Codex, Qwen3.6/3.7, Gemini Agent | 让模型调用工具、读写文件、操作浏览器/IDE，完成长周期任务 | 可靠性、权限、安全、审计和失败恢复成为新瓶颈 |
-
-> **一句话路线：**行业 SOTA 的主线是：预训练获得通用能力，SFT/RLHF 变成助手，开放权重降低门槛，多模态扩展输入输出，RLVR/GRPO 强化可验证推理，Agent 把模型放进真实工具环境。
-
----
-
-| 优化轴 | 核心问题 | 代表工作 | 带来的能力 | 留下的问题 |
-|-|-|-|-|-|
-| 规模化 | 参数、数据、算力一起增大 | GPT-2/3、PaLM | 获得通用语言和少样本能力 | 成本高、数据质量和对齐不足 |
-| 数据最优配比 | 不是越大越好，要算力-参数-token 平衡 | Chinchilla、LLaMA | 同等算力下提升 base model 质量 | 只解决预训练效率，不解决指令和偏好 |
-| 架构效率 | 降低训练/推理成本 | [MoE](<基础架构/MoE.md>)、GQA/MQA、[MLA](<基础架构/MLA.md>)、FlashAttention | 在同等成本下提升吞吐或上下文 | 工程复杂，负载均衡和通信难 |
-| 指令微调 | 让模型从续写器变成助手 | FLAN、InstructGPT、LLaVA | 学会任务格式、对话、拒答和工具格式 | 模仿为主，探索弱 |
-| 偏好对齐 | 让模型输出符合人类偏好 | RLHF、RLAIF、[DPO](<../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md>)、KTO | 提升有用性、安全和可读性 | reward hacking、偏见、离线分布问题 |
-| 可验证 RL | 让模型探索正确解法 | DeepSeekMath、DeepSeek-R1、o 系列思路 | 数学、代码、工具任务显著增强 | 奖励稀疏、长度偏置、开放任务难验证 |
-| 推理时计算 | 回答前多想、多采样、多工具 | o1/o3、Gemini 2.5、Deep Think | 复杂任务性能提升 | 延迟和成本上升，评测需考虑 budget |
-| 多模态统一 | 把文本、图像、视频、音频接入统一模型 | Flamingo、GPT-4V、Gemini、Qwen-VL | 视觉问答、OCR、视频和 GUI 能力 | 幻觉、细粒度 grounding、时间理解仍难 |
-| Agent 工程 | 把模型嵌入工具和环境闭环 | Codex、Claude Computer Use、Browser/IDE agents | 端到端完成软件、办公、数据任务 | 可靠性、权限、安全和可审计性成为关键 |
-
-```mermaid
-flowchart LR
-  A[预训练规模化
-学通用知识] --> B[数据最优配比
-提升算力效率]
-  B --> C[指令微调
-从续写器到助手]
-  C --> D[偏好对齐
-更有用更安全]
-  D --> E[可验证RL
-强化推理和代码]
-  E --> F[推理时计算
-多想多试多工具]
-  F --> G[多模态和Agent
-进入真实工作流]
-  B --> H[架构效率
-MoE/GQA/MLA/FlashAttention]
-  H --> F
-```
-
----
+> **阅读口径：**本文只维护版本时间线，回答“行业和同一模型系列如何逐代演进”。当前模型的横向能力、边界与业务选型见 [当前 SOTA 模型详解](<模型细节/当前SOTA模型详解.md>)；架构、后训练、多模态与 Agent 原理分别进入对应专题。
 
 ## 主线一：按业内 SOTA 时间线看技术迭代
 这条线回答：行业是如何一步步从 Transformer 走到 ChatGPT、GPT-4、Claude、Gemini、Qwen、DeepSeek-R1 和 Agent 模型的。
@@ -294,97 +172,14 @@ MoE/GQA/MLA/FlashAttention]
 | Google Gemma 3 | 2025-03 | 开放小模型/多模态 | 端侧和单 GPU 需要强开放小模型 | 单 GPU/TPU 可跑，支持多语言、视觉和 128K | [Google](https://blog.google/technology/developers/gemma-3/) |
 | Microsoft Phi-4 | 2024-12 | 小模型推理 | 受限硬件上需要高质量 STEM/数学推理 | 14B 小模型专注复杂推理和合成数据训练 | [Microsoft](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-phi-4-microsoft’s-newest-small-language-model-specializing-in-comple/4357090) |
 
-### 把完整模型史转成训练决策
-| 历史趋势 | 你训练垂类模型时的对应动作 | 原因 |
-|-|-|-|
-| Base -> Instruct -> Reasoning/Agent | 不要直接堆算法，先判断当前错误属于格式、偏好、推理、工具还是多模态 grounding | 每代 SOTA 都是在解决前代瓶颈，不是简单扩大版本号 |
-| SFT/RLHF -> DPO/RLVR/GRPO | SFT 建格式和任务能力；DPO 修偏好；GRPO 强化可验证指标 | 不同后训练方法不是任意堆叠，而是对应不同监督信号 |
-| 长上下文和多模态成为标配 | 视频时间定位要优先保证帧采样、时间戳映射、长视频 eval 和 reward 可解析 | 长上下文不能自动解决 temporal grounding，仍需任务训练 |
-| Agent 模型成为 2026 主线 | 如果任务要工具/检索/GUI，再考虑 Agent 框架；如果只是时间定位，先把 SFT+GRPO 做扎实 | Agent 能力和垂类任务指标不是同一个优化目标 |
-| 开源权重和闭源 API 分化 | 闭源强教师可用来生成/筛选数据；开源学生再 SFT/DPO/GRPO 固化能力 | 强模型做 teacher，部署模型做 student，是性价比更高的路线 |
+## 专题导航
 
----
+时间线只记录模型代际与能力演进。横向对比和选型见 [当前 SOTA 模型详解](<模型细节/当前SOTA模型详解.md>)，方法原理继续由以下专题维护：
 
-## 后训练主线：从“会回答”到“会推理”
-如果你的重点是后训练，可以把大模型训练分成三层：SFT 负责格式和基本能力，偏好优化负责助手体验和安全，可验证 RL 负责数学、代码、工具等客观任务能力。
-
-| 方法 | 主要数据 | 解决什么问题 | 优势 | 不足 |
-|-|-|-|-|-|
-| SFT | 高质量 demonstration | 让模型学会“怎么回答” | 稳定、便宜、适合冷启动 | 不会主动探索更优策略 |
-| RLHF/PPO | 人类偏好排序 + reward model | 让模型更有用、更安全、更像助手 | 主观偏好对齐强 | 贵、不稳、reward hacking |
-| RLAIF/Constitutional AI | AI 反馈 + 原则 | 降低人工标注成本，强化安全原则 | 可规模化、适合安全拒答 | 继承 judge/model 偏差 |
-| DPO/IPO/KTO | 离线偏好对或好/坏样本 | 把偏好优化变成监督式训练 | 简单稳定，开源常用 | 依赖离线候选质量，探索弱 |
-| RLVR/GRPO | 可自动验证 reward | 强化数学、代码、工具等客观任务 | 能激发长 CoT 和自我修正 | 奖励设计难，容易过长或投机 |
-| 蒸馏 | 强模型答案/CoT/轨迹 | 把大模型能力迁移到小模型 | 性价比高，部署友好 | 复制 teacher 错误和风格 |
-| 合成数据 | 模型生成 + 过滤 + 课程化 | 补齐长尾任务和难例 | 规模化快，可定向增强 | 污染、同质化、过滤成本高 |
-
-### 经典 Chat 对齐 recipe
-1. 强 base model 预训练
-2. 高质量 SFT 冷启动
-3. 收集偏好对或 AI feedback
-4. DPO/RLHF 做偏好对齐
-5. 安全红队与拒答边界修正
-### 推理模型 recipe
-1. SFT 学格式和基础 CoT
-2. 同一 prompt 多采样
-3. 用 verifier / rule reward 打分
-4. GRPO/RLVR 强化可验证正确性
-5. 把强推理轨迹蒸馏给小模型
----
-
-## 多模态与视频：从“看图说话”到“时间理解”
-多模态模型的发展可以看成三步：先把视觉接到 LLM 上，再用视觉指令数据让它会对话，最后进入视频、文档、OCR、GUI 和 Agent 场景。
-
-| 代表路线 | 解决的问题 | 方法 | 带来的能力 | 不足 |
-|-|-|-|-|-|
-| Flamingo / BLIP-2 | 怎么把视觉接入 LLM | 冻结视觉/语言主干，用 Resampler/Q-Former 桥接 | 低成本构建 VLM | 视频时序和细粒度定位弱 |
-| LLaVA | 怎么让 VLM 听懂视觉指令 | CLIP + projector + LLM，GPT-4 合成视觉指令 | 开源视觉指令微调范式 | 图像为主，幻觉和 grounding 弱 |
-| GPT-4V / Gemini | 怎么做强通用多模态系统 | 大规模闭源多模态预训练 + SFT/RLHF/安全对齐 | 图文、视频、音频、工具能力强 | 训练细节不透明，成本高 |
-| Qwen-VL / Qwen2.5-VL | 中文/多语言、OCR、文档和视频场景 | 图文预训练 + 多任务 VL + 指令微调 | 工程能力完整，适合业务场景 | 时间定位仍需任务后训练 |
-| VideoChatGPT / TimeChat | 视频不只是多张图片，需要时间理解 | 视频特征 + LLM，加入时间戳/事件数据 | 推进 temporal grounding 和长视频问答 | 帧采样、标注噪声和长视频成本限制明显 |
-
----
-
-## 把历史转成你的训练决策框架
-> **面向 Video Time Grounding 的建议：**不要一上来追求“最新算法名词”。应该先建立 SFT baseline，再设计可验证 reward，把时间 IoU、边界误差、格式解析、重复惩罚变成稳定训练信号，最后比较 SFT、DPO、GRPO 和蒸馏路线。
-
-| 你的目标 | 优先学习的历史线索 | 可落地方法 | 风险点 |
-|-|-|-|-|
-| 让模型按格式输出时间段 | InstructGPT、FLAN、LIMA | 高质量 SFT + response-only loss + 格式检查 | 数据格式噪声会直接限制上限 |
-| 提升时间定位准确率 | TimeChat、MVBench、RLVR | IoU reward、boundary reward、hard negative 数据 | 帧采样和时间戳映射错误会污染 reward |
-| 减少胡乱输出和重复 | RLHF、DPO、DeepSeek-R1 后训练经验 | format reward、length penalty、repetition penalty | 奖励过强会让模型学会投机格式 |
-| 训练更大模型但显存有限 | LoRA、[QLoRA](<../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md>)、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md>)、FlashAttention、vLLM | LoRA + ZeRO3 + gradient checkpointing + vLLM rollout | rollout KV cache 和视频 token 是主要显存压力 |
-| 让小模型学强模型推理 | Orca、R1 distillation、WizardLM | 强模型生成解释/定位轨迹，过滤后 SFT 或 DPO | 学生可能只学形式，不学真正视觉证据 |
-
----
-
-## 年视角下的关键判断
-- 预训练仍是能力底座，但大多数可见能力差异来自后训练、数据、工具和推理时计算。
-- RLHF 主要优化主观偏好和助手体验，RLVR/GRPO 更适合数学、代码、时间定位这类可验证任务。
-- 开源模型追赶闭源模型的核心不是单个算法，而是高质量数据、蒸馏、MoE/系统效率和后训练 recipe。
-- 多模态模型的下一步不是简单“看更多帧”，而是时间轴建模、事件边界、跨帧因果和可验证视觉 grounding。
-- Agent 时代的 SOTA 不只看 benchmark 分数，还要看成本、延迟、工具成功率、安全权限和失败恢复。
-
-## 建议阅读顺序
-- [ ] [Attention](<基础架构/Self-Attention.md>) Is All You Need：理解 Transformer 为什么成为统一底座
-
-- [ ] GPT-3：理解规模化和 in-context learning
-
-- [ ] Chinchilla：理解数据/参数/算力配比
-
-- [ ] InstructGPT：理解 SFT + RM + PPO 后训练范式
-
-- [ ] LLaMA / Llama 2：理解开放权重和 chat model recipe
-
-- [ ] DPO / IPO / KTO：理解偏好优化为何去 RL 化
-
-- [ ] DeepSeekMath / DeepSeek-R1：理解 GRPO/RLVR 推理后训练
-
-- [ ] Flamingo / BLIP-2 / LLaVA：理解多模态模型如何接入 LLM
-
-- [ ] TimeChat / MVBench：理解视频时间推理和评测
-
-- [ ] vLLM / FlashAttention / ZeRO：理解训练和 rollout 系统瓶颈
+- 后训练演进：[后训练发展史与方法对比](<../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md>)
+- 架构与模型形态：[模型架构对比与选型](<模型细节/模型架构对比与选型.md>)
+- 多模态架构：[VLM 与 Vision Instruction Tuning](<视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md>)
+- Agent 系统：[Agent](<../08_Agent/基础概念/Agent.md>)
 
 ## 面试应对
 
@@ -395,22 +190,6 @@ MoE/GQA/MLA/FlashAttention]
 回答模板：
 
 大模型的发展不是简单增加参数，而是能力来源不断扩展。Transformer 先统一了可并行扩展的序列建模底座，随后 Scaling Law、数据工程和训练系统推动预训练规模化；Instruction Tuning 与 RLHF 让 Base Model 变成可交互的助手；多模态、长上下文和 MoE 扩展了输入范围与计算效率；RLVR、推理时计算和工具调用又把模型从生成答案推进到规划、执行和反馈闭环。因此今天的 SOTA 更接近由模型、数据、后训练、推理和工具共同构成的系统，而不只是参数最多的单体模型。
-
-### 面对一个业务任务，如何选择合适的 SOTA 模型？
-
-回答思路：先定义任务和硬约束，再比较能力、成本与可控性，最后用同口径业务评测做选择；强调公开榜单只能用于初筛。
-
-回答模板：
-
-我会先明确任务需要的是知识问答、复杂推理、多模态理解还是工具执行，并确定准确率、延迟、吞吐、上下文、部署方式和合规要求。然后用公开评测筛出候选模型，再在同一提示词、解码参数和预算下运行真实业务集，比较任务指标、失败类型、稳定性和单位成本。若多个模型效果接近，我会优先选择链路更简单、可观测性更强、总体成本更低的方案，而不会仅凭模型发布时间或榜单总分决定。
-
-### 什么时候应该换更强底座，什么时候应该做后训练或接入工具？
-
-回答思路：把问题拆成基础能力、行为对齐、动态知识和外部执行四类，再选择底座、SFT/偏好优化、RAG 或工具调用，避免把所有缺陷都归因于模型规模。
-
-回答模板：
-
-如果模型在零样本和少样本下仍缺少任务所需的基础理解或推理能力，我会考虑更换底座；如果它具备能力但输出格式、风格或流程不稳定，优先做高质量 SFT 或偏好优化；如果问题来自私有知识、时效信息或可追溯要求，优先使用 RAG；如果任务需要查询、计算或执行外部操作，则接入工具并设计状态与失败恢复。只有这些路径仍无法满足目标，且新增训练数据和算力确有收益证据时，才考虑继续预训练或更重的 RL。
 
 ### 如何看待 SOTA 榜单与模型迭代结论的边界？
 

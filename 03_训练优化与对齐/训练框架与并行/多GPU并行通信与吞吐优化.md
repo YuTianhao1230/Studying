@@ -288,39 +288,9 @@ MoE：
 
 必须看分阶段 profile，不能只看总 step time。
 
-### 多卡通信故障排查
+### 故障诊断边界
 
-#### Hang
-
-常见原因：
-
-- 某个 Rank 先异常退出。
-- 不同 Rank 数据量不一致。
-- 不同 Rank 进入不同控制分支。
-- collective 顺序不一致。
-- DataLoader worker 卡住。
-- NCCL/RDMA/网络异常。
-
-排查：
-
-```text
-对齐所有 Rank 最后一条日志和 step
-  -> 判断卡在数据、计算、通信还是保存
-  -> 检查是否所有 Rank 都调用同一 collective
-  -> 查看 NCCL 和网络日志
-  -> 单卡 -> 单机多卡 -> 多机逐级复现
-```
-
-#### 慢节点
-
-同步训练由最慢 Rank 决定。比较：
-
-- DataLoader 等待。
-- 输入 token/帧数。
-- forward/backward。
-- collective。
-- GPU 利用率、频率、温度。
-- 网络吞吐和重传。
+本卡只用 profile 区分数据、计算、通信、保存和负载不均等吞吐瓶颈。若训练出现 Hang、Rank 提前退出、Collective 顺序不一致、慢节点、NCCL/RDMA 异常或需要设计逐级复现流程，统一查看 [分布式训练通信与故障排查](<分布式训练通信与故障排查.md>)。
 
 ### 多 GPU 优化的完整方法
 

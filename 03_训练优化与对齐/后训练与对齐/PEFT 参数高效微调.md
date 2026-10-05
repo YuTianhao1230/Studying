@@ -28,71 +28,14 @@ PEFT 的思路是：**不要直接大幅改动基座模型，而是在它旁边�
 
 ### 常见 PEFT 方法
 
-#### LoRA
+| 方法 | 可训练对象 | 主要优势 | 主要边界 |
+| --- | --- | --- | --- |
+| [LoRA / QLoRA](<LoRA 低秩适配.md>) | 线性层旁的低秩更新；QLoRA 额外量化冻结基座 | 工程成熟、适配能力强、可单独保存或合并 | rank、注入层和量化配置需要按任务验证 |
+| Prefix Tuning | 各层 Attention 前的连续 prefix | 参数量小，适合生成控制 | 表达能力通常弱于 LoRA |
+| Prompt Tuning / P-Tuning | 输入侧连续 soft prompt | 参数量极小，任务切换方便 | 对模型规模和任务格式较敏感 |
+| [Adapter Tuning](<Adapter 参数高效微调.md>) | Transformer 层中的 bottleneck 模块 | 模块化强，适合多任务切换 | 增加一条推理计算路径 |
 
-LoRA（Low-Rank Adaptation）冻结原始权重 $W_0$，只训练低秩更新量：
-
-$$
-\begin{aligned}
-W&=W_0+\Delta W,\\
-\Delta W&=BA.
-\end{aligned}
-$$
-
-其中 $A$ 和 $B$ 是低秩矩阵，参数量远小于原始权重矩阵。LoRA 常插在 [Transformer](<../../02_大模型/基础架构/Transformer.md>) 的线性层上，比如 `q_proj`、`v_proj`、`o_proj`、`up_proj`、`down_proj` 等。
-
-特点：
-
-- 工程成熟，效果稳定。
-- 训练参数少，显存友好。
-- adapter 可以单独保存，也可以 merge 回基座模型。
-- 是当前 LLM [SFT](<SFT 监督微调.md>) 里最常用的 PEFT 方法。
-
-#### QLoRA
-
-QLoRA 是 LoRA 的进一步省显存版本：**基座模型用低比特[量化](<../../05_推理部署与系统/推理工程/量化.md>)加载，LoRA adapter 仍用较高精度训练**。
-
-常见组合：
-
-```text
-4-bit base model + LoRA adapter + paged optimizer
-```
-
-特点：
-
-- 显存占用更低。
-- 可以在更小显卡上微调较大模型。
-- 需要注意量化误差和训练稳定性。
-
-#### Prefix Tuning
-
-Prefix Tuning 不改模型主体，而是在每层 attention 前面加一段可训练的 prefix 向量，让模型在生成时受到这段连续提示的影响。
-
-特点：
-
-- 参数量很小。
-- 更像“可训练的软提示”。
-- 对生成任务有用，但表达能力通常不如 LoRA 稳定。
-
-#### Prompt Tuning / P-Tuning
-
-Prompt Tuning 是训练一组连续向量作为 soft prompt，把它拼到输入前面，让模型通过这组可学习提示适配任务。
-
-特点：
-
-- 参数量极小。
-- 对超大模型更有效，小模型上可能效果不稳定。
-- 适合任务格式比较固定的场景。
-
-#### Adapter Tuning
-
-Adapter Tuning 在 Transformer 层中插入小型 bottleneck 模块，只训练这些 adapter。完整的结构、训练方式和工程取舍见 [Adapter 参数高效微调](<Adapter 参数高效微调.md>)。
-
-特点：
-
-- 模块化强。
-- 多任务切换方便。
-- 推理时会多一小段计算路径，可能带来额外延迟。
+LoRA 是当前 LLM [SFT](<SFT 监督微调.md>) 中最常用的 PEFT 路线；QLoRA 是其低显存训练变体，不是与 LoRA 并列的另一套适配原理。低秩公式、可训练参数量、`target_modules`、QLoRA 的 NF4/双重量化/分页优化器以及具体调参方法统一见 [LoRA 低秩适配](<LoRA 低秩适配.md>)。
 
 ### PEFT 和全参数微调的区别
 
@@ -106,49 +49,27 @@ Adapter Tuning 在 Transformer 层中插入小型 bottleneck 模块，只训练�
 | 多任务切换 | 成本高 | 灵活，可加载不同 adapter |
 | 工程成熟度 | 直接但贵 | LoRA/QLoRA 很成熟 |
 
-### PEFT 的关键超参数
+### 实现细节边界
 
-以 LoRA 为例，常见关键参数包括：
-
-- `r`：低秩矩阵的 rank，决定 adapter 容量。
-- `lora_alpha`：缩放系数，实际缩放通常是 `alpha / r`。
-- `lora_dropout`：adapter 分支上的 dropout，用于缓解过拟合。
-- `target_modules`：把 adapter 插到哪些层，例如 `q_proj`、`v_proj`、`o_proj`、FFN 层等。
-- `learning_rate`：LoRA 通常比全参数微调用更大的学习率。
-
-核心判断：
-
-```text
-欠拟合 -> 增大 r、扩大 target_modules、增加训练步数
-过拟合 -> 降低 r、增加 dropout、减少 epoch、清洗数据
-显存不够 -> QLoRA、减 batch、梯度累积、gradient checkpointing
-```
+PEFT 总览只负责方法分类和选型。LoRA 的公式、rank/alpha/dropout、注入层、QLoRA 和调参流程见 [LoRA 低秩适配](<LoRA 低秩适配.md>)；Adapter 的结构与工程取舍见 [Adapter 参数高效微调](<Adapter 参数高效微调.md>)。
 
 ### PEFT 的风险
 
 1. **容量不足**：adapter 太小，复杂任务学不动。
-2. **target_modules 选错**：LoRA 没插到关键层，loss 可能下降很慢。
-3. **过拟合小数据**：虽然参数少，但小数据仍然会过拟合。
-4. **多 adapter 冲突**：多个任务 adapter 混用或合并时可能相互干扰。
-5. **合并后效果不一致**：adapter merge 到 base model 后，需要重新验证推理输出。
-6. **底座能力限制**：如果基座模型本身不会某类能力，PEFT 不一定能凭少量参数补出来。
+2. **过拟合小数据**：虽然参数少，但小数据仍然会过拟合。
+3. **多 adapter 冲突**：多个任务 adapter 混用或合并时可能相互干扰。
+4. **部署行为变化**：adapter 切换或合并后，需要重新验证推理输出。
+5. **底座能力限制**：如果基座模型本身不会某类能力，PEFT 不一定能凭少量参数补出来。
 
 ### 什么时候选 PEFT
 
-适合：
-
-- 算力/显存有限，但要微调大模型。
-- 同一个 base model 要服务多个任务或业务线。
-- 数据量不大，希望降低灾难性遗忘风险。
-- 想快速迭代多个实验版本。
-- 需要只发布 adapter，不发布完整模型。
-
-不适合：
-
-- 任务需要大幅改变模型底层能力。
-- 数据量很大且算力充足，追求极限效果。
-- 需要深度修改模型结构。
-- base model 和任务差距太大。
+| 场景 | 建议 | 原因 |
+| --- | --- | --- |
+| 显存有限，要适配较大模型 | LoRA；基座仍放不下时用 QLoRA | 训练参数少，QLoRA 进一步降低基座显存 |
+| 同一基座服务多个任务 | LoRA 或 Adapter | 每个任务只保存并切换小型适配参数 |
+| 任务固定、只需轻量行为控制 | Prompt/Prefix Tuning | 参数最少，交付简单 |
+| 任务需要明显改变底层能力 | 优先评估全参数微调或更强基座 | PEFT 容量和基座能力可能成为上限 |
+| 数据充足、算力充足且追求极限效果 | 对比 PEFT 与全参数微调 | 不能预设 PEFT 一定达到同等上限 |
 
 ## 面试应对
 
@@ -178,11 +99,11 @@ PEFT 是参数高效微调的一类方法，LoRA 是 PEFT 里最常用的一种�
 
 ### 什么时候 PEFT 可能效果不好？
 
-回答思路：抓住 adapter 容量、target_modules、基座能力和数据质量四个限制。
+回答思路：抓住适配容量、基座能力和数据质量三个限制，具体 LoRA 参数排查转到专题。
 
 回答模板：
 
-PEFT 效果不好通常有几类原因。第一是 adapter 容量不够，比如 LoRA rank 太小，复杂任务学不动；第二是 target_modules 没选好，adapter 没插到关键层；第三是 base model 本身能力不足，少量参数很难补出新能力；第四是数据质量差或分布太窄，导致过拟合。遇到这种情况，我会先确认数据和 label 没问题，再看 loss 曲线，如果欠拟合就增大 rank、扩大 target_modules 或增加训练步数，如果仍然不行再考虑全参数微调或换更强 base model。
+PEFT 效果不好通常有三类原因：适配参数容量不足，基座模型本身缺少目标能力，或数据质量差、分布过窄。排查时先确认数据和评测，再判断是欠拟合还是过拟合；若适配上限仍不足，就比较更强基座和全参数微调。LoRA 的 rank、注入层与训练参数应按 [LoRA 低秩适配](<LoRA 低秩适配.md>) 的流程单独调优。
 
 ### QLoRA 和 LoRA 的区别是什么？
 

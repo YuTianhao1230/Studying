@@ -197,132 +197,19 @@ visual tokens
 
 所以它本质上还是 [ViT](<里程碑模型/ViT.md>)：先把图像/视频切 patch，再用带视觉位置编码的 Transformer 处理 patch 序列。Qwen3-VL 的特殊点在于：它把普通二维图像 ViT 扩展到视频时空 patch，并通过 DeepStack 和 Merger 让视觉 token 更适合接入 Qwen3 decoder；进入 LLM 多模态序列后，再由 Interleaved-MRoPE 编码文本与视觉 token 的多维位置。
 
-Qwen3-VL 里 Vision Encoder 的输入处理流程是：
+### 多模态输入流与位置建模
+
+Qwen3-VL 在架构层面的输入流可以压缩为：
 
 ```text
-image / video
-  -> 动态分辨率缩放
-  -> 时空 patch 化
-  -> ViT 编码
-  -> image_grid_thw / video_grid_thw 元信息
-  -> visual tokens
+text -> tokenizer ---------------------------------------> Qwen3 LLM
+image -> dynamic resize -> 2D patch -> Vision Encoder --+
+video -> frame sampling -> 3D patch -> Vision Encoder --+-> Merger -> visual embeddings -> Qwen3 LLM
 ```
 
-关键点：
+文本 token 与视觉 embedding 在同一自回归序列中建模。图像和视频采用动态分辨率与 token 预算；视频额外保留时间结构。Interleaved-MRoPE 在 LLM 侧编码视觉 token 的时间、高度和宽度结构，绝对视频时间则由文本时间戳表达。
 
-- **Native Dynamic Resolution**：按 `min_pixels`、`max_pixels`、`total_pixels` 控制视觉 token 预算。复杂图像保留更多细节，简单图像少用 token。
-- **3D Patch Embedding**：图像可以看作时间维为 1 的视频；视频按 `T x H x W` 切成时空 patch。公开实现中常见设置是 `patch_size=16`、`temporal_patch_size=2`。
-- **image_grid_thw / video_grid_thw**：记录视觉 token 的时间、高度、宽度网格，用于位置编码和视觉 token 对齐。
-
-对 UI / 文档 / 视频任务来说，动态分辨率非常重要：如果统一压成低分辨率，小字、按钮、价格、角标、表格会丢；如果全量高分辨率输入，视觉 token 会爆炸。
-
-### Qwen3-VL 接受什么图像尺寸
-
-Qwen3-VL **不是固定输入 `224x224`、`336x336` 或 `448x448` 的视觉模型**。它支持 Native Dynamic Resolution，原始图片可以是任意合理的宽高比例，processor 会根据视觉 token 预算动态调整尺寸。
-
-需要区分三个尺寸：
-
-```text
-原始尺寸：
-  图片文件本身的 W x H，例如手机截图的竖屏尺寸。
-
-预处理尺寸：
-  processor resize 后送入 Vision Encoder 的 W' x H'。
-
-视觉 token 网格：
-  resize 后再按 patch 和 spatial merge 切分得到的 grid_thw。
-```
-
-所以模型不是直接把原始图片的每个像素送进去，也不是把所有图片都压成同一个固定正方形。
-
-### 每张图片都会 resize 吗
-
-通常会。Qwen3-VL 的 processor 会根据配置对图片做缩放和尺寸对齐，主要逻辑是：
-
-```text
-原始图片
-  -> 保持宽高比缩放
-  -> 让总像素数落在 min_pixels / max_pixels 预算内
-  -> 将宽高对齐到 patch 和 spatial merge 需要的倍数
-  -> 切成视觉 patch/token
-```
-
-一般不会通过拉伸把图片强行变成正方形，而是尽量保持原始宽高比。对于手机 UI 截图，这一点很重要：强行正方形 resize 会改变页面布局比例，细小文字和控件也更容易失真。
-
-### resize 后如何计算视觉 token
-
-以 Qwen3-VL 常见视觉配置为例：
-
-```text
-patch_size = 16
-spatial_merge_size = 2
-```
-
-图片经过 resize 后，可以粗略理解为：
-
-```text
-原始视觉 patch 数
-  ≈ (H' / 16) * (W' / 16)
-
-Merger 后视觉 token 数
-  ≈ (H' / 32) * (W' / 32)
-```
-
-这里的 `32` 来自 `patch_size * spatial_merge_size`。实际 token 数还会受具体 processor、边界取整和模型版本影响，最终应以 processor 生成的 `image_grid_thw` 为准。
-
-视频则多一个时间维：
-
-```text
-video_grid_thw = [T, H, W]
-```
-
-其中 `T` 是时间 patch 网格，`H/W` 是空间 patch 网格。视频的帧率、总帧数、空间分辨率和视觉 token 预算会共同决定最终输入规模。
-
-### `min_pixels`、`max_pixels` 和 `total_pixels`
-
-常见控制参数可以这样理解：
-
-| 参数 | 作用 |
-| --- | --- |
-| `min_pixels` | 约束图片不能被缩得过小，保证文字和局部细节有最低分辨率 |
-| `max_pixels` | 限制单张图片最大像素预算，防止高分辨率图片产生过多视觉 token |
-| `total_pixels` | 视频或多图片输入的总像素/token 预算，控制整个样本的视觉成本 |
-| `image_grid_thw` | 记录图片经过 patch 化后的空间网格 |
-| `video_grid_thw` | 记录视频经过时空 patch 化后的 T/H/W 网格 |
-
-不同 checkpoint 和 processor 的默认值可能不同，不能把某一个项目的 `max_pixels` 当成 Qwen3-VL 的固定输入尺寸。实际使用时应以模型目录里的 processor 配置和运行参数为准。
-
-### 固定尺寸和动态尺寸怎么选
-
-| 方式 | 特点 | 适合场景 |
-| --- | --- | --- |
-| 动态分辨率 | 保持比例，按像素/token 预算变化 | 通用图片、手机截图、文档、多模态问答 |
-| 固定 resize | 所有图片变成同一尺寸，吞吐和显存更容易预估 | 受限的批处理、严格固定输入的实验 |
-| 固定像素预算 | 尺寸不一定相同，但总视觉 token 大致受控 | 线上服务和长视频，通常是更实用的折中 |
-
-对关键帧/UI 任务，通常不建议直接把所有图片固定压到很小的正方形。更合理的做法是保留宽高比，用 `min_pixels` 保证小字可读，再用 `max_pixels` 或视觉 token 上限控制显存。
-
-### Interleaved-MRoPE
-
-Qwen3-VL 在送入 LLM 的文本与视觉 token 多模态序列上使用 Interleaved-MRoPE 来表达多维位置；Vision Encoder 内部使用视觉位置编码，两者处于不同阶段。
-
-普通文本 RoPE 只需要一维 token 位置；多模态输入则有：
-
-```text
-文本位置
-图像高度 H
-图像宽度 W
-视频时间 T
-```
-
-旧式 MRoPE 如果把时间信息集中在一部分频段，长视频里事件先后、动作边界和帧间顺序可能不够稳定。Interleaved-MRoPE 的思路是把时间、高度、宽度维度交错分布到位置编码频段里，让时间和空间都得到更均衡的位置表达。
-
-对关键帧任务，它直接影响：
-
-- 能否区分“先出现”和“后稳定”。
-- 能否定位第一次满足完成态。
-- 能否理解视频中的转场、刷新、二次加载。
-- 能否把自然语言里的“首次”“之后”“重新出现”对齐到帧序列。
+processor 字段、`image_grid_thw`/`video_grid_thw`、视觉 token 计算、动态 resize 参数、Interleaved-MRoPE 细节以及逐 temporal patch 的视频时间戳流程统一见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。
 
 ### DeepStack
 
@@ -357,63 +244,6 @@ Merger 是 Qwen3-VL 里的视觉语言连接层，主要承担两件事：
 - 高分辨率图像和长视频会产生太多视觉 token，需要压缩。
 - ViT hidden size 和 Qwen3 hidden size 不一定一致，需要投影。
 - 视觉 patch 表示和语言 token 表示空间不同，需要对齐。
-
-### 视频输入链路
-
-Qwen3-VL 的视频输入可以概括为：
-
-```text
-视频 URL / 本地视频 / 已抽帧列表
-  -> processor / qwen-vl-utils 读取视频
-  -> 按 fps 或 num_frames 采样
-  -> 动态分辨率缩放
-  -> pixel_values_videos
-  -> video_grid_thw
-  -> Vision Encoder
-  -> Merger
-  -> Qwen3 LLM
-```
-
-一个典型消息格式：
-
-```python
-messages = [{
-    "role": "user",
-    "content": [
-        {"type": "video", "video": "https://example.com/demo.mp4", "fps": 2.0},
-        {"type": "text", "text": "请描述视频中的关键事件，并给出发生时间。"},
-    ],
-}]
-```
-
-经过 processor 后，核心输入通常包括：
-
-```text
-input_ids
-attention_mask
-pixel_values_videos
-video_grid_thw
-```
-
-模型最终仍然是自回归生成文本 token。视频不会被“输出成视频”，而是被转成：
-
-- 自然语言描述。
-- 时间戳或时间段。
-- 视觉定位坐标。
-- JSON / XML-like 结构化结果。
-- 工具调用或 GUI action。
-
-### Qwen3-VL 为什么能做时间定位
-
-Qwen3-VL 能做秒级视频定位，不是因为模型真的连续看完每一帧，而是因为几个机制共同作用：
-
-1. **采样帧携带时间顺序**：输入视频经过 fps/num_frames 采样形成帧序列。
-2. **video_grid_thw 保留时间维度**：视觉 token 不是无序图片集合，而是有时间网格信息。
-3. **LLM 中的 Interleaved-MRoPE 编码 T/H/W**：时间和空间位置随多模态 token 一起进入语言模型的位置编码。
-4. **视频时间戳对齐训练**：训练中学习“文本时间戳 - 视频事件边界”的对应关系。
-5. **LLM 统一推理**：Qwen3 decoder 在文本条件、视觉 token 和时间位置共同约束下生成秒数或结构化答案。
-
-这也解释了为什么关键帧任务要严格对齐 FPS、抽帧策略、帧数上限和评测逻辑：如果输入侧时间采样和评测侧不一致，模型输出的时间就可能看似合理但无法对齐真实 GT。
 
 ### Qwen3-VL 预训练过程
 
@@ -538,9 +368,7 @@ Qwen3-VL 对关键帧任务有几个直接启发：
 
 | Qwen3-VL 机制 | 对关键帧任务的启发 |
 | --- | --- |
-| Dynamic Resolution | UI 小字、按钮、商品图不能被低分辨率压没，但要控制视觉 token |
-| video_grid_thw | 训练和评测必须对齐 FPS、帧数、时间戳 |
-| Interleaved-MRoPE | 关键帧本质依赖时间顺序和首次完成边界 |
+| [输入处理与时间对齐](<Qwen3-VL输入处理逻辑.md>) | 采样必须覆盖关键事件，训练与评测使用一致时间坐标，并在细节与视觉 token 成本间取舍 |
 | DeepStack | OCR、局部 UI 控件、角标等细节不能只靠最后层视觉特征 |
 | Merger | 视觉 token 压缩会影响细节保留，尤其长视频 |
 | Thinking / Long-CoT | 适合难例边界判断，但线上输出不一定保留长 CoT |
@@ -561,9 +389,7 @@ Qwen3-VL 对关键帧任务有几个直接启发：
 
 - 具体版本：Qwen3 dense / [MoE](<../基础架构/MoE.md>)、Qwen3-VL dense / MoE、Instruct / Thinking 不能混说。
 - tokenizer 和 chat template 是否和训练一致。
-- 视频输入是 URL、本地文件、抽帧列表还是 tensor。
-- `fps`、`num_frames`、`min_pixels`、`max_pixels`、`total_pixels` 是否和评测对齐。
-- `video_grid_thw`、视觉 token 数和 max context 是否会溢出。
+- 图像/视频的 processor、采样、网格、时间戳和 token 预算按 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>) 核对。
 - [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md>) adapter 是否和 base model、vision encoder、processor 版本匹配。
 - 推理框架是否支持对应 VL 输入格式，不要把纯文本 vLLM 用法直接套到视频模型上。
 - Thinking 输出是否需要裁剪，避免影响结构化解析和线上延迟。
@@ -594,37 +420,13 @@ Qwen3 dense models 的主干基本延续 Qwen2.5，包括 GQA、SwiGLU、RoPE �
 
 Qwen3-VL 是三模块架构：第一部分是 SigLIP-2-based Vision Encoder，它本质上是视觉 Transformer，常见配置是 `patch_size=16`、hidden size 约 1152、16 个 attention heads、27 层 ViT blocks，把图像或视频帧编码成视觉 patch/token 表示；第二部分是 MLP-based Vision-Language Merger，负责按 `spatial_merge_size=2` 合并部分视觉 token，并把视觉特征投影到 Qwen3 LLM 的 hidden size；第三部分是 Qwen3 LLM backbone，把文本 token、视觉占位 token、视觉 embedding 和位置时间信息放在同一个上下文里自回归建模。DeepStack 还会把部分中间视觉层特征注入 LLM 早期层，帮助保留 OCR、小按钮、局部控件等细节。所以它的本质是“视觉证据进入 Qwen3 解码器统一推理”，不是简单在文本模型旁边外挂一个看图模块。
 
-### Qwen3-VL 的视频输入是怎么进模型的？
+### Qwen3-VL 的文本、图像和视频如何进入模型？
 
-回答思路：按视频读取采样、动态分辨率、时空 patch、video_grid_thw、Vision Encoder、Merger、LLM 这条链路讲。
-
-回答模板：
-
-Qwen3-VL 的视频输入一般先由 processor 或 qwen-vl-utils 读取，视频可以来自 URL、本地文件或抽帧列表。然后按 `fps` 或 `num_frames` 采样，并根据 `min_pixels`、`max_pixels`、`total_pixels` 做动态分辨率缩放。采样帧会被切成时空 patch，形成 `pixel_values_videos` 和 `video_grid_thw`，其中 `video_grid_thw` 记录时间、高度、宽度网格。接着 Vision Encoder 编码视觉 token，Merger 把视觉 token 压缩并投影到 Qwen3 hidden size，最后和文本 token 一起进入 Qwen3 decoder 生成答案。
-
-### Qwen3-VL 的图像输入尺寸是固定的吗？
-
-回答思路：先否定固定分辨率，再讲动态 resize、像素预算、宽高比和 patch 对齐。
+回答思路：只讲架构级主链路；processor 字段、网格计算、位置编码和视频时间戳转到输入专题。
 
 回答模板：
 
-Qwen3-VL 通常不是固定输入分辨率的模型，不要求所有图片都变成 `224x224` 或 `448x448`。processor 会尽量保持原图宽高比，根据 `min_pixels`、`max_pixels` 和多图/视频的总像素预算进行 resize，再把宽高对齐到 patch 和 spatial merge 需要的倍数。以常见的 `patch_size=16`、`spatial_merge_size=2` 为例，Merger 后的视觉 token 网格大致按 `H'/32` 和 `W'/32` 计算。这样可以在保留手机截图小字和布局比例的同时控制显存和上下文成本。具体尺寸和 token 数应以当前 checkpoint 的 processor 配置以及 `image_grid_thw`/`video_grid_thw` 为准。
-
-### Interleaved-MRoPE 和 DeepStack 分别解决什么？
-
-回答思路：Interleaved-MRoPE 讲时间/空间位置建模，DeepStack 讲多层视觉细节注入。
-
-回答模板：
-
-Interleaved-MRoPE 解决的是 LLM 多模态序列的位置编码问题。视频和图像不只有文本的一维位置，还有时间、高度、宽度三个维度；视觉特征经 Vision Encoder 和 Merger 进入 LLM 后，Interleaved-MRoPE 把 T/H/W 交错分布到位置编码频段里，让模型更稳定地理解空间布局和时间顺序。Vision Encoder 内部使用视觉位置编码。DeepStack 解决的是视觉细节丢失问题：只用 ViT 最后一层可能会丢掉 OCR、小按钮、边缘控件等低层细节，所以它从 ViT 多个中间层抽取特征，并注入到 LLM 早期层，让低层细节和高层语义都能参与推理。
-
-### Qwen3-VL 为什么能做视频时间定位？
-
-回答思路：强调不是逐帧全看，而是采样帧、时间网格、位置编码、时间戳对齐训练和 LLM 统一生成共同作用。
-
-回答模板：
-
-Qwen3-VL 能做视频时间定位，是因为视频输入不是无序图片集合。采样帧保留时间顺序，`video_grid_thw` 记录时间、高度、宽度网格；视觉特征进入 LLM 多模态序列后，Interleaved-MRoPE 编码时间和空间位置，训练时又学习了“视频事件边界”和“文本时间戳”的对应关系。最后 Qwen3 decoder 在文本问题、视觉 token 和时间位置信息共同约束下生成秒数或时间段。所以它不是连续逐帧扫描，而是在采样和 token budget 下学习时间事件对齐。
+纯文本经过 tokenizer 直接进入 Qwen3 LLM；图像和视频先经过动态预处理与 patch 化，再由 Vision Encoder 编码、Merger 压缩并投影成视觉 embedding，最后与文本 token 一起进入 Qwen3 decoder。视频还需要保留时间结构，模型结合文本时间戳和多维位置编码理解事件顺序。具体 processor 字段、动态尺寸、视觉 token 数、网格计算、Interleaved-MRoPE 和视频时间对齐见 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md>)。
 
 ### Qwen3-VL 的训练流程怎么理解？
 
