@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studying 知识看板</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236366f1'/><text x='16' y='23' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>S</text></svg>">
+<link rel="stylesheet" href="assets/style.css?v=00230d3e78">
+<!-- KaTeX：本地化（字体已随包放在 assets/katex/fonts/），不依赖 CDN，离线也能渲染公式 -->
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+</head>
+<body>
+
+<div class="read-progress" id="readProgress" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+<div class="backdrop" id="backdrop" hidden></div>
+
+<div class="app">
+
+  <!-- ── 侧边栏 ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand" id="brand">
+      <div class="brand-logo">S</div>
+      <div class="brand-text">
+        <div class="brand-title">Studying 看板</div>
+        <div class="brand-sub">AI / 大模型 / 算法 面试知识库</div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <span class="search-ico"><svg class="icn" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></span>
+      <input id="searchInput" type="text" placeholder="过滤侧栏目录" autocomplete="off" spellcheck="false" aria-label="过滤侧栏目录">
+      <span class="kbd-hint">/</span>
+    </div>
+
+    <div class="nav-head">知识库</div>
+    <div class="nav-tools">
+      <button class="nav-tool" id="expandBtn" type="button">展开全部</button>
+      <span style="color:var(--border);font-size:11px">·</span>
+      <button class="nav-tool" id="collapseBtn" type="button">折叠全部</button>
+    </div>
+
+    <nav class="nav" id="nav" aria-label="知识库导航"></nav>
+
+    <div class="sidebar-foot">
+      <span id="footInfo">加载中…</span>
+      <a href="#" onclick="return false" id="rebuildTip" title="内容更新后运行 build.py 或双击「刷新数据.bat」">
+        <svg class="icn" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-3px"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+        <span>重建数据</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── 主区 ── -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" title="目录" aria-label="目录">
+        <svg class="icn" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="crumb">
+        <span>Studying</span>
+        <span class="sep">/</span>
+        <b id="crumbMain">总览</b>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="searchBtn" title="搜索笔记（Ctrl K）" aria-label="搜索笔记">
+        <svg class="icn" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      </button>
+      <button class="icon-btn" id="tocBtn" title="目录大纲" aria-label="目录大纲">
+        <svg class="icn" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      </button>
+      <button class="icon-btn" id="helpBtn" title="快捷键（?）" aria-label="快捷键">
+        <svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.2 2.4c-.5.2-.7.7-.7 1.2v.4"/><path d="M12 17h.01"/></svg>
+      </button>
+      <div class="backup-wrap" id="backupWrap">
+        <button class="icon-btn" id="backupBtn" title="备份 / 恢复阅读进度" aria-label="备份进度">
+          <svg class="icn" viewBox="0 0 24 24"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/></svg>
+        </button>
+        <div class="backup-menu" id="backupMenu">
+          <button type="button" data-bk="export">导出进度（备份）</button>
+          <button type="button" data-bk="import">导入进度（恢复）</button>
+        </div>
+      </div>
+      <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+      <button class="icon-btn" id="themeBtn" title="切换深浅色" aria-label="切换深浅色">
+        <svg class="icn i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="icn i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/></svg>
+      </button>
+    </header>
+
+    <div class="view">
+      <div class="view-inner" id="viewInner">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── 右侧目录 ── -->
+  <aside class="toc" id="toc" aria-label="目录大纲" hidden></aside>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button class="to-top" id="toTop" title="回到顶部" aria-label="回到顶部">
+  <svg class="icn" viewBox="0 0 24 24"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+</button>
+
+<div class="help-mask" id="helpMask" hidden>
+  <div class="help-panel" role="dialog" aria-label="快捷键">
+    <h3>快捷键</h3>
+    <div class="help-row">命令面板（全文搜索）<span class="ks"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
+    <div class="help-row">侧栏过滤聚焦<span class="ks"><kbd>/</kbd></span></div>
+    <div class="help-row">面板内切换 / 打开<span class="ks"><kbd>↑</kbd><kbd>↓</kbd><kbd>↵</kbd></span></div>
+    <div class="help-row">上一篇 / 下一篇<span class="ks"><kbd>J</kbd><kbd>K</kbd></span></div>
+    <div class="help-row">翻页<span class="ks"><kbd>←</kbd><kbd>→</kbd></span></div>
+    <div class="help-row">展开 / 折叠全部<span class="ks"><kbd>E</kbd><kbd>Q</kbd></span></div>
+    <div class="help-row">切换深浅色<span class="ks"><kbd>T</kbd></span></div>
+    <div class="help-row">打开 / 关闭本面板<span class="ks"><kbd>?</kbd><kbd>Esc</kbd></span></div>
+  </div>
+</div>
+
+<div class="palette-mask" id="paletteMask" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="搜索笔记">
+    <div class="palette-inp">
+      <svg class="icn" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <input id="paletteInput" type="text" placeholder="搜索笔记标题与正文…" autocomplete="off" spellcheck="false" aria-label="搜索笔记标题与正文">
+      <span class="kbd-hint">Esc</span>
+    </div>
+    <div class="palette-list" id="paletteList"></div>
+    <div class="palette-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
+      <span><kbd>↵</kbd> 打开</span>
+      <span><kbd>⌘</kbd><kbd>↵</kbd> 全部结果</span>
+    </div>
+  </div>
+</div>
+
+<!-- KaTeX 必须在 md.js 之前加载：md.js 渲染正文时会同步调用 window.katex -->
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/md.js?v=00230d3e78"></script>
+<script src="assets/data.js?v=00230d3e78"></script>
+<script src="assets/app.js?v=00230d3e78"></script>
+<script>
+  // 底部信息 + 「重建数据」（由本地 server.py 的 /__rebuild 代跑 build.py）
+  // 浏览器自身不能运行本地程序，一键重建必须走本地服务；file:// / 云端则自动降级为提示。
+  (function () {
+    var d = window.STUDY_DATA;
+    var el = document.getElementById('footInfo');
+    var tip = document.getElementById('rebuildTip');
+    var toast = document.getElementById('toast');
+
+    if (!d) { el.textContent = '未找到数据'; }
+    else { el.textContent = d.meta.total + ' 篇 · ' + d.meta.generatedAt; }
+
+    function say(msg, ms) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._tm);
+      toast._tm = setTimeout(function () { toast.classList.remove('show'); }, ms || 2600);
+    }
+
+    // 探测本机是否支持一键重建：本地 python server.py 提供 /__rebuild；file:// 或云端没有。
+    var localOK = false;
+    fetch('__rebuild', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.available) {
+          localOK = true;
+          tip.title = '扫描源笔记并重建数据';
+        } else {
+          tip.style.display = 'none';   // 云端不含源笔记，隐藏该按钮
+        }
+      })
+      .catch(function () { /* file:// 直接打开时保留按钮，点击给出提示 */ });
+
+    tip.onclick = function (e) {
+      e.preventDefault();
+      if (!localOK) { say('浏览器不能直接重建，请运行 build.py 或双击「刷新数据.bat」', 3200); return; }
+      say('正在扫描笔记并重建…', 60000);
+      fetch('__rebuild', { method: 'POST', cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (res && res.ok) {
+            say('已重建 ' + res.total + ' 篇，正在刷新…');
+            setTimeout(function () { location.reload(); }, 500);
+          } else {
+            say('重建失败：' + ((res && res.message) || '未知错误'), 4200);
+          }
+        })
+        .catch(function () { say('重建失败：本地服务未响应', 4200); });
+    };
+  })();
+</script>
+</body>
+</html>
