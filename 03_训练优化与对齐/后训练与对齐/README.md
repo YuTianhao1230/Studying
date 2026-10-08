@@ -21,8 +21,5 @@
 | [Reward Collapse 奖励坍缩.md](<Reward Collapse 奖励坍缩.md#reward-collapse-奖励坍缩>) | 模型通过钻 reward 漏洞获得高分，但真实质量下降的现象 |
 | [Knowledge Distillation 知识蒸馏.md](<Knowledge Distillation 知识蒸馏.md#knowledge-distillation-知识蒸馏>) | 让小模型学习强模型输出、推理轨迹或分布的能力迁移方法 |
 | [On-Policy Distillation 在线策略蒸馏.md](<On-Policy Distillation 在线策略蒸馏.md#on-policy-distillation-在线策略蒸馏>) | 让学生在自己的 rollout 状态上接受教师 token-level 软监督的蒸馏方法 |
-| [PEFT 参数高效微调.md](<PEFT 参数高效微调.md#peft-参数高效微调>) | 冻结大模型主体，只训练少量 adapter、prefix 或 soft prompt 的高效微调方法体系 |
-| [Adapter 参数高效微调.md](<Adapter 参数高效微调.md#adapter-参数高效微调>) | Bottleneck Adapter 的结构、插入位置、训练方式以及与 LoRA/Prefix Tuning 的区别 |
-| [LoRA 低秩适配.md](<LoRA 低秩适配.md#lora-低秩适配>) | 参数高效微调方法，通过低秩矩阵适配大模型 |
 | [Model Merging 模型合并.md](<Model Merging 模型合并.md#model-merging-模型合并>) | 在权重空间合并多个模型或 adapter，在不增加推理成本的情况下融合能力 |
 | [Agentic RL 智能体强化学习.md](<Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) | 针对 Agent 多步工具调用、计划、观察和执行轨迹进行强化学习 |

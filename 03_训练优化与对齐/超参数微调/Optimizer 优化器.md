@@ -163,7 +163,7 @@ $$
 
 这与“先把 $\lambda\theta$ 加进梯度，再交给 Adam 的自适应预条件器”一般不等价。Bias 和归一化层参数常被排除在 weight decay 之外，具体规则应通过 optimizer parameter groups 明确配置。
 
-大模型 [SFT](<../后训练与对齐/SFT 监督微调.md#sft-监督微调>) / [LoRA](<../后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>) 微调默认通常优先用 AdamW，因为它兼顾了：
+大模型 [SFT](<../后训练与对齐/SFT 监督微调.md#sft-监督微调>) / [LoRA](<LoRA 低秩适配.md#lora-低秩适配>) 微调默认通常优先用 AdamW，因为它兼顾了：
 
 - Adam 的自适应更新能力。
 - 比 SGD 更快、更稳的收敛。

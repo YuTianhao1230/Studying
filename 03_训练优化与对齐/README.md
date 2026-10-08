@@ -9,7 +9,7 @@
 | 入口 | 内容说明 |
 | --- | --- |
 | [模型训练路线](<模型训练学习手册_预训练到后训练.md#模型训练路线预训练到后训练>) | 总入口，按任务定义、底座、数据、SFT、偏好、RLVR、评测和部署串联完整训练流程。 |
-| [超参数与优化器](<超参数与优化器/README.md#超参数与优化器>) | 学习率、batch、warmup、optimizer、weight decay、gradient clipping 和 LoRA 参数。 |
+| [超参数微调](<超参数微调/README.md#超参数微调>) | 学习率、batch、warmup、optimizer、weight decay、gradient clipping、PEFT、Adapter 和 LoRA 参数。 |
 | [训练框架与并行](<训练框架与并行/README.md#训练框架与并行>) | DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、混合精度、Checkpoint、多 GPU 通信与故障排查。 |
 | [训练稳定性](<训练稳定性/README.md#训练稳定性>) | Loss 异常、收敛排查、梯度爆炸和梯度消失等训练故障。 |
 | [后训练与对齐](<后训练与对齐/README.md#后训练与对齐>) | SFT、RFT、RLHF、DPO、PPO、GRPO、RLVR、蒸馏、PEFT、模型合并和 Agentic RL。 |
