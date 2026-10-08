@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">LoRA 低秩旁路与权重合并</title>
+  <desc id="desc">展示输入同时经过冻结主权重与可训练低秩矩阵 A、B，旁路按 alpha 除以 r 缩放后相加，并可在部署前合并回主权重。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">LoRA：冻结大矩阵，只学习一个低秩更新</text>
+    <text x="72" y="101" fill="#607086" font-size="18">核心假设：任务适配所需的权重变化 ΔW 可以由两个小矩阵的乘积 BA 近似。</text>
+
+    <rect x="72" y="146" width="1296" height="458" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">前向传播：主路径保持能力，旁路学习任务差量</text>
+
+    <rect x="106" y="309" width="116" height="78" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+    <text x="164" y="345" text-anchor="middle" fill="#172033" font-size="20" font-weight="700">输入 x</text>
+    <text x="164" y="370" text-anchor="middle" fill="#607086" font-size="13">维度 k</text>
+
+    <path d="M222 348 H294 V256 H354" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M222 348 H294 V452 H354" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+
+    <g transform="translate(354 206)">
+      <rect width="264" height="100" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="132" y="36" text-anchor="middle" fill="#1D4ED8" font-size="20" font-weight="700">冻结权重 W₀</text>
+      <text x="132" y="66" text-anchor="middle" fill="#42669B" font-size="15">d × k，参数量 dk</text>
+      <rect x="78" y="76" width="108" height="24" rx="4" fill="#D7E7FF"/>
+      <text x="132" y="93" text-anchor="middle" fill="#1D4ED8" font-size="12" font-weight="700">不参与梯度更新</text>
+    </g>
+    <line x1="618" y1="256" x2="1002" y2="256" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="810" y="238" text-anchor="middle" fill="#607086" font-size="15" font-weight="700">主路径：W₀x</text>
+
+    <g transform="translate(354 390)">
+      <rect width="178" height="124" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="89" y="36" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">矩阵 A</text>
+      <text x="89" y="66" text-anchor="middle" fill="#6A4B93" font-size="15">r × k</text>
+      <text x="89" y="94" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">降维到 r</text>
+    </g>
+    <line x1="532" y1="452" x2="580" y2="452" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <g transform="translate(580 390)">
+      <rect width="178" height="124" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="89" y="36" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">矩阵 B</text>
+      <text x="89" y="66" text-anchor="middle" fill="#6A4B93" font-size="15">d × r</text>
+      <text x="89" y="94" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">升维回 d</text>
+    </g>
+    <line x1="758" y1="452" x2="814" y2="452" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <g transform="translate(814 410)">
+      <rect width="136" height="84" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="68" y="34" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">缩放 α / r</text>
+      <text x="68" y="61" text-anchor="middle" fill="#805B28" font-size="13">控制旁路强度</text>
+    </g>
+    <path d="M950 452 H966 V348 H1002" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <text x="844" y="533" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">旁路：α/r · BAx（只训练 A、B）</text>
+
+    <circle cx="1040" cy="348" r="38" fill="#172033"/>
+    <text x="1040" y="358" text-anchor="middle" fill="#FFFFFF" font-size="30" font-weight="700">+</text>
+    <line x1="1078" y1="348" x2="1150" y2="348" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1150" y="296" width="170" height="104" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="1235" y="335" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">输出 h</text>
+    <text x="1235" y="365" text-anchor="middle" fill="#356C67" font-size="15">W₀x + α/r · BAx</text>
+
+    <rect x="100" y="548" width="1220" height="34" rx="5" fill="#EDE9FE"/>
+    <text x="710" y="571" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">可训练参数：r(k+d)，当 r ≪ min(k,d) 时，远小于全量更新的 dk</text>
+
+    <rect x="72" y="642" width="628" height="194" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="680" fill="#172033" font-size="20" font-weight="700">训练时</text>
+    <rect x="100" y="708" width="254" height="70" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="227" y="736" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">基座 W₀：冻结、可复用</text>
+    <text x="227" y="760" text-anchor="middle" fill="#42669B" font-size="13">不保存梯度和优化器状态</text>
+    <text x="383" y="750" text-anchor="middle" fill="#607086" font-size="24">+</text>
+    <rect x="410" y="708" width="254" height="70" rx="6" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="537" y="736" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">Adapter：小而可训练</text>
+    <text x="537" y="760" text-anchor="middle" fill="#6A4B93" font-size="13">一个基座可挂多个任务适配器</text>
+
+    <rect x="740" y="642" width="628" height="194" rx="8" fill="#172033"/>
+    <text x="768" y="680" fill="#FFFFFF" font-size="20" font-weight="700">部署时</text>
+    <rect x="768" y="708" width="196" height="70" rx="6" fill="#E8F0FF"/>
+    <text x="866" y="736" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">W₀</text>
+    <text x="866" y="760" text-anchor="middle" fill="#42669B" font-size="13">原始权重</text>
+    <text x="991" y="750" text-anchor="middle" fill="#D7DFEA" font-size="24">+</text>
+    <rect x="1018" y="708" width="132" height="70" rx="6" fill="#F1EAFE"/>
+    <text x="1084" y="736" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">α/r · BA</text>
+    <text x="1084" y="760" text-anchor="middle" fill="#6A4B93" font-size="13">预先计算</text>
+    <line x1="1150" y1="743" x2="1208" y2="743" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1208" y="708" width="132" height="70" rx="6" fill="#CCFBF1"/>
+    <text x="1274" y="736" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">合并权重 W</text>
+    <text x="1274" y="760" text-anchor="middle" fill="#356C67" font-size="13">无额外旁路延迟</text>
+  </g>
+</svg>

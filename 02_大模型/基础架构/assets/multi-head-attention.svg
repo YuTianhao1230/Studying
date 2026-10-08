@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">Multi-Head Attention 张量流</title>
+  <desc id="desc">输入沿特征维度拆成多个注意力头，各头独立计算注意力后拼接并经过输出投影。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="860" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">Multi-Head Attention：拆特征，不拆序列</text>
+    <text x="72" y="101" fill="#607086" font-size="18">每个 head 都能看到完整 token 序列，只在更小的特征子空间中独立建模关系。</text>
+
+    <rect x="72" y="152" width="238" height="102" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="191" y="191" text-anchor="middle" fill="#172033" font-size="22" font-weight="700">输入 X</text>
+    <text x="191" y="226" text-anchor="middle" fill="#607086" font-size="17">[B, N, d_model]</text>
+    <line x1="310" y1="203" x2="398" y2="203" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="418" y="136" width="280" height="134" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="558" y="174" text-anchor="middle" fill="#172033" font-size="21" font-weight="700">Q / K / V 线性投影</text>
+    <text x="558" y="207" text-anchor="middle" fill="#607086" font-size="16">reshape + transpose</text>
+    <text x="558" y="240" text-anchor="middle" fill="#526277" font-size="17">[B, h, N, d_head]</text>
+    <line x1="698" y1="203" x2="786" y2="203" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="806" y="124" width="562" height="158" rx="8" fill="#EEF2F6" stroke="#AAB6C5"/>
+    <text x="1087" y="158" text-anchor="middle" fill="#26364B" font-size="20" font-weight="700">h 个 head 并行计算</text>
+    <rect x="836" y="180" width="112" height="68" rx="7" fill="#DBEAFE" stroke="#93B4F5"/>
+    <rect x="966" y="180" width="112" height="68" rx="7" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <rect x="1096" y="180" width="112" height="68" rx="7" fill="#FEF3C7" stroke="#E4B55B"/>
+    <rect x="1226" y="180" width="112" height="68" rx="7" fill="#FFE4E6" stroke="#DB8DA5"/>
+    <text x="892" y="209" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">Head 1</text>
+    <text x="892" y="233" text-anchor="middle" fill="#355986" font-size="14">N × N</text>
+    <text x="1022" y="209" text-anchor="middle" fill="#0F766E" font-size="17" font-weight="700">Head 2</text>
+    <text x="1022" y="233" text-anchor="middle" fill="#356C67" font-size="14">N × N</text>
+    <text x="1152" y="209" text-anchor="middle" fill="#B45309" font-size="17" font-weight="700">Head 3</text>
+    <text x="1152" y="233" text-anchor="middle" fill="#805B28" font-size="14">N × N</text>
+    <text x="1282" y="209" text-anchor="middle" fill="#BE123C" font-size="17" font-weight="700">Head h</text>
+    <text x="1282" y="233" text-anchor="middle" fill="#8A4A5E" font-size="14">N × N</text>
+
+    <path d="M892 282 L892 360 L498 360" fill="none" stroke="#2563EB" stroke-width="3"/>
+    <path d="M1022 282 L1022 382 L498 382" fill="none" stroke="#0F766E" stroke-width="3"/>
+    <path d="M1152 282 L1152 404 L498 404" fill="none" stroke="#B45309" stroke-width="3"/>
+    <path d="M1282 282 L1282 426 L498 426" fill="none" stroke="#BE123C" stroke-width="3"/>
+    <line x1="498" y1="393" x2="420" y2="393" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="168" y="330" width="252" height="126" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="294" y="368" text-anchor="middle" fill="#5720A3" font-size="21" font-weight="700">Concat 各头输出</text>
+    <text x="294" y="402" text-anchor="middle" fill="#6A4B93" font-size="16">[B, N, h · d_head]</text>
+    <text x="294" y="429" text-anchor="middle" fill="#607086" font-size="15">通常 h · d_head = d_model</text>
+    <line x1="294" y1="456" x2="294" y2="526" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="168" y="546" width="252" height="100" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="294" y="584" text-anchor="middle" fill="#0B5E57" font-size="21" font-weight="700">输出投影 W_O</text>
+    <text x="294" y="618" text-anchor="middle" fill="#356C67" font-size="17">[B, N, d_model]</text>
+
+    <rect x="516" y="330" width="852" height="316" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="548" y="370" fill="#172033" font-size="21" font-weight="700">“多头”真正改变了什么</text>
+
+    <rect x="548" y="398" width="240" height="98" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="668" y="430" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">序列维 N</text>
+    <text x="668" y="462" text-anchor="middle" fill="#355986" font-size="16">每个头都保留全部 token</text>
+
+    <rect x="812" y="398" width="240" height="98" rx="8" fill="#ECFDF5" stroke="#A7F3D0"/>
+    <text x="932" y="430" text-anchor="middle" fill="#0F766E" font-size="18" font-weight="700">特征维 d_model</text>
+    <text x="932" y="462" text-anchor="middle" fill="#356C67" font-size="16">切分成 h 个 d_head</text>
+
+    <rect x="1076" y="398" width="260" height="98" rx="8" fill="#FFF7ED" stroke="#FED7AA"/>
+    <text x="1206" y="430" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">关系模式</text>
+    <text x="1206" y="462" text-anchor="middle" fill="#805B28" font-size="16">不同头学习不同依赖</text>
+
+    <text x="548" y="540" fill="#526277" font-size="17">例如：一个头关注局部搭配，另一个头关注长距离指代。</text>
+    <text x="548" y="576" fill="#526277" font-size="17">各头不是对输入 token 分组处理，而是对同一序列使用不同投影。</text>
+    <text x="548" y="612" fill="#526277" font-size="17">最后必须 Concat 并通过 W_O 融合，才能回到模型隐藏维度。</text>
+
+    <rect x="72" y="706" width="1296" height="98" rx="8" fill="#172033"/>
+    <text x="720" y="744" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">记忆抓手</text>
+    <text x="720" y="779" text-anchor="middle" fill="#D7DFEA" font-size="17">单头回答“这组关系怎么看”，多头回答“从多个表示子空间同时怎么看”</text>
+  </g>
+</svg>

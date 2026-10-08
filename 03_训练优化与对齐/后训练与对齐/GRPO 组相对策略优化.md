@@ -6,6 +6,8 @@
 
 GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**，是一种用于大语言模型后训练的强化学习方法。它对同一 prompt 采样多条回答，用组内奖励均值和标准差构造相对优势，配合裁剪策略目标及可选的 reference KL 正则更新策略，无需单独训练 Critic。数学、代码等可验证任务常使用这类方法；有效策略信号取决于组内奖励差异，而不只取决于奖励绝对值。
 
+![GRPO 组内相对优势](assets/grpo-group-relative-advantage.png)
+
 ### 背景
 
 传统 [RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。

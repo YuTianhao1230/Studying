@@ -6,6 +6,8 @@
 
 **PPO (Proximal Policy Optimization，近端策略优化)** 是一种使用近期策略采样、通过 surrogate 目标优化策略的强化学习方法。常见的 PPO-Clip 配合 Actor-Critic，以新旧策略动作概率比和优势构造裁剪目标，降低沿有利方向过度更新的激励。裁剪不保证真实概率比或 KL 被限制在固定范围内，训练效果仍依赖奖励、价值估计与超参数。
 
+![PPO 在线采样与裁剪更新](assets/ppo-clipped-update-loop.png)
+
 ### PPO 的核心思想
 
 策略梯度步长过大可能使策略迅速偏离采样分布，导致性能下降。PPO-Clip 使用以下机制：

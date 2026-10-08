@@ -33,6 +33,8 @@ Speculative Decoding 的思路是：
 4. 如果某个位置被拒绝，则从 Target 与 Draft 的修正分布采样，以保持最终输出服从 Target Model 的分布。
 5. 重复直到完成。
 
+![Speculative Decoding 草拟与验证流程](assets/speculative-decoding-flow.png)
+
 ### 为什么能加速
 
 小模型生成便宜，大模型验证多个 token 可以并行。

@@ -32,6 +32,8 @@ OpenAI-compatible API / 离线推理入口
 
 vLLM 组合采用 PagedAttention 与 Continuous Batching：前者负责 KV Cache 的显存管理，后者负责动态请求调度，两者共同服务于变长、高并发负载；分页机制详见 [KV Cache 与 Prefill/Decode](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，调度机制详见 [Batching](<Batching.md#batching>)。
 
+![vLLM 服务架构与 PagedAttention](assets/vllm-serving-architecture.png)
+
 ### vLLM 适合什么场景
 
 - LLM 在线服务。

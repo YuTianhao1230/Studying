@@ -15,6 +15,8 @@
   -> 有效吞吐提升
 ```
 
+![四种常见集合通信的数据流](assets/collective-communication-patterns.png)
+
 常见吞吐指标：
 
 | 指标 | 含义 |

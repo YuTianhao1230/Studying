@@ -71,6 +71,8 @@ def pgd_linf_attack(model, images, labels, epsilon, alpha, steps):
 | I-FGSM | 原图 | 多步投影 | 白盒更强 |
 | PGD | 扰动球内随机点 | 多步投影 | 更强白盒基线 |
 
+![FGSM、I-FGSM 和 PGD 的起点与更新路径对比](assets/fgsm-ifgsm-pgd.png)
+
 ### 在对抗训练中的作用
 
 对抗训练可以写成 min-max：

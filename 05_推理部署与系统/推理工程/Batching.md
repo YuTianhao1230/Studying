@@ -69,6 +69,8 @@ batch 中 request A 结束
 - 提高 decode 阶段吞吐。
 - 更适合 LLM 在线服务。
 
+![Static、Dynamic 与 Continuous Batching 对比](assets/batching-strategies.png)
+
 ### Padding 浪费
 
 同一个 batch 中，序列长度通常要对齐到最长样本。

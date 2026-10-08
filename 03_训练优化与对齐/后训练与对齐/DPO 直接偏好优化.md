@@ -8,6 +8,8 @@
 
 简单来说，**DPO 是为了替代复杂的 [RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>)（基于人类反馈的强化学习）而设计的。**
 
+![DPO 直接偏好优化](assets/dpo-preference-optimization.png)
+
 以下是关于 DPO 的详细解释：
 
 ### 为什么需要 DPO？（背景）

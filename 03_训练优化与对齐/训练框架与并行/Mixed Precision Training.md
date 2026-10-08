@@ -6,6 +6,8 @@
 
 **混合精度训练（Mixed Precision Training）** 是大模型开发中的核心技术。它的目标非常明确：**用更少的显存、更快的速度，达到和全精度（FP32）训练几乎一样的模型效果。**
 
+![混合精度训练的数据精度分工](assets/mixed-precision-dataflow.png)
+
 ### 什么是混合精度训练？
 
 在传统的深度学习中，所有的权重（Weights）、梯度（Gradients）和激活值（Activations）都使用 **FP32（单精度浮点数，32位）** 存储。

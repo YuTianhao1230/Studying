@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">排序算法过程与选型</title>
+  <desc id="desc">用中间状态不变量区分快速排序、归并排序和堆排序，并按稳定性、空间、最坏复杂度和数据规模给出选型。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">排序算法：用“一趟后什么必然成立”识别过程</text>
+    <text x="72" y="101" fill="#607086" font-size="18">不要只背复杂度；稳定性、额外空间、最坏情况和访问模式共同决定工程选型。</text>
+
+    <g transform="translate(72 146)">
+      <rect width="400" height="342" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="24" y="40" fill="#1D4ED8" font-size="21" font-weight="700">快速排序：一个 pivot 就位</text>
+      <g transform="translate(24 82)" font-size="15" font-weight="700" text-anchor="middle">
+        <rect width="48" height="48" rx="5" fill="#E8EEF5"/><text x="24" y="30" fill="#425066">7</text>
+        <rect x="56" width="48" height="48" rx="5" fill="#E8EEF5"/><text x="80" y="30" fill="#425066">2</text>
+        <rect x="112" width="48" height="48" rx="5" fill="#E8EEF5"/><text x="136" y="30" fill="#425066">9</text>
+        <rect x="168" width="48" height="48" rx="5" fill="#F1EAFE"/><text x="192" y="30" fill="#5720A3">5</text>
+        <rect x="224" width="48" height="48" rx="5" fill="#E8EEF5"/><text x="248" y="30" fill="#425066">1</text>
+        <rect x="280" width="48" height="48" rx="5" fill="#E8EEF5"/><text x="304" y="30" fill="#425066">8</text>
+      </g>
+      <line x1="200" y1="150" x2="200" y2="194" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <g transform="translate(24 212)" font-size="15" font-weight="700" text-anchor="middle">
+        <rect width="48" height="48" rx="5" fill="#DBEAFE"/><text x="24" y="30" fill="#1D4ED8">2</text>
+        <rect x="56" width="48" height="48" rx="5" fill="#DBEAFE"/><text x="80" y="30" fill="#1D4ED8">1</text>
+        <rect x="112" width="48" height="48" rx="5" fill="#F1EAFE" stroke="#7C3AED" stroke-width="2"/><text x="136" y="30" fill="#5720A3">5</text>
+        <rect x="168" width="48" height="48" rx="5" fill="#FFF4DD"/><text x="192" y="30" fill="#92400E">7</text>
+        <rect x="224" width="48" height="48" rx="5" fill="#FFF4DD"/><text x="248" y="30" fill="#92400E">9</text>
+        <rect x="280" width="48" height="48" rx="5" fill="#FFF4DD"/><text x="304" y="30" fill="#92400E">8</text>
+      </g>
+      <text x="200" y="296" text-anchor="middle" fill="#607086" font-size="14">左 ≤ pivot ≤ 右；两侧内部未必有序</text>
+      <text x="200" y="322" text-anchor="middle" fill="#B91C1C" font-size="13">平均快、缓存友好；最坏 O(n²)，不稳定</text>
+
+      <rect x="424" width="400" height="342" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="448" y="40" fill="#0B5E57" font-size="21" font-weight="700">归并排序：连续子段逐层有序</text>
+      <g transform="translate(448 82)" font-size="14" font-weight="700" text-anchor="middle">
+        <rect width="150" height="44" rx="5" fill="#DBEAFE"/><text x="75" y="28" fill="#1D4ED8">[2, 7]</text>
+        <rect x="178" width="150" height="44" rx="5" fill="#CCFBF1"/><text x="253" y="28" fill="#0F766E">[1, 5]</text>
+        <line x1="75" y1="44" x2="164" y2="88" stroke="#607086" stroke-width="3"/>
+        <line x1="253" y1="44" x2="164" y2="88" stroke="#607086" stroke-width="3"/>
+        <rect x="60" y="88" width="208" height="48" rx="5" fill="#E7F8F4"/><text x="164" y="118" fill="#0B5E57">[1, 2, 5, 7]</text>
+        <rect x="0" y="166" width="150" height="44" rx="5" fill="#FFF4DD"/><text x="75" y="194" fill="#92400E">[3, 8]</text>
+        <rect x="178" y="166" width="150" height="44" rx="5" fill="#F1EAFE"/><text x="253" y="194" fill="#5720A3">[4, 9]</text>
+      </g>
+      <text x="624" y="296" text-anchor="middle" fill="#607086" font-size="14">合并两个有序段，段长逐轮翻倍</text>
+      <text x="624" y="322" text-anchor="middle" fill="#0F766E" font-size="13">稳定且最坏 O(n log n)；数组需 O(n) 空间</text>
+
+      <rect x="848" width="448" height="342" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="872" y="40" fill="#92400E" font-size="21" font-weight="700">堆排序：前部是堆，后缀已就位</text>
+      <g transform="translate(914 76)">
+        <path d="M120 30 L60 94M120 30 L180 94M60 94 L30 154M60 94 L90 154M180 94 L150 154M180 94 L210 154" stroke="#AAB6C5" stroke-width="3"/>
+        <g font-size="15" font-weight="700" text-anchor="middle">
+          <circle cx="120" cy="28" r="26" fill="#D97706"/><text x="120" y="34" fill="#FFFFFF">9</text>
+          <circle cx="60" cy="94" r="24" fill="#FFF4DD"/><text x="60" y="100" fill="#92400E">7</text>
+          <circle cx="180" cy="94" r="24" fill="#FFF4DD"/><text x="180" y="100" fill="#92400E">8</text>
+          <circle cx="30" cy="154" r="22" fill="#E8EEF5"/><text x="30" y="160" fill="#425066">2</text>
+          <circle cx="90" cy="154" r="22" fill="#E8EEF5"/><text x="90" y="160" fill="#425066">5</text>
+          <circle cx="150" cy="154" r="22" fill="#E8EEF5"/><text x="150" y="160" fill="#425066">1</text>
+          <circle cx="210" cy="154" r="22" fill="#E8EEF5"/><text x="210" y="160" fill="#425066">4</text>
+        </g>
+      </g>
+      <rect x="1100" y="228" width="168" height="48" rx="6" fill="#F1EAFE"/>
+      <text x="1184" y="258" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">有序后缀：[...] 9</text>
+      <text x="1072" y="296" text-anchor="middle" fill="#607086" font-size="14">堆顶与末尾交换，再向下调整</text>
+      <text x="1072" y="322" text-anchor="middle" fill="#92400E" font-size="13">最坏 O(n log n)、O(1) 空间；不稳定</text>
+    </g>
+
+    <text x="72" y="552" fill="#172033" font-size="22" font-weight="700">按约束选算法</text>
+    <rect x="72" y="582" width="1296" height="244" rx="8" fill="#172033"/>
+    <g transform="translate(104 628)">
+      <rect width="232" height="72" rx="7" fill="#E8F0FF"/><text x="116" y="28" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">小规模 / 基本有序</text><text x="116" y="53" text-anchor="middle" fill="#42669B" font-size="13">直接插入</text>
+      <rect x="250" width="232" height="72" rx="7" fill="#CCFBF1"/><text x="366" y="28" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">平均速度优先</text><text x="366" y="53" text-anchor="middle" fill="#356C67" font-size="13">随机化快速排序</text>
+      <rect x="500" width="232" height="72" rx="7" fill="#FFF4DD"/><text x="616" y="28" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">稳定 + 最坏有界</text><text x="616" y="53" text-anchor="middle" fill="#805B28" font-size="13">归并排序</text>
+      <rect x="750" width="232" height="72" rx="7" fill="#F1EAFE"/><text x="866" y="28" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">O(1) 空间 + 最坏有界</text><text x="866" y="53" text-anchor="middle" fill="#6A4B93" font-size="13">堆排序</text>
+      <rect x="1000" width="232" height="72" rx="7" fill="#FFFFFF"/><text x="1116" y="28" text-anchor="middle" fill="#172033" font-size="16" font-weight="700">数据大于内存</text><text x="1116" y="53" text-anchor="middle" fill="#607086" font-size="13">外部多路归并</text>
+      <rect y="102" width="1232" height="70" rx="7" fill="#273449"/>
+      <text x="616" y="130" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">稳定性只关心相等关键字的相对顺序</text>
+      <text x="616" y="154" text-anchor="middle" fill="#D7DFEA" font-size="13">稳定：插入、冒泡、归并、基数；通常不稳定：希尔、快排、选择、堆排</text>
+    </g>
+    <text x="720" y="872" text-anchor="middle" fill="#607086" font-size="15">比较排序最坏下界为 Ω(n log n)；计数、桶、基数利用值域结构，不受该下界约束。</text>
+  </g>
+</svg>

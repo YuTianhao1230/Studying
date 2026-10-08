@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">UNet 编码器解码器与跳跃连接</title>
+  <desc id="desc">编码器逐层降低空间分辨率并提高通道数，解码器逐层恢复分辨率，跳跃连接把同尺度细节特征拼接到解码器。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#BE123C"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">UNet：下采样获取语义，跳跃连接补回定位细节</text>
+    <text x="72" y="101" fill="#607086" font-size="18">编码器和解码器按相同空间尺度配对；UNet 的 skip connection 通常采用通道拼接。</text>
+
+    <rect x="72" y="144" width="1296" height="590" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="168" width="152" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="172" y="191" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">Encoder</text>
+    <rect x="1192" y="168" width="152" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="1268" y="191" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">Decoder</text>
+
+    <rect x="104" y="236" width="160" height="106" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="184" y="270" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">Conv Block</text>
+    <text x="184" y="300" text-anchor="middle" fill="#355986" font-size="15">256 × 256 × 64</text>
+    <text x="184" y="326" text-anchor="middle" fill="#607086" font-size="13">边缘 / 纹理</text>
+    <path d="M184 342 V410 H326" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="208" y="385" fill="#607086" font-size="13">↓2</text>
+
+    <rect x="346" y="366" width="160" height="106" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+    <text x="426" y="400" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">Conv Block</text>
+    <text x="426" y="430" text-anchor="middle" fill="#355986" font-size="15">128 × 128 × 128</text>
+    <text x="426" y="456" text-anchor="middle" fill="#607086" font-size="13">局部结构</text>
+    <path d="M426 472 V540 H568" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="450" y="515" fill="#607086" font-size="13">↓2</text>
+
+    <rect x="588" y="496" width="264" height="128" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="720" y="537" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">Bottleneck</text>
+    <text x="720" y="570" text-anchor="middle" fill="#6A4B93" font-size="16">64 × 64 × 256</text>
+    <text x="720" y="598" text-anchor="middle" fill="#607086" font-size="14">低分辨率、高语义表示</text>
+
+    <path d="M852 560 H994 V472" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="954" y="526" fill="#607086" font-size="13">↑2</text>
+    <rect x="934" y="366" width="160" height="106" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="1014" y="400" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Concat + Conv</text>
+    <text x="1014" y="430" text-anchor="middle" fill="#356C67" font-size="15">128 × 128 × 128</text>
+    <text x="1014" y="456" text-anchor="middle" fill="#607086" font-size="13">恢复结构</text>
+
+    <path d="M1014 366 V298 H1156" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="1038" y="338" fill="#607086" font-size="13">↑2</text>
+    <rect x="1176" y="236" width="160" height="106" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="1256" y="270" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Concat + Conv</text>
+    <text x="1256" y="300" text-anchor="middle" fill="#356C67" font-size="15">256 × 256 × 64</text>
+    <text x="1256" y="326" text-anchor="middle" fill="#607086" font-size="13">恢复边界</text>
+
+    <path d="M264 268 H1148" fill="none" stroke="#BE123C" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrow-rose)"/>
+    <rect x="610" y="242" width="220" height="52" rx="7" fill="#FFE4E6" stroke="#DB8DA5"/>
+    <text x="720" y="264" text-anchor="middle" fill="#BE123C" font-size="15" font-weight="700">同尺度 Skip Connection</text>
+    <text x="720" y="284" text-anchor="middle" fill="#8A4A5E" font-size="13">按通道维拼接</text>
+    <path d="M506 398 H906" fill="none" stroke="#BE123C" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrow-rose)"/>
+    <text x="706" y="389" text-anchor="middle" fill="#BE123C" font-size="14" font-weight="700">细节特征直达解码器</text>
+
+    <line x1="1256" y1="342" x2="1256" y2="406" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1176" y="426" width="160" height="86" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1256" y="459" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">1 × 1 Conv</text>
+    <text x="1256" y="487" text-anchor="middle" fill="#805B28" font-size="14">类别通道映射</text>
+    <line x1="1256" y1="512" x2="1256" y2="572" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1176" y="592" width="160" height="84" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1256" y="626" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">分割 Mask</text>
+    <text x="1256" y="654" text-anchor="middle" fill="#805B28" font-size="14">与输入同分辨率</text>
+
+    <rect x="72" y="774" width="1296" height="82" rx="8" fill="#172033"/>
+    <text x="292" y="807" text-anchor="middle" fill="#93B4F5" font-size="17" font-weight="700">编码器：知道“是什么”</text>
+    <text x="720" y="807" text-anchor="middle" fill="#FCA5A5" font-size="17" font-weight="700">Skip：保留“在哪里”</text>
+    <text x="1148" y="807" text-anchor="middle" fill="#7BC7B9" font-size="17" font-weight="700">解码器：恢复像素级结果</text>
+    <text x="720" y="838" text-anchor="middle" fill="#D7DFEA" font-size="15">只靠 Bottleneck 会得到语义正确但边界模糊的输出</text>
+  </g>
+</svg>

@@ -30,7 +30,7 @@ Latent Diffusion Models（LDMs，潜在扩散模型）是一种基于扩散过�
 
 ### **模型结构**
 
-![image](https://github.com/user-attachments/assets/c6677361-d0eb-41c0-a6ad-0c3ab4e95c20)
+![Latent Diffusion 训练与生成流程](assets/latent-diffusion-pipeline.png)
 
 **架构图核心流程**
 1. 输入与输出  

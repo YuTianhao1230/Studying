@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920" role="img" aria-labelledby="title desc">
+  <title id="title">Latent Diffusion 训练与生成流程</title>
+  <desc id="desc">图像先由自编码器压缩到潜空间，扩散模型在低分辨率 latent 上学习加噪和去噪，生成后再由解码器恢复像素图像。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#2563EB"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="920" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">Latent Diffusion：扩散发生在压缩后的潜空间</text>
+    <text x="72" y="101" fill="#607086" font-size="18">自编码器负责像素与 latent 之间转换，U-Net 反复预测噪声，文本通过 Cross-Attention 控制生成。</text>
+
+    <rect x="72" y="142" width="1296" height="94" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="178" fill="#172033" font-size="20" font-weight="700">为什么不直接在像素空间扩散？</text>
+    <rect x="432" y="162" width="280" height="54" rx="7" fill="#FFE4E6" stroke="#DB8DA5"/>
+    <text x="572" y="195" text-anchor="middle" fill="#BE123C" font-size="17" font-weight="700">像素：512 × 512 × 3</text>
+    <line x1="712" y1="189" x2="800" y2="189" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="820" y="162" width="280" height="54" rx="7" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="960" y="195" text-anchor="middle" fill="#0F766E" font-size="17" font-weight="700">latent：约 64 × 64 × 4</text>
+    <text x="1132" y="195" fill="#607086" font-size="15">去噪计算显著降低</text>
+
+    <rect x="72" y="276" width="1296" height="392" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="300" width="112" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="152" y="323" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">训练阶段</text>
+
+    <rect x="104" y="386" width="150" height="106" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="179" y="424" text-anchor="middle" fill="#153E85" font-size="19" font-weight="700">真实图像 x</text>
+    <text x="179" y="455" text-anchor="middle" fill="#355986" font-size="14">像素空间</text>
+    <line x1="254" y1="439" x2="326" y2="439" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="346" y="386" width="160" height="106" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="426" y="424" text-anchor="middle" fill="#0F766E" font-size="19" font-weight="700">VAE Encoder</text>
+    <text x="426" y="455" text-anchor="middle" fill="#356C67" font-size="14">压缩</text>
+    <line x1="506" y1="439" x2="578" y2="439" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="598" y="386" width="148" height="106" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="672" y="424" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">latent z₀</text>
+    <text x="672" y="455" text-anchor="middle" fill="#356C67" font-size="14">低维语义表示</text>
+    <line x1="746" y1="439" x2="818" y2="439" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="838" y="374" width="178" height="130" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="927" y="410" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">随机时间步 t</text>
+    <text x="927" y="442" text-anchor="middle" fill="#805B28" font-size="15">加入已知噪声 ε</text>
+    <text x="927" y="474" text-anchor="middle" fill="#607086" font-size="14">得到 z_t</text>
+    <line x1="1016" y1="439" x2="1088" y2="439" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1108" y="360" width="230" height="158" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1223" y="398" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">Denoising U-Net</text>
+    <text x="1223" y="430" text-anchor="middle" fill="#6A4B93" font-size="15">输入 z_t、t、文本条件</text>
+    <text x="1223" y="462" text-anchor="middle" fill="#6A4B93" font-size="15">预测噪声 ε̂</text>
+    <text x="1223" y="494" text-anchor="middle" fill="#607086" font-size="14">损失：|| ε − ε̂ ||²</text>
+
+    <rect x="808" y="558" width="246" height="66" rx="8" fill="#EDE9FE" stroke="#B69AE8"/>
+    <text x="931" y="585" text-anchor="middle" fill="#5720A3" font-size="17" font-weight="700">文本 → Text Encoder</text>
+    <text x="931" y="609" text-anchor="middle" fill="#6A4B93" font-size="14">形成条件 K / V</text>
+    <path d="M1054 591 H1223 V520" fill="none" stroke="#6D28D9" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="72" y="708" width="1296" height="156" rx="8" fill="#172033"/>
+    <rect x="96" y="734" width="118" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="155" y="757" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">生成阶段</text>
+    <text x="258" y="757" fill="#FFFFFF" font-size="17" font-weight="700">随机 latent z_T</text>
+    <line x1="404" y1="751" x2="470" y2="751" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="490" y="757" fill="#C4B5FD" font-size="17" font-weight="700">U-Net 多步去噪</text>
+    <line x1="654" y1="751" x2="720" y2="751" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="740" y="757" fill="#7BC7B9" font-size="17" font-weight="700">得到 z₀</text>
+    <line x1="838" y1="751" x2="904" y2="751" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="924" y="757" fill="#93B4F5" font-size="17" font-weight="700">VAE Decoder</text>
+    <line x1="1064" y1="751" x2="1130" y2="751" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="1150" y="757" fill="#FDE68A" font-size="17" font-weight="700">生成图像 x̃</text>
+    <text x="720" y="818" text-anchor="middle" fill="#D7DFEA" font-size="15">扩散模型始终在 latent 上迭代，只有起点训练图像和最终生成结果位于像素空间</text>
+  </g>
+</svg>

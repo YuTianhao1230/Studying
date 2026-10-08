@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">KV Cache、Prefill 与 Decode</title>
+  <desc id="desc">Prefill 并行处理全部输入 token 并建立 KV Cache，Decode 每步只计算一个新 token 并复用、扩展历史缓存。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">KV Cache：Prefill 建缓存，Decode 逐步复用并增长</text>
+    <text x="72" y="101" fill="#607086" font-size="18">它用显存换计算：历史 K/V 不再重复计算，但每个活跃请求都要持续占用缓存。</text>
+
+    <rect x="72" y="146" width="1296" height="266" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="170" width="132" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="162" y="193" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">Prefill</text>
+    <text x="252" y="193" fill="#172033" font-size="20" font-weight="700">整段 Prompt 并行计算</text>
+    <g transform="translate(112 244)">
+      <rect x="0" y="0" width="108" height="58" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="116" y="0" width="108" height="58" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="232" y="0" width="108" height="58" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="348" y="0" width="108" height="58" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="54" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">token 1</text>
+      <text x="170" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">token 2</text>
+      <text x="286" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">token 3</text>
+      <text x="402" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">token 4</text>
+    </g>
+    <line x1="568" y1="273" x2="650" y2="273" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="670" y="220" width="240" height="106" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="790" y="258" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">一次大规模前向</text>
+    <text x="790" y="289" text-anchor="middle" fill="#6A4B93" font-size="15">token 维度并行</text>
+    <line x1="910" y1="273" x2="992" y2="273" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1012" y="220" width="324" height="106" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="1174" y="256" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">建立每层 KV Cache</text>
+    <text x="1174" y="287" text-anchor="middle" fill="#356C67" font-size="15">保存 prompt 的 K₁…K₄、V₁…V₄</text>
+    <text x="1174" y="351" text-anchor="middle" fill="#607086" font-size="15">主要影响首 token 延迟 TTFT</text>
+
+    <rect x="72" y="448" width="1296" height="274" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="472" width="132" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="162" y="495" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">Decode</text>
+    <text x="252" y="495" fill="#172033" font-size="20" font-weight="700">每步只计算一个新 token</text>
+
+    <rect x="112" y="548" width="190" height="98" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="207" y="584" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">新 token 5</text>
+    <text x="207" y="615" text-anchor="middle" fill="#805B28" font-size="15">只计算 Q₅、K₅、V₅</text>
+    <line x1="302" y1="597" x2="380" y2="597" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="400" y="526" width="304" height="142" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="552" y="562" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">Q₅ 读取历史 Cache</text>
+    <g fill="#EDE9FE" stroke="#B69AE8">
+      <rect x="432" y="586" width="50" height="44" rx="5"/><rect x="490" y="586" width="50" height="44" rx="5"/>
+      <rect x="548" y="586" width="50" height="44" rx="5"/><rect x="606" y="586" width="50" height="44" rx="5"/>
+    </g>
+    <g fill="#5720A3" font-size="12" font-weight="700" text-anchor="middle">
+      <text x="457" y="613">K/V1</text><text x="515" y="613">K/V2</text><text x="573" y="613">K/V3</text><text x="631" y="613">K/V4</text>
+    </g>
+    <line x1="704" y1="597" x2="782" y2="597" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="802" y="548" width="218" height="98" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="911" y="584" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">生成 token 6</text>
+    <text x="911" y="615" text-anchor="middle" fill="#356C67" font-size="15">重复下一步</text>
+    <line x1="1020" y1="597" x2="1098" y2="597" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1118" y="526" width="218" height="142" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="1227" y="562" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Cache 追加</text>
+    <text x="1227" y="595" text-anchor="middle" fill="#356C67" font-size="15">K₅、V₅</text>
+    <text x="1227" y="626" text-anchor="middle" fill="#607086" font-size="14">长度 4 → 5</text>
+    <text x="1227" y="690" text-anchor="middle" fill="#607086" font-size="15">主要影响每 token 延迟 TPOT</text>
+
+    <rect x="72" y="764" width="1296" height="90" rx="8" fill="#172033"/>
+    <text x="230" y="800" text-anchor="middle" fill="#93B4F5" font-size="17" font-weight="700">Prefill：计算密集</text>
+    <text x="536" y="800" text-anchor="middle" fill="#C4B5FD" font-size="17" font-weight="700">Decode：访存与调度敏感</text>
+    <text x="886" y="800" text-anchor="middle" fill="#7BC7B9" font-size="17" font-weight="700">Cache：随有效 token 近似线性增长</text>
+    <text x="1202" y="800" text-anchor="middle" fill="#FDE68A" font-size="17" font-weight="700">PagedAttention：减少碎片</text>
+    <text x="720" y="832" text-anchor="middle" fill="#D7DFEA" font-size="15">长上下文、大并发、更多层和更多 KV heads 都会放大显存占用</text>
+  </g>
+</svg>

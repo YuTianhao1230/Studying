@@ -21,6 +21,8 @@
     *   只有 **Decoder**。它不分理解还是生成，它的任务只有一个：**根据目前看到的词，预测下一个词是什么。**
     *   **例子**：就像写小说，写了上文接下文。
 
+![Decoder-only 与 Encoder-Decoder 数据流对比](assets/decoder-only-vs-encoder-decoder.png)
+
 ### 为什么许多通用生成式大模型选择 Decoder-only？
 
 #### ① **推理效率：输入编码与缓存范围不同**

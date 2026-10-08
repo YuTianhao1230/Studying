@@ -6,6 +6,8 @@
 
 本文整理事务 ACID、隔离级别、数据库锁、MVCC、快照读与当前读，以及 undo、redo、binlog 的作用。
 
+![MVCC ReadView 与版本链](assets/mvcc-readview-version-chain.png)
+
 ### ACID
 
 - Atomicity 原子性：事务要么全部成功，要么全部失败。

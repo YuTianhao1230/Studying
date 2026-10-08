@@ -14,7 +14,7 @@ UNet的目标是对图像中的每个像素进行分类，输出与输入图像�
 
 **2. 网络结构**
 
-![image](https://github.com/user-attachments/assets/f214e0df-f64f-418f-8235-a0c1a9fc7047)
+![UNet 编码器、解码器与跳跃连接](assets/unet-skip-connections.png)
 
 UNet的结构形似字母“U”，分为编码器（收缩路径）和解码器（扩展路径）两部分：
 

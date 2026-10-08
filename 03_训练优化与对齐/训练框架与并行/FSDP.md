@@ -6,6 +6,8 @@
 
 FSDP，Fully Sharded Data Parallel，是 PyTorch 提供的全参数切分数据并行方案，把模型参数、梯度和优化器状态切分到不同 GPU 上，降低单卡显存压力。
 
+![FSDP 单层参数生命周期](assets/fsdp-layer-lifecycle.png)
+
 ### 为什么需要 FSDP
 
 普通 DDP 会在每张卡上保存一份完整模型参数：

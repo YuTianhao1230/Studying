@@ -18,6 +18,8 @@
   -> 结构化结果、审计和轨迹
 ```
 
+![Tool 与 MCP 从 Agent 到真实后端的六层链路](assets/tool-mcp-six-layer.png)
+
 每一层的职责应分开：
 
 | 层 | 职责 |

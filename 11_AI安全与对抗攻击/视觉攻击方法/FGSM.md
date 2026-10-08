@@ -63,6 +63,8 @@ x-\epsilon\,\operatorname{sign}
 \right)
 $$
 
+![FGSM、I-FGSM 和 PGD 的起点与更新路径对比](assets/fgsm-ifgsm-pgd.png)
+
 ### PyTorch 骨架
 
 ```python

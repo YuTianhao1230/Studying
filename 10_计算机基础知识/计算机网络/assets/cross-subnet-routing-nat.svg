@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">跨网段转发与 NAT PAT</title>
+  <desc id="desc">展示内网主机访问公网时先查询默认网关 MAC，路由器逐跳重封装二层地址，并由 PAT 改写源 IP 和端口。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">跨网段通信：IP 指向终点，MAC 只负责抵达下一跳</text>
+    <text x="72" y="101" fill="#607086" font-size="18">主机先判断目标是否同网段；不同网段时，ARP 查询的是默认网关而不是远端主机。</text>
+
+    <rect x="72" y="146" width="1296" height="460" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="174" width="374" height="402" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="283" y="210" text-anchor="middle" fill="#1D4ED8" font-size="20" font-weight="700">内网 192.168.1.0/24</text>
+    <rect x="126" y="252" width="166" height="94" rx="8" fill="#FFFFFF" stroke="#93B4F5"/>
+    <text x="209" y="284" text-anchor="middle" fill="#172033" font-size="17" font-weight="700">主机 A</text>
+    <text x="209" y="310" text-anchor="middle" fill="#607086" font-size="13">192.168.1.10:51500</text>
+    <text x="209" y="331" text-anchor="middle" fill="#607086" font-size="13">MAC A</text>
+    <rect x="126" y="398" width="314" height="116" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+    <text x="283" y="430" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">先用掩码判断：8.8.8.8 不同网段</text>
+    <text x="283" y="459" text-anchor="middle" fill="#42669B" font-size="14">ARP：谁是 192.168.1.1？</text>
+    <text x="283" y="485" text-anchor="middle" fill="#42669B" font-size="14">得到默认网关 MAC G</text>
+
+    <line x1="292" y1="299" x2="548" y2="299" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="420" y="277" text-anchor="middle" fill="#607086" font-size="14">二层帧送给下一跳</text>
+
+    <rect x="568" y="222" width="304" height="248" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="720" y="258" text-anchor="middle" fill="#92400E" font-size="20" font-weight="700">默认网关 / NAT 路由器</text>
+    <rect x="596" y="284" width="248" height="64" rx="6" fill="#FFFFFF"/>
+    <text x="720" y="310" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">最长前缀匹配选出口</text>
+    <text x="720" y="334" text-anchor="middle" fill="#607086" font-size="13">TTL - 1，重新封装 MAC</text>
+    <rect x="596" y="366" width="248" height="76" rx="6" fill="#FFEDD5"/>
+    <text x="720" y="393" text-anchor="middle" fill="#92400E" font-size="15" font-weight="700">PAT 映射表</text>
+    <text x="720" y="420" text-anchor="middle" fill="#805B28" font-size="13">192.168.1.10:51500 ↔ 203.0.113.8:40001</text>
+
+    <line x1="872" y1="299" x2="974" y2="299" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="923" y="277" text-anchor="middle" fill="#607086" font-size="14">公网路由</text>
+
+    <rect x="994" y="222" width="344" height="248" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="1166" y="258" text-anchor="middle" fill="#0B5E57" font-size="20" font-weight="700">公网目标 8.8.8.8:443</text>
+    <rect x="1022" y="284" width="288" height="72" rx="6" fill="#FFFFFF"/>
+    <text x="1166" y="312" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">收到的源地址</text>
+    <text x="1166" y="338" text-anchor="middle" fill="#607086" font-size="14">203.0.113.8:40001</text>
+    <rect x="1022" y="374" width="288" height="68" rx="6" fill="#CCFBF1"/>
+    <text x="1166" y="402" text-anchor="middle" fill="#0B5E57" font-size="15" font-weight="700">返回流量按映射表还原</text>
+    <text x="1166" y="426" text-anchor="middle" fill="#356C67" font-size="13">再转给 192.168.1.10:51500</text>
+
+    <rect x="96" y="526" width="1242" height="50" rx="6" fill="#172033"/>
+    <text x="717" y="557" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">不做 NAT 时，端到端源/目的 IP 通常不变；每经过一跳，源/目的 MAC 都会按本链路重新封装。</text>
+
+    <rect x="72" y="646" width="628" height="184" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="685" fill="#172033" font-size="20" font-weight="700">同网段</text>
+    <text x="100" y="723" fill="#607086" font-size="16">ARP 查询最终目标 IP 对应的 MAC</text>
+    <path d="M112 770 H620" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="366" y="758" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">主机 A → 目标主机</text>
+    <text x="100" y="808" fill="#607086" font-size="14">交换机按 MAC 表转发，未知单播在 VLAN 内泛洪。</text>
+
+    <rect x="740" y="646" width="628" height="184" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="768" y="685" fill="#172033" font-size="20" font-weight="700">不同网段</text>
+    <text x="768" y="723" fill="#607086" font-size="16">ARP 查询默认网关 MAC，路由器按目的 IP 选路</text>
+    <path d="M780 770 H1288" stroke="#0F766E" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="1034" y="758" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">主机 A → 网关 → 逐跳路由 → 目标</text>
+    <text x="768" y="808" fill="#607086" font-size="14">PAT 额外改写 IP 与端口，并维护有状态映射。</text>
+  </g>
+</svg>

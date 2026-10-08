@@ -45,6 +45,8 @@ MLA 的核心思想是：**压缩缓存，并通过投影变换高效计算**。
 3.  **V 分支**：Value 只承载内容，不使用 RoPE，也没有对应的位置分支。
 这被称为 **解耦注意力（Decoupled Attention）**。
 
+![MLA 低秩压缩与解耦 RoPE](assets/mla-cache-compression.png)
+
 ### MLA vs GQA 性能对比
 
 | 特性 | GQA (如 Llama 3) | MLA (DeepSeek V3) |

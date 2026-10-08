@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940" role="img" aria-labelledby="title desc">
+  <title id="title">Transformer Encoder Decoder 架构</title>
+  <desc id="desc">源序列经编码器形成上下文表示，目标序列经掩码自注意力和交叉注意力逐步生成输出。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="940" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">Transformer：Encoder 理解输入，Decoder 逐步生成</text>
+    <text x="72" y="101" fill="#607086" font-size="18">Self-Attention 负责序列内部交互，Cross-Attention 连接源序列与目标序列。</text>
+
+    <rect x="72" y="142" width="558" height="610" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="810" y="142" width="558" height="610" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="166" width="164" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="178" y="189" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">Encoder × N</text>
+    <rect x="834" y="166" width="164" height="34" rx="6" fill="#EDE9FE"/>
+    <text x="916" y="189" text-anchor="middle" fill="#6D28D9" font-size="16" font-weight="700">Decoder × N</text>
+
+    <rect x="186" y="658" width="330" height="62" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="351" y="685" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">源 Token Embedding</text>
+    <text x="351" y="708" text-anchor="middle" fill="#355986" font-size="14">+ Position Encoding</text>
+    <line x1="351" y1="658" x2="351" y2="602" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="146" y="500" width="410" height="102" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="351" y="538" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">Multi-Head Self-Attention</text>
+    <text x="351" y="570" text-anchor="middle" fill="#355986" font-size="15">输入序列内所有位置双向交互</text>
+    <line x1="351" y1="500" x2="351" y2="456" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="146" y="354" width="410" height="102" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="351" y="392" text-anchor="middle" fill="#0F766E" font-size="19" font-weight="700">Position-wise FFN</text>
+    <text x="351" y="424" text-anchor="middle" fill="#356C67" font-size="15">每个 token 独立做非线性变换</text>
+    <path d="M128 551 H112 V405 H144" fill="none" stroke="#2563EB" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="103" y="480" text-anchor="middle" fill="#1D4ED8" font-size="14" transform="rotate(-90 103 480)">Residual + Norm</text>
+    <line x1="351" y1="354" x2="351" y2="294" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="186" y="226" width="330" height="68" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+    <text x="351" y="255" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">Encoder Memory</text>
+    <text x="351" y="280" text-anchor="middle" fill="#355986" font-size="14">每个源 token 的上下文化表示</text>
+
+    <rect x="924" y="658" width="330" height="62" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1089" y="685" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">右移后的目标 Token</text>
+    <text x="1089" y="708" text-anchor="middle" fill="#6A4B93" font-size="14">Embedding + Position Encoding</text>
+    <line x1="1089" y1="658" x2="1089" y2="614" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="884" y="512" width="410" height="102" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1089" y="550" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">Masked Self-Attention</text>
+    <text x="1089" y="582" text-anchor="middle" fill="#6A4B93" font-size="15">只能看到当前位置及之前的 token</text>
+    <line x1="1089" y1="512" x2="1089" y2="468" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="884" y="366" width="410" height="102" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1089" y="404" text-anchor="middle" fill="#B45309" font-size="19" font-weight="700">Cross-Attention</text>
+    <text x="1089" y="436" text-anchor="middle" fill="#805B28" font-size="15">Q 来自 Decoder，K/V 来自 Encoder</text>
+    <path d="M516 260 H706 V417 H882" fill="none" stroke="#B45309" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="706" y="397" text-anchor="middle" fill="#805B28" font-size="14">Encoder K / V</text>
+    <line x1="1089" y1="366" x2="1089" y2="322" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="884" y="220" width="410" height="102" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="1089" y="258" text-anchor="middle" fill="#0F766E" font-size="19" font-weight="700">Position-wise FFN</text>
+    <text x="1089" y="290" text-anchor="middle" fill="#356C67" font-size="15">Residual + Norm 包围每个子层</text>
+    <line x1="1089" y1="220" x2="1089" y2="178" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1042" y="118" width="94" height="42" rx="6" fill="#172033"/>
+    <text x="1089" y="146" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">Next Token</text>
+
+    <rect x="72" y="790" width="1296" height="104" rx="8" fill="#172033"/>
+    <text x="288" y="830" text-anchor="middle" fill="#93B4F5" font-size="19" font-weight="700">BERT：只取 Encoder</text>
+    <text x="720" y="830" text-anchor="middle" fill="#D7DFEA" font-size="19" font-weight="700">T5：保留 Encoder–Decoder</text>
+    <text x="1152" y="830" text-anchor="middle" fill="#C4B5FD" font-size="19" font-weight="700">GPT：只取 Decoder</text>
+    <text x="720" y="866" text-anchor="middle" fill="#FFFFFF" font-size="16">现代 LLM 主要沿用 Decoder block，并加入 RoPE、RMSNorm、GQA、SwiGLU 等改造</text>
+  </g>
+</svg>

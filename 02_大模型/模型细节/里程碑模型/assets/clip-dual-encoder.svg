@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">CLIP 双塔图文对比学习</title>
+  <desc id="desc">图像和文本由独立编码器映射到共享向量空间，在批内相似度矩阵上使用双向对比损失。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">CLIP：双塔独立编码，只在向量空间相遇</text>
+    <text x="72" y="101" fill="#607086" font-size="18">正确图文对位于相似度矩阵对角线；同一 batch 的其他配对形成负样本。</text>
+
+    <rect x="72" y="148" width="448" height="378" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="172" width="124" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="158" y="195" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">Image Tower</text>
+    <rect x="112" y="242" width="120" height="120" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <path d="M126 338 L158 298 L183 322 L204 284 L220 338 Z" fill="#93B4F5"/>
+    <circle cx="146" cy="270" r="12" fill="#2563EB"/>
+    <line x1="232" y1="302" x2="282" y2="302" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="302" y="242" width="182" height="120" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="393" y="282" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">ResNet / ViT</text>
+    <text x="393" y="314" text-anchor="middle" fill="#355986" font-size="15">Image Encoder</text>
+    <text x="393" y="340" text-anchor="middle" fill="#607086" font-size="14">全局图像特征</text>
+    <line x1="393" y1="362" x2="393" y2="410" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="282" y="430" width="202" height="66" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+    <text x="383" y="457" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">Projection + L2 Norm</text>
+    <text x="383" y="481" text-anchor="middle" fill="#355986" font-size="14">image embedding</text>
+
+    <rect x="72" y="550" width="448" height="254" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="574" width="124" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="158" y="597" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">Text Tower</text>
+    <rect x="112" y="646" width="160" height="68" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="192" y="673" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">“a photo of a dog”</text>
+    <text x="192" y="699" text-anchor="middle" fill="#356C67" font-size="14">BPE Tokens</text>
+    <line x1="272" y1="680" x2="318" y2="680" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="338" y="632" width="146" height="96" rx="8" fill="#ECFDF5" stroke="#A7F3D0"/>
+    <text x="411" y="670" text-anchor="middle" fill="#0F766E" font-size="17" font-weight="700">Transformer</text>
+    <text x="411" y="699" text-anchor="middle" fill="#356C67" font-size="14">取 EOS 表示</text>
+    <rect x="282" y="746" width="202" height="42" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="383" y="773" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">Projection + L2 Norm</text>
+
+    <line x1="520" y1="463" x2="650" y2="463" stroke="#2563EB" stroke-width="3" marker-end="url(#arrow)"/>
+    <line x1="520" y1="767" x2="650" y2="767" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="670" y="244" width="454" height="454" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="897" y="282" text-anchor="middle" fill="#172033" font-size="20" font-weight="700">N × N 余弦相似度矩阵</text>
+    <text x="897" y="310" text-anchor="middle" fill="#607086" font-size="15">logits = image embeddings · text embeddingsᵀ / τ</text>
+    <g transform="translate(742 352)">
+      <g fill="#EEF2F6" stroke="#FFFFFF">
+        <rect x="0" y="0" width="66" height="66"/><rect x="66" y="0" width="66" height="66"/><rect x="132" y="0" width="66" height="66"/><rect x="198" y="0" width="66" height="66"/>
+        <rect x="0" y="66" width="66" height="66"/><rect x="66" y="66" width="66" height="66"/><rect x="132" y="66" width="66" height="66"/><rect x="198" y="66" width="66" height="66"/>
+        <rect x="0" y="132" width="66" height="66"/><rect x="66" y="132" width="66" height="66"/><rect x="132" y="132" width="66" height="66"/><rect x="198" y="132" width="66" height="66"/>
+        <rect x="0" y="198" width="66" height="66"/><rect x="66" y="198" width="66" height="66"/><rect x="132" y="198" width="66" height="66"/><rect x="198" y="198" width="66" height="66"/>
+      </g>
+      <rect x="0" y="0" width="66" height="66" fill="#2563EB"/><rect x="66" y="66" width="66" height="66" fill="#2563EB"/>
+      <rect x="132" y="132" width="66" height="66" fill="#2563EB"/><rect x="198" y="198" width="66" height="66" fill="#2563EB"/>
+      <text x="132" y="292" text-anchor="middle" fill="#607086" font-size="14">正确配对在主对角线</text>
+    </g>
+    <rect x="1024" y="368" width="76" height="210" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1062" y="416" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">i→t</text>
+    <text x="1062" y="456" text-anchor="middle" fill="#6A4B93" font-size="14">行</text>
+    <text x="1062" y="482" text-anchor="middle" fill="#6A4B93" font-size="14">交叉熵</text>
+    <text x="1062" y="526" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">t→i</text>
+    <text x="1062" y="552" text-anchor="middle" fill="#6A4B93" font-size="14">列</text>
+
+    <rect x="1164" y="244" width="204" height="454" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1266" y="286" text-anchor="middle" fill="#B45309" font-size="19" font-weight="700">训练结果</text>
+    <text x="1266" y="338" text-anchor="middle" fill="#805B28" font-size="16">共享语义空间</text>
+    <text x="1266" y="388" text-anchor="middle" fill="#805B28" font-size="16">图文检索</text>
+    <text x="1266" y="438" text-anchor="middle" fill="#805B28" font-size="16">Zero-shot 分类</text>
+    <text x="1266" y="488" text-anchor="middle" fill="#805B28" font-size="16">开放词表迁移</text>
+    <line x1="1198" y1="524" x2="1334" y2="524" stroke="#E4B55B"/>
+    <text x="1266" y="560" text-anchor="middle" fill="#607086" font-size="14">没有 Cross-Attention</text>
+    <text x="1266" y="589" text-anchor="middle" fill="#607086" font-size="14">没有 token 级早融合</text>
+    <text x="1266" y="618" text-anchor="middle" fill="#607086" font-size="14">两塔可分别离线编码</text>
+
+    <rect x="670" y="742" width="698" height="62" rx="8" fill="#172033"/>
+    <text x="1019" y="768" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">Zero-shot：类别名 → Prompt → 文本向量</text>
+    <text x="1019" y="792" text-anchor="middle" fill="#D7DFEA" font-size="14">在线图像只需选择余弦相似度最高的类别向量</text>
+  </g>
+</svg>

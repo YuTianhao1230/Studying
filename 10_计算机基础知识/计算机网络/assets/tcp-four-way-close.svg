@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="980" viewBox="0 0 1440 980" role="img" aria-labelledby="title desc">
+  <title id="title">TCP 四次挥手与关闭状态</title>
+  <desc id="desc">主动关闭方与被动关闭方通过两组 FIN 和 ACK 分别关闭两个发送方向，主动方最后进入 TIME WAIT。</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#2563EB"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#0F766E"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="980" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">TCP 四次挥手：两个发送方向分别关闭</text>
+    <text x="72" y="101" fill="#607086" font-size="18">收到 FIN 只表示对端不再发送，本端仍可继续发送剩余数据。</text>
+
+    <rect x="72" y="132" width="438" height="64" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <rect x="930" y="132" width="438" height="64" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="291" y="173" text-anchor="middle" fill="#153E85" font-size="22" font-weight="700">主动关闭方</text>
+    <text x="1149" y="173" text-anchor="middle" fill="#0B5E57" font-size="22" font-weight="700">被动关闭方</text>
+    <line x1="291" y1="196" x2="291" y2="780" stroke="#93B4F5" stroke-width="3" stroke-dasharray="8 8"/>
+    <line x1="1149" y1="196" x2="1149" y2="780" stroke="#7BC7B9" stroke-width="3" stroke-dasharray="8 8"/>
+
+    <rect x="92" y="216" width="166" height="38" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="175" y="242" text-anchor="middle" fill="#355986" font-size="16" font-weight="700">ESTABLISHED</text>
+    <rect x="1182" y="216" width="166" height="38" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1265" y="242" text-anchor="middle" fill="#356C67" font-size="16" font-weight="700">ESTABLISHED</text>
+
+    <circle cx="291" cy="294" r="23" fill="#2563EB"/>
+    <text x="291" y="301" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">1</text>
+    <line x1="318" y1="294" x2="1116" y2="294" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <rect x="521" y="264" width="398" height="58" rx="8" fill="#FFFFFF" stroke="#93B4F5"/>
+    <text x="720" y="289" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">FIN = 1，seq = u</text>
+    <text x="720" y="311" text-anchor="middle" fill="#607086" font-size="14">主动方关闭自己的发送方向</text>
+    <rect x="92" y="328" width="166" height="38" rx="6" fill="#DBEAFE"/>
+    <text x="175" y="354" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">FIN_WAIT_1</text>
+
+    <rect x="1182" y="340" width="166" height="38" rx="6" fill="#CCFBF1"/>
+    <text x="1265" y="366" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">CLOSE_WAIT</text>
+    <circle cx="1149" cy="414" r="23" fill="#0F766E"/>
+    <text x="1149" y="421" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">2</text>
+    <line x1="1122" y1="414" x2="324" y2="414" stroke="#0F766E" stroke-width="4" marker-end="url(#arrow-teal)"/>
+    <rect x="521" y="384" width="398" height="58" rx="8" fill="#FFFFFF" stroke="#7BC7B9"/>
+    <text x="720" y="409" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">ACK = 1，ack = u + 1</text>
+    <text x="720" y="431" text-anchor="middle" fill="#607086" font-size="14">确认 FIN；被动方仍可继续发送</text>
+    <rect x="92" y="448" width="166" height="38" rx="6" fill="#DBEAFE"/>
+    <text x="175" y="474" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">FIN_WAIT_2</text>
+
+    <rect x="515" y="482" width="410" height="46" rx="6" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="720" y="511" text-anchor="middle" fill="#7A4305" font-size="16" font-weight="700">半关闭：主动方只接收，被动方可发送剩余数据</text>
+
+    <circle cx="1149" cy="576" r="23" fill="#0F766E"/>
+    <text x="1149" y="583" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">3</text>
+    <line x1="1122" y1="576" x2="324" y2="576" stroke="#0F766E" stroke-width="4" marker-end="url(#arrow-teal)"/>
+    <rect x="521" y="546" width="398" height="58" rx="8" fill="#FFFFFF" stroke="#7BC7B9"/>
+    <text x="720" y="571" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">FIN = 1，seq = v</text>
+    <text x="720" y="593" text-anchor="middle" fill="#607086" font-size="14">被动方数据发送完毕，关闭发送方向</text>
+    <rect x="1182" y="610" width="166" height="38" rx="6" fill="#CCFBF1"/>
+    <text x="1265" y="636" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">LAST_ACK</text>
+
+    <circle cx="291" cy="688" r="23" fill="#2563EB"/>
+    <text x="291" y="695" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">4</text>
+    <line x1="318" y1="688" x2="1116" y2="688" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <rect x="521" y="658" width="398" height="58" rx="8" fill="#FFFFFF" stroke="#93B4F5"/>
+    <text x="720" y="683" text-anchor="middle" fill="#153E85" font-size="18" font-weight="700">ACK = 1，ack = v + 1</text>
+    <text x="720" y="705" text-anchor="middle" fill="#607086" font-size="14">确认对端 FIN，两个方向都已关闭</text>
+    <rect x="92" y="724" width="166" height="38" rx="6" fill="#DBEAFE"/>
+    <text x="175" y="750" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">TIME_WAIT</text>
+    <rect x="1182" y="724" width="166" height="38" rx="6" fill="#CCFBF1"/>
+    <text x="1265" y="750" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">CLOSED</text>
+
+    <rect x="72" y="806" width="622" height="126" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="100" y="840" fill="#153E85" font-size="20" font-weight="700">为什么主动方要 TIME_WAIT？</text>
+    <text x="100" y="872" fill="#355986" font-size="16">1. 最后一个 ACK 丢失时，可以再次回复</text>
+    <text x="100" y="902" fill="#355986" font-size="16">2. 等旧连接中的延迟报文自然消失</text>
+
+    <rect x="746" y="806" width="622" height="126" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="774" y="840" fill="#7A4305" font-size="20" font-weight="700">大量 CLOSE_WAIT 说明什么？</text>
+    <text x="774" y="872" fill="#805B28" font-size="16">对端已关闭，但本端应用迟迟没有 close</text>
+    <text x="774" y="902" fill="#805B28" font-size="16">重点排查连接泄漏、阻塞和异常处理路径</text>
+  </g>
+</svg>

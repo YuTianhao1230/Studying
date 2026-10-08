@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="910" viewBox="0 0 1440 910" role="img" aria-labelledby="title desc">
+  <title id="title">混合、加人和间隔增长的区间判断</title>
+  <desc id="desc">用数轴展示混合值居中偏向、新加入数据拉动平均数，以及两段增长率同号和异号时的累计范围。</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#172033" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#607086"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="910" fill="#F5F7FA"/>
+  <g font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif">
+    <text x="72" y="66" fill="#172033" font-size="34" font-weight="700">三种区间判断，一眼排除越界选项</text>
+    <text x="72" y="101" fill="#607086" font-size="18">先找必然落点，再看权重和方向；区间内仍有多个选项时才估算。</text>
+
+    <g filter="url(#shadow)">
+      <rect x="72" y="136" width="1296" height="214" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="72" y="382" width="1296" height="214" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="72" y="628" width="1296" height="218" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    </g>
+
+    <rect x="96" y="160" width="116" height="31" rx="6" fill="#DBEAFE"/>
+    <text x="154" y="182" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">混合关系</text>
+    <text x="232" y="183" fill="#172033" font-size="21" font-weight="700">整体一定居中，并向权重更大的一侧靠近</text>
+    <line x1="210" y1="270" x2="1230" y2="270" stroke="#AAB6C5" stroke-width="4"/>
+    <circle cx="280" cy="270" r="28" fill="#2563EB"/>
+    <text x="280" y="277" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">5%</text>
+    <circle cx="1120" cy="270" r="18" fill="#BE123C"/>
+    <text x="1120" y="276" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="700">15%</text>
+    <line x1="700" y1="247" x2="700" y2="293" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="6 5"/>
+    <text x="700" y="320" text-anchor="middle" fill="#94A3B8" font-size="15">中点 10%</text>
+    <path d="M700 230 C640 205 565 205 505 228" fill="none" stroke="#607086" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <circle cx="486" cy="270" r="14" fill="#0F766E" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="486" y="226" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">整体低于 10%</text>
+    <text x="280" y="327" text-anchor="middle" fill="#355986" font-size="15">权重大</text>
+    <text x="1120" y="327" text-anchor="middle" fill="#8A4A5E" font-size="15">权重小</text>
+
+    <rect x="96" y="406" width="116" height="31" rx="6" fill="#CCFBF1"/>
+    <text x="154" y="428" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">加入数据</text>
+    <text x="232" y="429" fill="#172033" font-size="21" font-weight="700">新加入值在原均值哪一侧，新均值就向哪一侧移动</text>
+    <line x1="210" y1="516" x2="1230" y2="516" stroke="#AAB6C5" stroke-width="4"/>
+    <circle cx="385" cy="516" r="18" fill="#2563EB"/>
+    <text x="385" y="477" text-anchor="middle" fill="#153E85" font-size="17" font-weight="700">原均值 72</text>
+    <circle cx="600" cy="516" r="14" fill="#0F766E" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="600" y="558" text-anchor="middle" fill="#0B5E57" font-size="17" font-weight="700">新均值（示意）</text>
+    <circle cx="1100" cy="516" r="22" fill="#B45309"/>
+    <text x="1100" y="477" text-anchor="middle" fill="#7A4305" font-size="17" font-weight="700">加入组均值 88</text>
+    <path d="M422 492 C470 463 535 463 578 490" fill="none" stroke="#0F766E" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="485" y="577" text-anchor="middle" fill="#607086" font-size="15">只判升降，不求具体值</text>
+
+    <rect x="96" y="652" width="116" height="31" rx="6" fill="#FEF3C7"/>
+    <text x="154" y="674" text-anchor="middle" fill="#B45309" font-size="15" font-weight="700">间隔增长</text>
+    <text x="232" y="675" fill="#172033" font-size="21" font-weight="700">先看两段增速的符号，直接锁定累计范围</text>
+
+    <rect x="96" y="706" width="382" height="112" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="120" y="738" fill="#1D4ED8" font-size="17" font-weight="700">两段都增长</text>
+    <text x="120" y="772" fill="#172033" font-size="22" font-weight="700">+8%  与  +12%</text>
+    <text x="120" y="803" fill="#355986" font-size="16">累计增速必然 &gt; 20%</text>
+
+    <rect x="529" y="706" width="382" height="112" rx="8" fill="#FFF1F2" stroke="#FECDD3"/>
+    <text x="553" y="738" fill="#BE123C" font-size="17" font-weight="700">两段都下降</text>
+    <text x="553" y="772" fill="#172033" font-size="22" font-weight="700">-8%  与  -12%</text>
+    <text x="553" y="803" fill="#8A4A5E" font-size="16">总降幅在 12%～20% 之间</text>
+
+    <rect x="962" y="706" width="382" height="112" rx="8" fill="#ECFDF5" stroke="#A7F3D0"/>
+    <text x="986" y="738" fill="#0F766E" font-size="17" font-weight="700">一涨一跌</text>
+    <text x="986" y="772" fill="#172033" font-size="22" font-weight="700">+12%  与  -8%</text>
+    <text x="986" y="803" fill="#356C67" font-size="16">累计增速在 -8%～+12% 之间</text>
+
+    <rect x="72" y="870" width="1296" height="24" rx="6" fill="#172033"/>
+  </g>
+</svg>

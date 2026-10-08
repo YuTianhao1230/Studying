@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">MoE Token 路由与稀疏激活</title>
+  <desc id="desc">每个 token 经过 Router 得到专家分数，只发送给 Top-K 专家，专家输出按路由权重合并。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#2563EB"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">MoE：总参数很多，每个 token 只激活少数专家</text>
+    <text x="72" y="101" fill="#607086" font-size="18">稀疏的是计算路径，不是模型存储；专家参数通常仍需驻留设备。</text>
+
+    <rect x="72" y="164" width="204" height="274" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="174" y="200" text-anchor="middle" fill="#172033" font-size="20" font-weight="700">输入 Token</text>
+    <rect x="108" y="228" width="132" height="44" rx="7" fill="#DBEAFE" stroke="#93B4F5"/>
+    <rect x="108" y="286" width="132" height="44" rx="7" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <rect x="108" y="344" width="132" height="44" rx="7" fill="#FEF3C7" stroke="#E4B55B"/>
+    <text x="174" y="256" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">token A</text>
+    <text x="174" y="314" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">token B</text>
+    <text x="174" y="372" text-anchor="middle" fill="#B45309" font-size="16" font-weight="700">token C</text>
+
+    <line x1="276" y1="300" x2="372" y2="300" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="392" y="194" width="238" height="212" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="511" y="232" text-anchor="middle" fill="#5720A3" font-size="21" font-weight="700">Router</text>
+    <text x="511" y="263" text-anchor="middle" fill="#6A4B93" font-size="15">为每个 token 计算专家分数</text>
+    <rect x="420" y="290" width="182" height="42" rx="6" fill="#FFFFFF" stroke="#B69AE8"/>
+    <text x="511" y="317" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">Top-K 选择</text>
+    <text x="511" y="363" text-anchor="middle" fill="#607086" font-size="15">示例：K = 2</text>
+
+    <line x1="630" y1="300" x2="716" y2="300" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="736" y="142" width="632" height="340" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="1052" y="180" text-anchor="middle" fill="#172033" font-size="20" font-weight="700">专家池：结构通常相同，参数彼此独立</text>
+    <rect x="772" y="218" width="128" height="90" rx="8" fill="#E8F0FF" stroke="#2563EB" stroke-width="3"/>
+    <rect x="918" y="218" width="128" height="90" rx="8" fill="#E7F8F4" stroke="#0F766E" stroke-width="3"/>
+    <rect x="1064" y="218" width="128" height="90" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="1210" y="218" width="128" height="90" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="836" y="255" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">Expert 1</text>
+    <text x="836" y="282" text-anchor="middle" fill="#355986" font-size="15">已选中</text>
+    <text x="982" y="255" text-anchor="middle" fill="#0F766E" font-size="18" font-weight="700">Expert 2</text>
+    <text x="982" y="282" text-anchor="middle" fill="#356C67" font-size="15">已选中</text>
+    <text x="1128" y="255" text-anchor="middle" fill="#526277" font-size="18" font-weight="700">Expert 3</text>
+    <text x="1128" y="282" text-anchor="middle" fill="#94A3B8" font-size="15">未激活</text>
+    <text x="1274" y="255" text-anchor="middle" fill="#526277" font-size="18" font-weight="700">Expert N</text>
+    <text x="1274" y="282" text-anchor="middle" fill="#94A3B8" font-size="15">未激活</text>
+    <path d="M718 300 C740 300 748 263 770 263" fill="none" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <path d="M718 300 C788 300 842 263 916 263" fill="none" stroke="#0F766E" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="840" y="354" width="424" height="82" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1052" y="387" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">按 Router 权重合并 Top-K 输出</text>
+    <text x="1052" y="416" text-anchor="middle" fill="#805B28" font-size="15">未选中的专家不参与当前 token 计算</text>
+
+    <line x1="1052" y1="482" x2="1052" y2="550" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="908" y="570" width="288" height="92" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="1052" y="607" text-anchor="middle" fill="#0B5E57" font-size="20" font-weight="700">MoE 层输出</text>
+    <text x="1052" y="637" text-anchor="middle" fill="#356C67" font-size="15">继续进入后续 Transformer 层</text>
+
+    <rect x="72" y="526" width="710" height="136" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="564" fill="#172033" font-size="20" font-weight="700">总参数量 ≠ 激活参数量</text>
+    <rect x="100" y="586" width="286" height="48" rx="6" fill="#FFE4E6"/>
+    <text x="243" y="617" text-anchor="middle" fill="#BE123C" font-size="16" font-weight="700">全部专家参数决定模型容量</text>
+    <rect x="414" y="586" width="340" height="48" rx="6" fill="#CCFBF1"/>
+    <text x="584" y="617" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">Top-K 专家决定单 token 计算量</text>
+
+    <rect x="72" y="708" width="1296" height="132" rx="8" fill="#172033"/>
+    <text x="100" y="746" fill="#FFFFFF" font-size="20" font-weight="700">工程代价</text>
+    <text x="100" y="781" fill="#D7DFEA" font-size="16">负载均衡：避免少数专家过热、其他专家长期闲置</text>
+    <text x="538" y="781" fill="#D7DFEA" font-size="16">容量限制：溢出的 token 需要丢弃或重新路由</text>
+    <text x="992" y="781" fill="#D7DFEA" font-size="16">Expert Parallel：跨 GPU 引入 All-to-All 通信</text>
+    <text x="720" y="817" text-anchor="middle" fill="#FFFFFF" font-size="16">MoE 用更复杂的路由、存储和通信，换取更大的模型容量</text>
+  </g>
+</svg>

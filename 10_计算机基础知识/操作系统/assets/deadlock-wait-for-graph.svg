@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">死锁等待图与处理方法</title>
+  <desc id="desc">展示两个事务以相反顺序持锁和等待形成有向环，以及通过统一加锁顺序破坏循环等待。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker><marker id="redArrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#DC2626"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">死锁：每个人都握着别人需要的资源，并等待对方先释放</text>
+    <text x="72" y="101" fill="#607086" font-size="18">等待图以事务为节点，边方向是“等待者 → 持锁者”；出现有向环说明形成死锁。</text>
+
+    <rect x="72" y="146" width="628" height="420" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#B91C1C" font-size="21" font-weight="700">错误：相反顺序获取两把锁</text>
+    <circle cx="250" cy="330" r="76" fill="#DBEAFE" stroke="#93B4F5" stroke-width="2"/>
+    <text x="250" y="320" text-anchor="middle" fill="#1D4ED8" font-size="21" font-weight="700">事务 T1</text>
+    <text x="250" y="350" text-anchor="middle" fill="#42669B" font-size="14">持有 Lock A</text>
+    <circle cx="522" cy="330" r="76" fill="#FFF4DD" stroke="#E4B55B" stroke-width="2"/>
+    <text x="522" y="320" text-anchor="middle" fill="#92400E" font-size="21" font-weight="700">事务 T2</text>
+    <text x="522" y="350" text-anchor="middle" fill="#805B28" font-size="14">持有 Lock B</text>
+    <path d="M303 274 C362 224 424 224 472 274" fill="none" stroke="#DC2626" stroke-width="4" marker-end="url(#redArrow)"/>
+    <text x="386" y="226" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">T1 等待 T2 的 Lock B</text>
+    <path d="M469 386 C414 438 350 438 300 386" fill="none" stroke="#DC2626" stroke-width="4" marker-end="url(#redArrow)"/>
+    <text x="386" y="464" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">T2 等待 T1 的 Lock A</text>
+    <rect x="100" y="494" width="572" height="44" rx="6" fill="#FEE2E2"/>
+    <text x="386" y="522" text-anchor="middle" fill="#B91C1C" font-size="16" font-weight="700">T1 → T2 → T1：等待环闭合，双方都不能推进</text>
+
+    <rect x="740" y="146" width="628" height="420" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="768" y="184" fill="#0B5E57" font-size="21" font-weight="700">修复：所有事务按 A → B 的顺序加锁</text>
+    <g transform="translate(768 234)">
+      <rect width="154" height="72" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+      <text x="77" y="30" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">事务 T1</text>
+      <text x="77" y="54" text-anchor="middle" fill="#42669B" font-size="13">Lock A → Lock B</text>
+      <line x1="154" y1="36" x2="206" y2="36" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="206" width="154" height="72" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="283" y="30" text-anchor="middle" fill="#0B5E57" font-size="17" font-weight="700">完成事务</text>
+      <text x="283" y="54" text-anchor="middle" fill="#356C67" font-size="13">释放 B → A</text>
+      <line x1="360" y1="36" x2="412" y2="36" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="412" width="160" height="72" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="492" y="30" text-anchor="middle" fill="#92400E" font-size="17" font-weight="700">事务 T2</text>
+      <text x="492" y="54" text-anchor="middle" fill="#805B28" font-size="13">再获取 A → B</text>
+    </g>
+    <rect x="768" y="350" width="572" height="72" rx="6" fill="#E7F8F4"/>
+    <text x="1054" y="379" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">统一锁顺序破坏“循环等待”条件</text>
+    <text x="1054" y="404" text-anchor="middle" fill="#356C67" font-size="14">还可缩短临界区、减少嵌套、设置超时与回滚</text>
+    <rect x="768" y="448" width="572" height="90" rx="6" fill="#172033"/>
+    <text x="1054" y="479" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">线上诊断</text>
+    <text x="1054" y="507" text-anchor="middle" fill="#D7DFEA" font-size="14">抓线程栈 / 锁等待 → 构造等待图 → 找环 → 回滚牺牲者</text>
+
+    <text x="72" y="626" fill="#172033" font-size="22" font-weight="700">死锁成立必须同时满足四个条件</text>
+    <g transform="translate(72 660)">
+      <rect width="300" height="132" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+      <text x="150" y="41" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">① 互斥</text>
+      <text x="150" y="76" text-anchor="middle" fill="#42669B" font-size="15">资源一次只能被一个执行单元占用</text>
+      <text x="150" y="104" text-anchor="middle" fill="#607086" font-size="13">破坏难度通常较高</text>
+      <rect x="332" width="300" height="132" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="482" y="41" text-anchor="middle" fill="#92400E" font-size="19" font-weight="700">② 请求并保持</text>
+      <text x="482" y="76" text-anchor="middle" fill="#805B28" font-size="15">持有旧资源时继续等待新资源</text>
+      <text x="482" y="104" text-anchor="middle" fill="#607086" font-size="13">一次申请或失败时释放</text>
+      <rect x="664" width="300" height="132" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="814" y="41" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">③ 不可剥夺</text>
+      <text x="814" y="76" text-anchor="middle" fill="#6A4B93" font-size="15">资源不能被系统强制抢走</text>
+      <text x="814" y="104" text-anchor="middle" fill="#607086" font-size="13">超时、回滚可间接打破</text>
+      <rect x="996" width="300" height="132" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="1146" y="41" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">④ 循环等待</text>
+      <text x="1146" y="76" text-anchor="middle" fill="#356C67" font-size="15">等待关系形成闭环</text>
+      <text x="1146" y="104" text-anchor="middle" fill="#607086" font-size="13">工程上最常通过锁排序破坏</text>
+    </g>
+    <text x="720" y="844" text-anchor="middle" fill="#607086" font-size="15">单实例资源中“有环”等价于死锁；多实例资源有环仅表示可能死锁，还需进一步检测。</text>
+  </g>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920" role="img" aria-labelledby="title desc">
+  <title id="title">MLA 低秩压缩与解耦 RoPE</title>
+  <desc id="desc">MLA 不缓存完整多头 Key Value，而缓存低维 KV latent 和较小的 RoPE Key 分支，并通过投影吸收参与注意力计算。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="920" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">MLA：不缓存完整多头 K/V，只缓存紧凑表示</text>
+    <text x="72" y="101" fill="#607086" font-size="18">低秩压缩负责减少内容缓存，解耦 RoPE 让位置分支不妨碍投影吸收。</text>
+
+    <rect x="72" y="142" width="1296" height="106" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="178" fill="#172033" font-size="20" font-weight="700">传统 MHA / GQA 的缓存</text>
+    <rect x="368" y="166" width="720" height="58" rx="8" fill="#FFE4E6" stroke="#DB8DA5"/>
+    <g fill="#BE123C" font-size="15" font-weight="700" text-anchor="middle">
+      <text x="430" y="201">K₁ V₁</text><text x="530" y="201">K₂ V₂</text><text x="630" y="201">K₃ V₃</text>
+      <text x="730" y="201">K₄ V₄</text><text x="830" y="201">…</text><text x="930" y="201">K_h V_h</text>
+    </g>
+    <text x="1120" y="188" fill="#8A4A5E" font-size="16">每个历史 token</text>
+    <text x="1120" y="214" fill="#8A4A5E" font-size="16">保存多头 K/V</text>
+
+    <rect x="72" y="286" width="1296" height="470" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="310" width="104" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="148" y="333" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">MLA</text>
+    <text x="220" y="333" fill="#172033" font-size="20" font-weight="700">历史 token 的两条缓存分支</text>
+
+    <rect x="112" y="392" width="190" height="88" rx="8" fill="#EEF2F6" stroke="#AAB6C5"/>
+    <text x="207" y="428" text-anchor="middle" fill="#26364B" font-size="20" font-weight="700">隐藏状态 h_t</text>
+    <text x="207" y="456" text-anchor="middle" fill="#607086" font-size="15">当前历史 token</text>
+
+    <line x1="302" y1="422" x2="400" y2="382" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <line x1="302" y1="450" x2="400" y2="508" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="420" y="342" width="240" height="92" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="540" y="378" text-anchor="middle" fill="#0F766E" font-size="19" font-weight="700">KV 低秩下投影</text>
+    <text x="540" y="408" text-anchor="middle" fill="#356C67" font-size="15">高维内容 → 低维 latent</text>
+    <line x1="660" y1="388" x2="750" y2="388" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="770" y="342" width="220" height="92" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="880" y="378" text-anchor="middle" fill="#0B5E57" font-size="20" font-weight="700">缓存 c_t^KV</text>
+    <text x="880" y="408" text-anchor="middle" fill="#356C67" font-size="15">紧凑内容表示</text>
+
+    <rect x="420" y="476" width="240" height="92" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="540" y="512" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">独立位置分支</text>
+    <text x="540" y="542" text-anchor="middle" fill="#6A4B93" font-size="15">只对较小 K 分支应用 RoPE</text>
+    <line x1="660" y1="522" x2="750" y2="522" stroke="#6D28D9" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="770" y="476" width="220" height="92" rx="8" fill="#EDE9FE" stroke="#B69AE8"/>
+    <text x="880" y="512" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">缓存 k_t^R</text>
+    <text x="880" y="542" text-anchor="middle" fill="#6A4B93" font-size="15">小型 RoPE Key</text>
+
+    <path d="M990 388 H1048 V446 H1100" fill="none" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M990 522 H1048 V478 H1100" fill="none" stroke="#6D28D9" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1120" y="398" width="218" height="130" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1229" y="433" text-anchor="middle" fill="#B45309" font-size="19" font-weight="700">Attention Score</text>
+    <text x="1229" y="466" text-anchor="middle" fill="#805B28" font-size="15">内容分数 + 位置分数</text>
+    <text x="1229" y="496" text-anchor="middle" fill="#607086" font-size="14">共同进入 Softmax</text>
+
+    <rect x="420" y="620" width="918" height="96" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="879" y="654" text-anchor="middle" fill="#153E85" font-size="19" font-weight="700">高效推理中的投影吸收</text>
+    <text x="879" y="685" text-anchor="middle" fill="#355986" font-size="16">把解压相关矩阵吸收到 Query 与输出投影中，无需显式恢复完整多头 K/V</text>
+
+    <rect x="72" y="792" width="1296" height="82" rx="8" fill="#172033"/>
+    <text x="318" y="826" text-anchor="middle" fill="#FCA5A5" font-size="18" font-weight="700">传统：缓存完整 K/V</text>
+    <text x="720" y="826" text-anchor="middle" fill="#FFFFFF" font-size="18">→</text>
+    <text x="1122" y="826" text-anchor="middle" fill="#7BC7B9" font-size="18" font-weight="700">MLA：缓存 c^KV + 小型 k^R</text>
+    <text x="720" y="855" text-anchor="middle" fill="#D7DFEA" font-size="15">目标是同时降低长上下文的显存占用和 Decode 阶段的带宽压力</text>
+  </g>
+</svg>

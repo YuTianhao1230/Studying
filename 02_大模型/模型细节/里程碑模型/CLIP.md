@@ -49,6 +49,8 @@ image embedding 和 text embedding 只在最后计算相似度，
 
 所以 CLIP 的图像编码和文本编码可以分别离线计算、建立向量索引，在线只需要对 query 做一次编码和相似度搜索。这也是它适合图文检索和大规模 zero-shot 分类的原因。
 
+![CLIP 双塔图文对比学习](assets/clip-dual-encoder.png)
+
 ### 视觉分支
 
 CLIP 公开模型有两类视觉编码器。

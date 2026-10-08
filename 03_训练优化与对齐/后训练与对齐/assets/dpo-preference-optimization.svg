@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">DPO 直接偏好优化</title>
+  <desc id="desc">展示 DPO 使用离线的 prompt、chosen、rejected 偏好对，对比当前策略与参考模型对两种回答的相对对数概率差，并直接更新策略。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">DPO：直接从“更喜欢哪个回答”更新策略</text>
+    <text x="72" y="101" fill="#607086" font-size="18">不单独训练 Reward Model，也不在训练循环中在线 rollout；参考模型作为固定锚点。</text>
+
+    <rect x="72" y="146" width="1296" height="472" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">一条偏好样本如何形成训练信号</text>
+
+    <g transform="translate(100 228)">
+      <rect width="220" height="122" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="110" y="34" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">离线偏好三元组</text>
+      <text x="110" y="66" text-anchor="middle" fill="#607086" font-size="14">prompt x</text>
+      <text x="110" y="91" text-anchor="middle" fill="#0F766E" font-size="14" font-weight="700">chosen y⁺</text>
+      <text x="110" y="112" text-anchor="middle" fill="#B91C1C" font-size="14" font-weight="700">rejected y⁻</text>
+    </g>
+
+    <path d="M320 289 H374 V228 H430" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <path d="M320 289 H374 V420 H430" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(430 202)">
+      <rect width="292" height="150" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="146" y="36" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">当前 Policy πθ</text>
+      <rect x="24" y="61" width="244" height="32" rx="5" fill="#E7F8F4"/>
+      <text x="146" y="83" text-anchor="middle" fill="#0B5E57" font-size="14">log πθ(y⁺|x)</text>
+      <rect x="24" y="103" width="244" height="32" rx="5" fill="#FEE2E2"/>
+      <text x="146" y="125" text-anchor="middle" fill="#B91C1C" font-size="14">log πθ(y⁻|x)</text>
+      <text x="146" y="145" text-anchor="middle" fill="#6A4B93" font-size="12">参与梯度更新</text>
+    </g>
+
+    <g transform="translate(430 382)">
+      <rect width="292" height="150" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="146" y="36" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">固定 Reference πref</text>
+      <rect x="24" y="61" width="244" height="32" rx="5" fill="#E7F8F4"/>
+      <text x="146" y="83" text-anchor="middle" fill="#0B5E57" font-size="14">log πref(y⁺|x)</text>
+      <rect x="24" y="103" width="244" height="32" rx="5" fill="#FEE2E2"/>
+      <text x="146" y="125" text-anchor="middle" fill="#B91C1C" font-size="14">log πref(y⁻|x)</text>
+      <text x="146" y="145" text-anchor="middle" fill="#42669B" font-size="12">只提供基线，不更新</text>
+    </g>
+
+    <path d="M722 277 H786 V328 H836" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <path d="M722 457 H786 V382 H836" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(836 250)">
+      <rect width="476" height="212" rx="8" fill="#172033"/>
+      <text x="238" y="42" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">比较“相对参考模型”的偏好增量</text>
+      <text x="238" y="88" text-anchor="middle" fill="#C4B5FD" font-size="18" font-weight="700">Δchosen = log πθ(y⁺|x) - log πref(y⁺|x)</text>
+      <text x="238" y="124" text-anchor="middle" fill="#FCA5A5" font-size="18" font-weight="700">Δrejected = log πθ(y⁻|x) - log πref(y⁻|x)</text>
+      <rect x="56" y="151" width="364" height="40" rx="6" fill="#273449"/>
+      <text x="238" y="177" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">训练推动：Δchosen - Δrejected ↑</text>
+    </g>
+    <line x1="1074" y1="462" x2="1074" y2="520" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <rect x="870" y="520" width="408" height="64" rx="6" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1074" y="547" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">提高 chosen 相对概率，降低 rejected 相对概率</text>
+    <text x="1074" y="570" text-anchor="middle" fill="#6A4B93" font-size="13">reference 约束隐含在目标中</text>
+
+    <rect x="72" y="656" width="628" height="180" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="694" fill="#172033" font-size="20" font-weight="700">DPO 省掉了什么？</text>
+    <g transform="translate(100 726)">
+      <rect width="170" height="64" rx="6" fill="#FEE2E2"/>
+      <text x="85" y="27" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">独立 Reward Model</text>
+      <text x="85" y="49" text-anchor="middle" fill="#7F1D1D" font-size="13">不需要</text>
+      <rect x="190" width="170" height="64" rx="6" fill="#FEE2E2"/>
+      <text x="275" y="27" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">在线 Rollout</text>
+      <text x="275" y="49" text-anchor="middle" fill="#7F1D1D" font-size="13">典型 DPO 不需要</text>
+      <rect x="380" width="170" height="64" rx="6" fill="#FEE2E2"/>
+      <text x="465" y="27" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">Critic / PPO</text>
+      <text x="465" y="49" text-anchor="middle" fill="#7F1D1D" font-size="13">不需要</text>
+    </g>
+
+    <rect x="740" y="656" width="628" height="180" rx="8" fill="#172033"/>
+    <text x="768" y="694" fill="#FFFFFF" font-size="20" font-weight="700">训练质量主要由偏好对决定</text>
+    <text x="768" y="731" fill="#D7DFEA" font-size="15">• chosen 与 rejected 应来自相近分布，差异指向目标能力</text>
+    <text x="768" y="761" fill="#D7DFEA" font-size="15">• 优先 hard negative，避免仅靠长度、格式等伪特征区分</text>
+    <text x="768" y="791" fill="#D7DFEA" font-size="15">• 用独立评测检查偏好胜率、通用能力与安全回归</text>
+  </g>
+</svg>

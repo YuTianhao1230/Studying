@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">图算法选型决策图</title>
+  <desc id="desc">根据任务目标、是否有权、是否存在负权、单源或全源、稠密或稀疏等条件选择 BFS、Dijkstra、Bellman-Ford、Floyd、拓扑排序、Kruskal、Prim 等算法。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">图算法选型：先问目标，再问方向、权值、负边和规模</text>
+    <text x="72" y="101" fill="#607086" font-size="18">同一个“图问题”可能是在找最短路、依赖顺序、最小生成树、连通集合或特殊遍历。</text>
+
+    <rect x="570" y="142" width="300" height="70" rx="8" fill="#172033"/>
+    <text x="720" y="185" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="700">题目到底要求什么？</text>
+    <path d="M720 212 V246 H216 V286M720 212 V286M720 212 V246 H1224 V286" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(72 286)">
+      <rect width="420" height="430" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="210" y="40" text-anchor="middle" fill="#1D4ED8" font-size="21" font-weight="700">最短路径</text>
+      <rect x="24" y="70" width="372" height="66" rx="6" fill="#DBEAFE"/>
+      <text x="210" y="97" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">无权 / 边权全相同 → BFS</text>
+      <text x="210" y="120" text-anchor="middle" fill="#42669B" font-size="13">O(V + E)</text>
+      <rect x="24" y="154" width="372" height="66" rx="6" fill="#CCFBF1"/>
+      <text x="210" y="181" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">单源 + 非负权 → Dijkstra</text>
+      <text x="210" y="204" text-anchor="middle" fill="#356C67" font-size="13">堆实现约 O((V + E) log V)</text>
+      <rect x="24" y="238" width="372" height="66" rx="6" fill="#FFF4DD"/>
+      <text x="210" y="265" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">单源 + 可有负边 → Bellman-Ford</text>
+      <text x="210" y="288" text-anchor="middle" fill="#805B28" font-size="13">O(VE)，还能检测可达负环</text>
+      <rect x="24" y="322" width="372" height="66" rx="6" fill="#F1EAFE"/>
+      <text x="210" y="349" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">全源 + 顶点较少 → Floyd</text>
+      <text x="210" y="372" text-anchor="middle" fill="#6A4B93" font-size="13">O(V³)，k 必须在最外层</text>
+      <text x="24" y="414" fill="#B91C1C" font-size="13">Dijkstra 不能处理负权边。</text>
+    </g>
+
+    <g transform="translate(510 286)">
+      <rect width="420" height="430" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="210" y="40" text-anchor="middle" fill="#0B5E57" font-size="21" font-weight="700">依赖与连通结构</text>
+      <rect x="24" y="70" width="372" height="78" rx="6" fill="#CCFBF1"/>
+      <text x="210" y="99" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">有向依赖顺序 → 拓扑排序</text>
+      <text x="210" y="123" text-anchor="middle" fill="#356C67" font-size="13">Kahn 输出不足 V 个点即有环</text>
+      <rect x="24" y="166" width="372" height="78" rx="6" fill="#E8F0FF"/>
+      <text x="210" y="195" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">动态合并与连通 → 并查集</text>
+      <text x="210" y="219" text-anchor="middle" fill="#42669B" font-size="13">Union / Find，近似 O(1) 均摊</text>
+      <rect x="24" y="262" width="372" height="78" rx="6" fill="#F1EAFE"/>
+      <text x="210" y="291" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">二分配对 → 最大匹配</text>
+      <text x="210" y="315" text-anchor="middle" fill="#6A4B93" font-size="13">先二染色，再找增广路</text>
+      <rect x="24" y="358" width="372" height="48" rx="6" fill="#E8EEF5"/>
+      <text x="210" y="388" text-anchor="middle" fill="#425066" font-size="14" font-weight="700">DAG 最短 / 最长 / 计数 → 拓扑序 DP</text>
+    </g>
+
+    <g transform="translate(948 286)">
+      <rect width="420" height="430" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="210" y="40" text-anchor="middle" fill="#92400E" font-size="21" font-weight="700">连接所有点与特殊路径</text>
+      <rect x="24" y="70" width="372" height="78" rx="6" fill="#FFF4DD"/>
+      <text x="210" y="99" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">无向图最小总边权 → MST</text>
+      <text x="210" y="123" text-anchor="middle" fill="#805B28" font-size="13">结果有 V - 1 条边</text>
+      <rect x="24" y="166" width="176" height="90" rx="6" fill="#DBEAFE"/>
+      <text x="112" y="197" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">稀疏图</text>
+      <text x="112" y="222" text-anchor="middle" fill="#42669B" font-size="14">Kruskal + DSU</text>
+      <rect x="220" y="166" width="176" height="90" rx="6" fill="#CCFBF1"/>
+      <text x="308" y="197" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">稠密图</text>
+      <text x="308" y="222" text-anchor="middle" fill="#356C67" font-size="14">Prim / 矩阵</text>
+      <rect x="24" y="278" width="372" height="54" rx="6" fill="#F1EAFE"/>
+      <text x="210" y="311" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">每条边一次 → 欧拉路径 / 回路</text>
+      <rect x="24" y="350" width="372" height="54" rx="6" fill="#FEE2E2"/>
+      <text x="210" y="383" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">每个点一次 → 哈密顿，一般很难</text>
+      <text x="24" y="424" fill="#607086" font-size="13">MST 不保证任意两点路径最短。</text>
+    </g>
+
+    <rect x="72" y="758" width="1296" height="76" rx="8" fill="#172033"/>
+    <text x="720" y="788" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">选择顺序</text>
+    <text x="720" y="816" text-anchor="middle" fill="#D7DFEA" font-size="15">目标 → 有向/无向 → 权值与负边 → 单源/全源 → 稀疏/稠密 → 规模与复杂度</text>
+    <text x="720" y="872" text-anchor="middle" fill="#607086" font-size="15">欧拉关注边，哈密顿关注点；最小生成树关注总边权，最短路关注从源点到各点的距离。</text>
+  </g>
+</svg>

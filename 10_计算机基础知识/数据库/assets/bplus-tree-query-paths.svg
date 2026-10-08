@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">B+ 树索引与查询路径</title>
+  <desc id="desc">展示 B+ 树内部节点只导航、数据集中在有序叶子层，以及二级索引回表、覆盖索引和索引下推的区别。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">B+ 树：高扇出降低树高，有序叶子支持范围扫描</text>
+    <text x="72" y="101" fill="#607086" font-size="18">内部节点只负责导航；所有数据项位于同一叶子层，并通过链表保持顺序。</text>
+
+    <rect x="72" y="146" width="1296" height="394" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="548" y="190" width="344" height="70" rx="8" fill="#172033"/>
+    <text x="720" y="218" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">内部节点：[20 | 50 | 80]</text>
+    <text x="720" y="243" text-anchor="middle" fill="#D7DFEA" font-size="13">只存 key + 子页指针，不存完整行</text>
+    <path d="M610 260 L252 334M680 260 L552 334M760 260 L888 334M830 260 L1188 334" stroke="#607086" stroke-width="3" fill="none"/>
+    <g transform="translate(104 334)">
+      <rect width="296" height="98" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+      <text x="148" y="34" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">叶子页：5 · 9 · 13 · 18</text>
+      <text x="148" y="66" text-anchor="middle" fill="#42669B" font-size="13">数据 / 主键值</text>
+      <rect x="312" width="296" height="98" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="460" y="34" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">叶子页：20 · 31 · 42 · 47</text>
+      <text x="460" y="66" text-anchor="middle" fill="#356C67" font-size="13">数据 / 主键值</text>
+      <rect x="624" width="296" height="98" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="772" y="34" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">叶子页：50 · 63 · 71 · 76</text>
+      <text x="772" y="66" text-anchor="middle" fill="#805B28" font-size="13">数据 / 主键值</text>
+      <rect x="936" width="296" height="98" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="1084" y="34" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">叶子页：80 · 87 · 92 · 99</text>
+      <text x="1084" y="66" text-anchor="middle" fill="#6A4B93" font-size="13">数据 / 主键值</text>
+      <line x1="296" y1="49" x2="312" y2="49" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <line x1="608" y1="49" x2="624" y2="49" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <line x1="920" y1="49" x2="936" y2="49" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    </g>
+    <rect x="104" y="462" width="1232" height="50" rx="6" fill="#E8EEF5"/>
+    <text x="720" y="493" text-anchor="middle" fill="#425066" font-size="15" font-weight="700">点查沿树高定位；范围查询定位起点后，顺着叶子链连续扫描</text>
+
+    <text x="72" y="598" fill="#172033" font-size="22" font-weight="700">二级索引查询的三种路径</text>
+    <g transform="translate(72 630)">
+      <rect width="400" height="196" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="24" y="38" fill="#172033" font-size="19" font-weight="700">回表</text>
+      <rect x="24" y="64" width="142" height="64" rx="6" fill="#DBEAFE"/>
+      <text x="95" y="89" text-anchor="middle" fill="#1D4ED8" font-size="14" font-weight="700">二级索引叶子</text>
+      <text x="95" y="111" text-anchor="middle" fill="#42669B" font-size="12">找到主键 id</text>
+      <line x1="166" y1="96" x2="218" y2="96" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="218" y="64" width="154" height="64" rx="6" fill="#FFF4DD"/>
+      <text x="295" y="89" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">聚簇索引</text>
+      <text x="295" y="111" text-anchor="middle" fill="#805B28" font-size="12">再取完整行</text>
+      <text x="24" y="164" fill="#607086" font-size="13">两次树查找，随机 IO 更多</text>
+
+      <rect x="432" width="400" height="196" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="456" y="38" fill="#172033" font-size="19" font-weight="700">覆盖索引 · Using index</text>
+      <rect x="456" y="64" width="352" height="64" rx="6" fill="#CCFBF1"/>
+      <text x="632" y="89" text-anchor="middle" fill="#0B5E57" font-size="14" font-weight="700">过滤列 + 返回列都在索引中</text>
+      <text x="632" y="111" text-anchor="middle" fill="#356C67" font-size="12">直接返回结果，不回表</text>
+      <text x="456" y="164" fill="#607086" font-size="13">减少随机访问，SELECT * 更难覆盖</text>
+
+      <rect x="864" width="432" height="196" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="888" y="38" fill="#172033" font-size="19" font-weight="700">索引下推 · Using index condition</text>
+      <rect x="888" y="64" width="176" height="64" rx="6" fill="#F1EAFE"/>
+      <text x="976" y="89" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">索引层先过滤</text>
+      <text x="976" y="111" text-anchor="middle" fill="#6A4B93" font-size="12">丢弃不满足候选</text>
+      <line x1="1064" y1="96" x2="1110" y2="96" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="1110" y="64" width="162" height="64" rx="6" fill="#FFF4DD"/>
+      <text x="1191" y="89" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">仍需回表</text>
+      <text x="1191" y="111" text-anchor="middle" fill="#805B28" font-size="12">但次数更少</text>
+      <text x="888" y="164" fill="#607086" font-size="13">不会让范围边界凭空变窄</text>
+    </g>
+    <text x="720" y="872" text-anchor="middle" fill="#607086" font-size="15">索引是否有效最终看执行计划、扫描行数和真实耗时，不能只凭 SQL 外形判断。</text>
+  </g>
+</svg>

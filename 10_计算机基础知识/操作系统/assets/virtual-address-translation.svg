@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">虚拟地址转换与缺页中断</title>
+  <desc id="desc">展示虚拟页号先查 TLB，未命中再遍历页表；有效页表项给出物理页框，无效项触发缺页处理后重新执行原指令。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">虚拟内存：地址翻译先找映射，缺页时再把页面调入内存</text>
+    <text x="72" y="101" fill="#607086" font-size="18">TLB miss 只是转换缓存未命中；page fault 才表示页不在内存、映射未建立或权限异常。</text>
+
+    <rect x="72" y="146" width="1296" height="430" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="100" y="248" width="194" height="116" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+    <text x="197" y="281" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">虚拟地址</text>
+    <rect x="120" y="304" width="96" height="36" fill="#DBEAFE" stroke="#93B4F5"/>
+    <rect x="216" y="304" width="58" height="36" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="168" y="327" text-anchor="middle" fill="#1D4ED8" font-size="13" font-weight="700">VPN</text>
+    <text x="245" y="327" text-anchor="middle" fill="#0F766E" font-size="13" font-weight="700">offset</text>
+    <line x1="294" y1="306" x2="370" y2="306" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="390" y="224" width="210" height="164" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="495" y="260" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">TLB</text>
+    <text x="495" y="289" text-anchor="middle" fill="#42669B" font-size="14">缓存最近页表项</text>
+    <rect x="418" y="312" width="154" height="44" rx="6" fill="#FFFFFF"/>
+    <text x="495" y="340" text-anchor="middle" fill="#172033" font-size="14" font-weight="700">VPN → PFN</text>
+    <path d="M495 388 V442 H796 V388" fill="none" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="650" y="431" text-anchor="middle" fill="#0F766E" font-size="14" font-weight="700">命中：直接得到页框号</text>
+    <line x1="600" y1="272" x2="676" y2="272" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="638" y="253" text-anchor="middle" fill="#607086" font-size="13">未命中</text>
+
+    <rect x="696" y="202" width="220" height="186" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="806" y="238" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">多级页表遍历</text>
+    <g transform="translate(724 265)">
+      <rect width="46" height="56" rx="5" fill="#EDE9FE"/><rect x="58" width="46" height="56" rx="5" fill="#EDE9FE"/>
+      <rect x="116" width="46" height="56" rx="5" fill="#EDE9FE"/>
+      <text x="23" y="34" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">L1</text>
+      <text x="81" y="34" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">L2</text>
+      <text x="139" y="34" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">PTE</text>
+    </g>
+    <text x="806" y="350" text-anchor="middle" fill="#6A4B93" font-size="14">PTE：有效位 · 权限 · PFN</text>
+    <line x1="916" y1="295" x2="982" y2="295" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="1002" y="224" width="210" height="164" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="1107" y="260" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">物理地址</text>
+    <rect x="1030" y="304" width="96" height="36" fill="#BDF4E8" stroke="#7BC7B9"/>
+    <rect x="1126" y="304" width="58" height="36" fill="#FFFFFF" stroke="#7BC7B9"/>
+    <text x="1078" y="327" text-anchor="middle" fill="#0B5E57" font-size="13" font-weight="700">PFN</text>
+    <text x="1155" y="327" text-anchor="middle" fill="#0F766E" font-size="13" font-weight="700">offset</text>
+    <line x1="1212" y1="306" x2="1270" y2="306" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1270" y="260" width="70" height="92" rx="6" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1305" y="296" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">物理</text>
+    <text x="1305" y="320" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">内存</text>
+
+    <path d="M806 388 V476" fill="none" stroke="#B91C1C" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="826" y="431" fill="#B91C1C" font-size="14" font-weight="700">PTE 无效</text>
+    <rect x="586" y="476" width="440" height="70" rx="8" fill="#FEE2E2" stroke="#F2A7A7"/>
+    <text x="806" y="505" text-anchor="middle" fill="#B91C1C" font-size="17" font-weight="700">Page Fault：陷入内核</text>
+    <text x="806" y="530" text-anchor="middle" fill="#7F1D1D" font-size="13">检查合法性；非法访问直接报错，合法缺页进入调页流程</text>
+
+    <rect x="72" y="618" width="1296" height="180" rx="8" fill="#172033"/>
+    <text x="100" y="656" fill="#FFFFFF" font-size="20" font-weight="700">合法缺页处理闭环</text>
+    <g transform="translate(100 690)" font-size="14" font-weight="700" text-anchor="middle">
+      <rect width="174" height="62" rx="6" fill="#E8F0FF"/><text x="87" y="38" fill="#1D4ED8">① 保存现场</text>
+      <line x1="174" y1="31" x2="208" y2="31" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="208" width="174" height="62" rx="6" fill="#FFF4DD"/><text x="295" y="29" fill="#92400E">② 取空闲页框</text><text x="295" y="48" fill="#805B28" font-size="12">或选择牺牲页</text>
+      <line x1="382" y1="31" x2="416" y2="31" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="416" width="174" height="62" rx="6" fill="#F1EAFE"/><text x="503" y="29" fill="#5720A3">③ 必要时写回</text><text x="503" y="48" fill="#6A4B93" font-size="12">脏牺牲页</text>
+      <line x1="590" y1="31" x2="624" y2="31" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="624" width="174" height="62" rx="6" fill="#CCFBF1"/><text x="711" y="38" fill="#0B5E57">④ 从磁盘读入</text>
+      <line x1="798" y1="31" x2="832" y2="31" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="832" width="174" height="62" rx="6" fill="#E8F0FF"/><text x="919" y="29" fill="#1D4ED8">⑤ 更新页表 / TLB</text><text x="919" y="48" fill="#42669B" font-size="12">建立新映射</text>
+      <line x1="1006" y1="31" x2="1040" y2="31" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="1040" width="202" height="62" rx="6" fill="#FFFFFF"/><text x="1141" y="29" fill="#172033">⑥ 重新执行原指令</text><text x="1141" y="48" fill="#607086" font-size="12">程序通常无感知</text>
+    </g>
+
+    <rect x="72" y="826" width="628" height="50" rx="6" fill="#E7F8F4"/>
+    <text x="386" y="857" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">TLB miss：通常只需查页表，无磁盘 IO</text>
+    <rect x="740" y="826" width="628" height="50" rx="6" fill="#FEE2E2"/>
+    <text x="1054" y="857" text-anchor="middle" fill="#B91C1C" font-size="16" font-weight="700">合法 page fault：可能调页，代价远高于 TLB miss</text>
+  </g>
+</svg>

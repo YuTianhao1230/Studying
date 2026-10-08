@@ -22,6 +22,8 @@
 2.  **门控网络 / 路由器 (Router / Gating Network)**：
     这是 MoE 的“调度中心”。它负责看一眼输入的 Token（词），然后决定：“这个词是关于编程的，交给专家 A 和专家 B 处理”。
 
+![MoE Token 路由与稀疏激活](assets/moe-token-routing.png)
+
 ### MoE 的杀手锏：总参数量 vs. 激活参数量
 
 这是理解 MoE 最重要的一点。我们需要区分两个概念：

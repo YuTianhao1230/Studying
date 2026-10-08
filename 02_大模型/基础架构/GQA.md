@@ -48,6 +48,8 @@ MQA: [Q1,Q2,Q3,Q4] -> [K1,V1]                    (全部共用)
 GQA: [Q1,Q2]->[K1,V1] | [Q3,Q4]->[K2,V2]         (分组共用)
 ```
 
+![MHA、MQA、GQA 的 K/V 共享方式](assets/mha-mqa-gqa-comparison.png)
+
 ### GQA 的主要优势
 
 1.  **减少显存占用（KV Cache 优化）**：

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">MHA MQA GQA 的 Query 与 Key Value 头对应关系</title>
+  <desc id="desc">MHA 每个 Query 头拥有独立 Key Value 头，MQA 全部共享一组，GQA 按组共享。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">MHA、MQA、GQA：区别只在 K/V 如何共享</text>
+    <text x="72" y="101" fill="#607086" font-size="18">Query head 数保持不变；减少 K/V head 才会直接压缩 KV Cache。</text>
+
+    <rect x="72" y="142" width="1296" height="190" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="166" width="104" height="34" rx="6" fill="#DBEAFE"/>
+    <text x="148" y="189" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">MHA</text>
+    <text x="222" y="189" fill="#172033" font-size="20" font-weight="700">一一对应：8 个 Q head，8 组 K/V</text>
+    <g fill="#2563EB">
+      <circle cx="192" cy="258" r="20"/><circle cx="302" cy="258" r="20"/><circle cx="412" cy="258" r="20"/><circle cx="522" cy="258" r="20"/>
+      <circle cx="632" cy="258" r="20"/><circle cx="742" cy="258" r="20"/><circle cx="852" cy="258" r="20"/><circle cx="962" cy="258" r="20"/>
+    </g>
+    <g fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="192" y="263">Q1</text><text x="302" y="263">Q2</text><text x="412" y="263">Q3</text><text x="522" y="263">Q4</text>
+      <text x="632" y="263">Q5</text><text x="742" y="263">Q6</text><text x="852" y="263">Q7</text><text x="962" y="263">Q8</text>
+    </g>
+    <g fill="#E7F8F4" stroke="#7BC7B9">
+      <rect x="172" y="294" width="40" height="24" rx="4"/><rect x="282" y="294" width="40" height="24" rx="4"/>
+      <rect x="392" y="294" width="40" height="24" rx="4"/><rect x="502" y="294" width="40" height="24" rx="4"/>
+      <rect x="612" y="294" width="40" height="24" rx="4"/><rect x="722" y="294" width="40" height="24" rx="4"/>
+      <rect x="832" y="294" width="40" height="24" rx="4"/><rect x="942" y="294" width="40" height="24" rx="4"/>
+    </g>
+    <g fill="#0F766E" font-size="10" font-weight="700" text-anchor="middle">
+      <text x="192" y="310">KV1</text><text x="302" y="310">KV2</text><text x="412" y="310">KV3</text><text x="522" y="310">KV4</text>
+      <text x="632" y="310">KV5</text><text x="742" y="310">KV6</text><text x="852" y="310">KV7</text><text x="962" y="310">KV8</text>
+    </g>
+    <g stroke="#94A3B8" stroke-width="2">
+      <line x1="192" y1="278" x2="192" y2="292"/><line x1="302" y1="278" x2="302" y2="292"/>
+      <line x1="412" y1="278" x2="412" y2="292"/><line x1="522" y1="278" x2="522" y2="292"/>
+      <line x1="632" y1="278" x2="632" y2="292"/><line x1="742" y1="278" x2="742" y2="292"/>
+      <line x1="852" y1="278" x2="852" y2="292"/><line x1="962" y1="278" x2="962" y2="292"/>
+    </g>
+    <text x="1110" y="244" fill="#1D4ED8" font-size="18" font-weight="700">KV Cache：8 份</text>
+    <text x="1110" y="278" fill="#607086" font-size="16">表达充分</text>
+    <text x="1110" y="306" fill="#607086" font-size="16">显存与带宽开销最大</text>
+
+    <rect x="72" y="356" width="1296" height="190" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="380" width="104" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="148" y="403" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">MQA</text>
+    <text x="222" y="403" fill="#172033" font-size="20" font-weight="700">全部共享：8 个 Q head，共用 1 组 K/V</text>
+    <g fill="#2563EB">
+      <circle cx="192" cy="472" r="20"/><circle cx="302" cy="472" r="20"/><circle cx="412" cy="472" r="20"/><circle cx="522" cy="472" r="20"/>
+      <circle cx="632" cy="472" r="20"/><circle cx="742" cy="472" r="20"/><circle cx="852" cy="472" r="20"/><circle cx="962" cy="472" r="20"/>
+    </g>
+    <g fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="192" y="477">Q1</text><text x="302" y="477">Q2</text><text x="412" y="477">Q3</text><text x="522" y="477">Q4</text>
+      <text x="632" y="477">Q5</text><text x="742" y="477">Q6</text><text x="852" y="477">Q7</text><text x="962" y="477">Q8</text>
+    </g>
+    <g stroke="#94A3B8" stroke-width="2">
+      <line x1="192" y1="492" x2="577" y2="516"/><line x1="302" y1="492" x2="577" y2="516"/>
+      <line x1="412" y1="492" x2="577" y2="516"/><line x1="522" y1="492" x2="577" y2="516"/>
+      <line x1="632" y1="492" x2="577" y2="516"/><line x1="742" y1="492" x2="577" y2="516"/>
+      <line x1="852" y1="492" x2="577" y2="516"/><line x1="962" y1="492" x2="577" y2="516"/>
+    </g>
+    <rect x="537" y="514" width="80" height="24" rx="4" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="577" y="530" text-anchor="middle" fill="#0F766E" font-size="11" font-weight="700">KV</text>
+    <text x="1110" y="458" fill="#0F766E" font-size="18" font-weight="700">KV Cache：1 份</text>
+    <text x="1110" y="492" fill="#607086" font-size="16">最省显存与带宽</text>
+    <text x="1110" y="520" fill="#607086" font-size="16">共享最强，质量风险更高</text>
+
+    <rect x="72" y="570" width="1296" height="190" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="594" width="104" height="34" rx="6" fill="#FEF3C7"/>
+    <text x="148" y="617" text-anchor="middle" fill="#B45309" font-size="16" font-weight="700">GQA</text>
+    <text x="222" y="617" fill="#172033" font-size="20" font-weight="700">分组共享：8 个 Q head，2 组 K/V</text>
+    <g fill="#2563EB">
+      <circle cx="192" cy="686" r="20"/><circle cx="302" cy="686" r="20"/><circle cx="412" cy="686" r="20"/><circle cx="522" cy="686" r="20"/>
+      <circle cx="632" cy="686" r="20"/><circle cx="742" cy="686" r="20"/><circle cx="852" cy="686" r="20"/><circle cx="962" cy="686" r="20"/>
+    </g>
+    <g fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="192" y="691">Q1</text><text x="302" y="691">Q2</text><text x="412" y="691">Q3</text><text x="522" y="691">Q4</text>
+      <text x="632" y="691">Q5</text><text x="742" y="691">Q6</text><text x="852" y="691">Q7</text><text x="962" y="691">Q8</text>
+    </g>
+    <g stroke="#94A3B8" stroke-width="2">
+      <line x1="192" y1="706" x2="357" y2="730"/><line x1="302" y1="706" x2="357" y2="730"/>
+      <line x1="412" y1="706" x2="357" y2="730"/><line x1="522" y1="706" x2="357" y2="730"/>
+      <line x1="632" y1="706" x2="797" y2="730"/><line x1="742" y1="706" x2="797" y2="730"/>
+      <line x1="852" y1="706" x2="797" y2="730"/><line x1="962" y1="706" x2="797" y2="730"/>
+    </g>
+    <rect x="317" y="728" width="80" height="24" rx="4" fill="#FFF4DD" stroke="#E4B55B"/>
+    <rect x="757" y="728" width="80" height="24" rx="4" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="357" y="744" text-anchor="middle" fill="#B45309" font-size="11" font-weight="700">KV1</text>
+    <text x="797" y="744" text-anchor="middle" fill="#B45309" font-size="11" font-weight="700">KV2</text>
+    <text x="1110" y="672" fill="#B45309" font-size="18" font-weight="700">KV Cache：2 份</text>
+    <text x="1110" y="706" fill="#607086" font-size="16">效果接近 MHA</text>
+    <text x="1110" y="734" fill="#607086" font-size="16">效率接近 MQA</text>
+
+    <rect x="72" y="798" width="1296" height="58" rx="8" fill="#172033"/>
+    <text x="720" y="835" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">从 MHA → GQA → MQA：K/V 共享增强，KV Cache 变小，但表达自由度逐步降低</text>
+  </g>
+</svg>

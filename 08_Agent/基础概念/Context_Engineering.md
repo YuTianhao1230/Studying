@@ -65,6 +65,8 @@ Agent 不应该一次性读取所有资料，而应按需展开：
   -> 必要时读取全文
 ```
 
+![Context Engineering 信息筛选漏斗与渐进加载](assets/context-engineering-funnel.png)
+
 这和 Skill 的设计逻辑一致：入口要短，细节按需加载。
 
 ### Memory：跨步骤和跨会话的信息管理

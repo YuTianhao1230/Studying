@@ -6,6 +6,8 @@
 
 RLHF，Reinforcement Learning from Human Feedback，是用人类偏好训练奖励模型，再用强化学习优化语言模型，使模型输出更符合人类偏好。
 
+![RLHF 三阶段训练链路](assets/rlhf-three-stage-pipeline.png)
+
 ### 典型流程
 
 ```text

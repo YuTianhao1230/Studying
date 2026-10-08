@@ -41,6 +41,8 @@ image: H x W x C
   -> classification head
 ```
 
+![ViT 从图像到分类结果](assets/vit-pipeline.png)
+
 patch 数量：
 
 $$

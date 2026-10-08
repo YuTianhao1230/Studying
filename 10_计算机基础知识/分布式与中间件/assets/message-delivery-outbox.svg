@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">消息可靠投递与 Transactional Outbox</title>
+  <desc id="desc">展示生产者确认、Broker 持久化副本、消费者处理后确认组成至少一次链路，以及 Outbox 用本地事务解决数据库与消息的双写一致性。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker><marker id="back" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#7C3AED"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">消息不丢不是一个开关，而是生产、存储、消费三段共同保证</text>
+    <text x="72" y="101" fill="#607086" font-size="18">工程上通常选择至少一次投递，再让消费者用稳定业务 ID 实现幂等。</text>
+
+    <rect x="72" y="146" width="1296" height="342" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">At-least-once 可靠链路</text>
+    <g transform="translate(100 226)">
+      <rect width="238" height="130" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="119" y="36" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">生产者 Producer</text>
+      <text x="119" y="69" text-anchor="middle" fill="#42669B" font-size="14">等待 Broker ACK</text>
+      <text x="119" y="94" text-anchor="middle" fill="#42669B" font-size="14">超时 / 失败则有限重试</text>
+      <text x="119" y="117" text-anchor="middle" fill="#42669B" font-size="13">稳定 event_id</text>
+      <line x1="238" y1="65" x2="300" y2="65" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="300" width="288" height="130" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="444" y="36" text-anchor="middle" fill="#92400E" font-size="19" font-weight="700">Broker</text>
+      <text x="444" y="69" text-anchor="middle" fill="#805B28" font-size="14">持久化日志 + 足够副本</text>
+      <text x="444" y="94" text-anchor="middle" fill="#805B28" font-size="14">满足确认级别后返回成功</text>
+      <text x="444" y="117" text-anchor="middle" fill="#805B28" font-size="13">失败消息进入重试 / DLQ</text>
+      <line x1="588" y1="65" x2="650" y2="65" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="650" width="264" height="130" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="782" y="36" text-anchor="middle" fill="#0B5E57" font-size="19" font-weight="700">消费者 Consumer</text>
+      <text x="782" y="69" text-anchor="middle" fill="#356C67" font-size="14">先完成业务事务</text>
+      <text x="782" y="94" text-anchor="middle" fill="#356C67" font-size="14">再提交 offset / ACK</text>
+      <text x="782" y="117" text-anchor="middle" fill="#356C67" font-size="13">唯一约束 / 状态机幂等</text>
+      <line x1="914" y1="65" x2="976" y2="65" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="976" width="236" height="130" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="1094" y="36" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">业务结果</text>
+      <text x="1094" y="69" text-anchor="middle" fill="#6A4B93" font-size="14">一条事件只生效一次</text>
+      <text x="1094" y="94" text-anchor="middle" fill="#6A4B93" font-size="14">重复投递不重复扣款</text>
+      <text x="1094" y="117" text-anchor="middle" fill="#6A4B93" font-size="13">明确 exactly-once 边界</text>
+      <path d="M782 130 V172 H444 V130" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#back)"/>
+      <text x="613" y="194" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">处理成功但 ACK 丢失：Broker 重投，消费者幂等吸收重复</text>
+    </g>
+    <rect x="100" y="434" width="1240" height="34" rx="5" fill="#FEE2E2"/>
+    <text x="720" y="457" text-anchor="middle" fill="#B91C1C" font-size="14" font-weight="700">先 ACK 后处理可能丢消息；处理后 ACK 则可能重复，但可用幂等安全恢复。</text>
+
+    <text x="72" y="548" fill="#172033" font-size="22" font-weight="700">Transactional Outbox：把“业务数据 + 待发送事件”放进同一本地事务</text>
+    <rect x="72" y="578" width="1296" height="250" rx="8" fill="#172033"/>
+    <g transform="translate(104 632)">
+      <rect width="170" height="86" rx="7" fill="#E8F0FF"/>
+      <text x="85" y="32" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">业务请求</text>
+      <text x="85" y="58" text-anchor="middle" fill="#42669B" font-size="13">例如创建订单</text>
+      <line x1="170" y1="43" x2="220" y2="43" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="220" width="302" height="86" rx="7" fill="#FFF4DD"/>
+      <text x="371" y="29" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">一个数据库事务</text>
+      <text x="371" y="54" text-anchor="middle" fill="#805B28" font-size="13">写业务表 + 写 Outbox 事件表</text>
+      <text x="371" y="74" text-anchor="middle" fill="#805B28" font-size="12">一起提交或一起回滚</text>
+      <line x1="522" y1="43" x2="572" y2="43" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="572" width="246" height="86" rx="7" fill="#F1EAFE"/>
+      <text x="695" y="29" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">Outbox Publisher</text>
+      <text x="695" y="54" text-anchor="middle" fill="#6A4B93" font-size="13">扫描未发送事件并重试</text>
+      <text x="695" y="74" text-anchor="middle" fill="#6A4B93" font-size="12">成功后标记完成</text>
+      <line x1="818" y1="43" x2="868" y2="43" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="868" width="160" height="86" rx="7" fill="#CCFBF1"/>
+      <text x="948" y="32" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">Broker</text>
+      <text x="948" y="58" text-anchor="middle" fill="#356C67" font-size="13">可靠投递</text>
+      <line x1="1028" y1="43" x2="1078" y2="43" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="1078" width="134" height="86" rx="7" fill="#FFFFFF"/>
+      <text x="1145" y="32" text-anchor="middle" fill="#172033" font-size="16" font-weight="700">消费者</text>
+      <text x="1145" y="58" text-anchor="middle" fill="#607086" font-size="13">再次幂等</text>
+    </g>
+    <rect x="104" y="750" width="1232" height="46" rx="6" fill="#273449"/>
+    <text x="720" y="779" text-anchor="middle" fill="#FFFFFF" font-size="15">Outbox 消除“数据库已提交但消息未记录”的窗口；发布重试仍可能重复，所以 event_id 与消费幂等不可省。</text>
+    <text x="720" y="874" text-anchor="middle" fill="#607086" font-size="15">顺序性通常只保证到业务 key / 分区级；全局有序会显著牺牲吞吐与可用性。</text>
+  </g>
+</svg>

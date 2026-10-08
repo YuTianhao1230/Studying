@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">PPO 在线采样与裁剪更新</title>
+  <desc id="desc">展示 PPO 用旧策略采样并固定 log-prob 与优势，再用概率比和优势构造裁剪目标；裁剪抑制沿有利方向的过度更新，而不是硬性限制概率比。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">PPO：用近期 rollout 学习，但抑制单批数据上的过度更新</text>
+    <text x="72" y="101" fill="#607086" font-size="18">关键量：概率比 ρ = πθ(a|s) / πold(a|s)，以及在本批更新期间保持固定的优势 Â。</text>
+
+    <rect x="72" y="146" width="1296" height="298" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">On-policy 训练循环</text>
+    <g transform="translate(100 226)">
+      <rect width="214" height="108" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="107" y="36" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">① 冻结旧策略</text>
+      <text x="107" y="66" text-anchor="middle" fill="#6A4B93" font-size="14">πold 生成 rollout</text>
+      <text x="107" y="90" text-anchor="middle" fill="#6A4B93" font-size="13">保存 old log-prob</text>
+      <line x1="214" y1="54" x2="270" y2="54" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="270" width="214" height="108" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="377" y="36" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">② 评分与回报</text>
+      <text x="377" y="66" text-anchor="middle" fill="#805B28" font-size="14">环境 / Reward Model</text>
+      <text x="377" y="90" text-anchor="middle" fill="#805B28" font-size="13">得到 reward、return</text>
+      <line x1="484" y1="54" x2="540" y2="54" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="540" width="214" height="108" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="647" y="36" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">③ 构造优势 Â</text>
+      <text x="647" y="66" text-anchor="middle" fill="#356C67" font-size="14">Return - old Value</text>
+      <text x="647" y="90" text-anchor="middle" fill="#356C67" font-size="13">本批多个 epoch 固定</text>
+      <line x1="754" y1="54" x2="810" y2="54" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="810" width="214" height="108" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="917" y="36" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">④ 裁剪目标更新</text>
+      <text x="917" y="66" text-anchor="middle" fill="#42669B" font-size="14">多个 minibatch / epoch</text>
+      <text x="917" y="90" text-anchor="middle" fill="#42669B" font-size="13">只更新当前 Policy / Critic</text>
+      <path d="M1024 54 H1178 V160 H107 V126" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+      <text x="1132" y="183" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">刷新 πold，重新采样</text>
+    </g>
+    <rect x="100" y="383" width="1240" height="38" rx="5" fill="#E8EEF5"/>
+    <text x="720" y="408" text-anchor="middle" fill="#425066" font-size="15">不能无限复用旧 rollout：策略变化后，数据会逐渐偏离当前分布。</text>
+
+    <text x="72" y="500" fill="#172033" font-size="22" font-weight="700">PPO-Clip 的四种方向</text>
+    <rect x="72" y="528" width="1296" height="268" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="563" fill="#607086" font-size="15">以 ε = 0.2 为例：区间 [0.8, 1.2]；只在“继续朝有利方向走得太远”时让该样本的 surrogate 饱和。</text>
+
+    <g transform="translate(100 594)">
+      <rect width="286" height="154" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+      <text x="143" y="34" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Â &gt; 0，ρ &gt; 1.2</text>
+      <text x="143" y="65" text-anchor="middle" fill="#356C67" font-size="15">好动作概率已升太多</text>
+      <rect x="43" y="88" width="200" height="34" rx="5" fill="#CCFBF1"/>
+      <text x="143" y="111" text-anchor="middle" fill="#0B5E57" font-size="14" font-weight="700">停止额外奖励 ↑</text>
+      <text x="143" y="143" text-anchor="middle" fill="#607086" font-size="13">上界方向被 clip</text>
+
+      <rect x="310" width="286" height="154" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="453" y="34" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">Â &gt; 0，ρ &lt; 0.8</text>
+      <text x="453" y="65" text-anchor="middle" fill="#607086" font-size="15">好动作概率反而下降</text>
+      <rect x="353" y="88" width="200" height="34" rx="5" fill="#E8F0FF"/>
+      <text x="453" y="111" text-anchor="middle" fill="#1D4ED8" font-size="14" font-weight="700">保留纠正梯度 ↑</text>
+      <text x="453" y="143" text-anchor="middle" fill="#607086" font-size="13">不截断错误方向</text>
+
+      <rect x="620" width="286" height="154" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="763" y="34" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">Â &lt; 0，ρ &lt; 0.8</text>
+      <text x="763" y="65" text-anchor="middle" fill="#805B28" font-size="15">坏动作概率已降太多</text>
+      <rect x="663" y="88" width="200" height="34" rx="5" fill="#FFEDD5"/>
+      <text x="763" y="111" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">停止额外奖励 ↓</text>
+      <text x="763" y="143" text-anchor="middle" fill="#607086" font-size="13">下界方向被 clip</text>
+
+      <rect x="930" width="286" height="154" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="1073" y="34" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">Â &lt; 0，ρ &gt; 1.2</text>
+      <text x="1073" y="65" text-anchor="middle" fill="#607086" font-size="15">坏动作概率反而上升</text>
+      <rect x="973" y="88" width="200" height="34" rx="5" fill="#FEE2E2"/>
+      <text x="1073" y="111" text-anchor="middle" fill="#B91C1C" font-size="14" font-weight="700">保留纠正梯度 ↓</text>
+      <text x="1073" y="143" text-anchor="middle" fill="#607086" font-size="13">不截断错误方向</text>
+    </g>
+
+    <rect x="72" y="824" width="1296" height="48" rx="6" fill="#172033"/>
+    <text x="720" y="854" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">注意：clip 只让单样本 surrogate 局部饱和，不保证实际概率比或 KL 永远留在区间内。</text>
+  </g>
+</svg>

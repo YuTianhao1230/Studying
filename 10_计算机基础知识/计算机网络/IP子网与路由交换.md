@@ -6,6 +6,8 @@
 
 本文整理网络分层、IP 与 MAC、ARP、ICMP、子网划分、私有地址、NAT、交换、路由和跨网段通信过程。
 
+![跨网段转发与 NAT PAT](assets/cross-subnet-routing-nat.png)
+
 ### 网络分层
 
 OSI（Open Systems Interconnection，开放系统互连）参考模型把网络通信划分为物理层、数据链路层、网络层、传输层、会话层、表示层和应用层。工程实践通常使用更简化的 TCP/IP 四层模型：

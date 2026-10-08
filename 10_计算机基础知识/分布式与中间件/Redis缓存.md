@@ -6,6 +6,8 @@
 
 本文整理 Redis 的性能来源、数据结构、持久化、高可用、缓存一致性、缓存异常和分布式锁。
 
+![Redis 缓存异常与一致性](assets/redis-cache-failure-modes.png)
+
 ### Redis 为什么快
 
 Redis 快的主要原因：

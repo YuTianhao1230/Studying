@@ -59,6 +59,8 @@ $$
  
 • 每个位置的输出是所有位置Value的加权组合。
 
+![Self-Attention 完整计算流程](assets/self-attention-flow.png)
+
 ### **3. 多头注意力（Multi-Head Attention）**
 为增强模型对不同子空间信息的捕捉能力，自注意力通常扩展为**多头机制**：  
 1. **并行计算多个头**：将Q、K、V拆分为h组（h为头数），每组独立计算注意力。  
@@ -73,6 +75,8 @@ $$
 $$
 \operatorname{head}_i=\operatorname{Attention}(QW_i^Q,KW_i^K,VW_i^V)
 $$
+
+![Multi-Head Attention 张量流](assets/multi-head-attention.png)
 
 • $W^O\in\mathbb{R}^{h d_v\times d}$：输出投影矩阵。
 

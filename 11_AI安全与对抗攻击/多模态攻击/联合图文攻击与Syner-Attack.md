@@ -33,6 +33,8 @@ $$
 
 VGA 在图像攻击之后执行离散词替换。可见代码流程是先调用 `Image_Attack` 得到 `adv_imgs`，再调用 `img_guided_attack` 生成 `adv_txts`。
 
+![联合图文攻击先优化图像再进行视觉引导文本替换](assets/joint-image-text-attack.png)
+
 ### Syner-Attack 的表达框架
 
 可以按四层讲：

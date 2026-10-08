@@ -42,6 +42,8 @@ Decode 从第一个输出 token 开始，每次生成一个 token。
 - 输出越长，decode 总耗时越高。
 - 主要影响 TPOT 和整体延迟。
 
+![KV Cache、Prefill 与 Decode](assets/kv-cache-prefill-decode.png)
+
 ### KV Cache 是什么
 
 [Transformer](<../../02_大模型/基础架构/Transformer.md#transformer>) attention 中每层都会计算 Q、K、V。

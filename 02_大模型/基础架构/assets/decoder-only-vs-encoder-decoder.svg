@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Decoder-only 与 Encoder-Decoder 数据流对比</title>
+  <desc id="desc">Decoder-only 把输入输出放在同一因果序列，Encoder-Decoder 先双向编码源序列，再用 Cross-Attention 条件生成。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">Decoder-only vs Encoder-Decoder：续写一条序列，还是先读题再作答</text>
+    <text x="72" y="101" fill="#607086" font-size="18">两者都能缓存；本质差异是源序列如何编码，以及 Decoder 是否显式读取独立的 Encoder Memory。</text>
+
+    <rect x="72" y="148" width="616" height="566" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="172" width="180" height="36" rx="6" fill="#DBEAFE"/>
+    <text x="186" y="196" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">Decoder-only</text>
+    <text x="96" y="242" fill="#172033" font-size="20" font-weight="700">Prompt 和 Answer 拼成同一序列</text>
+    <g transform="translate(104 274)">
+      <rect x="0" y="0" width="108" height="54" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="116" y="0" width="108" height="54" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="232" y="0" width="108" height="54" rx="6" fill="#E8F0FF" stroke="#93B4F5"/>
+      <rect x="348" y="0" width="108" height="54" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <rect x="464" y="0" width="108" height="54" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="54" y="33" text-anchor="middle" fill="#1D4ED8" font-size="14" font-weight="700">Prompt 1</text>
+      <text x="170" y="33" text-anchor="middle" fill="#1D4ED8" font-size="14" font-weight="700">Prompt 2</text>
+      <text x="286" y="33" text-anchor="middle" fill="#1D4ED8" font-size="14" font-weight="700">Prompt 3</text>
+      <text x="402" y="33" text-anchor="middle" fill="#0F766E" font-size="14" font-weight="700">Answer 1</text>
+      <text x="518" y="33" text-anchor="middle" fill="#0F766E" font-size="14" font-weight="700">Answer 2</text>
+    </g>
+    <line x1="380" y1="328" x2="380" y2="382" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="150" y="402" width="460" height="124" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="380" y="440" text-anchor="middle" fill="#153E85" font-size="20" font-weight="700">同一套 Causal Decoder Blocks</text>
+    <text x="380" y="474" text-anchor="middle" fill="#355986" font-size="16">每个 token 只能读取自己与左侧位置</text>
+    <text x="380" y="502" text-anchor="middle" fill="#607086" font-size="14">理解和生成都由同一主干完成</text>
+    <line x1="380" y1="526" x2="380" y2="574" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="150" y="594" width="460" height="82" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="380" y="626" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Next-token Prediction</text>
+    <text x="380" y="654" text-anchor="middle" fill="#356C67" font-size="14">Prompt 与已生成 token 共用 Decoder KV Cache</text>
+
+    <rect x="752" y="148" width="616" height="566" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="776" y="172" width="210" height="36" rx="6" fill="#F1EAFE"/>
+    <text x="881" y="196" text-anchor="middle" fill="#6D28D9" font-size="17" font-weight="700">Encoder-Decoder</text>
+    <text x="776" y="242" fill="#172033" font-size="20" font-weight="700">源序列和目标序列显式分离</text>
+
+    <rect x="796" y="278" width="230" height="70" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="911" y="307" text-anchor="middle" fill="#153E85" font-size="17" font-weight="700">完整 Source Tokens</text>
+    <text x="911" y="332" text-anchor="middle" fill="#355986" font-size="14">可双向互相读取</text>
+    <line x1="911" y1="348" x2="911" y2="394" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="796" y="414" width="230" height="100" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="911" y="450" text-anchor="middle" fill="#1D4ED8" font-size="19" font-weight="700">Encoder</text>
+    <text x="911" y="481" text-anchor="middle" fill="#355986" font-size="14">生成固定 Encoder Memory</text>
+
+    <rect x="1092" y="278" width="230" height="70" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1207" y="307" text-anchor="middle" fill="#5720A3" font-size="17" font-weight="700">右移后的 Target</text>
+    <text x="1207" y="332" text-anchor="middle" fill="#6A4B93" font-size="14">目标端因果可见</text>
+    <line x1="1207" y1="348" x2="1207" y2="394" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1092" y="414" width="230" height="100" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1207" y="450" text-anchor="middle" fill="#5720A3" font-size="19" font-weight="700">Decoder</text>
+    <text x="1207" y="481" text-anchor="middle" fill="#6A4B93" font-size="14">Causal Self-Attention</text>
+    <path d="M1026 464 H1070" fill="none" stroke="#B45309" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="1048" y="445" text-anchor="middle" fill="#B45309" font-size="13">Cross</text>
+    <text x="1048" y="490" text-anchor="middle" fill="#B45309" font-size="13">Attention</text>
+
+    <line x1="1207" y1="514" x2="1207" y2="574" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="796" y="594" width="526" height="82" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1059" y="626" text-anchor="middle" fill="#B45309" font-size="18" font-weight="700">条件生成</text>
+    <text x="1059" y="654" text-anchor="middle" fill="#805B28" font-size="14">缓存 Decoder 前缀，并可预计算源端 Cross-Attention K/V</text>
+
+    <rect x="72" y="754" width="1296" height="102" rx="8" fill="#172033"/>
+    <text x="268" y="791" text-anchor="middle" fill="#93B4F5" font-size="17" font-weight="700">Decoder-only</text>
+    <text x="500" y="791" text-anchor="middle" fill="#D7DFEA" font-size="15">开放生成、对话、上下文学习</text>
+    <line x1="676" y1="778" x2="676" y2="830" stroke="#526277" stroke-width="2"/>
+    <text x="870" y="791" text-anchor="middle" fill="#C4B5FD" font-size="17" font-weight="700">Encoder-Decoder</text>
+    <text x="1125" y="791" text-anchor="middle" fill="#D7DFEA" font-size="15">翻译、摘要、结构化转换</text>
+    <text x="720" y="833" text-anchor="middle" fill="#FFFFFF" font-size="15">选择取决于任务边界、参数分配、输入输出长度和部署实现，不存在所有场景的绝对赢家</text>
+  </g>
+</svg>

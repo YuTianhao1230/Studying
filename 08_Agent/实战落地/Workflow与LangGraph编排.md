@@ -82,6 +82,8 @@ validate_request
   -> persist_and_publish
 ```
 
+![LangGraph 中 State、并行节点、Reducer 与 Checkpoint 的协作](assets/langgraph-state-flow.png)
+
 `match_components` 失败时阻断属性检测，因为没有可靠对象就没有可靠差异；单个属性检测失败时可以按策略返回 `PARTIAL`。
 
 ### Edge 与路由

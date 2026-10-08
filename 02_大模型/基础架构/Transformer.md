@@ -31,6 +31,8 @@ Transformer最初是为机器翻译任务设计的，所以它是一个经典的
 
 Encoder和Decoder都不是单一的组件，而是由N个相同的层（Layer）堆叠而成（在原论文中N=6）。
 
+![Transformer Encoder-Decoder 架构](assets/transformer-encoder-decoder.png)
+
 #### 关键组件详解
 
 **a. 输入部分：Input Embedding & Positional Encoding**

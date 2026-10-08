@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920" role="img" aria-labelledby="title desc">
+  <title id="title">vLLM 服务架构与 PagedAttention</title>
+  <desc id="desc">请求通过 API 进入调度器，Continuous Batching 动态组批，模型执行器计算，KV Cache Manager 用逻辑块到物理块映射管理分页缓存。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="920" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">vLLM：调度动态请求，分页管理 KV Cache</text>
+    <text x="72" y="101" fill="#607086" font-size="18">Continuous Batching 解决计算槽位利用率，PagedAttention 解决缓存分配与碎片。</text>
+
+    <rect x="72" y="150" width="1296" height="250" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="100" y="210" width="188" height="112" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="194" y="246" text-anchor="middle" fill="#153E85" font-size="19" font-weight="700">API / Offline</text>
+    <text x="194" y="278" text-anchor="middle" fill="#355986" font-size="15">OpenAI-compatible</text>
+    <text x="194" y="302" text-anchor="middle" fill="#607086" font-size="14">请求进入、流式输出</text>
+    <line x1="288" y1="266" x2="372" y2="266" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="392" y="188" width="246" height="156" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="515" y="226" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">Scheduler</text>
+    <text x="515" y="258" text-anchor="middle" fill="#6A4B93" font-size="15">排队 / 准入 / token budget</text>
+    <rect x="422" y="280" width="186" height="42" rx="6" fill="#FFFFFF" stroke="#B69AE8"/>
+    <text x="515" y="307" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">Continuous Batching</text>
+    <line x1="638" y1="266" x2="722" y2="266" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="742" y="188" width="246" height="156" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="865" y="226" text-anchor="middle" fill="#0B5E57" font-size="20" font-weight="700">Model Executor</text>
+    <text x="865" y="258" text-anchor="middle" fill="#356C67" font-size="15">Prefill / Decode</text>
+    <text x="865" y="288" text-anchor="middle" fill="#607086" font-size="14">单卡或 Tensor Parallel</text>
+    <text x="865" y="316" text-anchor="middle" fill="#607086" font-size="14">执行模型内核</text>
+    <line x1="988" y1="266" x2="1072" y2="266" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="1092" y="210" width="248" height="112" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1216" y="246" text-anchor="middle" fill="#B45309" font-size="19" font-weight="700">Sampling + Output</text>
+    <text x="1216" y="278" text-anchor="middle" fill="#805B28" font-size="15">采样新 token</text>
+    <text x="1216" y="302" text-anchor="middle" fill="#607086" font-size="14">完成请求退出 batch</text>
+
+    <path d="M865 344 V442" fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="72" y="462" width="1296" height="352" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="96" y="486" width="204" height="34" rx="6" fill="#CCFBF1"/>
+    <text x="198" y="509" text-anchor="middle" fill="#0F766E" font-size="16" font-weight="700">KV Cache Manager</text>
+    <text x="322" y="509" fill="#172033" font-size="20" font-weight="700">PagedAttention：逻辑连续，物理可离散</text>
+
+    <text x="112" y="568" fill="#355986" font-size="17" font-weight="700">请求 A 的逻辑块</text>
+    <rect x="112" y="594" width="92" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+    <rect x="216" y="594" width="92" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+    <rect x="320" y="594" width="92" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+    <text x="158" y="630" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">A0</text>
+    <text x="262" y="630" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">A1</text>
+    <text x="366" y="630" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">A2</text>
+
+    <text x="112" y="704" fill="#356C67" font-size="17" font-weight="700">请求 B 的逻辑块</text>
+    <rect x="112" y="730" width="92" height="58" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <rect x="216" y="730" width="92" height="58" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+    <text x="158" y="766" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">B0</text>
+    <text x="262" y="766" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">B1</text>
+
+    <rect x="516" y="552" width="132" height="204" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="582" y="588" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">Block Table</text>
+    <text x="582" y="626" text-anchor="middle" fill="#6A4B93" font-size="14">A: 1, 4, 7</text>
+    <text x="582" y="656" text-anchor="middle" fill="#6A4B93" font-size="14">B: 2, 6</text>
+    <text x="582" y="704" text-anchor="middle" fill="#607086" font-size="13">逻辑块</text>
+    <text x="582" y="729" text-anchor="middle" fill="#607086" font-size="13">→ 物理块</text>
+    <line x1="412" y1="623" x2="496" y2="623" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <line x1="308" y1="759" x2="496" y2="700" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <line x1="648" y1="654" x2="730" y2="654" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <text x="750" y="546" fill="#172033" font-size="17" font-weight="700">GPU 物理 KV Blocks</text>
+    <g transform="translate(750 570)">
+      <rect x="0" y="0" width="112" height="70" rx="6" fill="#EEF2F6" stroke="#CBD5E1"/>
+      <rect x="124" y="0" width="112" height="70" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+      <rect x="248" y="0" width="112" height="70" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <rect x="372" y="0" width="112" height="70" rx="6" fill="#EEF2F6" stroke="#CBD5E1"/>
+      <rect x="0" y="82" width="112" height="70" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+      <rect x="124" y="82" width="112" height="70" rx="6" fill="#EEF2F6" stroke="#CBD5E1"/>
+      <rect x="248" y="82" width="112" height="70" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <rect x="372" y="82" width="112" height="70" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+      <g font-size="14" font-weight="700" text-anchor="middle">
+        <text x="56" y="41" fill="#64748B">free</text><text x="180" y="41" fill="#1D4ED8">A0</text>
+        <text x="304" y="41" fill="#0F766E">B0</text><text x="428" y="41" fill="#64748B">free</text>
+        <text x="56" y="123" fill="#1D4ED8">A1</text><text x="180" y="123" fill="#64748B">free</text>
+        <text x="304" y="123" fill="#0F766E">B1</text><text x="428" y="123" fill="#1D4ED8">A2</text>
+      </g>
+    </g>
+    <text x="992" y="760" text-anchor="middle" fill="#607086" font-size="15">同一请求的块无需物理连续，按需分配并可及时回收</text>
+
+    <rect x="72" y="850" width="1296" height="40" rx="8" fill="#172033"/>
+    <text x="720" y="876" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">vLLM 的价值是服务效率，不会改变模型参数，也不会直接提升模型质量</text>
+  </g>
+</svg>

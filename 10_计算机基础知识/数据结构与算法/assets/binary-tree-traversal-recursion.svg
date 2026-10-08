@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">二叉树遍历与递归返回值</title>
+  <desc id="desc">用同一棵树对比前序、中序、后序和层序遍历，并说明树形递归中返回给父节点的单支状态与当前节点更新的全局答案。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">二叉树：遍历差别是“何时访问根”，递归关键是“向父节点返回什么”</text>
+    <text x="72" y="101" fill="#607086" font-size="18">先定义子树函数语义，再决定前序处理、后序汇总或层序队列。</text>
+
+    <rect x="72" y="146" width="628" height="432" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">同一棵树的四种遍历</text>
+    <g transform="translate(190 216)">
+      <line x1="120" y1="52" x2="52" y2="122" stroke="#AAB6C5" stroke-width="3"/><line x1="120" y1="52" x2="188" y2="122" stroke="#AAB6C5" stroke-width="3"/>
+      <line x1="52" y1="122" x2="12" y2="192" stroke="#AAB6C5" stroke-width="3"/><line x1="52" y1="122" x2="92" y2="192" stroke="#AAB6C5" stroke-width="3"/>
+      <line x1="188" y1="122" x2="148" y2="192" stroke="#AAB6C5" stroke-width="3"/><line x1="188" y1="122" x2="228" y2="192" stroke="#AAB6C5" stroke-width="3"/>
+      <g font-size="18" font-weight="700" text-anchor="middle">
+        <circle cx="120" cy="42" r="30" fill="#172033"/><text x="120" y="49" fill="#FFFFFF">A</text>
+        <circle cx="52" cy="122" r="27" fill="#DBEAFE"/><text x="52" y="129" fill="#1D4ED8">B</text>
+        <circle cx="188" cy="122" r="27" fill="#CCFBF1"/><text x="188" y="129" fill="#0F766E">C</text>
+        <circle cx="12" cy="202" r="25" fill="#FFF4DD"/><text x="12" y="209" fill="#92400E">D</text>
+        <circle cx="92" cy="202" r="25" fill="#F1EAFE"/><text x="92" y="209" fill="#5720A3">E</text>
+        <circle cx="148" cy="202" r="25" fill="#FFE4E6"/><text x="148" y="209" fill="#BE123C">F</text>
+        <circle cx="228" cy="202" r="25" fill="#E8EEF5"/><text x="228" y="209" fill="#425066">G</text>
+      </g>
+    </g>
+    <g transform="translate(100 472)" font-size="14" font-weight="700">
+      <rect width="270" height="38" rx="5" fill="#DBEAFE"/><text x="14" y="25" fill="#1D4ED8">前序 根左右：A B D E C F G</text>
+      <rect x="286" width="270" height="38" rx="5" fill="#CCFBF1"/><text x="300" y="25" fill="#0F766E">中序 左根右：D B E A F C G</text>
+      <rect y="50" width="270" height="38" rx="5" fill="#FFF4DD"/><text x="14" y="75" fill="#92400E">后序 左右根：D E B F G C A</text>
+      <rect x="286" y="50" width="270" height="38" rx="5" fill="#F1EAFE"/><text x="300" y="75" fill="#5720A3">层序 按层：A B C D E F G</text>
+    </g>
+
+    <rect x="740" y="146" width="628" height="432" rx="8" fill="#172033"/>
+    <text x="768" y="184" fill="#FFFFFF" font-size="21" font-weight="700">树形递归：返回值与全局答案要分开</text>
+    <g transform="translate(768 224)">
+      <rect width="572" height="70" rx="7" fill="#E8F0FF"/>
+      <text x="286" y="29" text-anchor="middle" fill="#1D4ED8" font-size="16" font-weight="700">1. 用一句话定义函数：solve(node) 返回什么？</text>
+      <text x="286" y="53" text-anchor="middle" fill="#42669B" font-size="13">高度 · 节点数 · 是否满足条件 · 单支最优贡献</text>
+      <line x1="286" y1="70" x2="286" y2="102" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect y="102" width="572" height="70" rx="7" fill="#CCFBF1"/>
+      <text x="286" y="131" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">2. 递归获得 left 与 right</text>
+      <text x="286" y="155" text-anchor="middle" fill="#356C67" font-size="13">空树返回值必须与状态定义一致</text>
+      <line x1="286" y1="172" x2="286" y2="204" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect y="204" width="572" height="106" rx="7" fill="#FFF4DD"/>
+      <text x="286" y="233" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">3. 当前节点组合结果</text>
+      <text x="286" y="261" text-anchor="middle" fill="#805B28" font-size="13">返回父节点：只能继续一条分支</text>
+      <text x="286" y="285" text-anchor="middle" fill="#805B28" font-size="13">更新全局答案：可同时使用左右两支</text>
+    </g>
+    <text x="768" y="550" fill="#FDE68A" font-size="14">直径例：return max(left, right)+1；answer = max(answer, left+right)。</text>
+
+    <text x="72" y="636" fill="#172033" font-size="22" font-weight="700">看到题目特征，快速选遍历方式</text>
+    <g transform="translate(72 670)">
+      <rect width="300" height="138" rx="8" fill="#DBEAFE" stroke="#93B4F5"/>
+      <text x="150" y="40" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">先处理父节点</text>
+      <text x="150" y="74" text-anchor="middle" fill="#42669B" font-size="15">前序 DFS</text>
+      <text x="150" y="105" text-anchor="middle" fill="#607086" font-size="13">复制树、路径前缀、序列化</text>
+      <rect x="332" width="300" height="138" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="482" y="40" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">BST 从小到大</text>
+      <text x="482" y="74" text-anchor="middle" fill="#356C67" font-size="15">中序 DFS</text>
+      <text x="482" y="105" text-anchor="middle" fill="#607086" font-size="13">验证有序、找第 k 小</text>
+      <rect x="664" width="300" height="138" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="814" y="40" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">先汇总孩子</text>
+      <text x="814" y="74" text-anchor="middle" fill="#805B28" font-size="15">后序 DFS</text>
+      <text x="814" y="105" text-anchor="middle" fill="#607086" font-size="13">高度、平衡、直径、树形 DP</text>
+      <rect x="996" width="300" height="138" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="1146" y="40" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">按距离根的层数</text>
+      <text x="1146" y="74" text-anchor="middle" fill="#6A4B93" font-size="15">层序 BFS</text>
+      <text x="1146" y="105" text-anchor="middle" fill="#607086" font-size="13">最小深度、右视图、每层统计</text>
+    </g>
+    <text x="720" y="864" text-anchor="middle" fill="#607086" font-size="15">复杂度通常是 O(n)；DFS 空间看树高 h，BFS 空间看最大宽度 w。</text>
+  </g>
+</svg>

@@ -6,6 +6,8 @@
 
 LoRA（Low-Rank Adaptation，低秩适配）是一种参数高效微调方法：冻结预训练模型的全部权重，只在特定层旁注入一对低秩矩阵作为可训练旁路，用极少的参数量适配新任务，从而大幅降低训练、存储和部署成本。
 
+![LoRA 低秩旁路与权重合并](assets/lora-low-rank-adapter.png)
+
 ### 什么是 LoRA？
 
 **LoRA**，全称 **Low-Rank Adaptation（低秩适配）**，是一种 **参数高效微调（[PEFT](<PEFT 参数高效微调.md#peft-参数高效微调>)）** 技术。

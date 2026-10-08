@@ -30,6 +30,8 @@ SubAgent 的思路是把任务拆给更小、更专注的执行单元。
   -> 输出最终答案
 ```
 
+![主 Agent 调度多个 Worker 并统一合并验证](assets/multi-agent-orchestration.png)
+
 适合：
 
 - 多文件代码审查。

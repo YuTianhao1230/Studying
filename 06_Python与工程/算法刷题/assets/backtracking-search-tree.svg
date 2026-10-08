@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">回溯搜索树与剪枝</title>
+  <desc id="desc">用全排列展示选择、递归、撤销三步以及 path 和 used 状态恢复，并展示剪枝如何提前停止无效分支。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">回溯：在决策树上“选择 → 递归 → 撤销”，剪掉不可能成功的分支</text>
+    <text x="72" y="101" fill="#607086" font-size="18">path 记录当前路径，choices 决定下一步候选；返回上一层时必须把状态恢复原样。</text>
+
+    <rect x="72" y="146" width="850" height="598" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">全排列 [1, 2, 3] 的搜索树</text>
+    <g stroke="#AAB6C5" stroke-width="2.5" fill="none">
+      <path d="M470 238 L220 330M470 238 L470 330M470 238 L720 330"/>
+      <path d="M220 374 L150 452M220 374 L290 452M470 374 L400 452M470 374 L540 452M720 374 L650 452M720 374 L790 452"/>
+      <path d="M150 496 L150 566M290 496 L290 566M400 496 L400 566M540 496 L540 566M650 496 L650 566M790 496 L790 566"/>
+    </g>
+    <g font-size="15" font-weight="700" text-anchor="middle">
+      <rect x="395" y="206" width="150" height="64" rx="8" fill="#172033"/><text x="470" y="244" fill="#FFFFFF">path = []</text>
+      <rect x="154" y="330" width="132" height="56" rx="7" fill="#DBEAFE"/><text x="220" y="364" fill="#1D4ED8">[1]</text>
+      <rect x="404" y="330" width="132" height="56" rx="7" fill="#CCFBF1"/><text x="470" y="364" fill="#0F766E">[2]</text>
+      <rect x="654" y="330" width="132" height="56" rx="7" fill="#FFF4DD"/><text x="720" y="364" fill="#92400E">[3]</text>
+      <rect x="94" y="452" width="112" height="56" rx="7" fill="#E8F0FF"/><text x="150" y="486" fill="#1D4ED8">[1,2]</text>
+      <rect x="234" y="452" width="112" height="56" rx="7" fill="#E8F0FF"/><text x="290" y="486" fill="#1D4ED8">[1,3]</text>
+      <rect x="344" y="452" width="112" height="56" rx="7" fill="#E7F8F4"/><text x="400" y="486" fill="#0F766E">[2,1]</text>
+      <rect x="484" y="452" width="112" height="56" rx="7" fill="#E7F8F4"/><text x="540" y="486" fill="#0F766E">[2,3]</text>
+      <rect x="594" y="452" width="112" height="56" rx="7" fill="#FFEDD5"/><text x="650" y="486" fill="#92400E">[3,1]</text>
+      <rect x="734" y="452" width="112" height="56" rx="7" fill="#FFEDD5"/><text x="790" y="486" fill="#92400E">[3,2]</text>
+      <g fill="#F1EAFE" stroke="#B69AE8">
+        <rect x="94" y="566" width="112" height="48" rx="6"/><rect x="234" y="566" width="112" height="48" rx="6"/>
+        <rect x="344" y="566" width="112" height="48" rx="6"/><rect x="484" y="566" width="112" height="48" rx="6"/>
+        <rect x="594" y="566" width="112" height="48" rx="6"/><rect x="734" y="566" width="112" height="48" rx="6"/>
+      </g>
+      <text x="150" y="596" fill="#5720A3">[1,2,3]</text><text x="290" y="596" fill="#5720A3">[1,3,2]</text>
+      <text x="400" y="596" fill="#5720A3">[2,1,3]</text><text x="540" y="596" fill="#5720A3">[2,3,1]</text>
+      <text x="650" y="596" fill="#5720A3">[3,1,2]</text><text x="790" y="596" fill="#5720A3">[3,2,1]</text>
+    </g>
+    <rect x="100" y="654" width="794" height="62" rx="6" fill="#E8EEF5"/>
+    <text x="497" y="680" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">返回上一层：path.pop() + used[i] = False</text>
+    <text x="497" y="702" text-anchor="middle" fill="#607086" font-size="13">若不撤销，兄弟分支会继承错误状态</text>
+
+    <rect x="962" y="146" width="406" height="598" rx="8" fill="#172033"/>
+    <text x="990" y="184" fill="#FFFFFF" font-size="21" font-weight="700">每一层的固定模板</text>
+    <g transform="translate(990 226)">
+      <rect width="350" height="74" rx="7" fill="#E8F0FF"/>
+      <text x="175" y="30" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">① Choose</text>
+      <text x="175" y="54" text-anchor="middle" fill="#42669B" font-size="13">path.append(choice)，标记 used</text>
+      <line x1="175" y1="74" x2="175" y2="110" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect y="110" width="350" height="74" rx="7" fill="#CCFBF1"/>
+      <text x="175" y="140" text-anchor="middle" fill="#0B5E57" font-size="17" font-weight="700">② Explore</text>
+      <text x="175" y="164" text-anchor="middle" fill="#356C67" font-size="13">递归进入下一层决策</text>
+      <line x1="175" y1="184" x2="175" y2="220" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect y="220" width="350" height="74" rx="7" fill="#FFF4DD"/>
+      <text x="175" y="250" text-anchor="middle" fill="#92400E" font-size="17" font-weight="700">③ Un-choose</text>
+      <text x="175" y="274" text-anchor="middle" fill="#805B28" font-size="13">恢复 path 与 used</text>
+      <rect y="332" width="350" height="96" rx="7" fill="#FEE2E2"/>
+      <text x="175" y="363" text-anchor="middle" fill="#B91C1C" font-size="17" font-weight="700">Prune 剪枝</text>
+      <text x="175" y="390" text-anchor="middle" fill="#7F1D1D" font-size="13">当前路径已违反约束</text>
+      <text x="175" y="412" text-anchor="middle" fill="#7F1D1D" font-size="13">或剩余选择不可能完成目标</text>
+      <text x="0" y="474" fill="#FDE68A" font-size="14">复杂度来自分支数 × 深度，通常仍是指数级。</text>
+    </g>
+
+    <rect x="72" y="782" width="1296" height="70" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="811" fill="#172033" font-size="16" font-weight="700">状态三问：</text>
+    <text x="226" y="811" fill="#1D4ED8" font-size="15">path 已经选了什么？</text>
+    <text x="502" y="811" fill="#0F766E" font-size="15">choices 下一步还能选什么？</text>
+    <text x="840" y="811" fill="#92400E" font-size="15">end condition 何时得到完整解？</text>
+    <text x="100" y="838" fill="#607086" font-size="14">去重通常需要排序与同层跳过重复候选；不要把“路径中已使用”和“同层重复”混为一谈。</text>
+  </g>
+</svg>

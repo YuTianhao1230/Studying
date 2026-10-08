@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">进程线程协程的资源与调度关系</title>
+  <desc id="desc">展示进程拥有独立地址空间，线程共享进程资源但有独立执行上下文，协程由用户态运行时在线程内调度，并补充进程状态转换。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">进程、线程、协程：隔离边界与调度层级不同</text>
+    <text x="72" y="101" fill="#607086" font-size="18">越靠近用户态，切换通常越轻；但隔离更弱，也不会凭空获得多核并行。</text>
+
+    <rect x="72" y="146" width="838" height="446" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">资源嵌套关系</text>
+    <rect x="100" y="216" width="782" height="344" rx="8" fill="#E8F0FF" stroke="#93B4F5" stroke-width="2"/>
+    <text x="126" y="250" fill="#1D4ED8" font-size="19" font-weight="700">进程 Process：资源分配与隔离边界</text>
+    <text x="126" y="278" fill="#42669B" font-size="14">独立地址空间 · 页表 · 文件描述符表 · 堆 · 全局变量</text>
+
+    <rect x="126" y="304" width="350" height="224" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="301" y="338" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">线程 Thread 1</text>
+    <text x="301" y="365" text-anchor="middle" fill="#356C67" font-size="14">OS 调度单位</text>
+    <rect x="150" y="388" width="302" height="42" rx="5" fill="#FFFFFF"/>
+    <text x="301" y="415" text-anchor="middle" fill="#607086" font-size="13">独立：栈 · 寄存器 · 程序计数器</text>
+    <g transform="translate(150 448)">
+      <rect width="90" height="54" rx="6" fill="#F1EAFE"/><rect x="106" width="90" height="54" rx="6" fill="#F1EAFE"/><rect x="212" width="90" height="54" rx="6" fill="#F1EAFE"/>
+      <text x="45" y="33" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">协程 A</text>
+      <text x="151" y="33" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">协程 B</text>
+      <text x="257" y="33" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">协程 C</text>
+    </g>
+    <text x="301" y="519" text-anchor="middle" fill="#6A4B93" font-size="12">运行时在 await / yield 点切换</text>
+
+    <rect x="506" y="304" width="350" height="224" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="681" y="338" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">线程 Thread 2</text>
+    <text x="681" y="365" text-anchor="middle" fill="#805B28" font-size="14">与 Thread 1 共享进程地址空间</text>
+    <rect x="530" y="388" width="302" height="42" rx="5" fill="#FFFFFF"/>
+    <text x="681" y="415" text-anchor="middle" fill="#607086" font-size="13">独立：栈 · 寄存器 · 程序计数器</text>
+    <rect x="530" y="448" width="302" height="54" rx="6" fill="#FFEDD5"/>
+    <text x="681" y="470" text-anchor="middle" fill="#92400E" font-size="13" font-weight="700">可在另一个 CPU 核心运行</text>
+    <text x="681" y="490" text-anchor="middle" fill="#805B28" font-size="12">共享数据必须同步</text>
+
+    <rect x="950" y="146" width="418" height="446" rx="8" fill="#172033"/>
+    <text x="978" y="184" fill="#FFFFFF" font-size="21" font-weight="700">切换成本与适用场景</text>
+    <g transform="translate(978 218)">
+      <rect width="362" height="84" rx="6" fill="#E8F0FF"/>
+      <text x="24" y="31" fill="#1D4ED8" font-size="17" font-weight="700">进程：高</text>
+      <text x="24" y="57" fill="#42669B" font-size="14">切页表，影响 TLB / Cache；适合强隔离</text>
+      <rect y="102" width="362" height="84" rx="6" fill="#CCFBF1"/>
+      <text x="24" y="133" fill="#0B5E57" font-size="17" font-weight="700">线程：中</text>
+      <text x="24" y="159" fill="#356C67" font-size="14">内核调度，共享地址空间；适合并发计算</text>
+      <rect y="204" width="362" height="84" rx="6" fill="#F1EAFE"/>
+      <text x="24" y="235" fill="#5720A3" font-size="17" font-weight="700">协程：低</text>
+      <text x="24" y="261" fill="#6A4B93" font-size="14">用户态调度；适合大量 IO 等待</text>
+      <text x="0" y="326" fill="#FDE68A" font-size="14">阻塞 IO 或长 CPU 计算会卡住所在事件循环线程。</text>
+    </g>
+
+    <text x="72" y="646" fill="#172033" font-size="22" font-weight="700">进程状态转换：阻塞不能直接进入运行</text>
+    <rect x="72" y="674" width="1296" height="170" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <g transform="translate(104 724)">
+      <rect width="146" height="66" rx="8" fill="#E8EEF5"/><text x="73" y="41" text-anchor="middle" fill="#172033" font-size="17" font-weight="700">创建 New</text>
+      <line x1="146" y1="33" x2="200" y2="33" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="200" width="146" height="66" rx="8" fill="#DBEAFE"/><text x="273" y="41" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="700">就绪 Ready</text>
+      <line x1="346" y1="24" x2="408" y2="24" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="377" y="13" text-anchor="middle" fill="#0F766E" font-size="12">调度</text>
+      <rect x="408" width="146" height="66" rx="8" fill="#CCFBF1"/><text x="481" y="41" text-anchor="middle" fill="#0B5E57" font-size="17" font-weight="700">运行 Running</text>
+      <path d="M408 54 H346" stroke="#D97706" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="377" y="82" text-anchor="middle" fill="#B45309" font-size="12">抢占 / 时间片</text>
+      <line x1="554" y1="33" x2="616" y2="33" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="616" width="146" height="66" rx="8" fill="#FFF4DD"/><text x="689" y="41" text-anchor="middle" fill="#92400E" font-size="17" font-weight="700">阻塞 Blocked</text>
+      <path d="M689 66 V104 H273 V66" fill="none" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrow)"/>
+      <text x="481" y="125" text-anchor="middle" fill="#5720A3" font-size="13">IO / 事件完成后回到 Ready，等待再次调度</text>
+      <line x1="554" y1="16" x2="824" y2="16" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="824" y="-17" width="170" height="66" rx="8" fill="#FEE2E2"/><text x="909" y="24" text-anchor="middle" fill="#B91C1C" font-size="17" font-weight="700">终止 Terminated</text>
+      <text x="673" y="10" text-anchor="middle" fill="#607086" font-size="12">exit</text>
+    </g>
+  </g>
+</svg>

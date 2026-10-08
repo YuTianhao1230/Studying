@@ -49,6 +49,8 @@ Agent 更像目标驱动的执行闭环：
 Observe -> Plan -> Act -> Observe -> Reflect -> ...
 ```
 
+![Agent 观察、规划、行动、反思与验证闭环](assets/agent-loop.png)
+
 也常称为 Thought-Action-Observation 或 ReAct Loop。一次循环至少回答：
 
 1. 当前已知事实和未解决目标是什么。

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Redis 缓存异常与一致性</title>
+  <desc id="desc">对比缓存穿透、击穿和雪崩的请求形态与治理方式，并展示 Cache Aside 先更新数据库再删除缓存及其补偿机制。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">Redis 缓存故障：先判断“无效请求、单点热点，还是大面积失效”</text>
+    <text x="72" y="101" fill="#607086" font-size="18">三种故障都会把压力推向数据库，但触发范围和治理手段不同。</text>
+
+    <g transform="translate(72 146)">
+      <rect width="400" height="344" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="400" height="64" rx="8" fill="#F1EAFE"/><path d="M0 56H400V64H0Z" fill="#F1EAFE"/>
+      <text x="24" y="40" fill="#5720A3" font-size="21" font-weight="700">穿透：数据根本不存在</text>
+      <g transform="translate(24 96)">
+        <rect width="104" height="54" rx="6" fill="#E8EEF5"/><text x="52" y="33" text-anchor="middle" fill="#172033" font-size="14" font-weight="700">大量非法 Key</text>
+        <line x1="104" y1="27" x2="144" y2="27" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="144" width="92" height="54" rx="6" fill="#FEE2E2"/><text x="190" y="33" text-anchor="middle" fill="#B91C1C" font-size="14" font-weight="700">Cache Miss</text>
+        <line x1="236" y1="27" x2="276" y2="27" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="276" width="76" height="54" rx="6" fill="#FFF4DD"/><text x="314" y="33" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">DB Miss</text>
+      </g>
+      <text x="24" y="198" fill="#607086" font-size="15">每次都绕过缓存命中，持续打到数据库。</text>
+      <rect x="24" y="224" width="352" height="82" rx="6" fill="#EDE9FE"/>
+      <text x="200" y="253" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">参数校验 · 缓存空值 · 布隆过滤器</text>
+      <text x="200" y="280" text-anchor="middle" fill="#6A4B93" font-size="13">目标：在数据库之前拦住“不存在”</text>
+
+      <rect x="424" width="400" height="344" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="424" width="400" height="64" rx="8" fill="#FFF4DD"/><path d="M424 56H824V64H424Z" fill="#FFF4DD"/>
+      <text x="448" y="40" fill="#92400E" font-size="21" font-weight="700">击穿：单个热点 Key 失效</text>
+      <g transform="translate(448 96)">
+        <g fill="#FFEDD5"><circle cx="24" cy="27" r="18"/><circle cx="72" cy="27" r="18"/><circle cx="120" cy="27" r="18"/></g>
+        <text x="72" y="74" text-anchor="middle" fill="#805B28" font-size="13">并发请求</text>
+        <line x1="142" y1="27" x2="182" y2="27" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="182" width="86" height="54" rx="6" fill="#FEE2E2"/><text x="225" y="33" text-anchor="middle" fill="#B91C1C" font-size="14" font-weight="700">热点过期</text>
+        <line x1="268" y1="27" x2="308" y2="27" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="308" width="44" height="54" rx="6" fill="#FFF4DD"/><text x="330" y="33" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">DB</text>
+      </g>
+      <text x="448" y="198" fill="#607086" font-size="15">瞬间并发集中到同一份热点数据。</text>
+      <rect x="448" y="224" width="352" height="82" rx="6" fill="#FEF3C7"/>
+      <text x="624" y="253" text-anchor="middle" fill="#92400E" font-size="15" font-weight="700">互斥重建 · 逻辑过期 · 热点不过期</text>
+      <text x="624" y="280" text-anchor="middle" fill="#805B28" font-size="13">目标：同一时刻只允许少量请求重建</text>
+
+      <rect x="848" width="448" height="344" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="848" width="448" height="64" rx="8" fill="#FEE2E2"/><path d="M848 56H1296V64H848Z" fill="#FEE2E2"/>
+      <text x="872" y="40" fill="#B91C1C" font-size="21" font-weight="700">雪崩：大量 Key 同时失效 / Redis 故障</text>
+      <g transform="translate(872 96)">
+        <g fill="#FEE2E2" stroke="#F2A7A7"><rect width="62" height="54" rx="5"/><rect x="74" width="62" height="54" rx="5"/><rect x="148" width="62" height="54" rx="5"/><rect x="222" width="62" height="54" rx="5"/></g>
+        <text x="31" y="33" text-anchor="middle" fill="#B91C1C" font-size="13">K1</text><text x="105" y="33" text-anchor="middle" fill="#B91C1C" font-size="13">K2</text><text x="179" y="33" text-anchor="middle" fill="#B91C1C" font-size="13">K3</text><text x="253" y="33" text-anchor="middle" fill="#B91C1C" font-size="13">Kn</text>
+        <line x1="294" y1="27" x2="344" y2="27" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="344" width="56" height="54" rx="6" fill="#FFF4DD"/><text x="372" y="33" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">DB</text>
+      </g>
+      <text x="872" y="198" fill="#607086" font-size="15">大面积流量同时下沉，可能拖垮主存储。</text>
+      <rect x="872" y="224" width="400" height="82" rx="6" fill="#FEE2E2"/>
+      <text x="1072" y="253" text-anchor="middle" fill="#B91C1C" font-size="15" font-weight="700">TTL 随机化 · 多级缓存 · 高可用</text>
+      <text x="1072" y="280" text-anchor="middle" fill="#7F1D1D" font-size="13">限流降级，避免数据库被洪峰压垮</text>
+    </g>
+
+    <text x="72" y="552" fill="#172033" font-size="22" font-weight="700">Cache Aside 写路径：更新数据库后删除缓存</text>
+    <rect x="72" y="582" width="1296" height="250" rx="8" fill="#172033"/>
+    <g transform="translate(104 642)">
+      <rect width="170" height="72" rx="7" fill="#FFFFFF"/>
+      <text x="85" y="30" text-anchor="middle" fill="#172033" font-size="16" font-weight="700">写请求</text>
+      <text x="85" y="53" text-anchor="middle" fill="#607086" font-size="13">携带新值 V2</text>
+      <line x1="170" y1="36" x2="220" y2="36" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="220" width="220" height="72" rx="7" fill="#FFF4DD"/>
+      <text x="330" y="30" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">① 更新数据库</text>
+      <text x="330" y="53" text-anchor="middle" fill="#805B28" font-size="13">V1 → V2</text>
+      <line x1="440" y1="36" x2="490" y2="36" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="490" width="220" height="72" rx="7" fill="#F1EAFE"/>
+      <text x="600" y="30" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">② 删除缓存</text>
+      <text x="600" y="53" text-anchor="middle" fill="#6A4B93" font-size="13">下次读取回填 V2</text>
+      <line x1="710" y1="36" x2="760" y2="36" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="760" width="432" height="72" rx="7" fill="#CCFBF1"/>
+      <text x="976" y="28" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">补偿：失败重试 / binlog 订阅 / 兜底 TTL</text>
+      <text x="976" y="53" text-anchor="middle" fill="#356C67" font-size="13">版本号或串行化可收紧并发旧值回填窗口</text>
+    </g>
+    <rect x="104" y="746" width="1232" height="54" rx="6" fill="#273449"/>
+    <text x="720" y="778" text-anchor="middle" fill="#FDE68A" font-size="15">删除缓存不是绝对一致：删除失败和“旧读晚回填”仍需重试、版本与监控处理。</text>
+    <text x="720" y="875" text-anchor="middle" fill="#607086" font-size="15">强一致核心数据应以数据库约束或更严格的一致性方案兜底，不能把缓存技巧当作最终正确性保证。</text>
+  </g>
+</svg>

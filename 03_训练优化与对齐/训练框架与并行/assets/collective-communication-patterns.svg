@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">四种常见集合通信的数据流</title>
+  <desc id="desc">对比 All-Reduce、All-Gather、Reduce-Scatter 与 All-to-All 的输入输出，以及它们在 DDP、FSDP、ZeRO 和 MoE 中的典型用途。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">集合通信：看清每张卡“发什么、最后拿到什么”</text>
+    <text x="72" y="101" fill="#607086" font-size="18">相同颜色代表同一数据分片；Σ 表示先对对应位置做求和或平均。</text>
+
+    <g transform="translate(72 142)">
+      <rect width="628" height="320" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="628" height="58" rx="8" fill="#E8F0FF"/>
+      <path d="M0 50H628V58H0Z" fill="#E8F0FF"/>
+      <text x="24" y="37" fill="#1D4ED8" font-size="21" font-weight="700">All-Reduce</text>
+      <text x="604" y="37" text-anchor="end" fill="#42669B" font-size="14">DDP 梯度同步</text>
+      <text x="24" y="91" fill="#607086" font-size="14">输入：各 Rank 的本地梯度</text>
+      <g transform="translate(24 112)">
+        <g fill="#DBEAFE" stroke="#93B4F5">
+          <rect width="72" height="48" rx="5"/><rect x="88" width="72" height="48" rx="5"/>
+          <rect x="176" width="72" height="48" rx="5"/><rect x="264" width="72" height="48" rx="5"/>
+        </g>
+        <g fill="#1D4ED8" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="36" y="30">a</text><text x="124" y="30">b</text><text x="212" y="30">c</text><text x="300" y="30">d</text>
+        </g>
+        <line x1="356" y1="24" x2="414" y2="24" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <circle cx="458" cy="24" r="26" fill="#172033"/>
+        <text x="458" y="31" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="700">Σ</text>
+      </g>
+      <text x="24" y="205" fill="#607086" font-size="14">输出：每张卡都得到相同的归约结果</text>
+      <g transform="translate(24 225)">
+        <g fill="#CCFBF1" stroke="#7BC7B9">
+          <rect width="132" height="50" rx="5"/><rect x="148" width="132" height="50" rx="5"/>
+          <rect x="296" width="132" height="50" rx="5"/><rect x="444" width="132" height="50" rx="5"/>
+        </g>
+        <g fill="#0F766E" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="66" y="31">Σ(a,b,c,d)</text><text x="214" y="31">Σ(a,b,c,d)</text>
+          <text x="362" y="31">Σ(a,b,c,d)</text><text x="510" y="31">Σ(a,b,c,d)</text>
+        </g>
+      </g>
+    </g>
+
+    <g transform="translate(740 142)">
+      <rect width="628" height="320" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="628" height="58" rx="8" fill="#E7F8F4"/>
+      <path d="M0 50H628V58H0Z" fill="#E7F8F4"/>
+      <text x="24" y="37" fill="#0B5E57" font-size="21" font-weight="700">All-Gather</text>
+      <text x="604" y="37" text-anchor="end" fill="#356C67" font-size="14">FSDP / ZeRO-3 聚合参数</text>
+      <text x="24" y="91" fill="#607086" font-size="14">输入：每张卡贡献一个分片</text>
+      <g transform="translate(24 112)">
+        <g stroke-width="1.5">
+          <rect width="72" height="48" rx="5" fill="#DBEAFE" stroke="#93B4F5"/>
+          <rect x="88" width="72" height="48" rx="5" fill="#CCFBF1" stroke="#7BC7B9"/>
+          <rect x="176" width="72" height="48" rx="5" fill="#FFEDD5" stroke="#E4B55B"/>
+          <rect x="264" width="72" height="48" rx="5" fill="#F1EAFE" stroke="#B69AE8"/>
+        </g>
+        <g font-size="14" font-weight="700" text-anchor="middle">
+          <text x="36" y="30" fill="#1D4ED8">a</text><text x="124" y="30" fill="#0F766E">b</text>
+          <text x="212" y="30" fill="#B45309">c</text><text x="300" y="30" fill="#5720A3">d</text>
+        </g>
+        <line x1="356" y1="24" x2="442" y2="24" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+        <text x="485" y="30" fill="#0F766E" font-size="17" font-weight="700">拼接</text>
+      </g>
+      <text x="24" y="205" fill="#607086" font-size="14">输出：每张卡都得到完整张量 [a b c d]</text>
+      <g transform="translate(24 225)">
+        <g fill="#E7F8F4" stroke="#7BC7B9">
+          <rect width="132" height="50" rx="5"/><rect x="148" width="132" height="50" rx="5"/>
+          <rect x="296" width="132" height="50" rx="5"/><rect x="444" width="132" height="50" rx="5"/>
+        </g>
+        <g fill="#0B5E57" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="66" y="31">[a b c d]</text><text x="214" y="31">[a b c d]</text>
+          <text x="362" y="31">[a b c d]</text><text x="510" y="31">[a b c d]</text>
+        </g>
+      </g>
+    </g>
+
+    <g transform="translate(72 494)">
+      <rect width="628" height="320" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="628" height="58" rx="8" fill="#FFF4DD"/>
+      <path d="M0 50H628V58H0Z" fill="#FFF4DD"/>
+      <text x="24" y="37" fill="#92400E" font-size="21" font-weight="700">Reduce-Scatter</text>
+      <text x="604" y="37" text-anchor="end" fill="#805B28" font-size="14">FSDP / ZeRO 梯度分片</text>
+      <text x="24" y="91" fill="#607086" font-size="14">输入：每张卡都有多个位置的数据</text>
+      <g transform="translate(24 112)">
+        <g fill="#FFEDD5" stroke="#E4B55B">
+          <rect width="112" height="48" rx="5"/><rect x="128" width="112" height="48" rx="5"/>
+          <rect x="256" width="112" height="48" rx="5"/><rect x="384" width="112" height="48" rx="5"/>
+        </g>
+        <g fill="#B45309" font-size="13" font-weight="700" text-anchor="middle">
+          <text x="56" y="30">a₀ b₀ c₀ d₀</text><text x="184" y="30">a₁ b₁ c₁ d₁</text>
+          <text x="312" y="30">a₂ b₂ c₂ d₂</text><text x="440" y="30">a₃ b₃ c₃ d₃</text>
+        </g>
+        <line x1="514" y1="24" x2="570" y2="24" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      </g>
+      <text x="24" y="205" fill="#607086" font-size="14">输出：先按位置归约，再让每卡只保留一片</text>
+      <g transform="translate(24 225)">
+        <rect width="132" height="50" rx="5" fill="#DBEAFE" stroke="#93B4F5"/>
+        <rect x="148" width="132" height="50" rx="5" fill="#CCFBF1" stroke="#7BC7B9"/>
+        <rect x="296" width="132" height="50" rx="5" fill="#FFEDD5" stroke="#E4B55B"/>
+        <rect x="444" width="132" height="50" rx="5" fill="#F1EAFE" stroke="#B69AE8"/>
+        <g font-size="14" font-weight="700" text-anchor="middle">
+          <text x="66" y="31" fill="#1D4ED8">Σa → Rank 0</text><text x="214" y="31" fill="#0F766E">Σb → Rank 1</text>
+          <text x="362" y="31" fill="#B45309">Σc → Rank 2</text><text x="510" y="31" fill="#5720A3">Σd → Rank 3</text>
+        </g>
+      </g>
+    </g>
+
+    <g transform="translate(740 494)">
+      <rect width="628" height="320" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="628" height="58" rx="8" fill="#F1EAFE"/>
+      <path d="M0 50H628V58H0Z" fill="#F1EAFE"/>
+      <text x="24" y="37" fill="#5720A3" font-size="21" font-weight="700">All-to-All</text>
+      <text x="604" y="37" text-anchor="end" fill="#6A4B93" font-size="14">MoE token 路由</text>
+      <text x="24" y="91" fill="#607086" font-size="14">输入：每张卡为不同目标 Rank 准备不同分片</text>
+      <g transform="translate(24 108)">
+        <g font-size="12" font-weight="700" text-anchor="middle">
+          <g transform="translate(0 0)">
+            <rect width="116" height="54" rx="5" fill="#E8EEF5" stroke="#AAB6C5"/>
+            <text x="58" y="21" fill="#172033">Rank 0</text><text x="58" y="41" fill="#607086">a₀ b₀ c₀ d₀</text>
+          </g>
+          <g transform="translate(132 0)">
+            <rect width="116" height="54" rx="5" fill="#E8EEF5" stroke="#AAB6C5"/>
+            <text x="58" y="21" fill="#172033">Rank 1</text><text x="58" y="41" fill="#607086">a₁ b₁ c₁ d₁</text>
+          </g>
+          <g transform="translate(264 0)">
+            <rect width="116" height="54" rx="5" fill="#E8EEF5" stroke="#AAB6C5"/>
+            <text x="58" y="21" fill="#172033">Rank 2</text><text x="58" y="41" fill="#607086">a₂ b₂ c₂ d₂</text>
+          </g>
+          <g transform="translate(396 0)">
+            <rect width="116" height="54" rx="5" fill="#E8EEF5" stroke="#AAB6C5"/>
+            <text x="58" y="21" fill="#172033">Rank 3</text><text x="58" y="41" fill="#607086">a₃ b₃ c₃ d₃</text>
+          </g>
+        </g>
+        <path d="M58 62 C58 98 454 92 454 126M190 62 C190 92 322 98 322 126M322 62 C322 92 190 98 190 126M454 62 C454 98 58 92 58 126" fill="none" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#arrow)"/>
+      </g>
+      <text x="24" y="245" fill="#607086" font-size="14">输出：按目标重排，每张卡收到来自所有 Rank 的不同分片</text>
+      <g transform="translate(24 260)" font-size="13" font-weight="700" text-anchor="middle">
+        <text x="72" y="22" fill="#1D4ED8">Rank 0：[a₀ a₁ a₂ a₃]</text>
+        <text x="226" y="22" fill="#0F766E">Rank 1：[b₀ b₁ b₂ b₃]</text>
+        <text x="380" y="22" fill="#B45309">Rank 2：[c₀ c₁ c₂ c₃]</text>
+        <text x="534" y="22" fill="#5720A3">Rank 3：[d₀ d₁ d₂ d₃]</text>
+      </g>
+    </g>
+
+    <text x="720" y="858" text-anchor="middle" fill="#607086" font-size="16">判断口诀：全拿同一结果 = All-Reduce；拼完整 = All-Gather；归约后分开 = Reduce-Scatter；彼此交换不同块 = All-to-All</text>
+  </g>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">ZeRO 三阶段分片范围</title>
+  <desc id="desc">对比普通数据并行、ZeRO Stage 1、Stage 2 和 Stage 3 在参数、梯度、优化器状态上的复制与分片方式。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <pattern id="shard-blue" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="10" height="40" fill="#2563EB"/>
+      <rect x="10" width="10" height="40" fill="#0F766E"/>
+      <rect x="20" width="10" height="40" fill="#D97706"/>
+      <rect x="30" width="10" height="40" fill="#7C3AED"/>
+    </pattern>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">ZeRO：逐阶段消除数据并行中的状态冗余</text>
+    <text x="72" y="101" fill="#607086" font-size="18">Stage 越高，每张 GPU 保留的完整状态越少；节省显存的同时，需要更频繁地通信。</text>
+
+    <g transform="translate(72 148)">
+      <rect width="300" height="594" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="300" height="76" rx="8" fill="#E8EEF5"/>
+      <path d="M0 68 H300 V76 H0 Z" fill="#E8EEF5"/>
+      <text x="150" y="32" text-anchor="middle" fill="#172033" font-size="20" font-weight="700">普通 DP</text>
+      <text x="150" y="58" text-anchor="middle" fill="#607086" font-size="14">每卡保存完整副本</text>
+      <text x="26" y="113" fill="#607086" font-size="14">GPU 0 · GPU 1 · GPU 2 · GPU 3</text>
+      <g transform="translate(26 137)">
+        <text x="0" y="23" fill="#172033" font-size="16" font-weight="700">参数 P</text>
+        <rect x="0" y="40" width="248" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+        <g fill="#1D4ED8" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="75">全</text><text x="93" y="75">全</text><text x="155" y="75">全</text><text x="217" y="75">全</text>
+        </g>
+        <path d="M62 40V98M124 40V98M186 40V98" stroke="#93B4F5"/>
+        <text x="0" y="137" fill="#172033" font-size="16" font-weight="700">梯度 G</text>
+        <rect x="0" y="154" width="248" height="58" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+        <g fill="#0F766E" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="189">全</text><text x="93" y="189">全</text><text x="155" y="189">全</text><text x="217" y="189">全</text>
+        </g>
+        <path d="M62 154V212M124 154V212M186 154V212" stroke="#7BC7B9"/>
+        <text x="0" y="251" fill="#172033" font-size="16" font-weight="700">优化器 O</text>
+        <rect x="0" y="268" width="248" height="58" rx="6" fill="#FFEDD5" stroke="#E4B55B"/>
+        <g fill="#B45309" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="303">全</text><text x="93" y="303">全</text><text x="155" y="303">全</text><text x="217" y="303">全</text>
+        </g>
+        <path d="M62 268V326M124 268V326M186 268V326" stroke="#E4B55B"/>
+      </g>
+      <rect x="26" y="510" width="248" height="58" rx="6" fill="#FEE2E2"/>
+      <text x="150" y="546" text-anchor="middle" fill="#B91C1C" font-size="16" font-weight="700">冗余最高</text>
+    </g>
+
+    <g transform="translate(404 148)">
+      <rect width="300" height="594" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="300" height="76" rx="8" fill="#FFF4DD"/>
+      <path d="M0 68 H300 V76 H0 Z" fill="#FFF4DD"/>
+      <text x="150" y="32" text-anchor="middle" fill="#92400E" font-size="20" font-weight="700">ZeRO Stage 1</text>
+      <text x="150" y="58" text-anchor="middle" fill="#805B28" font-size="14">只分片优化器状态</text>
+      <text x="26" y="113" fill="#607086" font-size="14">GPU 0 · GPU 1 · GPU 2 · GPU 3</text>
+      <g transform="translate(26 137)">
+        <text x="0" y="23" fill="#172033" font-size="16" font-weight="700">参数 P</text>
+        <rect x="0" y="40" width="248" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+        <g fill="#1D4ED8" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="75">全</text><text x="93" y="75">全</text><text x="155" y="75">全</text><text x="217" y="75">全</text>
+        </g>
+        <path d="M62 40V98M124 40V98M186 40V98" stroke="#93B4F5"/>
+        <text x="0" y="137" fill="#172033" font-size="16" font-weight="700">梯度 G</text>
+        <rect x="0" y="154" width="248" height="58" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+        <g fill="#0F766E" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="189">全</text><text x="93" y="189">全</text><text x="155" y="189">全</text><text x="217" y="189">全</text>
+        </g>
+        <path d="M62 154V212M124 154V212M186 154V212" stroke="#7BC7B9"/>
+        <text x="0" y="251" fill="#172033" font-size="16" font-weight="700">优化器 O</text>
+        <rect x="0" y="268" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#9A6A35"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="303">1/4</text><text x="93" y="303">1/4</text><text x="155" y="303">1/4</text><text x="217" y="303">1/4</text>
+        </g>
+      </g>
+      <rect x="26" y="510" width="248" height="58" rx="6" fill="#FEF3C7"/>
+      <text x="150" y="546" text-anchor="middle" fill="#92400E" font-size="16" font-weight="700">先省最大头：Adam 状态</text>
+    </g>
+
+    <g transform="translate(736 148)">
+      <rect width="300" height="594" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="300" height="76" rx="8" fill="#E7F8F4"/>
+      <path d="M0 68 H300 V76 H0 Z" fill="#E7F8F4"/>
+      <text x="150" y="32" text-anchor="middle" fill="#0B5E57" font-size="20" font-weight="700">ZeRO Stage 2</text>
+      <text x="150" y="58" text-anchor="middle" fill="#356C67" font-size="14">再分片梯度</text>
+      <text x="26" y="113" fill="#607086" font-size="14">GPU 0 · GPU 1 · GPU 2 · GPU 3</text>
+      <g transform="translate(26 137)">
+        <text x="0" y="23" fill="#172033" font-size="16" font-weight="700">参数 P</text>
+        <rect x="0" y="40" width="248" height="58" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+        <g fill="#1D4ED8" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="75">全</text><text x="93" y="75">全</text><text x="155" y="75">全</text><text x="217" y="75">全</text>
+        </g>
+        <path d="M62 40V98M124 40V98M186 40V98" stroke="#93B4F5"/>
+        <text x="0" y="137" fill="#172033" font-size="16" font-weight="700">梯度 G</text>
+        <rect x="0" y="154" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#477C78"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="189">1/4</text><text x="93" y="189">1/4</text><text x="155" y="189">1/4</text><text x="217" y="189">1/4</text>
+        </g>
+        <text x="0" y="251" fill="#172033" font-size="16" font-weight="700">优化器 O</text>
+        <rect x="0" y="268" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#9A6A35"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="303">1/4</text><text x="93" y="303">1/4</text><text x="155" y="303">1/4</text><text x="217" y="303">1/4</text>
+        </g>
+      </g>
+      <rect x="26" y="510" width="248" height="58" rx="6" fill="#DDF7F1"/>
+      <text x="150" y="546" text-anchor="middle" fill="#0B5E57" font-size="16" font-weight="700">Reduce-Scatter 梯度</text>
+    </g>
+
+    <g transform="translate(1068 148)">
+      <rect width="300" height="594" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="300" height="76" rx="8" fill="#F1EAFE"/>
+      <path d="M0 68 H300 V76 H0 Z" fill="#F1EAFE"/>
+      <text x="150" y="32" text-anchor="middle" fill="#5720A3" font-size="20" font-weight="700">ZeRO Stage 3</text>
+      <text x="150" y="58" text-anchor="middle" fill="#6A4B93" font-size="14">参数也分片</text>
+      <text x="26" y="113" fill="#607086" font-size="14">GPU 0 · GPU 1 · GPU 2 · GPU 3</text>
+      <g transform="translate(26 137)">
+        <text x="0" y="23" fill="#172033" font-size="16" font-weight="700">参数 P</text>
+        <rect x="0" y="40" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#6E5DA8"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="75">1/4</text><text x="93" y="75">1/4</text><text x="155" y="75">1/4</text><text x="217" y="75">1/4</text>
+        </g>
+        <text x="0" y="137" fill="#172033" font-size="16" font-weight="700">梯度 G</text>
+        <rect x="0" y="154" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#477C78"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="189">1/4</text><text x="93" y="189">1/4</text><text x="155" y="189">1/4</text><text x="217" y="189">1/4</text>
+        </g>
+        <text x="0" y="251" fill="#172033" font-size="16" font-weight="700">优化器 O</text>
+        <rect x="0" y="268" width="248" height="58" rx="6" fill="url(#shard-blue)" stroke="#9A6A35"/>
+        <g fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle">
+          <text x="31" y="303">1/4</text><text x="93" y="303">1/4</text><text x="155" y="303">1/4</text><text x="217" y="303">1/4</text>
+        </g>
+      </g>
+      <rect x="26" y="510" width="248" height="58" rx="6" fill="#EDE9FE"/>
+      <text x="150" y="536" text-anchor="middle" fill="#5720A3" font-size="16" font-weight="700">计算前 All-Gather</text>
+      <text x="150" y="558" text-anchor="middle" fill="#6A4B93" font-size="13">用完释放或重新分片</text>
+    </g>
+
+    <line x1="226" y1="794" x2="1218" y2="794" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="226" y="837" fill="#607086" font-size="16" font-weight="700">单卡显存占用高</text>
+    <text x="1218" y="837" text-anchor="end" fill="#607086" font-size="16" font-weight="700">显存持续下降，通信复杂度上升</text>
+  </g>
+</svg>

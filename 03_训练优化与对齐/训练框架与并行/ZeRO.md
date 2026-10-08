@@ -8,6 +8,8 @@
 
 它的核心思想是：**消除数据并行（Data Parallelism）中的内存冗余，同时保持计算效率。**
 
+![ZeRO 三阶段分片范围](assets/zero-stages-sharding.png)
+
 ### 为什么需要 ZeRO？（背景）
 
 在传统的 **数据并行（DP）** 中，各 rank 通常处理不同的 mini-batch，同时每个 GPU 都会维护一份完整的模型副本。这包括：

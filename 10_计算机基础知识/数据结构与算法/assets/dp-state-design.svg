@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">动态规划状态设计流程</title>
+  <desc id="desc">展示从最后一步反推状态、转移、初始化、遍历顺序和空间优化的完整方法，并解释零一背包倒序与完全背包正序。</desc>
+  <defs><marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/></marker></defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">动态规划：先定义“子问题答案”，再按依赖顺序填表</text>
+    <text x="72" y="101" fill="#607086" font-size="18">状态要保存决定未来转移所需的最少信息；不同历史影响未来时，不能强行合并状态。</text>
+
+    <rect x="72" y="146" width="1296" height="290" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="184" fill="#172033" font-size="21" font-weight="700">从“最后一步”反推 DP 五步法</text>
+    <g transform="translate(100 226)">
+      <rect width="202" height="118" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="101" y="34" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">① 定义状态</text>
+      <text x="101" y="65" text-anchor="middle" fill="#42669B" font-size="13">dp[...] 到底表示什么</text>
+      <text x="101" y="90" text-anchor="middle" fill="#42669B" font-size="13">只保留后续所需信息</text>
+      <line x1="202" y1="59" x2="250" y2="59" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="250" width="202" height="118" rx="8" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="351" y="34" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">② 写转移</text>
+      <text x="351" y="65" text-anchor="middle" fill="#356C67" font-size="13">最后一步有哪些选择</text>
+      <text x="351" y="90" text-anchor="middle" fill="#356C67" font-size="13">来自哪些更小子问题</text>
+      <line x1="452" y1="59" x2="500" y2="59" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="500" width="202" height="118" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="601" y="34" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">③ 初始化</text>
+      <text x="601" y="65" text-anchor="middle" fill="#805B28" font-size="13">空集 · 首行 · 首列</text>
+      <text x="601" y="90" text-anchor="middle" fill="#805B28" font-size="13">不可达状态不要误设 0</text>
+      <line x1="702" y1="59" x2="750" y2="59" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="750" width="202" height="118" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="851" y="34" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">④ 遍历顺序</text>
+      <text x="851" y="65" text-anchor="middle" fill="#6A4B93" font-size="13">依赖状态必须先计算</text>
+      <text x="851" y="90" text-anchor="middle" fill="#6A4B93" font-size="13">避免覆盖仍需使用的值</text>
+      <line x1="952" y1="59" x2="1000" y2="59" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="1000" width="212" height="118" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="1106" y="34" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">⑤ 复杂度 / 优化</text>
+      <text x="1106" y="65" text-anchor="middle" fill="#607086" font-size="13">状态数 × 单状态转移</text>
+      <text x="1106" y="90" text-anchor="middle" fill="#607086" font-size="13">正确后再滚动数组</text>
+    </g>
+    <rect x="100" y="378" width="1240" height="36" rx="5" fill="#E8EEF5"/>
+    <text x="720" y="402" text-anchor="middle" fill="#425066" font-size="15">先问：未来是否只依赖当前状态？若还依赖完整历史，则状态定义不完整。</text>
+
+    <text x="72" y="498" fill="#172033" font-size="22" font-weight="700">背包一维优化：循环方向决定“本轮能否重复使用当前物品”</text>
+    <rect x="72" y="528" width="628" height="280" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="566" fill="#1D4ED8" font-size="20" font-weight="700">0/1 背包：容量倒序</text>
+    <text x="100" y="598" fill="#607086" font-size="14">每件物品最多一次，更新 dp[j] 时读取的是上一轮状态。</text>
+    <g transform="translate(100 636)">
+      <rect width="90" height="56" rx="6" fill="#E8EEF5"/><text x="45" y="35" text-anchor="middle" fill="#425066" font-size="15">j = W</text>
+      <line x1="90" y1="28" x2="154" y2="28" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow)"/>
+      <rect x="154" width="90" height="56" rx="6" fill="#DBEAFE"/><text x="199" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15">...</text>
+      <line x1="244" y1="28" x2="308" y2="28" stroke="#2563EB" stroke-width="4" marker-end="url(#arrow)"/>
+      <rect x="308" width="90" height="56" rx="6" fill="#DBEAFE"/><text x="353" y="35" text-anchor="middle" fill="#1D4ED8" font-size="15">j = weight</text>
+      <text x="460" y="35" fill="#1D4ED8" font-size="15" font-weight="700">从大到小 ←</text>
+    </g>
+    <rect x="100" y="720" width="548" height="58" rx="6" fill="#E8F0FF"/>
+    <text x="374" y="745" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">dp[j] = max(dp[j], dp[j-weight] + value)</text>
+    <text x="374" y="766" text-anchor="middle" fill="#42669B" font-size="12">避免同一物品在本轮被再次读取</text>
+
+    <rect x="740" y="528" width="628" height="280" rx="8" fill="#172033"/>
+    <text x="768" y="566" fill="#FFFFFF" font-size="20" font-weight="700">完全背包：容量正序</text>
+    <text x="768" y="598" fill="#D7DFEA" font-size="14">每件物品可重复，允许读取本轮刚更新的 dp[j-weight]。</text>
+    <g transform="translate(768 636)">
+      <rect width="112" height="56" rx="6" fill="#CCFBF1"/><text x="56" y="35" text-anchor="middle" fill="#0B5E57" font-size="15">j = weight</text>
+      <line x1="112" y1="28" x2="176" y2="28" stroke="#7BC7B9" stroke-width="4" marker-end="url(#arrow)"/>
+      <rect x="176" width="90" height="56" rx="6" fill="#CCFBF1"/><text x="221" y="35" text-anchor="middle" fill="#0B5E57" font-size="15">...</text>
+      <line x1="266" y1="28" x2="330" y2="28" stroke="#7BC7B9" stroke-width="4" marker-end="url(#arrow)"/>
+      <rect x="330" width="90" height="56" rx="6" fill="#E8EEF5"/><text x="375" y="35" text-anchor="middle" fill="#425066" font-size="15">j = W</text>
+      <text x="456" y="35" fill="#7BC7B9" font-size="15" font-weight="700">从小到大 →</text>
+    </g>
+    <rect x="768" y="720" width="548" height="58" rx="6" fill="#273449"/>
+    <text x="1042" y="745" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">同一转移式，不同遍历顺序表达不同约束</text>
+    <text x="1042" y="766" text-anchor="middle" fill="#D7DFEA" font-size="12">不要只背“倒序 / 正序”，要看读取的是上一轮还是本轮</text>
+    <text x="720" y="868" text-anchor="middle" fill="#607086" font-size="15">DP 不等于多项式时间：复杂度仍由状态数量与转移开销决定。</text>
+  </g>
+</svg>

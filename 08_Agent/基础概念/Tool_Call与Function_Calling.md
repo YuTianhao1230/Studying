@@ -24,6 +24,8 @@ Tool Call 或 Function Calling 是让模型以结构化方式表达“需要调�
   -> 模型继续判断或输出结论
 ```
 
+![Tool Call 从模型意图到编排器校验和真实执行的链路](assets/tool-call-runtime.png)
+
 ### Tool Schema
 
 工具描述通常包括：

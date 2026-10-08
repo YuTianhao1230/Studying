@@ -22,6 +22,8 @@ UDP 是无连接、尽力而为、面向数据报的协议。它不保证可靠�
 第三次：客户端 -> 服务端：ACK=1, seq=x+1, ack=y+1
 ```
 
+![TCP 三次握手时序图](assets/tcp-three-way-handshake.png)
+
 `x` 和 `y` 分别是客户端与服务端选择的初始序列号。SYN 会占用一个序列号，所以对它的确认号是初始序列号加一。三次握手还可以协商 MSS、窗口扩大、SACK 等 TCP 选项。
 
 状态上，客户端发送 SYN 后从 `CLOSED` 进入 `SYN_SENT`，收到 SYN+ACK 并回复 ACK 后进入 `ESTABLISHED`；服务端从 `LISTEN` 收到 SYN 后进入 `SYN_RECV`，收到第三次 ACK 后进入 `ESTABLISHED`。
@@ -65,6 +67,8 @@ TCP 是全双工连接，两个方向要分别关闭。主动关闭方发送 FIN
 被动方 -> 主动方：FIN=1, seq=v
 主动方 -> 被动方：ACK=1, ack=v+1
 ```
+
+![TCP 四次挥手与关闭状态](assets/tcp-four-way-close.png)
 
 FIN 和 SYN 一样会占用一个序列号，纯 ACK 不占用序列号。主动关闭方通常依次经历 `ESTABLISHED -> FIN_WAIT_1 -> FIN_WAIT_2 -> TIME_WAIT -> CLOSED`；被动关闭方通常经历 `ESTABLISHED -> CLOSE_WAIT -> LAST_ACK -> CLOSED`。如果被动方可以立即关闭，它对第一个 FIN 的 ACK 和自己的 FIN 可能合并，报文数不一定严格是四个。
 

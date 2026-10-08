@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">RLHF 三阶段训练链路</title>
+  <desc id="desc">展示监督微调、偏好数据与奖励模型训练、PPO 在线优化三个阶段，以及 Policy、Reference、Reward Model 和 Critic 的职责。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowLight" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#D7DFEA"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">RLHF：先学会回答，再学会判断，最后按偏好优化</text>
+    <text x="72" y="101" fill="#607086" font-size="18">三阶段分别提供行为起点、可学习的偏好信号和在线策略改进。</text>
+
+    <g transform="translate(72 150)">
+      <rect width="392" height="252" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="392" height="68" rx="8" fill="#E8F0FF"/>
+      <path d="M0 60H392V68H0Z" fill="#E8F0FF"/>
+      <circle cx="38" cy="34" r="18" fill="#2563EB"/>
+      <text x="38" y="41" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">1</text>
+      <text x="72" y="41" fill="#1D4ED8" font-size="21" font-weight="700">SFT：建立助手行为</text>
+      <rect x="28" y="98" width="136" height="72" rx="6" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="96" y="127" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">高质量示范</text>
+      <text x="96" y="151" text-anchor="middle" fill="#607086" font-size="13">prompt → answer</text>
+      <line x1="164" y1="134" x2="222" y2="134" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="222" y="98" width="142" height="72" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+      <text x="293" y="127" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">SFT 模型</text>
+      <text x="293" y="151" text-anchor="middle" fill="#42669B" font-size="13">会对话、遵循格式</text>
+      <text x="28" y="211" fill="#607086" font-size="14">产物：Policy 初始化 + Reference 锚点</text>
+    </g>
+
+    <line x1="464" y1="276" x2="516" y2="276" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(516 150)">
+      <rect width="408" height="252" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="408" height="68" rx="8" fill="#FFF4DD"/>
+      <path d="M0 60H408V68H0Z" fill="#FFF4DD"/>
+      <circle cx="38" cy="34" r="18" fill="#D97706"/>
+      <text x="38" y="41" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">2</text>
+      <text x="72" y="41" fill="#92400E" font-size="21" font-weight="700">RM：把偏好变成分数</text>
+      <rect x="28" y="92" width="170" height="88" rx="6" fill="#FFEDD5" stroke="#E4B55B"/>
+      <text x="113" y="120" text-anchor="middle" fill="#92400E" font-size="15" font-weight="700">同一 prompt 多个回答</text>
+      <text x="113" y="145" text-anchor="middle" fill="#805B28" font-size="13">A ＞ B ＞ C</text>
+      <text x="113" y="165" text-anchor="middle" fill="#805B28" font-size="13">人工成对偏好</text>
+      <line x1="198" y1="136" x2="246" y2="136" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="246" y="92" width="134" height="88" rx="6" fill="#FDE7C2" stroke="#E4B55B"/>
+      <text x="313" y="120" text-anchor="middle" fill="#92400E" font-size="15" font-weight="700">Reward Model</text>
+      <text x="313" y="145" text-anchor="middle" fill="#805B28" font-size="13">r(prompt, answer)</text>
+      <text x="313" y="165" text-anchor="middle" fill="#805B28" font-size="13">输出标量分数</text>
+      <text x="28" y="211" fill="#607086" font-size="14">产物：可对新回答打分的偏好代理</text>
+    </g>
+
+    <line x1="924" y1="276" x2="976" y2="276" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(976 150)">
+      <rect width="392" height="252" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect width="392" height="68" rx="8" fill="#F1EAFE"/>
+      <path d="M0 60H392V68H0Z" fill="#F1EAFE"/>
+      <circle cx="38" cy="34" r="18" fill="#7C3AED"/>
+      <text x="38" y="41" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">3</text>
+      <text x="72" y="41" fill="#5720A3" font-size="21" font-weight="700">PPO：在线优化 Policy</text>
+      <rect x="28" y="98" width="136" height="72" rx="6" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="96" y="127" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">Policy 采样</text>
+      <text x="96" y="151" text-anchor="middle" fill="#6A4B93" font-size="13">生成新回答</text>
+      <line x1="164" y1="134" x2="222" y2="134" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="222" y="98" width="142" height="72" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <text x="293" y="127" text-anchor="middle" fill="#0B5E57" font-size="15" font-weight="700">Reward + KL</text>
+      <text x="293" y="151" text-anchor="middle" fill="#356C67" font-size="13">偏好收益 - 偏离惩罚</text>
+      <text x="28" y="211" fill="#607086" font-size="14">产物：更符合偏好的对齐模型</text>
+    </g>
+
+    <text x="72" y="458" fill="#172033" font-size="22" font-weight="700">PPO 阶段为何同时需要多个模型？</text>
+    <rect x="72" y="490" width="1296" height="286" rx="8" fill="#172033"/>
+
+    <g transform="translate(108 538)">
+      <rect width="210" height="112" rx="8" fill="#F1EAFE"/>
+      <text x="105" y="36" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">Policy</text>
+      <text x="105" y="65" text-anchor="middle" fill="#6A4B93" font-size="14">生成 rollout</text>
+      <text x="105" y="89" text-anchor="middle" fill="#6A4B93" font-size="14">唯一被策略梯度更新</text>
+      <line x1="210" y1="56" x2="266" y2="56" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrowLight)"/>
+      <rect x="266" width="210" height="112" rx="8" fill="#FFF4DD"/>
+      <text x="371" y="36" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">Reward Model</text>
+      <text x="371" y="65" text-anchor="middle" fill="#805B28" font-size="14">评价回答偏好</text>
+      <text x="371" y="89" text-anchor="middle" fill="#805B28" font-size="14">提供 reward</text>
+      <line x1="476" y1="56" x2="532" y2="56" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrowLight)"/>
+      <rect x="532" width="210" height="112" rx="8" fill="#CCFBF1"/>
+      <text x="637" y="36" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">Critic / Value</text>
+      <text x="637" y="65" text-anchor="middle" fill="#356C67" font-size="14">估计未来回报</text>
+      <text x="637" y="89" text-anchor="middle" fill="#356C67" font-size="14">构造 advantage</text>
+      <line x1="742" y1="56" x2="798" y2="56" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrowLight)"/>
+      <rect x="798" width="210" height="112" rx="8" fill="#E8F0FF"/>
+      <text x="903" y="36" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">Reference</text>
+      <text x="903" y="65" text-anchor="middle" fill="#42669B" font-size="14">冻结的能力锚点</text>
+      <text x="903" y="89" text-anchor="middle" fill="#42669B" font-size="14">提供 KL 约束</text>
+      <line x1="1008" y1="56" x2="1064" y2="56" stroke="#D7DFEA" stroke-width="3" marker-end="url(#arrowLight)"/>
+      <rect x="1064" width="160" height="112" rx="8" fill="#FFFFFF"/>
+      <text x="1144" y="36" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">PPO 更新</text>
+      <text x="1144" y="65" text-anchor="middle" fill="#607086" font-size="14">提高高优势动作</text>
+      <text x="1144" y="89" text-anchor="middle" fill="#607086" font-size="14">限制单次变化</text>
+    </g>
+
+    <rect x="108" y="688" width="1224" height="56" rx="6" fill="#273449"/>
+    <text x="720" y="722" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="700">总目标：最大化偏好奖励，同时用 KL 防止 Policy 为“刷分”而远离原模型</text>
+
+    <rect x="72" y="812" width="1296" height="52" rx="6" fill="#FEE2E2"/>
+    <text x="720" y="844" text-anchor="middle" fill="#B91C1C" font-size="16" font-weight="700">上线判断不能只看 reward：还要检查人工胜率、能力回归、安全指标与 reward hacking。</text>
+  </g>
+</svg>

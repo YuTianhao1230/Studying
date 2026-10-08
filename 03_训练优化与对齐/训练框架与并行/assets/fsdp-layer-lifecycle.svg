@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">FSDP 单层参数生命周期</title>
+  <desc id="desc">展示 FSDP 中持久保存参数分片、计算前 All-Gather、层计算、重新分片，以及反向后的 Reduce-Scatter 梯度闭环。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">FSDP：完整参数只在某一层计算时短暂出现</text>
+    <text x="72" y="101" fill="#607086" font-size="18">常驻状态始终分片；前向与反向按层聚合参数，反向后把梯度规约并切回各 Rank。</text>
+
+    <rect x="72" y="148" width="1296" height="126" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="181" fill="#172033" font-size="18" font-weight="700">每张 GPU 的常驻状态</text>
+    <g transform="translate(100 204)">
+      <rect width="270" height="46" rx="6" fill="#DBEAFE" stroke="#93B4F5"/>
+      <rect x="308" width="270" height="46" rx="6" fill="#CCFBF1" stroke="#7BC7B9"/>
+      <rect x="616" width="270" height="46" rx="6" fill="#FFEDD5" stroke="#E4B55B"/>
+      <rect x="924" width="270" height="46" rx="6" fill="#F1EAFE" stroke="#B69AE8"/>
+      <g font-size="15" font-weight="700" text-anchor="middle">
+        <text x="135" y="29" fill="#1D4ED8">Rank 0 · 参数 / 梯度 / 优化器 1/4</text>
+        <text x="443" y="29" fill="#0F766E">Rank 1 · 参数 / 梯度 / 优化器 1/4</text>
+        <text x="751" y="29" fill="#B45309">Rank 2 · 参数 / 梯度 / 优化器 1/4</text>
+        <text x="1059" y="29" fill="#5720A3">Rank 3 · 参数 / 梯度 / 优化器 1/4</text>
+      </g>
+    </g>
+
+    <text x="72" y="325" fill="#172033" font-size="22" font-weight="700">单个 FSDP 单元的时间线</text>
+    <line x1="132" y1="595" x2="1306" y2="595" stroke="#AAB6C5" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(88 374)">
+      <circle cx="95" cy="221" r="10" fill="#607086"/>
+      <rect x="0" y="0" width="190" height="170" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="95" y="34" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">① 参数分片常驻</text>
+      <g transform="translate(28 62)">
+        <rect width="30" height="58" fill="#2563EB"/>
+        <rect x="34" width="30" height="58" fill="#0F766E"/>
+        <rect x="68" width="30" height="58" fill="#D97706"/>
+        <rect x="102" width="30" height="58" fill="#7C3AED"/>
+      </g>
+      <text x="95" y="145" text-anchor="middle" fill="#607086" font-size="14">每卡只持有一片</text>
+    </g>
+
+    <line x1="278" y1="484" x2="342" y2="484" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <text x="310" y="463" text-anchor="middle" fill="#5720A3" font-size="13" font-weight="700">All-Gather</text>
+
+    <g transform="translate(342 374)">
+      <circle cx="95" cy="221" r="10" fill="#7C3AED"/>
+      <rect x="0" y="0" width="190" height="170" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="95" y="34" text-anchor="middle" fill="#5720A3" font-size="18" font-weight="700">② 临时完整参数</text>
+      <rect x="28" y="62" width="132" height="58" rx="6" fill="#EDE9FE" stroke="#B69AE8"/>
+      <path d="M61 62V120M94 62V120M127 62V120" stroke="#B69AE8"/>
+      <text x="95" y="98" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">P₀ P₁ P₂ P₃</text>
+      <text x="95" y="145" text-anchor="middle" fill="#6A4B93" font-size="14">仅当前层可见</text>
+    </g>
+
+    <line x1="532" y1="484" x2="596" y2="484" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(596 374)">
+      <circle cx="95" cy="221" r="10" fill="#2563EB"/>
+      <rect x="0" y="0" width="190" height="170" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+      <text x="95" y="34" text-anchor="middle" fill="#1D4ED8" font-size="18" font-weight="700">③ 层计算</text>
+      <rect x="27" y="62" width="136" height="58" rx="6" fill="#FFFFFF" stroke="#93B4F5"/>
+      <text x="95" y="87" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">Forward</text>
+      <text x="95" y="108" text-anchor="middle" fill="#607086" font-size="13">矩阵计算</text>
+      <text x="95" y="145" text-anchor="middle" fill="#607086" font-size="14">各 Rank 处理不同数据</text>
+    </g>
+
+    <line x1="786" y1="484" x2="850" y2="484" stroke="#607086" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(850 374)">
+      <circle cx="95" cy="221" r="10" fill="#0F766E"/>
+      <rect x="0" y="0" width="190" height="170" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+      <text x="95" y="34" text-anchor="middle" fill="#0B5E57" font-size="18" font-weight="700">④ 释放 / 重分片</text>
+      <g transform="translate(28 62)">
+        <rect width="30" height="58" fill="#2563EB" opacity="0.25"/>
+        <rect x="34" width="30" height="58" fill="#0F766E"/>
+        <rect x="68" width="30" height="58" fill="#D97706" opacity="0.25"/>
+        <rect x="102" width="30" height="58" fill="#7C3AED" opacity="0.25"/>
+      </g>
+      <text x="95" y="145" text-anchor="middle" fill="#356C67" font-size="14">恢复本 Rank 分片</text>
+    </g>
+
+    <line x1="1040" y1="484" x2="1104" y2="484" stroke="#7C3AED" stroke-width="3" marker-end="url(#arrowPurple)"/>
+
+    <g transform="translate(1104 374)">
+      <circle cx="95" cy="221" r="10" fill="#D97706"/>
+      <rect x="0" y="0" width="216" height="170" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+      <text x="108" y="34" text-anchor="middle" fill="#92400E" font-size="18" font-weight="700">⑤ 梯度分片更新</text>
+      <g transform="translate(41 62)">
+        <rect width="30" height="58" fill="#2563EB"/>
+        <rect x="34" width="30" height="58" fill="#0F766E"/>
+        <rect x="68" width="30" height="58" fill="#D97706"/>
+        <rect x="102" width="30" height="58" fill="#7C3AED"/>
+      </g>
+      <text x="108" y="145" text-anchor="middle" fill="#805B28" font-size="14">各卡只更新自己的分片</text>
+    </g>
+    <text x="1072" y="642" text-anchor="middle" fill="#5720A3" font-size="14" font-weight="700">Backward：再 All-Gather 参数，梯度经 Reduce-Scatter 切回各 Rank</text>
+
+    <rect x="72" y="680" width="1296" height="156" rx="8" fill="#172033"/>
+    <text x="106" y="720" fill="#FFFFFF" font-size="19" font-weight="700">为什么能省显存？</text>
+    <text x="106" y="753" fill="#D7DFEA" font-size="16">完整参数不长期驻留，只在当前层计算窗口内临时聚合；未计算的层仍保持分片。</text>
+    <line x1="690" y1="708" x2="690" y2="808" stroke="#425066"/>
+    <text x="726" y="720" fill="#FFFFFF" font-size="19" font-weight="700">主要代价</text>
+    <text x="726" y="753" fill="#D7DFEA" font-size="16">频繁的参数 All-Gather 与梯度 Reduce-Scatter；wrapping、预取和网络拓扑直接影响吞吐。</text>
+    <text x="106" y="794" fill="#93B4F5" font-size="15" font-weight="700">可叠加 Activation Checkpointing，进一步用重计算换激活显存。</text>
+  </g>
+</svg>

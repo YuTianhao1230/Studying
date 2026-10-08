@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="780" viewBox="0 0 1440 780" role="img" aria-labelledby="title desc">
+  <title id="title">资料分析四类直接比较模型</title>
+  <desc id="desc">展示同基准、分子分母反向占优、两期比值和增长量比较四种无需完整计算的判断模型。</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#172033" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2563EB"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0F766E"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#B45309"/>
+    </marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#BE123C"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="780" fill="#F5F7FA"/>
+  <g font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif">
+    <text x="72" y="68" fill="#172033" font-size="34" font-weight="700">四类直接比较模型</text>
+    <text x="72" y="103" fill="#607086" font-size="18">两项条件同时指向同一结论时直接选；一大一小则停止秒选。</text>
+
+    <g filter="url(#shadow)">
+      <rect x="72" y="142" width="620" height="244" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="748" y="142" width="620" height="244" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="72" y="426" width="620" height="244" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <rect x="748" y="426" width="620" height="244" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    </g>
+
+    <rect x="96" y="166" width="46" height="30" rx="6" fill="#DBEAFE"/>
+    <text x="119" y="187" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="700">01</text>
+    <text x="158" y="189" fill="#172033" font-size="22" font-weight="700">同基准：共同部分直接消掉</text>
+    <text x="137" y="262" text-anchor="middle" fill="#2563EB" font-size="28" font-weight="700">A</text>
+    <line x1="112" y1="274" x2="162" y2="274" stroke="#2563EB" stroke-width="3"/>
+    <text x="137" y="307" text-anchor="middle" fill="#607086" font-size="24">B</text>
+    <text x="205" y="281" fill="#607086" font-size="28">与</text>
+    <text x="293" y="262" text-anchor="middle" fill="#2563EB" font-size="28" font-weight="700">C</text>
+    <line x1="268" y1="274" x2="318" y2="274" stroke="#2563EB" stroke-width="3"/>
+    <text x="293" y="307" text-anchor="middle" fill="#607086" font-size="24">B</text>
+    <path d="M353 276 L445 276" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="469" y="268" fill="#153E85" font-size="19" font-weight="700">只比较 A 与 C</text>
+    <text x="469" y="298" fill="#607086" font-size="16">不做两次除法</text>
+    <rect x="96" y="330" width="572" height="34" rx="6" fill="#EFF6FF"/>
+    <text x="382" y="353" text-anchor="middle" fill="#355986" font-size="16">同分子时反过来：分母越小，比值越大</text>
+
+    <rect x="772" y="166" width="46" height="30" rx="6" fill="#CCFBF1"/>
+    <text x="795" y="187" text-anchor="middle" fill="#0F766E" font-size="15" font-weight="700">02</text>
+    <text x="834" y="189" fill="#172033" font-size="22" font-weight="700">反向占优：分子大且分母小</text>
+    <text x="813" y="265" fill="#0F766E" font-size="19" font-weight="700">分子</text>
+    <text x="875" y="265" fill="#0F766E" font-size="30" font-weight="700">↑</text>
+    <text x="813" y="312" fill="#0F766E" font-size="19" font-weight="700">分母</text>
+    <text x="875" y="312" fill="#0F766E" font-size="30" font-weight="700">↓</text>
+    <path d="M928 279 L1048 279" fill="none" stroke="#0F766E" stroke-width="3" marker-end="url(#arrow-teal)"/>
+    <text x="1080" y="273" fill="#0B5E57" font-size="22" font-weight="700">比值必然更大</text>
+    <text x="1080" y="305" fill="#607086" font-size="16">增长率、比重、平均数通用</text>
+    <rect x="772" y="330" width="572" height="34" rx="6" fill="#ECFDF5"/>
+    <text x="1058" y="353" text-anchor="middle" fill="#356C67" font-size="16">分子、分母同向变化：不能只看绝对大小</text>
+
+    <rect x="96" y="450" width="46" height="30" rx="6" fill="#FEF3C7"/>
+    <text x="119" y="471" text-anchor="middle" fill="#B45309" font-size="15" font-weight="700">03</text>
+    <text x="158" y="473" fill="#172033" font-size="22" font-weight="700">两期比值：只比较两个增速</text>
+    <text x="111" y="551" fill="#607086" font-size="18">分子增速</text>
+    <text x="226" y="551" fill="#B45309" font-size="28" font-weight="700">&gt;</text>
+    <text x="270" y="551" fill="#607086" font-size="18">分母增速</text>
+    <path d="M387 544 L471 544" fill="none" stroke="#B45309" stroke-width="3" marker-end="url(#arrow-amber)"/>
+    <text x="502" y="552" fill="#7A4305" font-size="22" font-weight="700">比值上升</text>
+    <text x="111" y="601" fill="#607086" font-size="18">分子增速</text>
+    <text x="226" y="601" fill="#B45309" font-size="28" font-weight="700">&lt;</text>
+    <text x="270" y="601" fill="#607086" font-size="18">分母增速</text>
+    <path d="M387 594 L471 594" fill="none" stroke="#B45309" stroke-width="3" marker-end="url(#arrow-amber)"/>
+    <text x="502" y="602" fill="#7A4305" font-size="22" font-weight="700">比值下降</text>
+    <rect x="96" y="614" width="572" height="34" rx="6" fill="#FFFBEB"/>
+    <text x="382" y="637" text-anchor="middle" fill="#805B28" font-size="16">先写清谁是分子，避免把方向判反</text>
+
+    <rect x="772" y="450" width="46" height="30" rx="6" fill="#FFE4E6"/>
+    <text x="795" y="471" text-anchor="middle" fill="#BE123C" font-size="15" font-weight="700">04</text>
+    <text x="834" y="473" fill="#172033" font-size="22" font-weight="700">增长量：两个因素同时占优</text>
+    <text x="811" y="549" fill="#BE123C" font-size="19" font-weight="700">现期量更大</text>
+    <text x="811" y="597" fill="#BE123C" font-size="19" font-weight="700">增长率更大</text>
+    <path d="M949 567 L1049 567" fill="none" stroke="#BE123C" stroke-width="3" marker-end="url(#arrow-rose)"/>
+    <text x="1080" y="559" fill="#8B1538" font-size="22" font-weight="700">增长量更大</text>
+    <text x="1080" y="590" fill="#607086" font-size="16">“大大则大”</text>
+    <rect x="772" y="614" width="572" height="34" rx="6" fill="#FFF1F2"/>
+    <text x="1058" y="637" text-anchor="middle" fill="#8A4A5E" font-size="16">一个量大、一个率小：转入估算</text>
+
+    <rect x="72" y="708" width="1296" height="46" rx="8" fill="#172033"/>
+    <text x="720" y="738" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">秒选成立的核心：共同基准可抵消，或两个决定因素同时支持同一方向</text>
+  </g>
+</svg>

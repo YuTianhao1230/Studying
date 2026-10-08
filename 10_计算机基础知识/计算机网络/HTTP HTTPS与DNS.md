@@ -6,6 +6,8 @@
 
 本文整理 HTTP 方法与版本、状态码、缓存、TLS 握手、DNS 查询，以及从输入 URL 到页面展示的完整链路。
 
+![从输入 URL 到页面展示](assets/url-to-page-network-path.png)
+
 ### HTTP
 
 HTTP 是请求-响应模型的应用层协议。常见方法包括 GET、POST、PUT、DELETE。GET 通常用于获取资源，POST 通常用于提交数据。HTTP 默认无状态，需要 Cookie、Session 或 Token 维护用户状态。

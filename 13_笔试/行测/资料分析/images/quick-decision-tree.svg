@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="930" viewBox="0 0 1440 930" role="img" aria-labelledby="title desc">
+  <title id="title">资料分析五秒秒选决策树</title>
+  <desc id="desc">从直接查找、方向判断、同基准比较、两期比值、混合关系和选项排除依次判断，最后才进入估算。</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#172033" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#607086"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="930" fill="#F5F7FA"/>
+  <text x="72" y="66" fill="#172033" font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="700">资料分析五秒秒选决策树</text>
+  <text x="72" y="100" fill="#607086" font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="18">从上往下检查；某一步能让选项唯一，就立即停止。</text>
+
+  <g font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif" filter="url(#shadow)">
+    <rect x="72" y="132" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="176" r="24" fill="#1D4ED8"/>
+    <text x="116" y="183" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">1</text>
+    <text x="156" y="169" fill="#172033" font-size="21" font-weight="700">原文有直接数据或明确趋势？</text>
+    <text x="156" y="197" fill="#607086" font-size="16">原数、排名、增减、连续性、绝对表述</text>
+
+    <rect x="72" y="252" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="296" r="24" fill="#0F766E"/>
+    <text x="116" y="303" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">2</text>
+    <text x="156" y="289" fill="#172033" font-size="21" font-weight="700">只问升降、正负、超过或不足？</text>
+    <text x="156" y="317" fill="#607086" font-size="16">先判方向，再与选项阈值比较</text>
+
+    <rect x="72" y="372" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="416" r="24" fill="#B45309"/>
+    <text x="116" y="423" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">3</text>
+    <text x="156" y="409" fill="#172033" font-size="21" font-weight="700">存在同分母、同分子或反向占优？</text>
+    <text x="156" y="437" fill="#607086" font-size="16">分子更大且分母更小，直接判大</text>
+
+    <rect x="72" y="492" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="536" r="24" fill="#9F1239"/>
+    <text x="116" y="543" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">4</text>
+    <text x="156" y="529" fill="#172033" font-size="21" font-weight="700">属于两期比值或增长量比较？</text>
+    <text x="156" y="557" fill="#607086" font-size="16">比较两个增速，或使用“大大则大”</text>
+
+    <rect x="72" y="612" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="656" r="24" fill="#6D28D9"/>
+    <text x="116" y="663" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">5</text>
+    <text x="156" y="649" fill="#172033" font-size="21" font-weight="700">整体由若干部分相加构成？</text>
+    <text x="156" y="677" fill="#607086" font-size="16">整体值居中，并偏向权重更大的一侧</text>
+
+    <rect x="72" y="732" width="610" height="88" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="116" cy="776" r="24" fill="#334155"/>
+    <text x="116" y="783" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">6</text>
+    <text x="156" y="769" fill="#172033" font-size="21" font-weight="700">选项存在单位、量级或区间差？</text>
+    <text x="156" y="797" fill="#607086" font-size="16">检查小数点、百分数、百分点与合理范围</text>
+  </g>
+
+  <g fill="none" stroke="#607086" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M377 220 L377 246"/>
+    <path d="M377 340 L377 366"/>
+    <path d="M377 460 L377 486"/>
+    <path d="M377 580 L377 606"/>
+    <path d="M377 700 L377 726"/>
+    <path d="M682 176 L872 176"/>
+    <path d="M682 296 L872 296"/>
+    <path d="M682 416 L872 416"/>
+    <path d="M682 536 L872 536"/>
+    <path d="M682 656 L872 656"/>
+    <path d="M682 776 L872 776"/>
+    <path d="M377 820 L377 854"/>
+  </g>
+
+  <g font-family="Inter, Noto Sans SC, Microsoft YaHei, sans-serif">
+    <g fill="#607086" font-size="15" font-weight="700">
+      <text x="700" y="166">是</text>
+      <text x="700" y="286">是</text>
+      <text x="700" y="406">是</text>
+      <text x="700" y="526">是</text>
+      <text x="700" y="646">是</text>
+      <text x="700" y="766">是</text>
+      <text x="393" y="241">否</text>
+      <text x="393" y="361">否</text>
+      <text x="393" y="481">否</text>
+      <text x="393" y="601">否</text>
+      <text x="393" y="721">否</text>
+      <text x="393" y="846">否</text>
+    </g>
+
+    <rect x="880" y="137" width="470" height="78" rx="8" fill="#E8F0FF" stroke="#93B4F5"/>
+    <text x="1115" y="170" text-anchor="middle" fill="#153E85" font-size="21" font-weight="700">直接查找</text>
+    <text x="1115" y="196" text-anchor="middle" fill="#355986" font-size="16">不列式，核对主体、时间、单位</text>
+
+    <rect x="880" y="257" width="470" height="78" rx="8" fill="#E7F8F4" stroke="#7BC7B9"/>
+    <text x="1115" y="290" text-anchor="middle" fill="#0B5E57" font-size="21" font-weight="700">方向或阈值秒选</text>
+    <text x="1115" y="316" text-anchor="middle" fill="#356C67" font-size="16">只回答题目真正问的范围</text>
+
+    <rect x="880" y="377" width="470" height="78" rx="8" fill="#FFF4DD" stroke="#E4B55B"/>
+    <text x="1115" y="410" text-anchor="middle" fill="#7A4305" font-size="21" font-weight="700">直接比较大小</text>
+    <text x="1115" y="436" text-anchor="middle" fill="#805B28" font-size="16">共同基准抵消，不做除法</text>
+
+    <rect x="880" y="497" width="470" height="78" rx="8" fill="#FDECF1" stroke="#DB8DA5"/>
+    <text x="1115" y="530" text-anchor="middle" fill="#8B1538" font-size="21" font-weight="700">比较增速或决定因素</text>
+    <text x="1115" y="556" text-anchor="middle" fill="#8A4A5E" font-size="16">双线法、趋势法、大大则大</text>
+
+    <rect x="880" y="617" width="470" height="78" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+    <text x="1115" y="650" text-anchor="middle" fill="#5720A3" font-size="21" font-weight="700">先用区间排除</text>
+    <text x="1115" y="676" text-anchor="middle" fill="#6A4B93" font-size="16">只剩一个候选时立即停止</text>
+
+    <rect x="880" y="737" width="470" height="78" rx="8" fill="#EEF2F6" stroke="#AAB6C5"/>
+    <text x="1115" y="770" text-anchor="middle" fill="#26364B" font-size="21" font-weight="700">量级与边界排除</text>
+    <text x="1115" y="796" text-anchor="middle" fill="#526277" font-size="16">不被小数点和单位换算骗走</text>
+
+    <rect x="72" y="860" width="1278" height="52" rx="8" fill="#172033"/>
+    <text x="711" y="893" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">仍有两个以上可能：停止“秒选”，进入一步口算或按选项精度估算</text>
+  </g>
+</svg>
