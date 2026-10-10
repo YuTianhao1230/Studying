@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">OPD 学生前缀上的逐 token 蒸馏</title>
+  <desc id="desc">上半部分展示学生 rollout 中前缀随 token 逐步增长，下半部分展示教师和学生在同一个学生前缀上输出下一 token 分布，并通过 KL 损失只更新学生。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="#607086"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Droid Sans Fallback, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="62" fill="#172033" font-size="34" font-weight="700">OPD：在学生自己生成的前缀上逐 token 蒸馏</text>
+    <text x="72" y="99" fill="#607086" font-size="18">前缀 = prompt + 当前 token 之前由学生生成的全部 token，不包含当前要预测的 token。</text>
+
+    <rect x="72" y="132" width="1296" height="260" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="174" fill="#172033" font-size="21" font-weight="700">1. 学生 rollout 时，前缀逐步增长</text>
+
+    <g transform="translate(100 205)">
+      <rect width="380" height="150" rx="8" fill="#F7F9FC" stroke="#CBD5E1"/>
+      <rect x="20" y="18" width="54" height="26" rx="13" fill="#172033"/>
+      <text x="47" y="36" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">t = 1</text>
+      <text x="20" y="72" fill="#607086" font-size="14">已知前缀</text>
+      <rect x="20" y="88" width="108" height="38" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="74" y="113" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">prompt x</text>
+      <path d="M142 107 L194 107" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+      <rect x="206" y="88" width="150" height="38" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="281" y="113" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">预测 y1</text>
+    </g>
+
+    <g transform="translate(530 205)">
+      <rect width="380" height="150" rx="8" fill="#F7F9FC" stroke="#CBD5E1"/>
+      <rect x="20" y="18" width="54" height="26" rx="13" fill="#172033"/>
+      <text x="47" y="36" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">t = 2</text>
+      <text x="20" y="72" fill="#607086" font-size="14">已知前缀</text>
+      <rect x="20" y="88" width="148" height="38" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="94" y="113" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">x + y1</text>
+      <path d="M182 107 L222 107" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+      <rect x="234" y="88" width="122" height="38" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="295" y="113" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">预测 y2</text>
+    </g>
+
+    <g transform="translate(960 205)">
+      <rect width="380" height="150" rx="8" fill="#F7F9FC" stroke="#CBD5E1"/>
+      <rect x="20" y="18" width="54" height="26" rx="13" fill="#172033"/>
+      <text x="47" y="36" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">t = 3</text>
+      <text x="20" y="72" fill="#607086" font-size="14">已知前缀</text>
+      <rect x="20" y="88" width="188" height="38" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="114" y="113" text-anchor="middle" fill="#172033" font-size="15" font-weight="700">x + y1 + y2</text>
+      <path d="M222 107 L250 107" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+      <rect x="262" y="88" width="94" height="38" rx="8" fill="#F1EAFE" stroke="#B69AE8"/>
+      <text x="309" y="113" text-anchor="middle" fill="#5720A3" font-size="15" font-weight="700">预测 y3</text>
+    </g>
+
+    <rect x="72" y="420" width="1296" height="388" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="100" y="462" fill="#172033" font-size="21" font-weight="700">2. 教师和学生在同一个学生前缀上给出下一 token 分布</text>
+
+    <g transform="translate(480 490)">
+      <rect width="480" height="66" rx="8" fill="#E8EEF5" stroke="#AAB6C5"/>
+      <text x="240" y="28" text-anchor="middle" fill="#172033" font-size="17" font-weight="700">共享输入：x + y[1:t-1]</text>
+      <text x="240" y="51" text-anchor="middle" fill="#607086" font-size="14">y[1:t-1] 来自当前学生 policy 的 rollout</text>
+    </g>
+
+    <path d="M720 556 L720 582 L420 582 L420 608" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M720 582 L1020 582 L1020 608" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(240 620)">
+      <rect width="360" height="104" rx="8" fill="#EAF2FF" stroke="#8EB4E8"/>
+      <rect x="267" y="14" width="69" height="28" rx="14" fill="#356EAD"/>
+      <text x="301.5" y="33" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">冻结</text>
+      <text x="24" y="39" fill="#24578F" font-size="20" font-weight="700">Teacher</text>
+      <text x="24" y="70" fill="#172033" font-size="14">输出 pT(· | x, y[1:t-1])</text>
+      <text x="24" y="91" fill="#456B96" font-size="13">提供目标软分布</text>
+    </g>
+
+    <g transform="translate(840 620)">
+      <rect width="360" height="104" rx="8" fill="#F1EAFE" stroke="#B69AE8" stroke-width="2"/>
+      <rect x="267" y="14" width="69" height="28" rx="14" fill="#7C3AED"/>
+      <text x="301.5" y="33" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">更新</text>
+      <text x="24" y="39" fill="#5720A3" font-size="20" font-weight="700">Student</text>
+      <text x="24" y="70" fill="#172033" font-size="14">输出 pS(· | x, y[1:t-1])</text>
+      <text x="24" y="91" fill="#6A4B93" font-size="13">学习教师分布</text>
+    </g>
+
+    <path d="M420 724 L420 748 L610 748 L610 756" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M1020 724 L1020 748 L830 748 L830 756" fill="none" stroke="#607086" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(500 764)">
+      <rect width="440" height="72" rx="8" fill="#172033"/>
+      <text x="220" y="29" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">L = T² KL(pT || pS)</text>
+      <text x="220" y="54" text-anchor="middle" fill="#D7DFEA" font-size="14">反向传播只更新 Student，Teacher 保持冻结</text>
+    </g>
+
+    <text x="720" y="878" text-anchor="middle" fill="#607086" font-size="15">On-policy 的关键：训练前缀来自学生当前会访问的状态，而不是教师预先生成的标准轨迹。</text>
+  </g>
+</svg>

@@ -10,9 +10,11 @@ GRPO，全称 **Group Relative Policy Optimization（组相对策略优化）**�
 
 ### 背景
 
-传统 [RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 中常见的 PPO 链路通常会维护 `Policy Model`、`Reference Model`、`Reward Model` 和 `Value Model / Critic`。其中 `Policy Model` 是正在训练的模型，`Reference Model` 用来约束模型不要偏离原始模型太远，`Reward Model` 或规则打分器负责评价回答质量，`Value Model / Critic` 负责估计状态价值，用来计算 advantage。
+传统 [RLHF](<RLHF 基于人类反馈的强化学习.md#ppo-rlhf-中四个模型的分工>) 中常见的 PPO 链路通常包含四个模型：`Policy Model` 生成回答并接受策略更新，`Reward Model` 对完整回答给出代理奖励，`Value Model / Critic` 预测状态价值并辅助计算 advantage，`Reference Model` 通过 KL 约束限制策略漂移。四者的输入输出、训练状态和完整协作流程见 [PPO-RLHF 中四个模型的分工](<RLHF 基于人类反馈的强化学习.md#ppo-rlhf-中四个模型的分工>)。
 
-这个链路的问题在于 Critic 很重。在大模型训练里，Critic 往往和 policy 同规模，意味着额外的显存、额外的前向计算、额外的训练稳定性问题。PPO 本身也比较难调，学习率、KL 系数、clip range、reward scale、rollout 配置都会影响训练稳定性。GRPO 的提出就是为了降低这部分复杂度：**既保留强化学习的在线探索能力，又尽量去掉 Critic 带来的系统成本。**
+GRPO 保留 Policy 和 reward 来源，可选保留 Reference，但移除 Critic，改用同一 prompt 下多条回答的组内奖励统计构造 advantage。后文中的旧策略 $\pi_{\mathrm{old}}$ 是生成本批 rollout 的策略快照或旧 log-prob，用作概率比的分母，不等于长期冻结的 Reference。
+
+这个链路的问题在于 Critic 很重。在大模型训练里，独立 Critic 常采用与 Policy 同量级的骨干，意味着额外的显存、前向计算和训练稳定性问题；共享骨干或只增加 value head 的实现成本会更低。PPO 本身也比较难调，学习率、KL 系数、clip range、reward scale、rollout 配置都会影响训练稳定性。GRPO 的提出就是为了降低这部分复杂度：**既保留强化学习的在线探索能力，又尽量去掉 Critic 带来的系统成本。**
 
 ### 方法原理
 
@@ -242,25 +244,16 @@ GRPO 省去了 Critic 的参数、优化器状态及训练计算，并能直接�
 
 ### 相关概念
 
-[PPO](<PPO 近端策略优化.md#ppo-近端策略优化>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md#dpo-直接偏好优化>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
+[PPO](<PPO 近端策略优化.md#ppo-近端策略优化>) 是经典 policy optimization，GRPO 保留了它的策略更新和 KL 约束思想。[DPO](<DPO 直接偏好优化.md#dpo-直接偏好优化>) 是离线偏好优化，适合已有高质量偏好对的场景。[RLHF](<RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>) 是更大的后训练框架，GRPO 可以作为其中的 RL 算法选择。[RLVR](<RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>) 是 GRPO 常见的 reward 来源，尤其适合数学、代码和工具调用任务。[Agentic RL](<../../08_Agent/基础概念/Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) 则把 RL 目标扩展到多步工具调用和任务轨迹。[Reward Model 与 Grader](<Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>) 决定了 GRPO 的 reward 是否可靠，也是项目落地时最需要警惕的部分。
 
 ## 面试应对
-
-### 常考点及考法
-
-| 考法 | 解法/回答思路 |
-| --- | --- |
-| 给一组 reward 算 advantage | 先声明标准差口径，算均值、中心化、标准差，再除以带稳定项的分母 |
-| 全 0 是否不能训练，奖励 0 是否无信号 | 分开讨论组内同分、个体低于均值、KL 和其他 batch 样本 |
-| 旧策略是否就是 reference | 先写 ratio 分母，再说明 reference 的 KL 锚点职责 |
-| 能否从 Base 开始 | 区分算法必要条件与探索成功率、格式、奖励可靠性的工程条件 |
-| 如何验证业务收益 | 对照初始模型，做难度分桶、独立评测、奖励投机抽检和成本核算 |
 
 ### 易错点
 
 - 将二元奖励或所有错误统一为 0 直接判为无效；决定相对信号的是同组奖励差异。
 - 将零方差组等同于整个模型停止更新，忽略 KL、其他损失与其他组。
 - 混用归一化稳定项和 clip 阈值，或用无效的单样本标准差制造 NaN。
+- 混淆 Reference 和旧策略：前者是长期 KL 锚点，后者是本批 rollout 的采样策略。
 - 声称 SFT 是强制前置条件，或把省去 Critic 等同于总训练成本必然更低。
 - 把同一序列优势广播到各 token 当成过程级正确性监督。
 

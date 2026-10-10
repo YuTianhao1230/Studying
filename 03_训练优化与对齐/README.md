@@ -12,5 +12,5 @@
 | [超参数微调](<超参数微调/README.md#超参数微调>) | 学习率、batch、warmup、optimizer、weight decay、gradient clipping、PEFT、Adapter 和 LoRA 参数。 |
 | [训练框架与并行](<训练框架与并行/README.md#训练框架与并行>) | DeepSpeed、ZeRO、FSDP、Megatron-LM、JAX/XLA、混合精度、Checkpoint、多 GPU 通信与故障排查。 |
 | [训练稳定性](<训练稳定性/README.md#训练稳定性>) | Loss 异常、收敛排查、梯度爆炸和梯度消失等训练故障。 |
-| [后训练与对齐](<后训练与对齐/README.md#后训练与对齐>) | SFT、RFT、RLHF、DPO、PPO、GRPO、RLVR、蒸馏、PEFT、模型合并和 Agentic RL。 |
+| [后训练与对齐](<后训练与对齐/README.md#后训练与对齐>) | SFT、RFT、RLHF、DPO、PPO、GRPO、RLVR、蒸馏、PEFT 和模型合并。 |
 | [笔试训练](<笔试训练/README.md#训练优化与对齐笔试训练>) | AdamW、Warmup、梯度裁剪、混合精度和训练稳定性专项题。 |

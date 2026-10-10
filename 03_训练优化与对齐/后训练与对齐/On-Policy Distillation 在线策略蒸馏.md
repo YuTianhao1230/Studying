@@ -74,6 +74,16 @@ OPD 的训练形态是：
   -> 学生逐步减少这些错误
 ```
 
+第 $t$ 步的前缀是模型在预测当前 token $y_t$ 之前已经看到的全部上下文，即：
+
+$$
+(x,y_{<t})=(x,y_1,\ldots,y_{t-1}).
+$$
+
+它包含 prompt 和学生此前生成的 token，不包含当前要预测的 $y_t$ 及后续 token。随着生成推进，前缀会逐步增长。
+
+![OPD 学生前缀上的逐 token 蒸馏](assets/opd-student-prefix-distillation.png)
+
 ### 三、标准训练流程
 
 #### 3.1 准备教师与学生

@@ -15,6 +15,7 @@
 | [Guardrails 与 Human-in-the-Loop](<Guardrails与Human_in_the_Loop.md#guardrails与humanintheloop>) | 输入输出校验、权限、预算、人工确认、敏感信息保护和高风险动作控制。 |
 | [Computer Use](<Computer_Use.md#computeruse>) | GUI 感知与操作、grounding、状态验证、浏览器自动化和人工确认。 |
 | [Agent Eval、Trajectory 与 Harness](<Agent_Eval.md#agent-evaltrajectory-与-harness>) | Agent 评测维度、执行轨迹、可观测性、评测脚手架、回归和 bad case 诊断。 |
+| [Agentic RL 智能体强化学习](<Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) | 用环境反馈和轨迹级 reward 优化 Agent 的规划、工具调用、状态更新与任务完成能力。 |
 | [Jev 与 System One 决策模型](<Jev与System_One决策模型.md#jev-与-system-one-决策模型>) | `state + typed questions` 的结构化决策模型、三种原语、Agent 路由与风险门控、校准和能力边界。 |
 | [Agentic RAG](<Agentic_RAG.md#agentic-rag>) | 检索规划、多轮检索、查询改写、证据验证、结果融合和噪声控制。 |
 | [Hermes](<Hermes.md#hermes>) | 任务调度、消息分发、模型服务编排、Agent 编排、重试、幂等和扩缩容。 |

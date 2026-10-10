@@ -26,6 +26,7 @@
 | 多 Agent 分工与协作 | [SubAgent 与 Multi-Agent](<基础概念/SubAgent与Multi_Agent.md#subagent与multiagent>) |
 | 权限、人工确认与安全边界 | [Guardrails 与 Human-in-the-Loop](<基础概念/Guardrails与Human_in_the_Loop.md#guardrails与humanintheloop>) |
 | Trajectory、Harness 与 Agent 评测 | [Agent Eval、Trajectory 与 Harness](<基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>) |
+| 多步 Agent 行为的强化学习 | [Agentic RL 智能体强化学习](<基础概念/Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>) |
 | 结构化概率决策、路由与风险门控 | [Jev 与 System One 决策模型](<基础概念/Jev与System_One决策模型.md#jev-与-system-one-决策模型>) |
 | D2C 视觉一致性评估主链路 | [D2C 视觉一致性评估 Agent 案例](<实战落地/D2C视觉一致性评估Agent案例.md#d2c-视觉一致性评估-agent-实战地图>) |
 | Skill、Workflow、Tool/MCP、RAG 和评测的生产实现 | [Agent 实战落地](<实战落地/README.md#agent-实战落地>) |
@@ -34,7 +35,7 @@
 ## 建议阅读顺序
 
 1. 先读 [Agent](<基础概念/Agent.md#agent>)、[Workflow](<基础概念/Workflow.md#workflow>)、[Tool Call 与 Function Calling](<基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>) 和 [Context Engineering](<基础概念/Context_Engineering.md#contextengineering>)，建立规划、执行和上下文模型。
-2. 再读 [Skill](<基础概念/Skill.md#skill>)、[SubAgent 与 Multi-Agent](<基础概念/SubAgent与Multi_Agent.md#subagent与multiagent>)、[Guardrails 与 Human-in-the-Loop](<基础概念/Guardrails与Human_in_the_Loop.md#guardrails与humanintheloop>) 和 [Agent Eval](<基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)，补齐复用、协作、安全和评测。
+2. 再读 [Skill](<基础概念/Skill.md#skill>)、[SubAgent 与 Multi-Agent](<基础概念/SubAgent与Multi_Agent.md#subagent与multiagent>)、[Guardrails 与 Human-in-the-Loop](<基础概念/Guardrails与Human_in_the_Loop.md#guardrails与humanintheloop>)、[Agent Eval](<基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>) 和 [Agentic RL](<基础概念/Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>)，补齐复用、协作、安全、评测和轨迹级训练。
 3. 用 [Jev 与 System One 决策模型](<基础概念/Jev与System_One决策模型.md#jev-与-system-one-决策模型>) 理解结构化快速决策与 LLM、规则引擎的分工。
 4. 转入 [实战总览](<实战落地/实战总览：从问题到生产Agent.md#实战总览从问题到生产-agent>) 和 [D2C 案例](<实战落地/D2C视觉一致性评估Agent案例.md#d2c-视觉一致性评估-agent-实战地图>)，沿数据、编排、Skill、Tool/MCP、RAG、评测、可靠性、安全和排障展开。
 5. 在具体任务中按 [Skill 协同工作流](<常用Skill/Skill协同工作流.md#skill-协同工作流>) 选择和组合已安装 Skill。

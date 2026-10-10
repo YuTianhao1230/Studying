@@ -6,7 +6,7 @@
 
 | 入口 | 内容说明 |
 | --- | --- |
-| [基础概念](<基础概念/README.md#agent-基础概念>) | Agent、Workflow、Tool、Context、Skill、安全、评测和决策模型。 |
+| [基础概念](<基础概念/README.md#agent-基础概念>) | Agent、Workflow、Tool、Context、Skill、安全、评测、Agentic RL 和决策模型。 |
 | [实战落地](<实战落地/README.md#agent-实战落地>) | 从任务契约到数据、编排、工具、评测、可靠性、安全和排障的生产链路。 |
 | [常用 Skill](<常用Skill/README.md#常用-skill>) | 已实际使用的 Skill 机制、用法、协同流程和边界。 |
 | [Agent 知识库维护规范](<Agent知识库维护规范.md#agent-知识库维护规范>) | 目录职责、主题归属、阅读顺序、维护规则和本地 Skill 状态核验。 |
