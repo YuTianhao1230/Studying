@@ -1,4 +1,7 @@
+import sys
+
 def solve():
+    input = sys.stdin.buffer.readline
     n, m, h = map(int, input().split())
 
     if h <= m:
