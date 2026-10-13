@@ -1,105 +1,89 @@
 import math
 import sys
 
-def entropy(zero_count, one_count):
-    total = zero_count + one_count
-    result = 0.0
-    for count in (zero_count, one_count):
-        if count:
-            probability = count / total
-            result -= probability * math.log2(probability)
-    return result
+def entropy(c0, c1):
+    total = c0 + c1  # 当前样本总数
+    ans = 0.0  # 信息熵
+    for cnt in (c0, c1):
+        if cnt:
+            p = cnt / total
+            ans -= p * math.log2(p)
+    return ans
 
-def solve():
+if __name__ == "__main__":
     sys.setrecursionlimit(1_000_000)
-    input = sys.stdin.buffer.readline
-    sample_count, feature_count = map(int, input().split())
+    n, m = map(int, input().split())
 
-    features = []
-    labels = []
-    for _ in range(sample_count):
+    X = []  # 训练特征
+    y = []  # 训练标签
+    for _ in range(n):
         row = list(map(int, input().split()))
-        features.append(row[:feature_count])
-        labels.append(row[feature_count])
+        X.append(row[:m])
+        y.append(row[m])
 
-    def build(sample_ids, remaining_features, fallback_label=0):
-        if not sample_ids:
-            return fallback_label
+    def build(ids, fs, default=0):
+        if not ids:
+            return default
 
-        one_count = sum(labels[index] for index in sample_ids)
-        zero_count = len(sample_ids) - one_count
-        majority_label = 1 if one_count > zero_count else 0
+        c1 = sum(y[i] for i in ids)  # 标签 1 的数量
+        c0 = len(ids) - c1  # 标签 0 的数量
+        major = 1 if c1 > c0 else 0  # 当前多数标签
 
-        if zero_count == 0 or one_count == 0:
-            return labels[sample_ids[0]]
-        if not remaining_features:
-            return majority_label
+        if c0 == 0 or c1 == 0:
+            return y[ids[0]]
+        if not fs:
+            return major
 
-        base_entropy = entropy(zero_count, one_count)
-        best_feature = -1
-        best_gain = 0.0
-        epsilon = 1e-12
+        base = entropy(c0, c1)  # 划分前的信息熵
+        best = -1  # 信息增益最大的特征
+        gain_max = 0.0  # 当前最大信息增益
+        eps = 1e-12  # 浮点比较误差
 
-        for feature_id in remaining_features:
-            branch_counts = [[0, 0], [0, 0]]
-            for sample_id in sample_ids:
-                value = features[sample_id][feature_id]
-                branch_counts[value][labels[sample_id]] += 1
+        for f in fs:
+            cnt = [[0, 0], [0, 0]]  # 两个分支的标签计数
+            for i in ids:
+                cnt[X[i][f]][y[i]] += 1
 
-            conditional_entropy = 0.0
-            for branch_zero, branch_one in branch_counts:
-                branch_size = branch_zero + branch_one
-                if branch_size:
-                    conditional_entropy += (
-                        branch_size
-                        / len(sample_ids)
-                        * entropy(branch_zero, branch_one)
-                    )
-            gain = base_entropy - conditional_entropy
-            if gain > best_gain + epsilon:
-                best_gain = gain
-                best_feature = feature_id
+            cond = 0.0  # 按当前特征划分后的条件熵
+            for b0, b1 in cnt:
+                size = b0 + b1
+                if size:
+                    cond += size / len(ids) * entropy(b0, b1)
+            gain = base - cond
+            if gain > gain_max + eps:
+                gain_max = gain
+                best = f
 
-        if best_feature == -1:
-            return majority_label
+        if best == -1:
+            return major
 
-        left_ids = []
-        right_ids = []
-        for sample_id in sample_ids:
-            if features[sample_id][best_feature] == 0:
-                left_ids.append(sample_id)
+        left = []  # 特征值为 0 的样本
+        right = []  # 特征值为 1 的样本
+        for i in ids:
+            if X[i][best] == 0:
+                left.append(i)
             else:
-                right_ids.append(sample_id)
+                right.append(i)
 
-        next_features = tuple(
-            feature_id
-            for feature_id in remaining_features
-            if feature_id != best_feature
-        )
+        nxt = tuple(f for f in fs if f != best)  # 子树可用特征
         return (
-            best_feature,
-            build(left_ids, next_features, majority_label),
-            build(right_ids, next_features, majority_label),
+            best,
+            build(left, nxt, major),
+            build(right, nxt, major),
         )
 
-    tree = build(
-        list(range(sample_count)),
-        tuple(range(feature_count)),
-    )
+    tree = build(list(range(n)), tuple(range(m)))
 
     def predict(query):
         node = tree
         while isinstance(node, tuple):
-            feature_id, left, right = node
-            node = left if query[feature_id] == 0 else right
+            f, left, right = node  # 当前划分特征及左右子树
+            node = left if query[f] == 0 else right
         return node
 
-    query_count = int(input())
-    output = []
-    for _ in range(query_count):
+    q = int(input())
+    out = []  # 各查询的预测结果
+    for _ in range(q):
         query = list(map(int, input().split()))
-        output.append(str(predict(query)))
-    print("\n".join(output))
-
-if __name__ == "__main__":
-    solve()
+        out.append(str(predict(query)))
+    print("\n".join(out))

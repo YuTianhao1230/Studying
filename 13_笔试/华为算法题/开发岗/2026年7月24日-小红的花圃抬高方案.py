@@ -1,24 +1,21 @@
 import sys
 
-def solve():
-    data = list(map(int, sys.stdin.buffer.read().split()))
-    budget, capacity, transport_fee, unit_cost, count = data[:5]
-    heights = data[5 : 5 + count]
-
-    def feasible(target):
-        soil = sum(max(0, target - height) for height in heights)
-        trucks = (soil + capacity - 1) // capacity
-        return soil * unit_cost + trucks * transport_fee <= budget
-
-    low = min(heights)
-    high = low + budget // unit_cost + 1
-    while low + 1 < high:
-        middle = (low + high) // 2
-        if feasible(middle):
-            low = middle
-        else:
-            high = middle
-    print(low)
-
 if __name__ == "__main__":
-    solve()
+    data = list(map(int, sys.stdin.buffer.read().split()))
+    B, C, F, U, n = data[:5]
+    h = data[5 : 5 + n]  # 各花圃初始高度
+
+    def feasible(H):
+        soil = sum(max(0, H - x) for x in h)  # 所需土量
+        cars = (soil + C - 1) // C  # 所需车辆数
+        return soil * U + cars * F <= B
+
+    low = min(h)  # 可行下界
+    high = low + B // U + 1  # 不可行上界
+    while low + 1 < high:
+        mid = (low + high) // 2
+        if feasible(mid):
+            low = mid
+        else:
+            high = mid
+    print(low)

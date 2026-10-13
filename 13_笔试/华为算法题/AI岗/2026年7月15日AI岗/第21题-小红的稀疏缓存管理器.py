@@ -1,34 +1,28 @@
 import heapq
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    capacity, operation_count = map(int, input().split())
-    records = {}
-    prune_heap = []
-    output = []
-
-    for _ in range(operation_count):
-        parts = input().split()
-        if parts[0] == b"ADD":
-            position = int(parts[1])
-            score_text = parts[2].decode()
-            score = float(score_text)
-            key = b" ".join(input().split()).decode()
-            value = b" ".join(input().split()).decode()
-            records[position] = (score_text, key, value)
-            heapq.heappush(prune_heap, (score, position))
-            if len(records) > capacity:
-                _, removed = heapq.heappop(prune_heap)
-                del records[removed]
-                output.append(f"PRUNED {removed}")
-        else:
-            output.append(str(len(records)))
-            for position in sorted(records):
-                score_text, key, value = records[position]
-                output.extend((f"{position} {score_text}", key, value))
-
-    print("\n".join(output))
 
 if __name__ == "__main__":
-    solve()
+    K, N = map(int, input().split())
+    rec = {}  # pos -> (score 原文, Key, Value)
+    hp = []  # 按 score 淘汰缓存项的小根堆
+    out = []  # 按顺序保存输出行
+
+    for _ in range(N):
+        cmd = input().split()  # 当前操作
+        if cmd[0] == "ADD":
+            pos = int(cmd[1])
+            score = cmd[2]
+            key = " ".join(input().split())
+            value = " ".join(input().split())
+            rec[pos] = (score, key, value)
+            heapq.heappush(hp, (float(score), pos))
+            if len(rec) > K:
+                _, rm = heapq.heappop(hp)  # rm：被淘汰的位置
+                del rec[rm]
+                out.append(f"PRUNED {rm}")
+        else:
+            out.append(str(len(rec)))
+            for pos in sorted(rec):
+                score, key, value = rec[pos]
+                out.extend((f"{pos} {score}", key, value))
+
+    print("\n".join(out))

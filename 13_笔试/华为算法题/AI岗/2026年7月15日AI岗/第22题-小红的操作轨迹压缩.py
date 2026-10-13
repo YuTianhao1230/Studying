@@ -1,62 +1,56 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    rows, columns = map(int, input().split())
-    operation_count = int(input())
-    row, column = rows // 2, columns // 2
-    start = (row, column)
-    values = {}
-
-    for _ in range(operation_count):
-        move, operation, parameter = input().split()
-        if move == b"U":
-            row = max(0, row - 1)
-        elif move == b"D":
-            row = min(rows - 1, row + 1)
-        elif move == b"L":
-            column = max(0, column - 1)
-        else:
-            column = min(columns - 1, column + 1)
-        amount = int(parameter)
-        if operation == b"I":
-            values[(row, column)] = values.get((row, column), 0) + amount
-        elif operation == b"D":
-            values[(row, column)] = values.get((row, column), 0) - amount
-
-    final_position = (row, column)
-    targets = [position for position, value in values.items() if value != 0]
-    if not targets:
-        print(abs(start[0] - row) + abs(start[1] - column))
-        return
-
-    target_count = len(targets)
-    full_mask = (1 << target_count) - 1
-    infinity = 10**9
-    dp = [[infinity] * target_count for _ in range(1 << target_count)]
-    for i, target in enumerate(targets):
-        distance = abs(start[0] - target[0]) + abs(start[1] - target[1])
-        if distance == 0:
-            distance = 1 if rows == 1 or columns == 1 else 2
-        dp[1 << i][i] = distance
-
-    for mask in range(1 << target_count):
-        for last in range(target_count):
-            current = dp[mask][last]
-            if current == infinity:
-                continue
-            for nxt in range(target_count):
-                if mask >> nxt & 1:
-                    continue
-                distance = abs(targets[last][0] - targets[nxt][0]) + abs(targets[last][1] - targets[nxt][1])
-                new_mask = mask | (1 << nxt)
-                dp[new_mask][nxt] = min(dp[new_mask][nxt], current + distance)
-
-    answer = infinity
-    for last, target in enumerate(targets):
-        tail = abs(target[0] - row) + abs(target[1] - column)
-        answer = min(answer, dp[full_mask][last] + tail)
-    print(answer)
 
 if __name__ == "__main__":
-    solve()
+    n, m = map(int, input().split())
+    K = int(input())
+    r, c = n // 2, m // 2  # 当前行、列
+    st = (r, c)  # 起点
+    val = {}  # 每个被修改位置的累计值
+
+    for _ in range(K):
+        move, op, param = input().split()
+        if move == "U":
+            r = max(0, r - 1)
+        elif move == "D":
+            r = min(n - 1, r + 1)
+        elif move == "L":
+            c = max(0, c - 1)
+        else:
+            c = min(m - 1, c + 1)
+        x = int(param)  # 本次增减量
+        if op == "I":
+            val[(r, c)] = val.get((r, c), 0) + x
+        elif op == "D":
+            val[(r, c)] = val.get((r, c), 0) - x
+
+    pts = [pos for pos, x in val.items() if x != 0]  # 必须访问的修改位置
+    if not pts:
+        print(abs(st[0] - r) + abs(st[1] - c))
+        raise SystemExit
+
+    q = len(pts)  # 必须访问的位置数
+    full = (1 << q) - 1  # 全部位置均已访问的状态
+    INF = 10**9  # 不可达状态
+    dp = [[INF] * q for _ in range(1 << q)]  # dp[mask][i]：停在 i 的最短路程
+    for i, pos in enumerate(pts):
+        dis = abs(st[0] - pos[0]) + abs(st[1] - pos[1])  # 起点到 pos 的距离
+        if dis == 0:
+            dis = 1 if n == 1 or m == 1 else 2
+        dp[1 << i][i] = dis
+
+    for mask in range(1 << q):
+        for last in range(q):
+            cur = dp[mask][last]  # 当前状态的最短路程
+            if cur == INF:
+                continue
+            for nxt in range(q):
+                if mask >> nxt & 1:
+                    continue
+                dis = abs(pts[last][0] - pts[nxt][0]) + abs(pts[last][1] - pts[nxt][1])
+                nmask = mask | (1 << nxt)  # 加入 nxt 后的状态
+                dp[nmask][nxt] = min(dp[nmask][nxt], cur + dis)
+
+    ans = INF  # 回到原轨迹终点的最短总路程
+    for last, pos in enumerate(pts):
+        tail = abs(pos[0] - r) + abs(pos[1] - c)  # 最后一段距离
+        ans = min(ans, dp[full][last] + tail)
+    print(ans)

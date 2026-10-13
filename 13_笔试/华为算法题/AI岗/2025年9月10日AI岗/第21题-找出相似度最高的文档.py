@@ -1,96 +1,81 @@
 import math
-import sys
 from collections import Counter, defaultdict
 
-def solve():
-    input = sys.stdin.buffer.readline
-    document_count = int(input())
-    documents = [
-        Counter(input().decode().strip().lower().split())
-        for _ in range(document_count)
+if __name__ == "__main__":
+    N = int(input())
+    docs = [  # 按时间顺序保存的文档词频
+        Counter(input().strip().lower().split())
+        for _ in range(N)
     ]
-    window_size = int(input())
-    query_count = int(input())
+    K = int(input())
+    P = int(input())
 
-    queries_by_end = defaultdict(list)
-    for query_id in range(query_count):
-        parts = input().decode().strip().lower().split()
-        query_time = int(parts[0])
-        query = Counter(parts[1:])
-        window_end = min(query_time, document_count - 1)
-        queries_by_end[window_end].append((query_id, query))
+    qs = defaultdict(list)  # 按窗口右端点归组的查询
+    for i in range(P):
+        parts = input().strip().lower().split()
+        t = int(parts[0])
+        q = Counter(parts[1:])
+        r = min(t, N - 1)  # 当前查询窗口右端点
+        qs[r].append((i, q))
 
-    answers = [-1] * query_count
-    threshold = 0.6
-    epsilon = 1e-12
+    ans = [-1] * P
+    limit = 0.6  # 余弦相似度阈值
+    eps = 1e-12  # 浮点比较误差
 
-    for window_end, queries in queries_by_end.items():
-        window_start = window_end - window_size + 1
-        window = documents[window_start : window_end + 1]
+    for r, queries in qs.items():
+        l = r - K + 1  # 当前查询窗口左端点
+        win = docs[l : r + 1]  # 当前文档窗口
 
-        document_frequency = Counter()
-        for document in window:
-            document_frequency.update(document.keys())
+        df = Counter()  # 当前窗口的文档频率
+        for doc in win:
+            df.update(doc.keys())
 
         def idf(word):
-            return (
-                math.log(
-                    (window_size + 1)
-                    / (document_frequency.get(word, 0) + 1)
-                )
-                + 1.0
-            )
+            return math.log((K + 1) / (df.get(word, 0) + 1)) + 1.0
 
-        weighted_documents = []
-        inverted_index = defaultdict(list)
-        for local_id, document in enumerate(window):
-            vector = {}
-            norm_square = 0.0
-            for word, frequency in document.items():
-                value = frequency * idf(word)
-                vector[word] = value
-                norm_square += value * value
-                inverted_index[word].append((local_id, value))
-            weighted_documents.append(
-                (math.sqrt(norm_square), (local_id + 1) / window_size)
-            )
+        info = []  # 各文档的向量模长和时间权重
+        inv = defaultdict(list)  # 词到文档权重的倒排索引
+        for i, doc in enumerate(win):
+            norm2 = 0.0  # 当前文档向量模长的平方
+            for word, freq in doc.items():
+                val = freq * idf(word)
+                norm2 += val * val
+                inv[word].append((i, val))
+            info.append((math.sqrt(norm2), (i + 1) / K))
 
-        for query_id, query in queries:
-            query_values = {}
-            query_norm_square = 0.0
-            for word, frequency in query.items():
-                value = frequency * idf(word)
-                query_values[word] = value
-                query_norm_square += value * value
+        for qid, q in queries:
+            qv = {}  # 查询的 TF-IDF 向量
+            qnorm2 = 0.0  # 查询向量模长的平方
+            for word, freq in q.items():
+                val = freq * idf(word)
+                qv[word] = val
+                qnorm2 += val * val
 
-            if query_norm_square == 0:
+            if qnorm2 == 0:
                 continue
 
-            dot_products = [0.0] * window_size
-            for word, query_value in query_values.items():
-                for local_id, document_value in inverted_index.get(word, ()):
-                    dot_products[local_id] += query_value * document_value
+            dots = [0.0] * K  # 查询与各文档的点积
+            for word, qval in qv.items():
+                for i, dval in inv.get(word, ()):
+                    dots[i] += qval * dval
 
-            query_norm = math.sqrt(query_norm_square)
-            best_score = -1.0
-            best_document = -1
+            qnorm = math.sqrt(qnorm2)  # 查询向量模长
+            best = -1.0  # 当前最高加权得分
+            doc_id = -1  # 当前最佳文档编号
 
-            for local_id, dot_product in enumerate(dot_products):
-                document_norm, time_weight = weighted_documents[local_id]
-                if document_norm == 0:
+            for i, dot in enumerate(dots):
+                dnorm, weight = info[i]
+                if dnorm == 0:
                     continue
-                cosine = dot_product / (query_norm * document_norm)
-                if cosine + epsilon < threshold:
+                cos = dot / (qnorm * dnorm)  # 原始余弦相似度
+                if cos + eps < limit:
                     continue
 
-                score = cosine * time_weight
-                if score > best_score + epsilon:
-                    best_score = score
-                    best_document = window_start + local_id
+                score = cos * weight
+                if score > best + eps:
+                    best = score
+                    doc_id = l + i
 
-            answers[query_id] = best_document
+            ans[qid] = doc_id
 
-    print(*answers)
-
-if __name__ == "__main__":
-    solve()
+    print(*ans)

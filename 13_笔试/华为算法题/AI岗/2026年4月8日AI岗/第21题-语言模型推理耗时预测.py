@@ -1,83 +1,58 @@
-import sys
 from decimal import Decimal, ROUND_HALF_EVEN
 
-def format_half_even(value):
-    rounded = Decimal(str(value)).quantize(
+def format_half_even(x):
+    val = Decimal(str(x)).quantize(
         Decimal("0.00"), rounding=ROUND_HALF_EVEN
-    )
-    if rounded == 0:
-        rounded = Decimal("0.00")
-    return format(rounded, ".2f")
-
-def solve():
-    input = sys.stdin.buffer.readline
-    sample_count = int(input())
-    iterations = int(input())
-    learning_rate = float(input())
-    rows = [list(map(int, input().split())) for _ in range(sample_count)]
-
-    minimums = [
-        min(row[feature] for row in rows) for feature in range(3)
-    ]
-    maximums = [
-        max(row[feature] for row in rows) for feature in range(3)
-    ]
-    ranges = [
-        maximums[feature] - minimums[feature] for feature in range(3)
-    ]
-
-    gram = [[0.0] * 4 for _ in range(4)]
-    target_product = [0.0] * 4
-
-    for row in rows:
-        vector = [1.0]
-        for feature in range(3):
-            if ranges[feature] == 0:
-                vector.append(0.0)
-            else:
-                vector.append(
-                    (row[feature] - minimums[feature]) / ranges[feature]
-                )
-        target = row[3]
-
-        for first in range(4):
-            target_product[first] += vector[first] * target
-            for second in range(4):
-                gram[first][second] += vector[first] * vector[second]
-
-    inverse_count = 1.0 / sample_count
-    for first in range(4):
-        target_product[first] *= inverse_count
-        for second in range(4):
-            gram[first][second] *= inverse_count
-
-    weights = [0.0] * 4
-    for _ in range(iterations):
-        gradients = [
-            sum(
-                gram[first][second] * weights[second]
-                for second in range(4)
-            )
-            - target_product[first]
-            for first in range(4)
-        ]
-        weights = [
-            weight - learning_rate * gradient
-            for weight, gradient in zip(weights, gradients)
-        ]
-
-    restored = [0.0] * 4
-    for feature in range(3):
-        if ranges[feature] != 0:
-            restored[feature + 1] = (
-                weights[feature + 1] / ranges[feature]
-            )
-    restored[0] = weights[0] - sum(
-        restored[feature + 1] * minimums[feature]
-        for feature in range(3)
-    )
-
-    print(" ".join(format_half_even(value) for value in restored))
+    )  # 银行家舍入后的值
+    if val == 0:
+        val = Decimal("0.00")
+    return format(val, ".2f")
 
 if __name__ == "__main__":
-    solve()
+    m = int(input())
+    N = int(input())
+    alpha = float(input())
+    a = [list(map(int, input().split())) for _ in range(m)]  # 训练样本
+
+    mn = [min(row[j] for row in a) for j in range(3)]  # 各特征最小值
+    mx = [max(row[j] for row in a) for j in range(3)]  # 各特征最大值
+    rg = [mx[j] - mn[j] for j in range(3)]  # 各特征极差
+
+    gram = [[0.0] * 4 for _ in range(4)]  # X 转置乘 X
+    xy = [0.0] * 4  # X 转置乘 y
+
+    for row in a:
+        x = [1.0]  # 加入偏置项后的归一化特征
+        for j in range(3):
+            if rg[j] == 0:
+                x.append(0.0)
+            else:
+                x.append((row[j] - mn[j]) / rg[j])
+        y = row[3]
+
+        for i in range(4):
+            xy[i] += x[i] * y
+            for j in range(4):
+                gram[i][j] += x[i] * x[j]
+
+    inv = 1.0 / m  # 样本数倒数
+    for i in range(4):
+        xy[i] *= inv
+        for j in range(4):
+            gram[i][j] *= inv
+
+    w = [0.0] * 4  # 归一化空间中的模型参数
+    for _ in range(N):
+        g = [
+            sum(gram[i][j] * w[j] for j in range(4)) - xy[i]
+            for i in range(4)
+        ]
+        w = [wi - alpha * gi for wi, gi in zip(w, g)]
+
+    ans = [0.0] * 4  # 还原到原特征空间的参数
+    for j in range(3):
+        if rg[j] != 0:
+            ans[j + 1] = w[j + 1] / rg[j]
+    ans[0] = w[0] - sum(ans[j + 1] * mn[j] for j in range(3))
+
+    print(" ".join(format_half_even(x) for x in ans))

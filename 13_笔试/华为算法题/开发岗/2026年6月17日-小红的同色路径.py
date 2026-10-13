@@ -1,27 +1,22 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    rows, columns, color_count = map(int, input().split())
-    grid = [list(map(int, input().split())) for _ in range(rows)]
-    infinity = 10**18
-    answer = infinity
-
-    for target_color in range(1, color_count + 1):
-        dp = [infinity] * columns
-        for row in range(rows):
-            for column in range(columns):
-                cost = abs(grid[row][column] - target_color)
-                if row == 0 and column == 0:
-                    dp[column] = cost
-                elif row == 0:
-                    dp[column] = dp[column - 1] + cost
-                elif column == 0:
-                    dp[column] += cost
-                else:
-                    dp[column] = min(dp[column], dp[column - 1]) + cost
-        answer = min(answer, dp[-1])
-    print(answer)
 
 if __name__ == "__main__":
-    solve()
+    n, m, C = map(int, input().split())
+    a = [list(map(int, input().split())) for _ in range(n)]
+    inf = 10**18  # 无穷大初值
+    ans = inf
+
+    for x in range(1, C + 1):
+        dp = [inf] * m  # 当前行各位置的最小代价
+        for i in range(n):
+            for j in range(m):
+                cost = abs(a[i][j] - x)
+                if i == 0 and j == 0:
+                    dp[j] = cost
+                elif i == 0:
+                    dp[j] = dp[j - 1] + cost
+                elif j == 0:
+                    dp[j] += cost
+                else:
+                    dp[j] = min(dp[j], dp[j - 1]) + cost
+        ans = min(ans, dp[-1])
+    print(ans)

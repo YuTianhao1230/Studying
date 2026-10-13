@@ -1,31 +1,27 @@
 import math
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    actual_length, trained_length, dimension, base, position = input().split()
-    actual_length = int(actual_length)
-    trained_length = int(trained_length)
-    dimension = int(dimension)
-    base = float(base)
-    position = int(position)
-    vector = list(map(float, input().split()))
-
-    scale = max(1.0, actual_length / trained_length)
-    adjusted_base = base * scale ** (dimension / (dimension - 2))
-    answer = []
-    for i in range(dimension // 2):
-        angle = position * adjusted_base ** (-2 * i / dimension)
-        cosine, sine = math.cos(angle), math.sin(angle)
-        left, right = vector[2 * i], vector[2 * i + 1]
-        answer.extend((left * cosine - right * sine, left * sine + right * cosine))
-
-    formatted = []
-    for value in answer:
-        if abs(value) < 0.00005:
-            value = 0.0
-        formatted.append(f"{value:.4f}")
-    print(" ".join(formatted))
 
 if __name__ == "__main__":
-    solve()
+    T, L, D, b, m = input().split()
+    T, L, D, m = int(T), int(L), int(D), int(m)
+    b = float(b)
+    x = list(map(float, input().split()))  # 原始向量
+
+    s = max(1.0, T / L)
+    nb = b * s ** (D / (D - 2))  # 题目中的新基频 b'
+    ans = []  # 旋转后的向量
+    for i in range(D // 2):
+        theta = m * nb ** (-2 * i / D)
+        cos, sin = math.cos(theta), math.sin(theta)
+        ans.extend(
+            (
+                x[2 * i] * cos - x[2 * i + 1] * sin,
+                x[2 * i] * sin + x[2 * i + 1] * cos,
+            )
+        )
+
+    out = []  # 格式化后的输出
+    for v in ans:
+        if abs(v) < 0.00005:
+            v = 0.0
+        out.append(f"{v:.4f}")
+    print(" ".join(out))

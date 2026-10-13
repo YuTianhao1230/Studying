@@ -1,19 +1,14 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    count = int(input())
-    heights = list(map(int, input().split()))
-    suffix_max = heights[:]
-    for index in range(count - 2, -1, -1):
-        suffix_max[index] = max(suffix_max[index], suffix_max[index + 1])
-
-    answer = 0
-    left_max = heights[0]
-    for index in range(count - 1):
-        left_max = max(left_max, heights[index])
-        answer += min(left_max, suffix_max[index + 1])
-    print(answer)
 
 if __name__ == "__main__":
-    solve()
+    n = int(input())
+    h = list(map(int, input().split()))
+    right = h[:]  # 从当前位置开始的后缀最大高度
+    for i in range(n - 2, -1, -1):
+        right[i] = max(right[i], right[i + 1])
+
+    ans = 0
+    left = h[0]  # 当前位置左侧的最大高度
+    for i in range(n - 1):
+        left = max(left, h[i])
+        ans += min(left, right[i + 1])
+    print(ans)

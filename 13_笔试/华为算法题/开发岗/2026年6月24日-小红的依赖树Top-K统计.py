@@ -1,36 +1,31 @@
 import heapq
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    preorder = list(map(int, input().split()))
-    inorder = list(map(int, input().split()))
-    k = int(input())
-    inorder_index = {value: index for index, value in enumerate(inorder)}
-    top_k = []
-    stack = [(0, 0, len(inorder), 0)]
-
-    while stack:
-        root_pre, left, right, parent_sum = stack.pop()
-        if left >= right:
-            continue
-        root_value = preorder[root_pre]
-        path_sum = parent_sum + root_value
-        if path_sum <= 0:
-            continue
-        if len(top_k) < k:
-            heapq.heappush(top_k, path_sum)
-        elif path_sum > top_k[0]:
-            heapq.heapreplace(top_k, path_sum)
-
-        root_in = inorder_index[root_value]
-        left_size = root_in - left
-        if root_in + 1 < right:
-            stack.append((root_pre + left_size + 1, root_in + 1, right, path_sum))
-        if left < root_in:
-            stack.append((root_pre + 1, left, root_in, path_sum))
-
-    print(*sorted(top_k)) if top_k else print("null")
 
 if __name__ == "__main__":
-    solve()
+    pre = list(map(int, input().split()))  # 前序遍历
+    ino = list(map(int, input().split()))  # 中序遍历
+    K = int(input())
+    pos = {x: i for i, x in enumerate(ino)}  # 节点的中序位置
+    top = []  # 当前最大的 K 个完整大小
+    stack = [(0, 0, len(ino), 0)]  # 前序根、中序区间、父路径和
+
+    while stack:
+        root, l, r, parent = stack.pop()
+        if l >= r:
+            continue
+        val = pre[root]  # 当前根节点增量
+        total = parent + val  # 当前节点完整大小
+        if total <= 0:
+            continue
+        if len(top) < K:
+            heapq.heappush(top, total)
+        elif total > top[0]:
+            heapq.heapreplace(top, total)
+
+        mid = pos[val]  # 根节点的中序位置
+        size = mid - l  # 左子树节点数
+        if mid + 1 < r:
+            stack.append((root + size + 1, mid + 1, r, total))
+        if l < mid:
+            stack.append((root + 1, l, mid, total))
+
+    print(*sorted(top)) if top else print("null")

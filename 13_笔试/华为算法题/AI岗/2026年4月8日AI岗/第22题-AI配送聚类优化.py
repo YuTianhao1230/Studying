@@ -1,61 +1,51 @@
 import math
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    requested_centers, point_count, speed = map(int, input().split())
-    points = [tuple(map(float, input().split())) for _ in range(point_count)]
-
-    if requested_centers >= point_count:
-        centers = points[:]
-    else:
-        centers = sorted(
-            points, key=lambda point: point[0] ** 2 + point[1] ** 2
-        )[:requested_centers]
-
-        for _ in range(50):
-            sum_x = [0.0] * requested_centers
-            sum_y = [0.0] * requested_centers
-            counts = [0] * requested_centers
-
-            for x, y in points:
-                best_cluster = 0
-                best_distance = float("inf")
-                for cluster_id, (center_x, center_y) in enumerate(centers):
-                    distance = (x - center_x) ** 2 + (y - center_y) ** 2
-                    if distance < best_distance:
-                        best_distance = distance
-                        best_cluster = cluster_id
-                sum_x[best_cluster] += x
-                sum_y[best_cluster] += y
-                counts[best_cluster] += 1
-
-            new_centers = centers[:]
-            for cluster_id in range(requested_centers):
-                if counts[cluster_id]:
-                    new_centers[cluster_id] = (
-                        sum_x[cluster_id] / counts[cluster_id],
-                        sum_y[cluster_id] / counts[cluster_id],
-                    )
-
-            movement = sum(
-                math.dist(old_center, new_center)
-                for old_center, new_center in zip(centers, new_centers)
-            )
-            centers = new_centers
-            if movement < 1e-4:
-                break
-
-    centers.sort(key=lambda point: math.hypot(point[0], point[1]))
-    total_distance = 0.0
-    previous = (0.0, 0.0)
-    for center in centers:
-        total_distance += math.dist(previous, center)
-        previous = center
-    total_distance += math.dist(previous, (0.0, 0.0))
-
-    total_seconds = total_distance * 3600 / speed
-    print(math.floor(total_seconds))
 
 if __name__ == "__main__":
-    solve()
+    K, N, speed = map(int, input().split())
+    pts = [tuple(map(float, input().split())) for _ in range(N)]  # 包裹坐标
+
+    if K >= N:
+        cen = pts[:]
+    else:
+        cen = sorted(pts, key=lambda p: p[0] ** 2 + p[1] ** 2)[:K]
+
+        for _ in range(50):
+            sx = [0.0] * K  # 各簇横坐标和
+            sy = [0.0] * K  # 各簇纵坐标和
+            cnt = [0] * K  # 各簇点数
+
+            for x, y in pts:
+                c = 0  # 最近中心编号
+                dis = float("inf")  # 到最近中心的距离平方
+                for i, (cx, cy) in enumerate(cen):
+                    cur = (x - cx) ** 2 + (y - cy) ** 2
+                    if cur < dis:
+                        dis = cur
+                        c = i
+                sx[c] += x
+                sy[c] += y
+                cnt[c] += 1
+
+            ncen = cen[:]  # 更新后的中心
+            for i in range(K):
+                if cnt[i]:
+                    ncen[i] = (
+                        sx[i] / cnt[i],
+                        sy[i] / cnt[i],
+                    )
+
+            move = sum(math.dist(a, b) for a, b in zip(cen, ncen))  # 中心总位移
+            cen = ncen
+            if move < 1e-4:
+                break
+
+    cen.sort(key=lambda p: math.hypot(p[0], p[1]))
+    dis = 0.0  # 完整配送路程
+    pre = (0.0, 0.0)  # 上一个服务中心
+    for p in cen:
+        dis += math.dist(pre, p)
+        pre = p
+    dis += math.dist(pre, (0.0, 0.0))
+
+    ans = dis * 3600 / speed  # 配送总秒数
+    print(math.floor(ans))

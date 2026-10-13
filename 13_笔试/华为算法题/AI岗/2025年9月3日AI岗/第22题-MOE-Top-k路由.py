@@ -1,47 +1,31 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    expert_count, group_count, selected_groups, top_k = map(
-        int, input().split()
-    )
-    probabilities = list(map(float, input().split()))
-
-    if (
-        expert_count % group_count != 0
-        or selected_groups > group_count
-    ):
-        print("error")
-        return
-
-    group_size = expert_count // group_count
-    if selected_groups * group_size < top_k:
-        print("error")
-        return
-
-    representatives = []
-    for group in range(group_count):
-        start = group * group_size
-        end = start + group_size
-        representative_probability = max(probabilities[start:end])
-        representatives.append((representative_probability, group))
-
-    representatives.sort(key=lambda item: (-item[0], item[1]))
-    chosen_groups = {
-        group for _, group in representatives[:selected_groups]
-    }
-
-    candidates = [
-        expert
-        for group in chosen_groups
-        for expert in range(
-            group * group_size,
-            (group + 1) * group_size,
-        )
-    ]
-    candidates.sort(key=lambda expert: (-probabilities[expert], expert))
-    answer = sorted(candidates[:top_k])
-    print(*answer)
 
 if __name__ == "__main__":
-    solve()
+    n, m, p, k = map(int, input().split())
+    probs = list(map(float, input().split()))  # 各专家概率
+
+    if n % m != 0 or p > m:
+        print("error")
+        raise SystemExit
+
+    g = n // m  # 每组专家数
+    if p * g < k:
+        print("error")
+        raise SystemExit
+
+    reps = []  # 各组的代表概率和组号
+    for i in range(m):
+        l = i * g
+        r = l + g
+        reps.append((max(probs[l:r]), i))
+
+    reps.sort(key=lambda x: (-x[0], x[1]))
+    chosen = {i for _, i in reps[:p]}  # 被选中的组号
+
+    cand = [  # 候选专家编号
+        j
+        for i in chosen
+        for j in range(i * g, (i + 1) * g)
+    ]
+    cand.sort(key=lambda i: (-probs[i], i))
+    ans = sorted(cand[:k])
+    print(*ans)

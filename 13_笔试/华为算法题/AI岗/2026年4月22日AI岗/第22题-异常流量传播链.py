@@ -1,44 +1,30 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    station_count, distance_limit, weight_threshold = map(
-        int, input().split()
-    )
-    stations = [tuple(map(int, input().split())) for _ in range(station_count)]
-
-    adjacent = [[False] * station_count for _ in range(station_count)]
-    neighborhood_weight = [0] * station_count
-    for first in range(station_count):
-        x_1, y_1, _, _, _ = stations[first]
-        for second in range(station_count):
-            x_2, y_2, _, weight, _ = stations[second]
-            if abs(x_1 - x_2) + abs(y_1 - y_2) <= distance_limit:
-                adjacent[first][second] = True
-                neighborhood_weight[first] += weight
-
-    critical = [
-        index
-        for index in range(station_count)
-        if neighborhood_weight[index] >= weight_threshold
-    ]
-    critical.sort(key=lambda index: stations[index][2])
-
-    best_ending = [stations[index][4] for index in range(station_count)]
-    answer = 0
-    for target_position, target in enumerate(critical):
-        target_time = stations[target][2]
-        for source in critical[:target_position]:
-            if stations[source][2] >= target_time:
-                continue
-            if adjacent[source][target]:
-                best_ending[target] = max(
-                    best_ending[target],
-                    best_ending[source] + stations[target][4],
-                )
-                answer = max(answer, best_ending[target])
-
-    print(answer)
 
 if __name__ == "__main__":
-    solve()
+    N, dist, Wthreshold = map(int, input().split())
+    a = [tuple(map(int, input().split())) for _ in range(N)]  # 各基站数据
+
+    adj = [[False] * N for _ in range(N)]  # 基站邻接关系
+    sw = [0] * N  # 各基站邻域负载和
+    for i in range(N):
+        x1, y1, _, _, _ = a[i]
+        for j in range(N):
+            x2, y2, _, w, _ = a[j]
+            if abs(x1 - x2) + abs(y1 - y2) <= dist:
+                adj[i][j] = True
+                sw[i] += w
+
+    key = [i for i in range(N) if sw[i] >= Wthreshold]  # 关键基站编号
+    key.sort(key=lambda i: a[i][2])
+
+    dp = [a[i][4] for i in range(N)]  # 以各基站结尾的最大用户数
+    ans = 0
+    for p, v in enumerate(key):
+        t = a[v][2]
+        for u in key[:p]:
+            if a[u][2] >= t:
+                continue
+            if adj[u][v]:
+                dp[v] = max(dp[v], dp[u] + a[v][4])
+                ans = max(ans, dp[v])
+
+    print(ans)

@@ -1,22 +1,17 @@
-import sys
-
-def solve():
-    input = sys.stdin.buffer.readline
-    target = input().strip()
-    source = input().strip()
-    dp = [0] * (len(source) + 1)
-
-    for target_character in target:
-        diagonal = 0
-        for index, source_character in enumerate(source, 1):
-            old = dp[index]
-            if target_character == source_character:
-                dp[index] = diagonal + 1
-            elif dp[index - 1] > dp[index]:
-                dp[index] = dp[index - 1]
-            diagonal = old
-
-    print(len(target) - dp[-1])
 
 if __name__ == "__main__":
-    solve()
+    T = input().strip()
+    S = input().strip()
+    dp = [0] * (len(S) + 1)  # 当前行各前缀的 LCS 长度
+
+    for x in T:
+        diag = 0  # 更新前的左上角状态
+        for j, y in enumerate(S, 1):
+            old = dp[j]  # 更新前的上方状态
+            if x == y:
+                dp[j] = diag + 1
+            elif dp[j - 1] > dp[j]:
+                dp[j] = dp[j - 1]
+            diag = old
+
+    print(len(T) - dp[-1])

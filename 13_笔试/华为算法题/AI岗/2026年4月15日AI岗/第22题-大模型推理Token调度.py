@@ -1,40 +1,30 @@
-import sys
-
-def solve():
-    line = sys.stdin.buffer.readline().decode().strip()
-    priorities = [int(value.strip()) for value in line.split(",")]
-    task_count = len(priorities)
-
-    left = [0] * task_count
-    for index, priority in enumerate(priorities):
-        if priority <= 0:
-            continue
-        left[index] = 1
-        if (
-            index > 0
-            and priorities[index - 1] > 0
-            and priority > priorities[index - 1]
-        ):
-            left[index] = left[index - 1] + 1
-
-    right = [0] * task_count
-    for index in range(task_count - 1, -1, -1):
-        if priorities[index] <= 0:
-            continue
-        right[index] = 1
-        if (
-            index + 1 < task_count
-            and priorities[index + 1] > 0
-            and priorities[index] > priorities[index + 1]
-        ):
-            right[index] = right[index + 1] + 1
-
-    print(
-        sum(
-            max(left[index], right[index])
-            for index in range(task_count)
-        )
-    )
-
 if __name__ == "__main__":
-    solve()
+    row = input().strip()  # 原始输入行
+    a = [int(x.strip()) for x in row.split(",")]  # 各任务优先级
+    n = len(a)  # 任务数
+
+    left = [0] * n  # 从左侧约束得到的 Token 数
+    for i, x in enumerate(a):
+        if x <= 0:
+            continue
+        left[i] = 1
+        if (
+            i > 0
+            and a[i - 1] > 0
+            and x > a[i - 1]
+        ):
+            left[i] = left[i - 1] + 1
+
+    right = [0] * n  # 从右侧约束得到的 Token 数
+    for i in range(n - 1, -1, -1):
+        if a[i] <= 0:
+            continue
+        right[i] = 1
+        if (
+            i + 1 < n
+            and a[i + 1] > 0
+            and a[i] > a[i + 1]
+        ):
+            right[i] = right[i + 1] + 1
+
+    print(sum(max(left[i], right[i]) for i in range(n)))

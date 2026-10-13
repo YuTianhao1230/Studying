@@ -1,22 +1,19 @@
-import sys
-
-def solve():
-    s = sys.stdin.readline().strip()
-    n = len(s)
-    prefix = [0] * n
+if __name__ == "__main__":
+    s = input().strip()
+    n = len(s)  # 原字符串长度
+    pi = [0] * n  # KMP 前缀函数
     for i in range(1, n):
-        j = prefix[i - 1]
+        j = pi[i - 1]
         while j > 0 and s[i] != s[j]:
-            j = prefix[j - 1]
+            j = pi[j - 1]
         if s[i] == s[j]:
             j += 1
-        prefix[i] = j
+        pi[i] = j
 
-    period = n - prefix[-1]
-    if period < n and n % period == 0:
-        print(s[:period] + str(n // period))
+    d = n - pi[-1]  # 候选最短周期
+    if d < n and n % d == 0:
+        t = s[:d]
+        k = n // d
+        print(t + str(k))
     else:
         print(s)
-
-if __name__ == "__main__":
-    solve()

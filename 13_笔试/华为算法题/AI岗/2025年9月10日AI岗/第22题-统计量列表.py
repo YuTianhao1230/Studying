@@ -3,83 +3,70 @@ import math
 import sys
 from decimal import Decimal, ROUND_HALF_UP
 
-def format_number(value):
-    rounded = Decimal(str(value)).quantize(
+def format_number(x):
+    val = Decimal(str(x)).quantize(  # 四舍五入后的数值
         Decimal("0.001"), rounding=ROUND_HALF_UP
     )
-    if rounded == 0:
+    if val == 0:
         return "0"
-    return format(rounded, "f").rstrip("0").rstrip(".")
+    return format(val, "f").rstrip("0").rstrip(".")
 
-def statistics(values):
-    size = len(values)
-    mean = sum(values) / size
+def statistics(a):
+    n = len(a)  # 当前窗口长度
+    mean = sum(a) / n
 
-    if size == 1:
-        standard_deviation = 0.0
+    if n == 1:
+        std = 0.0  # 样本标准差
         slope = 0.0
     else:
-        variance = sum((value - mean) ** 2 for value in values) / (
-            size - 1
-        )
-        standard_deviation = math.sqrt(variance)
+        var = sum((x - mean) ** 2 for x in a) / (n - 1)
+        std = math.sqrt(var)
 
-        mean_x = (size - 1) / 2
-        numerator = sum(
-            (index - mean_x) * (value - mean)
-            for index, value in enumerate(values)
-        )
-        denominator = sum(
-            (index - mean_x) ** 2 for index in range(size)
-        )
-        slope = numerator / denominator
+        mx = (n - 1) / 2  # 横坐标均值
+        up = sum((i - mx) * (x - mean) for i, x in enumerate(a))
+        down = sum((i - mx) ** 2 for i in range(n))
+        slope = up / down
 
     return (
         mean,
-        standard_deviation,
-        min(values),
-        max(values),
+        std,
+        min(a),
+        max(a),
         slope,
     )
 
 def solve_line(line):
     try:
-        values, windows = ast.literal_eval(line)
+        a, ws = ast.literal_eval(line)  # 数值序列和窗口序列
     except (SyntaxError, ValueError, TypeError):
         return ["[]"]
 
     if (
-        not isinstance(values, list)
-        or not isinstance(windows, list)
-        or not values
-        or not windows
-        or any(
-            not isinstance(window, int) or window <= 0
-            for window in windows
-        )
+        not isinstance(a, list)
+        or not isinstance(ws, list)
+        or not a
+        or not ws
+        or any(not isinstance(w, int) or w <= 0 for w in ws)
     ):
         return ["[]"]
 
-    maximum_window = max(windows)
-    if len(values) < maximum_window:
+    W = max(ws)  # 最长窗口
+    if len(a) < W:
         return ["[]"]
 
-    output = []
-    for right in range(maximum_window - 1, len(values)):
-        row = []
-        for window in windows:
-            current = values[right - window + 1 : right + 1]
-            row.extend(format_number(value) for value in statistics(current))
-        output.append("[" + ", ".join(row) + "]")
-    return output
-
-def solve():
-    output = []
-    for raw_line in sys.stdin:
-        line = raw_line.strip()
-        if line:
-            output.extend(solve_line(line))
-    print("\n".join(output))
+    out = []  # 当前测试用例的输出行
+    for r in range(W - 1, len(a)):
+        row = []  # 当前右边界的全部统计量
+        for w in ws:
+            cur = a[r - w + 1 : r + 1]  # 当前窗口数据
+            row.extend(format_number(x) for x in statistics(cur))
+        out.append("[" + ", ".join(row) + "]")
+    return out
 
 if __name__ == "__main__":
-    solve()
+    out = []  # 所有测试用例的输出行
+    for raw in sys.stdin:
+        line = raw.strip()
+        if line:
+            out.extend(solve_line(line))
+    print("\n".join(out))

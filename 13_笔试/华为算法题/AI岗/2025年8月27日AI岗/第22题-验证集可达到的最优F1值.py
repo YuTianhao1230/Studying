@@ -1,86 +1,78 @@
-import sys
 from decimal import Decimal, ROUND_HALF_UP
 
 def pareto(states):
-    best_fp_by_tp = {}
-    for true_positive, false_positive in states:
-        old = best_fp_by_tp.get(true_positive)
-        if old is None or false_positive < old:
-            best_fp_by_tp[true_positive] = false_positive
+    best = {}  # 每个 TP 对应的最小 FP
+    for tp, fp in states:
+        old = best.get(tp)
+        if old is None or fp < old:
+            best[tp] = fp
 
-    frontier = []
-    best_fp = float("inf")
-    for true_positive in sorted(best_fp_by_tp, reverse=True):
-        false_positive = best_fp_by_tp[true_positive]
-        if false_positive < best_fp:
-            frontier.append((true_positive, false_positive))
-            best_fp = false_positive
-    return frontier
+    ans = []  # 未被支配的状态
+    min_fp = float("inf")  # 更大 TP 下出现过的最小 FP
+    for tp in sorted(best, reverse=True):
+        fp = best[tp]
+        if fp < min_fp:
+            ans.append((tp, fp))
+            min_fp = fp
+    return ans
 
-def solve():
-    input = sys.stdin.buffer.readline
-    node_count, sample_count, dimension = map(int, input().split())
+if __name__ == "__main__":
+    N, M, K = map(int, input().split())
     nodes = [None]
-    for _ in range(node_count):
+    for _ in range(N):
         nodes.append(tuple(map(int, input().split())))
 
-    features = []
-    labels = []
-    for _ in range(sample_count):
+    X = []  # 验证样本特征
+    y = []  # 验证样本标签
+    for _ in range(M):
         row = list(map(int, input().split()))
-        features.append(row[:dimension])
-        labels.append(row[dimension])
+        X.append(row[:K])
+        y.append(row[K])
 
-    def subtree_states(node_id, sample_ids):
-        left, right, feature, threshold, node_label = nodes[node_id]
-        positive_count = sum(labels[index] for index in sample_ids)
-        negative_count = len(sample_ids) - positive_count
+    def subtree_states(node_id, ids):
+        left, right, feature, threshold, label = nodes[node_id]
+        pos = sum(y[i] for i in ids)  # 当前节点的正样本数
+        neg = len(ids) - pos  # 当前节点的负样本数
 
-        if node_label == 1:
-            states = [(positive_count, negative_count)]
+        if label == 1:
+            states = [(pos, neg)]
         else:
             states = [(0, 0)]
 
         if left == 0:
             return states
 
-        left_ids = []
-        right_ids = []
-        feature_index = feature - 1
-        for index in sample_ids:
-            if features[index][feature_index] <= threshold:
-                left_ids.append(index)
+        lids = []  # 进入左子树的样本编号
+        rids = []  # 进入右子树的样本编号
+        f = feature - 1  # 转为从 0 开始的特征编号
+        for i in ids:
+            if X[i][f] <= threshold:
+                lids.append(i)
             else:
-                right_ids.append(index)
+                rids.append(i)
 
-        left_states = subtree_states(left, left_ids)
-        right_states = subtree_states(right, right_ids)
+        ls = subtree_states(left, lids)  # 左子树可行状态
+        rs = subtree_states(right, rids)  # 右子树可行状态
         states.extend(
-            (left_tp + right_tp, left_fp + right_fp)
-            for left_tp, left_fp in left_states
-            for right_tp, right_fp in right_states
+            (ltp + rtp, lfp + rfp)
+            for ltp, lfp in ls
+            for rtp, rfp in rs
         )
         return pareto(states)
 
-    total_positive = sum(labels)
-    root_states = subtree_states(1, list(range(sample_count)))
+    P = sum(y)  # 验证集正样本总数
+    states = subtree_states(1, list(range(M)))  # 根节点可行状态
 
-    best_numerator = 0
-    best_denominator = 1
-    for true_positive, false_positive in root_states:
-        numerator = 2 * true_positive
-        denominator = total_positive + true_positive + false_positive
-        if denominator and (
-            numerator * best_denominator
-            > best_numerator * denominator
-        ):
-            best_numerator = numerator
-            best_denominator = denominator
+    up = 0  # 最优 F1 的分子
+    down = 1  # 最优 F1 的分母
+    for tp, fp in states:
+        a = 2 * tp
+        b = P + tp + fp
+        if b and a * down > up * b:
+            up = a
+            down = b
 
-    result = (
-        Decimal(best_numerator) / Decimal(best_denominator)
-    ).quantize(Decimal("0.000001"), rounding=ROUND_HALF_UP)
-    print(result)
-
-if __name__ == "__main__":
-    solve()
+    ans = (Decimal(up) / Decimal(down)).quantize(
+        Decimal("0.000001"), rounding=ROUND_HALF_UP
+    )
+    print(ans)
