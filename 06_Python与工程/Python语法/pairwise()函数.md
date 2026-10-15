@@ -1,4 +1,4 @@
-# pairwise()函数
+# pairwise() 函数
 
 ## 知识点解析
 

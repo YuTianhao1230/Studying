@@ -1,4 +1,4 @@
-# Counter类
+# Counter 类
 
 ## 知识点解析
 
@@ -8,7 +8,7 @@
 
 你可以把 `Counter` 想象成一个**增强版的字典**，它的键（key）是你要计数的元素，值（value）是该元素出现的次数。
 
-本卡集中说明缺失键、`most_common()`、多重集合算术和典型示例；模块级选型入口见 [`collections` 模块](<collections模块.md#collections模块>)。
+本卡集中说明缺失键、`most_common()`、多重集合算术和典型示例；模块级选型入口见 [`collections` 模块](<collections模块.md#collections-模块>)。
 
 ### 核心功能：它解决了什么问题？
 
@@ -212,7 +212,7 @@ print(is_anagram("hello", "world"))   # False
 在任何需要对可哈希对象（如数字、字符串、元组）进行计数的场景下，都应该优先考虑使用 `Counter`。
 ## 面试应对
 
-### Counter类 是什么？
+### Counter 类是什么？
 
 回答思路：点明它是 dict 子类、以元素为 key 频次为 value，一行替代手写计数循环。
 
@@ -220,7 +220,7 @@ print(is_anagram("hello", "world"))   # False
 
 `Counter` 是 `collections` 中的计数器类，本质上是一个以元素为 key、频次为 value 的字典子类。
 
-### Counter类 适合什么场景？
+### Counter 类适合什么场景？
 
 回答思路：抓住词频统计、Top-K（most_common）和多重集合加减交并这几个典型用途。
 
@@ -228,7 +228,7 @@ print(is_anagram("hello", "world"))   # False
 
 它适合词频统计、类别计数、Top-K 和多重集合运算。要注意缺失 key 返回 0，以及减法后零值或负值的处理语义。
 
-### Counter类 常见坑是什么？
+### Counter 类常见的坑是什么？
 
 回答思路：抓住缺失 key 返回 0 掩盖拼写错、减法自动丢负值、most_common 同频按插入序这三个真实坑。
 
