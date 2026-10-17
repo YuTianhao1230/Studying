@@ -146,28 +146,3 @@ except Exception as e:
 | `FileNotFoundError` | 文件未找到错误 | 试图打开不存在的文件 |
 | `ZeroDivisionError` | 除零错误 | 除数为零 |
 | `ImportError` | 导入错误 | 无法导入指定的模块 |
-## 面试应对
-
-### Python 内置异常是什么？
-
-回答思路：点明它是一套继承自 Exception 的层次结构，用具体异常类型区分越界、类型、缺键等运行时错误。
-
-回答模板：
-
-Python内置异常用于表达运行时错误类型，比如 `ValueError`、`TypeError`、`KeyError`、`IndexError`。
-
-### Python 内置异常适合什么场景？
-
-回答思路：抓住用精确异常划清错误边界、不裸 except 吞错、保留上下文这条工程原则。
-
-回答模板：
-
-合理使用异常可以让错误边界更清楚。工程中不要裸 `except` 吞掉所有错误，应该捕获明确异常，并保留必要的上下文信息。
-
-### Python 内置异常常见的坑是什么？
-
-回答思路：抓住裸 except 吞错、多异常要用元组且父类放最后、当前源文件的 SyntaxError 无法由文件内部捕获但动态编译时可以捕获这几个点。
-
-回答模板：
-
-内置异常的坑：一是别用裸 `except:` 或笼统的 `except Exception` 吞掉一切，这会连你没预料的 bug 一起吃掉、还难排查，应该捕获具体异常并保留上下文（注意 `KeyboardInterrupt`、`SystemExit` 继承自 BaseException，`except Exception` 抓不到）。二是捕获多个异常要用元组 `except (KeyError, IndexError)`，而且父类 `Exception` 要放在最后，否则前面就把子类全拦了，后面的分支永远命中不到。三是当前源文件自身的 `SyntaxError`、`IndentationError` 无法由文件内部的 `try/except` 捕获，但运行时 `compile()`、`eval()`、`exec()` 解析动态代码时抛出的 `SyntaxError` 可以由外层捕获。

@@ -311,28 +311,3 @@ def show_tensor_image(tensor):
 3.  将处理好的数据输入到从 **`torchvision.models`** 加载并修改过的模型中，进行训练或推理。
 
 掌握了这三者，你就掌握了用 PyTorch 处理绝大多数计算机视觉问题的基础。
-## 面试应对
-
-### torchvision基础知识 是什么？
-
-回答思路：点明它是 PyTorch 视觉三件套——datasets、transforms、预训练 models，串起 CV 数据到模型的流程。
-
-回答模板：
-
-`torchvision` 是 PyTorch 的视觉工具库，提供常见数据集、图像变换、预训练视觉模型和检测分割组件。
-
-### torchvision基础知识 适合什么场景？
-
-回答思路：抓住快速搭 CV 训练/推理流程，并强调 transform 训练/验证差异、归一化口径要对齐预训练权重。
-
-回答模板：
-
-它适合快速搭建 CV 训练和推理流程。使用时要注意 transform 的训练/验证差异、输入归一化口径和预训练模型对应的权重配置。
-
-### torchvision基础知识 常见坑是什么？
-
-回答思路：围绕 transforms 的 Compose 顺序、ToTensor 重复归一化、Normalize 口径、增强只用于训练这几个真实坑展开。
-
-回答模板：
-
-torchvision 我最常见的坑在 transforms：`Compose` 里的顺序很关键，几何变换、`ToTensor`、`Normalize` 的先后不能乱，`ToTensor` 之前一般都是对 PIL/ndarray 的操作，之后才是对 Tensor 的操作。第二，`ToTensor` 会把 HWC 的 `[0,255]` 转成 CHW 并归一化到 `[0,1]`，很多人忘了这一步又手动除 255，等于缩放了两次。第三，`Normalize` 的 mean/std 要用和预训练权重一致的口径（比如 ImageNet 的 `[0.485,0.456,0.406]`/`[0.229,0.224,0.225]`），换了数据集或干脆忘了归一化都会掉点。第四，数据增强只该用在训练集，验证/测试要用确定性的预处理，新版 API 还可以直接用 `weights.transforms()` 拿到官方推荐的预处理，省得口径对不上。

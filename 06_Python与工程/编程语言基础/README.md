@@ -6,6 +6,6 @@
 
 | 语言 | 知识卡 |
 | --- | --- |
-| Python | [Python 语法知识点](<../Python语法/知识点.md>) |
+| Python | [Python 语法](<../Python语法/README.md>) |
 | Java | [Java 基础](<Java基础.md>) |
 | C++ | [C++ 基础](<C++基础.md>) |

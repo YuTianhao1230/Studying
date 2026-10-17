@@ -66,28 +66,3 @@ def predict(data):
 
 *   **`torch.no_grad()`**：经典老牌，兼容性最好。如果你要在不求导的代码块里搞一些骚操作（后续又要接回求导流程），用它。
 *   **`torch.inference_mode()`**：**现代标准**。只要你是做**模型验证（Validation）、测试（Test）或 生产环境部署（Deployment）**，请无脑使用它。它更快、更省、更纯粹。
-## 面试应对
-
-### torch.inference_mode() 是什么？
-
-回答思路：点明它是 no_grad 的升级版，除关 autograd 还禁掉版本计数和视图追踪，专为纯推理提速。
-
-回答模板：
-
-`torch.inference_mode()` 是 PyTorch 的推理上下文管理器，会关闭 autograd，并进一步禁用一些版本计数和视图追踪开销。它比 `torch.no_grad()` 更激进，适合纯推理场景。
-
-### torch.inference_mode() 适合什么场景？
-
-回答思路：抓住验证/线上服务/离线生成这类纯推理才用，输出还要再参与求导就不能放进去。
-
-回答模板：
-
-推理评测、线上服务、离线生成都适合用它；如果后续还要对输出继续参与梯度计算，就不应该放在这个上下文里。
-
-### torch.inference_mode() 常见坑是什么？
-
-回答思路：抓住推理张量不能回传做 backward、以及它不替代 model.eval() 这两个关键坑。
-
-回答模板：
-
-inference_mode 最大的坑是它产生的是特殊的“推理张量”，一旦你想把这个输出再放回一个需要求导的计算图（比如继续训练或二次反传），会直接报 `Inference tensors cannot be saved for backward`，这种场景要退回用 `torch.no_grad()`。另一个常见错误是以为它能替代 `model.eval()`：它只关 autograd，不会自动切换 Dropout/BatchNorm 的行为，所以推理前仍要单独调 `model.eval()`。
