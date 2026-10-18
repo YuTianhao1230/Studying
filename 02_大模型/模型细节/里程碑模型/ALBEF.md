@@ -192,7 +192,7 @@ ALBEF 同时有图文对比和融合模块，很适合验证多模态攻击：
 - 攻击 ITC 可以破坏全局图文对齐。
 - 攻击 ITM 可以破坏图文匹配判断。
 - 攻击 MLM 或融合表示可以影响细粒度语言理解。
-- 作为源模型时，能测试扰动是否迁移到双塔和融合型 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
+- 作为源模型时，能测试扰动是否迁移到双塔和融合型 [VLM](<../../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
 
 ### 常见考法与解题方法
 

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="570" viewBox="0 0 1700 570"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback,DejaVu Sans,sans-serif">
+<text x="45" y="70" font-size="32" fill="#182d3d">秦朝与楚汉之争关键节点</text>
+<text x="45" y="115" font-size="21" fill="#526473">横轴按首个标注年份定位；并列日期在同一节点说明。公元纪年无0年。</text>
+<path d="M100 290H1600" stroke="#849893" stroke-width="4"/>
+<path d="M100.0 290L135.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="100.0" cy="290" r="7" fill="#9d5e3e"/><text x="55.0" y="173" font-size="21" fill="#9d5e3e">前221年</text>
+<text x="55.0" y="207" font-size="22" fill="#182d3d">秦统一六国，建立皇帝制</text>
+<text x="55.0" y="235" font-size="22" fill="#182d3d">度</text>
+<path d="M1200.0 290L430.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="1200.0" cy="290" r="7" fill="#9d5e3e"/><text x="350.0" y="378" font-size="21" fill="#9d5e3e">前210年</text>
+<text x="350.0" y="412" font-size="22" fill="#182d3d">秦始皇去世</text>
+<path d="M1300.0 290L800.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1300.0" cy="290" r="7" fill="#9d5e3e"/><text x="720.0" y="173" font-size="21" fill="#9d5e3e">前209年</text>
+<text x="720.0" y="207" font-size="22" fill="#182d3d">陈胜吴广起义</text>
+<path d="M1500.0 290L1170.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="1500.0" cy="290" r="7" fill="#9d5e3e"/><text x="1090.0" y="378" font-size="21" fill="#9d5e3e">前207年</text>
+<text x="1090.0" y="412" font-size="22" fill="#182d3d">巨鹿之战；子婴向刘邦投</text>
+<text x="1090.0" y="440" font-size="22" fill="#182d3d">降，秦亡</text>
+<path d="M1600.0 290L1480.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1600.0" cy="290" r="7" fill="#9d5e3e"/><text x="1400.0" y="173" font-size="21" fill="#9d5e3e">前206—前202年</text>
+<text x="1400.0" y="207" font-size="22" fill="#182d3d">楚汉战争；刘邦最终建立</text>
+<text x="1400.0" y="235" font-size="22" fill="#182d3d">汉朝</text>
+</g></svg>

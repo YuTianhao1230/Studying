@@ -88,7 +88,7 @@ $$
 
 ### 易错点
 
-- 把 Flamingo 说成普通图文检索模型；它是可生成的 few-shot [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
+- 把 Flamingo 说成普通图文检索模型；它是可生成的 few-shot [VLM](<../../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
 - 忽略 Perceiver Resampler，只说“图像特征接 LLM”不够具体。
 - 忽略 gated cross-attention，它是保护原 LM 能力并注入视觉信息的关键。
 - 把 Flamingo 和 LLaVA 的训练范式混为一谈。

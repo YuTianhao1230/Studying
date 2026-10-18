@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="570" viewBox="0 0 1700 570"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback,DejaVu Sans,sans-serif">
+<text x="45" y="70" font-size="32" fill="#182d3d">战国关键节点</text>
+<text x="45" y="115" font-size="21" fill="#526473">横轴按首个标注年份定位；并列日期在同一节点说明。公元纪年无0年。</text>
+<path d="M100 290H1600" stroke="#849893" stroke-width="4"/>
+<path d="M100.0 290L135.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="100.0" cy="290" r="7" fill="#9d5e3e"/><text x="55.0" y="173" font-size="21" fill="#9d5e3e">前403年</text>
+<text x="55.0" y="207" font-size="22" fill="#182d3d">周王承认韩赵魏诸侯地位</text>
+<path d="M507.5 290L430.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="507.5" cy="290" r="7" fill="#9d5e3e"/><text x="350.0" y="378" font-size="21" fill="#9d5e3e">前356／前350年</text>
+<text x="350.0" y="412" font-size="22" fill="#182d3d">商鞅变法的重要阶段</text>
+<path d="M932.4 290L800.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="932.4" cy="290" r="7" fill="#9d5e3e"/><text x="720.0" y="173" font-size="21" fill="#9d5e3e">前307年</text>
+<text x="720.0" y="207" font-size="22" fill="#182d3d">赵武灵王胡服骑射</text>
+<path d="M1339.9 290L1170.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="1339.9" cy="290" r="7" fill="#9d5e3e"/><text x="1090.0" y="378" font-size="21" fill="#9d5e3e">前260年</text>
+<text x="1090.0" y="412" font-size="22" fill="#182d3d">长平之战</text>
+<path d="M1600.0 290L1480.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1600.0" cy="290" r="7" fill="#9d5e3e"/><text x="1400.0" y="173" font-size="21" fill="#9d5e3e">前230—前221年</text>
+<text x="1400.0" y="207" font-size="22" fill="#182d3d">秦先后灭六国</text>
+</g></svg>

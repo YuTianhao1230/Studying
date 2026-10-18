@@ -162,7 +162,7 @@ CLIP 使用的是互联网图文对，不要求每条文本都是严格人工标
 - 用图文对比学习替代人工类别监督。
 - 学到开放词表的视觉语义空间。
 
-相比单塔 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)：
+相比单塔 [VLM](<../../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)：
 
 - CLIP 不做 early fusion，图像和文本分开编码。
 - 适合检索和 zero-shot，但不直接生成自然语言答案。

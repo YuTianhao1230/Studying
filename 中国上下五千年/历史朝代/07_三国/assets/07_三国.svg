@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="570" viewBox="0 0 1700 570"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback,DejaVu Sans,sans-serif">
+<text x="45" y="70" font-size="32" fill="#182d3d">三国关键节点</text>
+<text x="45" y="115" font-size="21" fill="#526473">横轴按首个标注年份定位；并列日期在同一节点说明。公元纪年无0年。</text>
+<path d="M100 290H1600" stroke="#849893" stroke-width="4"/>
+<path d="M100.0 290L135.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="100.0" cy="290" r="7" fill="#9d5e3e"/><text x="55.0" y="173" font-size="21" fill="#9d5e3e">200年</text>
+<text x="55.0" y="207" font-size="22" fill="#182d3d">官渡之战</text>
+<path d="M250.0 290L430.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="250.0" cy="290" r="7" fill="#9d5e3e"/><text x="350.0" y="378" font-size="21" fill="#9d5e3e">208年</text>
+<text x="350.0" y="412" font-size="22" fill="#182d3d">赤壁之战</text>
+<path d="M475.0 290L800.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="475.0" cy="290" r="7" fill="#9d5e3e"/><text x="720.0" y="173" font-size="21" fill="#9d5e3e">220／221／229年</text>
+<text x="720.0" y="207" font-size="22" fill="#182d3d">魏／蜀／吴称帝建国</text>
+<path d="M1281.2 290L1170.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="1281.2" cy="290" r="7" fill="#9d5e3e"/><text x="1090.0" y="378" font-size="21" fill="#9d5e3e">263／265年</text>
+<text x="1090.0" y="412" font-size="22" fill="#182d3d">魏灭蜀／西晋代魏</text>
+<path d="M1600.0 290L1480.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1600.0" cy="290" r="7" fill="#9d5e3e"/><text x="1400.0" y="173" font-size="21" fill="#9d5e3e">280年</text>
+<text x="1400.0" y="207" font-size="22" fill="#182d3d">西晋灭吴，结束三国并立</text>
+</g></svg>

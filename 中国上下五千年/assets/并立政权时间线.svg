@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1450" height="1230"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback, Noto Sans CJK SC, sans-serif">
+<text x="45" y="55" font-size="30" fill="#182d3d">中国历史中的并立政权：三段独立比例尺</text>
+<text x="45" y="91" font-size="16" fill="#182d3d">条带只显示主要政权；不表示完整疆域，不同分图不能比较长度。</text>
+<text x="45" y="160" font-size="20" fill="#182d3d">三国到西晋（220—280）</text>
+<text x="95" y="185" font-size="16" fill="#182d3d">220</text>
+<text x="1310" y="185" font-size="16" fill="#182d3d">280</text>
+<path d="M95 195 H1350" stroke="#a6ada8" stroke-width="2"/>
+<rect x="95.00" y="213" width="941.25" height="32" fill="#47677a"/>
+<text x="98.0" y="234" font-size="16" fill="#ffffff">魏</text>
+<rect x="115.92" y="256" width="878.50" height="32" fill="#a16c49"/>
+<text x="118.91666666666667" y="277" font-size="16" fill="#ffffff">蜀</text>
+<rect x="283.25" y="299" width="1066.75" height="32" fill="#748970"/>
+<text x="286.25" y="320" font-size="16" fill="#ffffff">吴（229年称帝）</text>
+<rect x="1036.25" y="213" width="313.75" height="32" fill="#47677a"/>
+<text x="1039.25" y="234" font-size="16" fill="#ffffff">西晋</text>
+<text x="45" y="500" font-size="20" fill="#182d3d">东晋、十六国与南北朝（317—589）</text>
+<text x="95" y="525" font-size="16" fill="#182d3d">317</text>
+<text x="1310" y="525" font-size="16" fill="#182d3d">589</text>
+<path d="M95 535 H1350" stroke="#a6ada8" stroke-width="2"/>
+<rect x="95.00" y="553" width="475.24" height="32" fill="#47677a"/>
+<text x="98.0" y="574" font-size="16" fill="#ffffff">东晋</text>
+<rect x="570.24" y="553" width="272.22" height="32" fill="#47677a"/>
+<text x="573.2389705882354" y="574" font-size="16" fill="#ffffff">南朝宋</text>
+<rect x="842.46" y="553" width="106.12" height="32" fill="#47677a"/>
+<text x="845.4632352941177" y="574" font-size="16" fill="#ffffff">齐</text>
+<rect x="948.58" y="553" width="253.77" height="32" fill="#47677a"/>
+<text x="951.5845588235294" y="574" font-size="16" fill="#ffffff">梁</text>
+<rect x="1202.35" y="553" width="147.65" height="32" fill="#47677a"/>
+<text x="1205.3529411764705" y="574" font-size="16" fill="#ffffff">陈</text>
+<rect x="95.00" y="596" width="562.90" height="32" fill="#a16c49"/>
+<text x="98.0" y="617" font-size="16" fill="#ffffff">北方多政权／十六国</text>
+<rect x="413.36" y="639" width="682.87" height="32" fill="#748970"/>
+<text x="416.3639705882353" y="660" font-size="16" fill="#ffffff">北魏</text>
+<rect x="1096.23" y="639" width="198.40" height="32" fill="#748970"/>
+<text x="1099.231617647059" y="660" font-size="16" fill="#ffffff">东魏→北齐</text>
+<rect x="1100.85" y="682" width="212.24" height="32" fill="#846786"/>
+<text x="1103.8455882352941" y="703" font-size="16" fill="#ffffff">西魏→北周</text>
+<rect x="1313.09" y="682" width="36.91" height="32" fill="#846786"/>
+<text x="1316.0882352941176" y="699" font-size="12" fill="#ffffff">隋</text>
+<text x="45" y="840" font-size="20" fill="#182d3d">辽宋夏金到元（907—1279）</text>
+<text x="95" y="865" font-size="16" fill="#182d3d">907</text>
+<text x="1310" y="865" font-size="16" fill="#182d3d">1279</text>
+<path d="M95 875 H1350" stroke="#a6ada8" stroke-width="2"/>
+<rect x="95.00" y="893" width="178.80" height="32" fill="#47677a"/>
+<text x="98.0" y="914" font-size="16" fill="#ffffff">五代</text>
+<rect x="273.80" y="893" width="563.40" height="32" fill="#47677a"/>
+<text x="276.8037634408602" y="914" font-size="16" fill="#ffffff">北宋</text>
+<rect x="837.20" y="893" width="512.80" height="32" fill="#47677a"/>
+<text x="840.2043010752689" y="914" font-size="16" fill="#ffffff">南宋</text>
+<rect x="125.36" y="936" width="705.09" height="32" fill="#a16c49"/>
+<text x="128.36290322580646" y="957" font-size="16" fill="#ffffff">辽</text>
+<rect x="796.72" y="979" width="401.47" height="32" fill="#748970"/>
+<text x="799.7204301075268" y="1000" font-size="16" fill="#ffffff">金</text>
+<rect x="536.95" y="1022" width="637.62" height="32" fill="#846786"/>
+<text x="539.9489247311828" y="1043" font-size="16" fill="#ffffff">西夏</text>
+<rect x="1103.72" y="1065" width="219.29" height="32" fill="#ab8b42"/>
+<text x="1106.72311827957" y="1086" font-size="16" fill="#ffffff">蒙古</text>
+<rect x="1323.01" y="1065" width="26.99" height="32" fill="#ab8b42"/>
+<text x="1326.010752688172" y="1082" font-size="12" fill="#ffffff">元</text>
+<text x="45" y="1186" font-size="16" fill="#182d3d">西夏1038以称帝计；辽916以建国计；五代条带不涵盖所有十国。</text>
+</g></svg>

@@ -158,7 +158,7 @@
 | Codestral / Mathstral / Codestral Mamba | 2024-05/07 | 专项模型 | 通用模型代码、数学、长代码延迟不足 | 代码、数学和 Mamba 长序列代码专项模型 | [Mistral](https://mistral.ai/news/codestral/) |
 | Mistral NeMo / Ministral | 2024-07/10 | 高性价比/端侧 | 企业需要 12B 级和端侧小模型 | NeMo 12B 多语言；Ministral 3B/8B 低延迟端侧 | [Mistral](https://mistral.ai/news/mistral-nemo/) |
 | Pixtral 12B / Pixtral Large | 2024-09/11 | 视觉语言 | Mistral 缺开放多模态能力 | 图像理解、文档/图表/截图和多图推理 | [Mistral](https://mistral.ai/news/pixtral-12b/) |
-| Mistral Small 3.1 / OCR | 2025-03 | 开放多模态/OCR | 企业文档 RAG 需要结构化抽取和单机可跑 [VLM](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) | 24B 开放多模态 128K；OCR 处理 PDF/图表/公式 | [Mistral](https://mistral.ai/news/mistral-small-3-1/) |
+| Mistral Small 3.1 / OCR | 2025-03 | 开放多模态/OCR | 企业文档 RAG 需要结构化抽取和单机可跑 [VLM](<视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) | 24B 开放多模态 128K；OCR 处理 PDF/图表/公式 | [Mistral](https://mistral.ai/news/mistral-small-3-1/) |
 | Mistral Medium 3 / Devstral | 2025-05 | 企业中型/代码 Agent | 企业需要低成本强模型和真实代码库 Agent | Medium 3 覆盖代码/STEM/视觉；Devstral 面向 SWE-bench 类任务 | [Mistral](https://mistral.ai/news/devstral) |
 | Magistral | 2025-06 | 推理模型 | Mistral 缺长思考推理模型 | 首批推理模型，补齐数学、逻辑和多步问题求解 | [Mistral](https://mistral.ai/news/magistral) |
 | Voxtral | 2025-07 | 语音理解 | 开放语音理解和音频函数调用不足 | 转写、音频问答、总结、多语言语音与函数调用 | [Mistral](https://mistral.ai/news/voxtral) |

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="570" viewBox="0 0 1700 570"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback,DejaVu Sans,sans-serif">
+<text x="45" y="70" font-size="32" fill="#182d3d">上古传说与文明起源关键节点</text>
+<text x="45" y="115" font-size="21" fill="#526473">传说不编造年份；横轴只示材料或叙事的先后，不表示确定时长。</text>
+<path d="M100 290H1600" stroke="#849893" stroke-width="4"/>
+<path d="M100.0 290L135.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="100.0" cy="290" r="7" fill="#9d5e3e"/><text x="55.0" y="173" font-size="21" fill="#9d5e3e">约距今一万年起</text>
+<text x="55.0" y="207" font-size="22" fill="#182d3d">农业与定居聚落逐渐发展</text>
+<path d="M600.0 290L553.3 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="600.0" cy="290" r="7" fill="#9d5e3e"/><text x="473.3" y="378" font-size="21" fill="#9d5e3e">约前5000—前3000年</text>
+<text x="473.3" y="412" font-size="22" fill="#182d3d">仰韶等区域文化发展</text>
+<path d="M1100.0 290L1046.7 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1100.0" cy="290" r="7" fill="#9d5e3e"/><text x="966.7" y="173" font-size="21" fill="#9d5e3e">约前3300—前2300年</text>
+<text x="966.7" y="207" font-size="22" fill="#182d3d">良渚文化与大型城址、水</text>
+<text x="966.7" y="235" font-size="22" fill="#182d3d">利系统</text>
+<path d="M1600.0 290L1480.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="1600.0" cy="290" r="7" fill="#9d5e3e"/><text x="1400.0" y="378" font-size="21" fill="#9d5e3e">约前3000—前1900年</text>
+<text x="1400.0" y="412" font-size="22" fill="#182d3d">多地龙山时代文化；区域</text>
+<text x="1400.0" y="440" font-size="22" fill="#182d3d">交往与社会分化增强</text>
+</g></svg>

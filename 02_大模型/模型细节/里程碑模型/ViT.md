@@ -99,7 +99,7 @@ image -> ViT patch tokens -> projector/Q-Former/cross-attention -> LLM
 | 架构题 | ViT 怎么处理图像 | patch 切分、线性投影、位置编码、Transformer Encoder |
 | 计算题 | patch token 数量 | $N=(H/P)(W/P)$ |
 | 对比题 | ViT 和 CNN 区别 | 局部卷积 vs 全局 attention，归纳偏置和数据规模 |
-| 多模态题 | 为什么 [VLM](<../../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) 常用 ViT | token 输出形式和语言 Transformer 更容易连接 |
+| 多模态题 | 为什么 [VLM](<../../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) 常用 ViT | token 输出形式和语言 Transformer 更容易连接 |
 
 ### 易错点
 

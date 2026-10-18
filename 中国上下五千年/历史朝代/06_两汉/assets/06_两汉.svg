@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="570" viewBox="0 0 1700 570"><rect width="100%" height="100%" fill="#f6f3ed"/><g font-family="Droid Sans Fallback,DejaVu Sans,sans-serif">
+<text x="45" y="70" font-size="32" fill="#182d3d">两汉关键节点</text>
+<text x="45" y="115" font-size="21" fill="#526473">横轴按首个标注年份定位；并列日期在同一节点说明。公元纪年无0年。</text>
+<path d="M100 290H1600" stroke="#849893" stroke-width="4"/>
+<path d="M100.0 290L135.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="100.0" cy="290" r="7" fill="#9d5e3e"/><text x="55.0" y="173" font-size="21" fill="#9d5e3e">前202年</text>
+<text x="55.0" y="207" font-size="22" fill="#182d3d">汉朝建立</text>
+<path d="M185.5 290L430.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="185.5" cy="290" r="7" fill="#9d5e3e"/><text x="350.0" y="378" font-size="21" fill="#9d5e3e">前180—前141年</text>
+<text x="350.0" y="412" font-size="22" fill="#182d3d">文景时期</text>
+<path d="M348.7 290L800.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="348.7" cy="290" r="7" fill="#9d5e3e"/><text x="720.0" y="173" font-size="21" fill="#9d5e3e">前138年</text>
+<text x="720.0" y="207" font-size="22" fill="#182d3d">张骞首次出使西域</text>
+<path d="M919.9 290L1170.0 345" stroke="#b7b2a7" stroke-width="2"/><circle cx="919.9" cy="290" r="7" fill="#9d5e3e"/><text x="1090.0" y="378" font-size="21" fill="#9d5e3e">9／25年</text>
+<text x="1090.0" y="412" font-size="22" fill="#182d3d">王莽建新／刘秀建东汉</text>
+<path d="M1600.0 290L1480.0 215" stroke="#b7b2a7" stroke-width="2"/><circle cx="1600.0" cy="290" r="7" fill="#9d5e3e"/><text x="1400.0" y="173" font-size="21" fill="#9d5e3e">184／220年</text>
+<text x="1400.0" y="207" font-size="22" fill="#182d3d">黄巾起义／东汉终结</text>
+</g></svg>

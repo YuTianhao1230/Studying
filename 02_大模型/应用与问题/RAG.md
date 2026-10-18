@@ -262,7 +262,7 @@ Agent 里的 Memory、工具说明、历史轨迹和外部文档都可以走检�
   -> VLM 精读
 ```
 
-这和关键帧任务很接近：先召回候选时间窗口，再让 [VLM](<../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) 精判边界。
+这和关键帧任务很接近：先召回候选时间窗口，再让 [VLM](<../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) 精判边界。
 
 ### RAG 评估
 

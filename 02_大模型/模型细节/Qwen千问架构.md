@@ -326,7 +326,7 @@ On-Policy Distillation 在线策略蒸馏：
 
 在关键帧任务中，可以对应为：
 
-- 先用强 [VLM](<../../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) / 强 reasoning model 生成结构化关键帧 CoT。
+- 先用强 [VLM](<../视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>) / 强 reasoning model 生成结构化关键帧 CoT。
 - 再用学生模型自己的输出做二次过滤和纠偏。
 - 对齐时既看最终时间，也看边界证据是否成立。
 
