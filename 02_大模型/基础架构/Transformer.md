@@ -203,4 +203,4 @@ RNN 处理序列时必须按时间步串行计算，训练长序列时效率低�
 
 回答模板：
 
-Transformer 的主要限制是标准 attention 对序列长度的计算和显存复杂度较高，长上下文训练和推理成本都很大。对于 decoder-only 模型，训练可以并行，但生成阶段仍是自回归逐 token decode，因此延迟受输出长度影响很大。另外，模型规模上去后还会面临优化稳定性、显存、通信和数据质量问题，所以实际系统需要 FlashAttention、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、并行训练和推理调度等配套优化。
+Transformer 的主要限制是标准 attention 对序列长度的计算和显存复杂度较高，长上下文训练和推理成本都很大。对于 decoder-only 模型，训练可以并行，但生成阶段仍是自回归逐 token decode，因此延迟受输出长度影响很大。另外，模型规模上去后还会面临优化稳定性、显存、通信和数据质量问题，所以实际系统需要 FlashAttention、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、并行训练和推理调度等配套优化。

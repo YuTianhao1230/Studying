@@ -6,7 +6,7 @@
 
 MHA、MQA、GQA 是三种常见的 self-attention 头设计，核心差异在于 **Query head 和 Key/Value head 的对应关系**。
 
-- **MHA**：每个 Query head 都有独立的 Key/Value head，表达能力最充分，但 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 最大。
+- **MHA**：每个 Query head 都有独立的 Key/Value head，表达能力最充分，但 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 最大。
 - **MQA**：所有 Query heads 共享一组 Key/Value head，KV cache 最小，但可能损失效果。
 - **GQA**：多个 Query heads 分组共享 Key/Value head，是 MHA 和 MQA 之间的折中。
 

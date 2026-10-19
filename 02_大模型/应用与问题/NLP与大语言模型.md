@@ -27,7 +27,7 @@ NLP 与大语言模型关注机器如何表示、理解和生成自然语言，�
 - Transformer：Q/K/V、Attention Score、Mask、残差连接、FFN、Norm、位置编码。
 - 模型家族：BERT、GPT、T5、LLaMA、[Qwen](<../模型细节/Qwen千问架构.md#qwen3-与-qwen3-vl-架构>)、Mistral、DeepSeek 等。
 - 训练阶段：预训练、SFT、偏好学习、RLHF、DPO、拒绝采样、蒸馏。
-- 推理技术：temperature、top-k、top-p、beam search、repetition penalty、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)。
+- 推理技术：temperature、top-k、top-p、beam search、repetition penalty、[KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - 长上下文：位置外推、RoPE scaling、Attention 优化、上下文压缩。
 - RAG：query rewrite、retrieval、rerank、context packing、generation、citation、faithfulness。
 - [Agent](<../../08_Agent/基础概念/Agent.md#agent>)：规划、工具调用、状态管理、记忆、反思、任务分解、安全边界。

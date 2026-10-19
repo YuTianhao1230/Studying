@@ -62,18 +62,18 @@ for step, (inputs, labels) in enumerate(train_loader):
 
 混合精度、梯度累积和分布式训练会改变 `backward/step` 的调用位置，应分别按对应方案调整，不能直接在该骨架上叠加调用。
 
-评估阶段先调用 `model.eval()` 切换 Dropout、BatchNorm 等模块行为；纯推理优先配合 `torch.inference_mode()`，后续仍需接入梯度计算时使用 `torch.no_grad()`。版本计数、view tracking 和推理张量限制见 [`torch.inference_mode()`](<../常用函数/torch.inference_mode().md#torchinferencemode>)。
+评估阶段先调用 `model.eval()` 切换 Dropout、BatchNorm 等模块行为；纯推理优先配合 `torch.inference_mode()`，后续仍需接入梯度计算时使用 `torch.no_grad()`。版本计数、view tracking 和推理张量限制见 [`torch.inference_mode()`](<../常用函数/torch.inference_mode().md>)。
 
 ### 工程注意点
 
 训练脚本要能复现，至少要保存模型权重、optimizer 状态、scheduler 状态、随机种子、训练 step、数据版本和代码版本。只保存模型权重，通常无法严格断点续训。
 
-显存问题需要分来源看：参数、梯度、优化器状态、激活、中间 buffer、输入 batch。常见优化手段包括 mixed precision、gradient accumulation、activation checkpointing、减小 sequence length、FSDP/ZeRO、[LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>)。
+显存问题需要分来源看：参数、梯度、优化器状态、激活、中间 buffer、输入 batch。常见优化手段包括 mixed precision、gradient accumulation、activation checkpointing、减小 sequence length、FSDP/ZeRO、[LoRA](<../../03_训练优化与对齐/超参数微调/LoRA 低秩适配.md#lora-低秩适配>)。
 
 训练不稳定时不能只看 loss。还要看学习率曲线、grad norm、样本长度分布、异常 batch、数据质量、label mask、混合精度溢出和分布式通信错误。
 
 ### PyTorch 和大模型生态
 
-PyTorch 本身提供基础张量、模型、优化器和分布式能力；Hugging Face Transformers 提供模型结构、tokenizer、预训练权重加载和 Trainer；[PEFT](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md#peft-参数高效微调>) 提供 LoRA/QLoRA；Accelerate、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、Megatron-LM 负责大规模训练；[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md#vllm>)、TensorRT-LLM、TGI 更偏推理部署。
+PyTorch 本身提供基础张量、模型、优化器和分布式能力；Hugging Face Transformers 提供模型结构、tokenizer、预训练权重加载和 Trainer；[PEFT](<../../03_训练优化与对齐/超参数微调/PEFT 参数高效微调.md#peft-参数高效微调>) 提供 LoRA/QLoRA；Accelerate、[FSDP](<../../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[DeepSpeed](<../../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、Megatron-LM 负责大规模训练；[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md#vllm>)、TensorRT-LLM、TGI 更偏推理部署。
 
 大模型训练里，面试官通常不是问你会不会写 `nn.Linear`，而是问你是否能把 PyTorch 放进真实训练系统里：数据怎么喂、梯度怎么传、显存怎么省、checkpoint 怎么恢复、分布式怎么排障。

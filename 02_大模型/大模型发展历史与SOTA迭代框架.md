@@ -117,7 +117,7 @@
 | Qwen 初代 7B/14B/72B | 2023 | 开放 LLM | 中文和中英双语强开源模型不足 | 发布 base/chat，强化双语、代码、数学和工具调用基础 | [GitHub](https://github.com/QwenLM/Qwen) |
 | Qwen-VL / Qwen-Audio | 2023 | 多模态分支 | 文本模型无法处理图像/音频 | 扩展到图文/OCR/文档/视觉定位和音频理解 | [Qwen-VL](https://github.com/QwenLM/Qwen-VL) |
 | Qwen1.5 / MoE / CodeQwen / 110B | 2024-02\~04 | 模型族扩展 | 初代尺寸覆盖、部署体验和成本效率不足 | 补齐尺寸、32K、Transformers 生态，探索 MoE、代码专项和 110B 大模型 | [Qwen1.5](https://qwenlm.github.io/blog/qwen1.5/) |
-| Qwen2 / Qwen2-Audio / Qwen2-VL | 2024-06\~08 | 多语言+多模态升级 | 多语言、代码、数学、长上下文和视频理解不足 | [GQA](<基础架构/GQA.md#mha-mqa-gqa>)、多语言增强、最高 128K；VL 支持动态分辨率和长视频 | [Qwen2](https://qwenlm.github.io/blog/qwen2/) |
+| Qwen2 / Qwen2-Audio / Qwen2-VL | 2024-06\~08 | 多语言+多模态升级 | 多语言、代码、数学、长上下文和视频理解不足 | [GQA](<基础架构/GQA.md>)、多语言增强、最高 128K；VL 支持动态分辨率和长视频 | [Qwen2](https://qwenlm.github.io/blog/qwen2/) |
 | Qwen2.5 LLM/Coder/Math | 2024-09 | 专项能力升级 | 结构化输出、代码、数学、长文本和指令跟随需加强 | 18T token，强化 JSON、代码、数学、长文本、指令跟随 | [Qwen2.5](https://qwenlm.github.io/blog/qwen2.5/) |
 | Qwen2.5-VL / 1M / Max / Omni | 2025-01\~03 | 视觉/长上下文/全模态 | 视觉 Agent、长上下文、全模态实时交互不足 | 文档解析、GUI/视频、1M 上下文、MoE Max、端到端全模态 | [Qwen2.5-VL](https://qwenlm.github.io/blog/qwen2.5-vl/) |
 | QwQ / QVQ | 2025-03 | 推理模型 | 通用 instruct 在复杂数学/视觉推理不足 | 强化学习驱动文本推理和视觉推理模型 | [Qwen blog index](https://qwenlm.github.io/page/3/) |
@@ -139,7 +139,7 @@
 | DeepSeek-LLM / MoE | 2024-01 | 通用 LLM/MoE | 通用开源底座和 MoE 参数效率需验证 | 发布通用 LLM；MoE 探索细粒度专家和共享专家 | [GitHub](https://github.com/deepseek-ai/DeepSeek-LLM) |
 | DeepSeekMath | 2024-02 | 数学推理/RL | SFT 数学模型继续提升困难，PPO 工程复杂 | 引入 GRPO 和可验证数学奖励，强化推理能力 | [GitHub](https://github.com/deepseek-ai/DeepSeek-Math) |
 | DeepSeek-VL | 2024-03 | 视觉语言 | 通用 LLM 无法处理真实图文/OCR/网页截图 | 视觉语言模型支持真实场景图文理解、OCR、文档和网页截图 | [GitHub](https://github.com/deepseek-ai/DeepSeek-VL) |
-| DeepSeek-V2 / Coder-V2 | 2024-05/06 | 低成本 MoE/代码 | 大模型 [KV cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 和推理成本高，代码长上下文不足 | MLA + DeepSeekMoE，128K，提升吞吐和代码工程能力 | [GitHub](https://github.com/deepseek-ai/DeepSeek-V2) |
+| DeepSeek-V2 / Coder-V2 | 2024-05/06 | 低成本 MoE/代码 | 大模型 [KV cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 和推理成本高，代码长上下文不足 | MLA + DeepSeekMoE，128K，提升吞吐和代码工程能力 | [GitHub](https://github.com/deepseek-ai/DeepSeek-V2) |
 | DeepSeek-Prover / V1.5 | 2024-05/08 | 形式化证明 | 数学形式化证明长程搜索和奖励稀疏 | Lean 4 证明模型，RLPAF/RMaxTS 提升证明成功率 | [GitHub](https://github.com/deepseek-ai/DeepSeek-Prover-V1.5) |
 | DeepSeek-V2.5 / 1210 | 2024-09/12 | Chat+Coder 合并 | 通用对话和代码能力分线，体验割裂 | 合并 Chat 与 Coder，并增强数学、代码、写作、搜索 | [DeepSeek](https://api-docs.deepseek.com/news/news0905) |
 | DeepSeek-V3 | 2024-12 | 开源 MoE 基座 | 需要低成本训练超大 MoE 且保持前沿性能 | 671B/37B MoE，FP8、负载均衡、多 token prediction | [GitHub](https://github.com/deepseek-ai/DeepSeek-V3) |

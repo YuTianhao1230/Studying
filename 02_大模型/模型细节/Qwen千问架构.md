@@ -56,7 +56,7 @@ token ids
 | --- | --- | --- |
 | Token embedding | hidden size 约 4096 | 把 token id 映射为连续向量 |
 | Decoder block | 约 36 层 | 堆叠 attention 和 FFN 形成深层语义建模 |
-| [Attention](<../基础架构/Self-Attention.md#self-attention>) | 32 query heads，8 KV heads | [GQA](<../基础架构/GQA.md#mha-mqa-gqa>)，降低 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 和推理成本 |
+| [Attention](<../基础架构/Self-Attention.md#self-attention>) | 32 query heads，8 KV heads | [GQA](<../基础架构/GQA.md>)，降低 [KV cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>) 和推理成本 |
 | Position encoding | [RoPE](<../基础架构/RoPE.md#rope>) | 注入位置信息，支撑长上下文 |
 | Attention stabilization | QK-Norm | 对 query/key 做归一化，提高注意力稳定性 |
 | Norm | Pre-RMSNorm | 子层前归一化，训练更稳定 |
@@ -104,7 +104,7 @@ Qwen3 和 [GPT](<里程碑模型/GPT.md#gpt>)、[Llama](<里程碑模型/Llama.m
 
 1. **任务统一**：对话、代码、数学推理、工具调用、结构化输出都可以统一成 next-token prediction。
 2. **训练目标简单**：预训练直接做自回归语言建模，不需要 encoder-decoder 两套结构。
-3. **推理工程成熟**：[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、[Continuous Batching](<../../05_推理部署与系统/推理工程/Batching.md#batching>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md#vllm>)、[量化](<../../05_推理部署与系统/推理工程/量化.md#量化>)、张量并行都主要围绕 decoder-only 优化。
+3. **推理工程成熟**：[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[Continuous Batching](<../../05_推理部署与系统/推理工程/Batching.md#batching>)、[vLLM](<../../05_推理部署与系统/推理工程/vLLM.md#vllm>)、[量化](<../../05_推理部署与系统/推理工程/量化.md#量化>)、张量并行都主要围绕 decoder-only 优化。
 4. **后训练方便**：[SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、[DPO](<../../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md#dpo-直接偏好优化>)、[RLHF](<../../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>)、[RLVR](<../../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>)、长 [CoT](<../应用与问题/CoT.md#cot>) 蒸馏都能直接作用在生成序列上。
 
 代价是：它不是专门的表示模型，所以检索、向量[召回](<../../09_搜索推荐广告/召回粗排精排重排.md#召回粗排精排与重排>)、排序任务通常会用 Qwen Embedding / Reranker 这类专门模型。
@@ -390,7 +390,7 @@ Qwen3-VL 对关键帧任务有几个直接启发：
 - 具体版本：Qwen3 dense / [MoE](<../基础架构/MoE.md#moe>)、Qwen3-VL dense / MoE、Instruct / Thinking 不能混说。
 - tokenizer 和 chat template 是否和训练一致。
 - 图像/视频的 processor、采样、网格、时间戳和 token 预算按 [Qwen3-VL 输入处理逻辑](<Qwen3-VL输入处理逻辑.md#qwen3-vl-输入处理逻辑文本图像与视频>) 核对。
-- [LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>) adapter 是否和 base model、vision encoder、processor 版本匹配。
+- [LoRA](<../../03_训练优化与对齐/超参数微调/LoRA 低秩适配.md#lora-低秩适配>) adapter 是否和 base model、vision encoder、processor 版本匹配。
 - 推理框架是否支持对应 VL 输入格式，不要把纯文本 vLLM 用法直接套到视频模型上。
 - Thinking 输出是否需要裁剪，避免影响结构化解析和线上延迟。
 

@@ -405,7 +405,7 @@ Self-Attention 是 Transformer 的核心机制，用来让序列中每个 token 
 
 回答模板：
 
-Self-Attention 适合大模型，主要因为它能并行处理序列中所有位置，并且每个位置都可以直接访问全局上下文。这解决了 RNN 串行计算和长距离依赖弱的问题，也是 Transformer 能在大规模语料上高效训练的重要原因。但标准 attention 的复杂度随序列长度近似 O(n^2) 增长，长上下文场景会带来显存和计算压力，所以才会有 FlashAttention、稀疏注意力、[GQA](GQA.md#mha-mqa-gqa)、[MLA](MLA.md#mla) 等优化。
+Self-Attention 适合大模型，主要因为它能并行处理序列中所有位置，并且每个位置都可以直接访问全局上下文。这解决了 RNN 串行计算和长距离依赖弱的问题，也是 Transformer 能在大规模语料上高效训练的重要原因。但标准 attention 的复杂度随序列长度近似 O(n^2) 增长，长上下文场景会带来显存和计算压力，所以才会有 FlashAttention、稀疏注意力、[GQA](<GQA.md>)、[MLA](MLA.md#mla) 等优化。
 
 ### Multi-Head Attention 的作用是什么？
 
@@ -413,4 +413,4 @@ Self-Attention 适合大模型，主要因为它能并行处理序列中所有�
 
 回答模板：
 
-Multi-Head Attention 会把 hidden state 投影到多个子空间，每个 head 独立计算 attention，最后再拼接并线性投影。这样不同 head 可以学习不同类型的关系，比如局部语法、长距离依赖、实体指代或格式结构。它提升了注意力机制的表达能力，但也会增加参数、计算量和 [KV cache](../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode) 开销，所以推理系统会通过 GQA、MQA 等方式减少 K/V 的成本。
+Multi-Head Attention 会把 hidden state 投影到多个子空间，每个 head 独立计算 attention，最后再拼接并线性投影。这样不同 head 可以学习不同类型的关系，比如局部语法、长距离依赖、实体指代或格式结构。它提升了注意力机制的表达能力，但也会增加参数、计算量和 [KV cache](../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md) 开销，所以推理系统会通过 GQA、MQA 等方式减少 K/V 的成本。

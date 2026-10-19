@@ -68,7 +68,7 @@ Observe -> Plan -> Act -> Observe -> Reflect -> ...
 | Agent | 根据目标和反馈动态决策 | 路径不固定的多步任务 |
 | [Workflow](<Workflow.md#workflow>) | 固定节点、分支与安全边界 | 稳定、可复现的流程 |
 | [Tool Call](<Tool_Call与Function_Calling.md#tool-call-与-function-calling>) | 结构化请求外部能力 | 查询或改变外部环境 |
-| [Context Engineering](<Context_Engineering.md#contextengineering>) | 组织当前模型可见信息 | 上下文质量与成本控制 |
+| [Context Engineering](<Context_Engineering.md>) | 组织当前模型可见信息 | 上下文质量与成本控制 |
 | Memory | 保存可复用长期信息 | 偏好、经验和跨会话状态 |
 | Guardrails | 限制风险与不合规行为 | 权限、预算、确认和输出校验 |
 | Trajectory | 记录完整执行过程 | 复现、审计和 bad case 归因 |

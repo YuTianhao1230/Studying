@@ -30,14 +30,14 @@
 | --- | --- | --- | --- |
 | 数学与 ML 基础 | 概率统计、优化、线代、传统 ML | 能解释核心公式、适用条件、评价指标 | [数学基础](<../01_机器学习基础/数学与机器学习/数学基础.md#数学基础>)、[机器学习基础](<../01_机器学习基础/数学与机器学习/机器学习基础.md#机器学习基础>)、[统计推断与因果推断基础](<../01_机器学习基础/数学与机器学习/统计推断与因果推断基础.md#统计推断与因果推断基础>) |
 | [深度学习基础](<../01_机器学习基础/深度学习基础/深度学习基础.md#深度学习基础>) | MLP、[Normalization](<../01_机器学习基础/深度学习基础/Normalization.md#normalization>)、激活函数、梯度问题 | 能解释训练稳定性、梯度流、[正则化](<../01_机器学习基础/深度学习基础/正则化.md#正则化>) | [深度学习基础](<../01_机器学习基础/深度学习基础/深度学习基础.md#深度学习基础>)、[MLP](<../01_机器学习基础/深度学习基础/Multi-Layer Perceptron.md#multi-layer-perceptron>)、[Normalization](<../01_机器学习基础/深度学习基础/Normalization.md#normalization>)、[梯度问题](<../03_训练优化与对齐/训练稳定性/梯度爆炸与梯度消失.md#梯度爆炸与梯度消失>) |
-| Transformer / LLM | Transformer、Tokenizer、预训练、[Decoder-only](<../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)、[RoPE](<../02_大模型/基础架构/RoPE.md#rope>)、[GQA](<../02_大模型/基础架构/GQA.md#mha-mqa-gqa>)、[MoE](<../02_大模型/基础架构/MoE.md#moe>) | 能讲结构、数据、复杂度、训练/推理影响 | [大模型预训练与生成基础](<../02_大模型/大模型预训练与生成基础.md#大模型预训练与生成基础>)、[Transformer](<../02_大模型/基础架构/Transformer.md#transformer>)、[Self-Attention](<../02_大模型/基础架构/Self-Attention.md#self-attention>)、[Decoder-only](<../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)、[RoPE](<../02_大模型/基础架构/RoPE.md#rope>)、[GQA](<../02_大模型/基础架构/GQA.md#mha-mqa-gqa>)、[MoE](<../02_大模型/基础架构/MoE.md#moe>) |
+| Transformer / LLM | Transformer、Tokenizer、预训练、[Decoder-only](<../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)、[RoPE](<../02_大模型/基础架构/RoPE.md#rope>)、[GQA](<../02_大模型/基础架构/GQA.md>)、[MoE](<../02_大模型/基础架构/MoE.md#moe>) | 能讲结构、数据、复杂度、训练/推理影响 | [大模型预训练与生成基础](<../02_大模型/大模型预训练与生成基础.md#大模型预训练与生成基础>)、[Transformer](<../02_大模型/基础架构/Transformer.md#transformer>)、[Self-Attention](<../02_大模型/基础架构/Self-Attention.md#self-attention>)、[Decoder-only](<../02_大模型/基础架构/Decoder-only vs Encoder-Decoder.md#decoder-only-vs-encoder-decoder>)、[RoPE](<../02_大模型/基础架构/RoPE.md#rope>)、[GQA](<../02_大模型/基础架构/GQA.md>)、[MoE](<../02_大模型/基础架构/MoE.md#moe>) |
 | Post-training | SFT、[RLHF](<../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>)、[DPO](<../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md#dpo-直接偏好优化>)、[PPO](<../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md#ppo-近端策略优化>)、[GRPO](<../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md#grpo-组相对策略优化>)、RLVR、Agentic RL、Reward Model | 能讲发展脉络、数据形式、目标函数、训练流程、方法差异和风险 | [后训练发展史与方法对比](<../03_训练优化与对齐/后训练与对齐/后训练发展史与方法对比.md#后训练发展史与方法对比>)、[SFT](<../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、[RLHF](<../03_训练优化与对齐/后训练与对齐/RLHF 基于人类反馈的强化学习.md#rlhf-基于人类反馈的强化学习>)、[DPO](<../03_训练优化与对齐/后训练与对齐/DPO 直接偏好优化.md#dpo-直接偏好优化>)、[PPO](<../03_训练优化与对齐/后训练与对齐/PPO 近端策略优化.md#ppo-近端策略优化>)、[GRPO](<../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md#grpo-组相对策略优化>)、[RLVR](<../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>)、[Agentic RL](<../08_Agent/基础概念/Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>)、[Reward Model 与 Grader](<../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>) |
 | Agent | Tool Use、GUI、CodeAgent、Long-horizon、[Workflow](<../08_Agent/基础概念/Workflow.md#workflow>)、[Tool Call](<../08_Agent/基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>) | 能设计 Agent Loop、工具、记忆、评测和安全边界 | [Agent](<../08_Agent/基础概念/Agent.md#agent>)、[Agent](<../08_Agent/基础概念/Agent.md#agent>)、[Workflow](<../08_Agent/基础概念/Workflow.md#workflow>)、[Tool Call](<../08_Agent/基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>)、[Tool Call](<../08_Agent/基础概念/Tool_Call与Function_Calling.md#tool-call-与-function-calling>)、[生产级 Agent 案例](<../08_Agent/基础概念/生产级Agent案例.md#生产级agent案例>) |
-| 评测体系 | Evals、graders、benchmark、diagnostics、failure analysis | 能设计自动化评测、bad case、trajectory 归因 | [模型评测与实验设计](<../04_评测实验与数据质量/模型评测与实验设计.md#模型评测与实验设计>)、[LLM Judge](<../04_评测实验与数据质量/LLM_Judge.md#llmjudge>)、[数据泄漏与 Benchmark 污染](<../04_评测实验与数据质量/数据泄漏与Benchmark污染.md#数据泄漏与benchmark污染>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>) |
-| 多模态 | VLM、[CLIP](<../02_大模型/模型细节/里程碑模型/CLIP.md#clip>)、[BLIP](<../02_大模型/模型细节/里程碑模型/BLIP与BLIP2.md#blip-与-blip-2>)、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)、[CLIP](<../02_大模型/模型细节/里程碑模型/CLIP.md#clip>)、[BLIP](<../02_大模型/模型细节/里程碑模型/BLIP与BLIP2.md#blip-与-blip-2>)、[Video Understanding](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md#videounderstanding>)、[OCR 与文档理解](<../02_大模型/视觉多模态与生成模型/视觉基础/OCR与文档理解.md#ocr与文档理解>)、[Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md#multimodalgrounding>) |
-| 数据工程 | 数据清洗、合成数据、Hive、Spark、Feature Store、Data Quality | 能搭数据管线、做数据版本和质量控制 | [数据工程与数据质量](<../04_评测实验与数据质量/数据工程与数据质量.md#数据工程与数据质量>)、[训练数据构造与合成数据](<../04_评测实验与数据质量/训练数据构造与合成数据.md#训练数据构造与合成数据>)、[Hive、Spark 与 Feature Store](<../04_评测实验与数据质量/Hive_Spark与Feature_Store.md#hivespark与featurestore>) |
-| 训练系统 | PyTorch、JAX、Distributed Training、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、Megatron、NCCL | 能解释框架选型、并行策略、集合通信、显存优化和故障排查 | [深度学习框架选型](<../06_Python与工程/深度学习框架/深度学习框架选型.md#深度学习框架选型>)、[PyTorch 训练工程基础](<../06_Python与工程/深度学习框架/PyTorch训练工程基础.md#pytorch-训练工程基础>)、[分布式训练通信与故障排查](<../03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md#分布式训练通信与故障排查>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md#zero>)、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md#megatronlm>)、[JAX 与 XLA](<../03_训练优化与对齐/训练框架与并行/JAX与XLA.md#jax与xla>)、[Loss 异常与收敛排查](<../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md#训练-loss-异常怎么排查>) |
-| 推理部署 | [vLLM](<../05_推理部署与系统/推理工程/vLLM.md#vllm>)、TensorRT-LLM、Quantization、[Dynamic Batching](<../05_推理部署与系统/推理工程/Batching.md#batching>)、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../05_推理部署与系统/推理工程/模型部署与推理工程.md#模型部署与推理工程>)、[vLLM](<../05_推理部署与系统/推理工程/vLLM.md#vllm>)、[TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md#tensorrtllm>)、[Batching](<../05_推理部署与系统/推理工程/Batching.md#batching>)、[KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、[量化](<../05_推理部署与系统/推理工程/量化.md#量化>)、[CUDA Graph](<../05_推理部署与系统/推理工程/CUDA_Graph.md#cudagraph>) |
+| 评测体系 | Evals、graders、benchmark、diagnostics、failure analysis | 能设计自动化评测、bad case、trajectory 归因 | [模型评测与实验设计](<../04_评测实验与数据质量/模型评测与实验设计.md#模型评测与实验设计>)、[LLM Judge](<../04_评测实验与数据质量/LLM_Judge.md>)、[数据泄漏与 Benchmark 污染](<../04_评测实验与数据质量/数据泄漏与Benchmark污染.md#数据泄漏与benchmark污染>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)、[Agent Eval](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>) |
+| 多模态 | VLM、[CLIP](<../02_大模型/模型细节/里程碑模型/CLIP.md#clip>)、[BLIP](<../02_大模型/模型细节/里程碑模型/BLIP与BLIP2.md#blip-与-blip-2>)、Diffusion、Video Understanding、OCR | 能讲视觉编码、多模态融合、数据构造、评测 | [VLM 与 Vision Instruction Tuning](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)、[CLIP](<../02_大模型/模型细节/里程碑模型/CLIP.md#clip>)、[BLIP](<../02_大模型/模型细节/里程碑模型/BLIP与BLIP2.md#blip-与-blip-2>)、[Video Understanding](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md>)、[OCR 与文档理解](<../02_大模型/视觉多模态与生成模型/视觉基础/OCR与文档理解.md#ocr与文档理解>)、[Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>) |
+| 数据工程 | 数据清洗、合成数据、Hive、Spark、Feature Store、Data Quality | 能搭数据管线、做数据版本和质量控制 | [数据工程与数据质量](<../04_评测实验与数据质量/数据工程与数据质量.md#数据工程与数据质量>)、[训练数据构造与合成数据](<../04_评测实验与数据质量/训练数据构造与合成数据.md#训练数据构造与合成数据>)、[Hive、Spark 与 Feature Store](<../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>) |
+| 训练系统 | PyTorch、JAX、Distributed Training、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、Megatron、NCCL | 能解释框架选型、并行策略、集合通信、显存优化和故障排查 | [深度学习框架选型](<../06_Python与工程/深度学习框架/深度学习框架选型.md#深度学习框架选型>)、[PyTorch 训练工程基础](<../06_Python与工程/深度学习框架/PyTorch训练工程基础.md#pytorch-训练工程基础>)、[分布式训练通信与故障排查](<../03_训练优化与对齐/训练框架与并行/分布式训练通信与故障排查.md#分布式训练通信与故障排查>)、[DeepSpeed](<../03_训练优化与对齐/训练框架与并行/DeepSpeed.md#deepspeed>)、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md#zero>)、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)、[JAX 与 XLA](<../03_训练优化与对齐/训练框架与并行/JAX与XLA.md#jax与xla>)、[Loss 异常与收敛排查](<../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md#训练-loss-异常怎么排查>) |
+| 推理部署 | [vLLM](<../05_推理部署与系统/推理工程/vLLM.md#vllm>)、TensorRT-LLM、Quantization、[Dynamic Batching](<../05_推理部署与系统/推理工程/Batching.md#batching>)、p99 | 能设计低延迟高吞吐推理服务 | [模型部署与推理工程](<../05_推理部署与系统/推理工程/模型部署与推理工程.md#模型部署与推理工程>)、[vLLM](<../05_推理部署与系统/推理工程/vLLM.md#vllm>)、[TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md>)、[Batching](<../05_推理部署与系统/推理工程/Batching.md#batching>)、[KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、[量化](<../05_推理部署与系统/推理工程/量化.md#量化>)、[CUDA Graph](<../05_推理部署与系统/推理工程/CUDA_Graph.md>) |
 | 系统工程 | Linux、C++、Python、服务化、监控、回滚、CI/CD | 能把模型稳定上线并排障 | [MLOps 与模型生产化](<../05_推理部署与系统/生产系统设计/MLOps与模型生产化.md#mlops与模型生产化>)、[Serving](<../05_推理部署与系统/推理工程/Serving.md#serving>)、[CUDA 与 Triton 基础](<../05_推理部署与系统/推理工程/CUDA与Triton基础.md#cuda与triton基础>)、[编程与算法工程能力](<../06_Python与工程/编程与算法工程能力.md#编程与算法工程能力>) |
 | 编码能力 | 数据结构算法、Python 工程 | 能写可运行、可测试、可恢复、复杂度清楚的代码 | [Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md#beam-search>)、[高频算法模板](<../06_Python与工程/算法刷题/高频算法模板.md#高频算法模板>)、[Python 工程实践](<../06_Python与工程/Python工程实践.md#python-工程实践>) |
 
@@ -50,7 +50,7 @@
 需要知道：
 
 - Rule-based eval。
-- [LLM-as-a-Judge](<../04_评测实验与数据质量/LLM_Judge.md#llmjudge>)。
+- [LLM-as-a-Judge](<../04_评测实验与数据质量/LLM_Judge.md>)。
 - Pairwise preference。
 - [Reward Model / Generative Reward Model](<../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>)。
 - [Agent trajectory 评测](<../08_Agent/基础概念/Agent_Eval.md#agent-evaltrajectory-与-harness>)。
@@ -77,8 +77,8 @@
 需要知道：
 
 - DDP、[FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md#zero>)。
-- [Tensor Parallel、Pipeline Parallel、Sequence Parallel](<../05_推理部署与系统/推理工程/推理优化方法_并行策略.md#推理优化方法并行策略>)。
-- [Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md#megatronlm>)。
+- [Tensor Parallel、Pipeline Parallel、Sequence Parallel](<../05_推理部署与系统/推理工程/推理优化方法_并行策略.md>)。
+- [Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)。
 - [Checkpoint 保存、恢复、切分](<../03_训练优化与对齐/训练框架与并行/Checkpoint.md#checkpoint>)。
 - [训练吞吐、显存、通信瓶颈](<../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md#训练-loss-异常怎么排查>)。
 - [JAX/XLA 的基本思想](<../03_训练优化与对齐/训练框架与并行/JAX与XLA.md#jax与xla>)。
@@ -91,9 +91,9 @@
 
 - [CLIP](<../02_大模型/模型细节/里程碑模型/CLIP.md#clip>) / [BLIP](<../02_大模型/模型细节/里程碑模型/BLIP与BLIP2.md#blip-与-blip-2>) / [VLM 基础](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
 - [Vision Instruction Tuning](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)。
-- [Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md#multimodalgrounding>)。
+- [Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>)。
 - [OCR / Document Understanding](<../02_大模型/视觉多模态与生成模型/视觉基础/OCR与文档理解.md#ocr与文档理解>)。
-- [Video Understanding：帧采样、时序建模、音频融合](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md#videounderstanding>)。
+- [Video Understanding：帧采样、时序建模、音频融合](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md>)。
 - [Diffusion](<../02_大模型/视觉多模态与生成模型/生成模型/Latent Diffusion Models.md#latent-diffusion-models>) 与 [Autoregressive](<../02_大模型/基础架构/Autoregressive Model.md#autoregressive-model>) 生成范式差异。
 
 ### 推理系统与性能优化
@@ -102,12 +102,12 @@
 
 需要知道：
 
-- [Prefill / Decode](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)。
-- [KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)。
+- [Prefill / Decode](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
+- [KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - [Continuous Batching / Dynamic Batching](<../05_推理部署与系统/推理工程/Batching.md#batching>)。
 - [vLLM / PagedAttention](<../05_推理部署与系统/推理工程/vLLM.md#vllm>)。
-- [TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md#tensorrtllm>)。
-- [Speculative Decoding](<../05_推理部署与系统/推理工程/Speculative_Decoding.md#speculativedecoding>)。
+- [TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md>)。
+- [Speculative Decoding](<../05_推理部署与系统/推理工程/Speculative_Decoding.md>)。
 - [量化：INT8、FP8、AWQ、GPTQ](<../05_推理部署与系统/推理工程/量化.md#量化>)。
 - p50/p95/p99 latency 和吞吐权衡。
 
@@ -131,7 +131,7 @@
 1. LLM 评测与 Grader。
 2. SFT / RLHF / DPO / GRPO / RLVR。
 3. 分布式训练：FSDP、[ZeRO](<../03_训练优化与对齐/训练框架与并行/ZeRO.md#zero>)、Megatron。
-4. 推理优化：[KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)、Batching、[量化](<../05_推理部署与系统/推理工程/量化.md#量化>)、vLLM。
+4. 推理优化：[KV Cache](<../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)、Batching、[量化](<../05_推理部署与系统/推理工程/量化.md#量化>)、vLLM。
 5. 数据质量、数据版本和训练可复现。
 
 ### P1：区分中高级候选人
@@ -171,7 +171,7 @@
 ### 第四阶段：补齐 Agent
 
 - 学习 `08_Agent/` 下的基础概念。
-- 能设计 Agent Workflow、Tool Schema、[Context Engineering](<../08_Agent/基础概念/Context_Engineering.md#contextengineering>)、Guardrails 和 Eval。
+- 能设计 Agent Workflow、Tool Schema、[Context Engineering](<../08_Agent/基础概念/Context_Engineering.md>)、Guardrails 和 Eval。
 - 能解释 Vibe Coding 与 Spec Coding 的工程价值。
 
 ### 第五阶段：项目表达
@@ -236,10 +236,10 @@
 - [TensorFlow 与 Keras 基础](<../06_Python与工程/深度学习框架/TensorFlow与Keras基础.md#tensorflow-与-keras-基础>)
 - [Hugging Face 生态基础](<../06_Python与工程/深度学习框架/Hugging_Face生态基础.md#hugging-face-生态基础>)
 - [训练脚手架与高级封装](<../06_Python与工程/深度学习框架/训练脚手架与高级封装.md#训练脚手架与高级封装>)
-- [Hive、Spark 与 Feature Store](<../04_评测实验与数据质量/Hive_Spark与Feature_Store.md#hivespark与featurestore>)
+- [Hive、Spark 与 Feature Store](<../04_评测实验与数据质量/Hive_Spark与Feature_Store.md>)
 - [训练数据构造与合成数据](<../04_评测实验与数据质量/训练数据构造与合成数据.md#训练数据构造与合成数据>)
 - [FSDP](<../03_训练优化与对齐/训练框架与并行/FSDP.md#fsdp>)
-- [Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md#megatronlm>)
+- [Megatron-LM](<../03_训练优化与对齐/训练框架与并行/Megatron_LM.md>)
 - [JAX 与 XLA](<../03_训练优化与对齐/训练框架与并行/JAX与XLA.md#jax与xla>)
 - [Loss 异常与收敛排查](<../03_训练优化与对齐/训练稳定性/Loss异常与收敛排查.md#训练-loss-异常怎么排查>)
 - [SFT](<../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)
@@ -248,17 +248,17 @@
 - [Reward Model 与 Grader](<../03_训练优化与对齐/后训练与对齐/Reward Model 与 Grader 奖励模型与评分器.md#reward-model-与-grader-奖励模型与评分器>)
 - [RLVR](<../03_训练优化与对齐/后训练与对齐/RLVR 可验证奖励强化学习.md#rlvr-可验证奖励强化学习>)
 - [Agentic RL](<../08_Agent/基础概念/Agentic RL 智能体强化学习.md#agentic-rl-智能体强化学习>)
-- [Speculative Decoding](<../05_推理部署与系统/推理工程/Speculative_Decoding.md#speculativedecoding>)
-- [TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md#tensorrtllm>)
-- [CUDA Graph](<../05_推理部署与系统/推理工程/CUDA_Graph.md#cudagraph>)
+- [Speculative Decoding](<../05_推理部署与系统/推理工程/Speculative_Decoding.md>)
+- [TensorRT-LLM](<../05_推理部署与系统/推理工程/TensorRT_LLM.md>)
+- [CUDA Graph](<../05_推理部署与系统/推理工程/CUDA_Graph.md>)
 - [CUDA 与 Triton 基础](<../05_推理部署与系统/推理工程/CUDA与Triton基础.md#cuda与triton基础>)
 - [MLOps 与模型生产化](<../05_推理部署与系统/生产系统设计/MLOps与模型生产化.md#mlops与模型生产化>)
-- [LLM Judge](<../04_评测实验与数据质量/LLM_Judge.md#llmjudge>)
+- [LLM Judge](<../04_评测实验与数据质量/LLM_Judge.md>)
 - [数据泄漏与 Benchmark 污染](<../04_评测实验与数据质量/数据泄漏与Benchmark污染.md#数据泄漏与benchmark污染>)
 - [VLM 与 Vision Instruction Tuning](<../02_大模型/视觉多模态与生成模型/多模态模型/VLM与Vision_Instruction_Tuning.md#vlm-与-vision-instruction-tuning>)
 - [OCR 与文档理解](<../02_大模型/视觉多模态与生成模型/视觉基础/OCR与文档理解.md#ocr与文档理解>)
-- [Video Understanding](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md#videounderstanding>)
-- [Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md#multimodalgrounding>)
+- [Video Understanding](<../02_大模型/视觉多模态与生成模型/多模态模型/Video_Understanding.md>)
+- [Multimodal Grounding](<../02_大模型/视觉多模态与生成模型/多模态模型/Multimodal_Grounding.md>)
 - [生产级 Agent 案例](<../08_Agent/基础概念/生产级Agent案例.md#生产级agent案例>)
 - [Beam Search](<../06_Python与工程/PyTorch/Beam_Search.md#beam-search>)
 
@@ -267,7 +267,7 @@
 - [推荐系统基础](<../09_搜索推荐广告/推荐系统基础.md#推荐系统基础>)
 - [搜索系统基础](<../09_搜索推荐广告/搜索系统基础.md#搜索系统基础>)
 - [广告排序与 CTR 预估](<../09_搜索推荐广告/广告排序与CTR预估.md#广告排序与ctr预估>)
-- [排序指标与 A/B 测试](<../09_搜索推荐广告/排序指标与A_B测试.md#排序指标与ab测试>)
+- [排序指标与 A/B 测试](<../09_搜索推荐广告/排序指标与A_B测试.md>)
 
 ## 仍可继续扩展的方向
 

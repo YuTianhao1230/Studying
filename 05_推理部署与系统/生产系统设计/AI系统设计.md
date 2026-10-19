@@ -127,10 +127,10 @@ $$
 
 - 网关与路由层负责鉴权、准入、流量隔离和模型选择，不承担 GPU 执行。
 - 调度层负责队列、优先级与批处理，把请求映射到可用推理容量。
-- 推理运行时负责模型执行和 [KV Cache](<../推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，不承担业务权限判断。
+- 推理运行时负责模型执行和 [KV Cache](<../推理工程/KV_Cache与Prefill_Decode.md>)，不承担业务权限判断。
 - 配置与状态层管理模型、Prompt、Tokenizer 和路由版本，避免实例间版本漂移。
 
-完整请求流、服务监控和过载治理见 [Serving](<../推理工程/Serving.md#serving>)；批处理与缓存的机制细节分别见 [Batching](<../推理工程/Batching.md#batching>) 和 [KV Cache 与 Prefill/Decode](<../推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)。
+完整请求流、服务监控和过载治理见 [Serving](<../推理工程/Serving.md#serving>)；批处理与缓存的机制细节分别见 [Batching](<../推理工程/Batching.md#batching>) 和 [KV Cache 与 Prefill/Decode](<../推理工程/KV_Cache与Prefill_Decode.md>)。
 
 容量规划需要区分 Prefill 和 Decode：
 

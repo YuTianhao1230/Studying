@@ -105,7 +105,7 @@ PASS
 - 下游 ACC 是否提升。
 - 输出格式是否退化。
 
-[LoRA](<../../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>) 可以使用更大学习率，但不能把 LoRA 经验直接套到 full fine-tuning。
+[LoRA](<../../../03_训练优化与对齐/超参数微调/LoRA 低秩适配.md#lora-低秩适配>) 可以使用更大学习率，但不能把 LoRA 经验直接套到 full fine-tuning。
 
 #### 3.2 Effective Batch Size
 

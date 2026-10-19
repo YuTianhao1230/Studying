@@ -4,7 +4,7 @@
 
 ### 概述
 
-ms-swift 是 ModelScope 生态里的大模型训练、微调、推理和评测工具链，常用于 [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、[LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>)、[QLoRA](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md#qlora-和-lora-的区别是什么>)、推理测试和模型导出。
+ms-swift 是 ModelScope 生态里的大模型训练、微调、推理和评测工具链，常用于 [SFT](<../../03_训练优化与对齐/后训练与对齐/SFT 监督微调.md#sft-监督微调>)、[LoRA](<../../03_训练优化与对齐/超参数微调/LoRA 低秩适配.md#lora-低秩适配>)、[QLoRA](<../../03_训练优化与对齐/超参数微调/PEFT 参数高效微调.md#qlora-和-lora-的区别是什么>)、推理测试和模型导出。
 
 你的关键帧项目实例见 [ms-swift关键帧训练与推理.md](<../../12_实习工作整理/关键帧检测/工程实现/ms-swift关键帧训练与推理.md#ms-swift-视频多模态训练与推理>)，其中只解释 `train_video.sh` 实际涉及的训练、推理和分布式参数；本卡片继续保留通用 ms-swift 能力和未在该项目脚本中使用的常见配置。
 
@@ -59,7 +59,7 @@ base model frozen
 | 是否训练 | 支持 | 通常不负责训练 |
 | 是否推理 | 支持 | 强项 |
 | 是否 serving | 可衔接部署 | 原生面向服务 |
-| 核心优势 | 训练流程和模型适配 | [KV cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 管理和并发吞吐 |
+| 核心优势 | 训练流程和模型适配 | [KV cache](<KV_Cache与Prefill_Decode.md>) 管理和并发吞吐 |
 
 ### 为什么项目会从 ms-swift 迁移到 xLLM / vLLM 类服务
 

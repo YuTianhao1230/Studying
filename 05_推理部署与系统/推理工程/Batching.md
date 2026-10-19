@@ -119,7 +119,7 @@ Dynamic batching 是在一个很短的时间窗口（比如 5ms）内收集到�
 
 ### LLM 推理中为什么 batching 比普通模型更复杂？
 
-回答思路：从变长、[KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 和动态调度三点说。
+回答思路：从变长、[KV Cache](<KV_Cache与Prefill_Decode.md>) 和动态调度三点说。
 
 回答模板：
 

@@ -76,7 +76,7 @@ $$
 - [RoPE](<../../基础架构/RoPE.md#rope>) 替代绝对位置编码。
 - [RMSNorm](<../../基础架构/RMSNorm.md#rmsnorm>) 替代 LayerNorm。
 - [SwiGLU](<../../../01_机器学习基础/深度学习基础/常见激活函数.md#常见激活函数>) 替代 ReLU/GELU FFN。
-- GQA/MQA 降低 [KV Cache](<../../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)。
+- GQA/MQA 降低 [KV Cache](<../../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)。
 - [MoE](<../../基础架构/MoE.md#moe>) 扩大参数容量但控制激活成本。
 
 ### 能力边界

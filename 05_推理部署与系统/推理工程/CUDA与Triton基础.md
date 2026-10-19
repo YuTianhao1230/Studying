@@ -86,7 +86,7 @@ Triton 让你用 Python 风格写 GPU kernel，比 CUDA C++ 更易上手。
 
 - Prefill 阶段 attention 计算重。
 - Decode 阶段 batch 小、访存重。
-- [KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>) 读写占显存带宽。
+- [KV Cache](<KV_Cache与Prefill_Decode.md>) 读写占显存带宽。
 - 小算子太多导致 kernel launch overhead。
 
 优化方向：

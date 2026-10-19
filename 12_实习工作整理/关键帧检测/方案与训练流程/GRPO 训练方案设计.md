@@ -612,7 +612,7 @@ M0：Direct SFT checkpoint
   -> Temporal-OPSD On-Policy 蒸馏或 answer-only distillation
 ```
 
-Temporal-OPSD 的完整数据、训练器、loss、准入准出和面试回答见[OPD 训练方案设计.md](<OPD 训练方案设计.md#关键帧检测opd-temporal-opsd-训练方案>)。
+Temporal-OPSD 的完整数据、训练器、loss、准入准出和面试回答见[OPD 训练方案设计.md](<OPD 训练方案设计.md>)。
 
 #### 7.1 进入 GRPO 的准入条件
 

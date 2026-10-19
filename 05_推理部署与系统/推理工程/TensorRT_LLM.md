@@ -64,7 +64,7 @@ TensorRT-LLM 属于解决这些问题的工程工具之一。
 
 #### KV Cache 管理
 
-推理系统需要高效管理 [KV Cache](<KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)，避免显存碎片和重复计算。
+推理系统需要高效管理 [KV Cache](<KV_Cache与Prefill_Decode.md>)，避免显存碎片和重复计算。
 
 ### 和 vLLM 的关系
 

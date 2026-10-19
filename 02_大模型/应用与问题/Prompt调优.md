@@ -127,12 +127,12 @@ Prompt的形式可以非常多样：
     *   **PAL**: 对于需要精确计算或符号操作的任务（如数学、逻辑），Prompt引导LLM生成可执行的代码（如Python），然后执行代码得到结果，而不是直接让LLM输出最终答案。这结合了LLM的自然语言理解能力和代码执行的精确性。
     *   **ReAct (Reason + Act)**: 一种更通用的框架，允许LLM交替进行“思考/推理”（Reasoning traces）和“行动”（Actions，如调用外部API、工具、搜索信息）。Prompt的设计需要引导模型生成这种思考-行动序列。
 
-4.  **参数高效微调 (Parameter-Efficient Fine-Tuning, [PEFT](<../../03_训练优化与对齐/后训练与对齐/PEFT 参数高效微调.md#peft-参数高效微调>)) 中的软提示 (Soft Prompts)**
+4.  **参数高效微调 (Parameter-Efficient Fine-Tuning, [PEFT](<../../03_训练优化与对齐/超参数微调/PEFT 参数高效微调.md#peft-参数高效微调>)) 中的软提示 (Soft Prompts)**
     *   这与我们通常说的手动编写“硬提示”（discrete text prompts）不同。
     *   **Prompt Tuning**: 不是调整整个模型的参数，而是只在输入 embedding 序列前添加一小段可学习的连续向量（“软提示”或“提示嵌入”）。微调时只更新这些提示嵌入，模型主体参数保持冻结。
     *   **Prefix Tuning**: 不只修改输入层，而是为 [Transformer](<../基础架构/Transformer.md#transformer>) 各层注意力注入可学习的 prefix key/value 状态，使前缀在每层参与注意力计算。
     *   **P-Tuning (v1 & v2)**: 探索了不同方式将可学习的连续提示嵌入整合到模型中，v2版本在更多任务和模型规模上表现更稳定。
-    *   **[LoRA](<../../03_训练优化与对齐/后训练与对齐/LoRA 低秩适配.md#lora-低秩适配>) (Low-Rank Adaptation)**: 虽然不直接是“提示”调优，但它是常用的 PEFT 方法，通过在模型层中注入可训练的低秩矩阵来适配模型。有时与软提示方法结合，或作为软提示的替代方案。
+    *   **[LoRA](<../../03_训练优化与对齐/超参数微调/LoRA 低秩适配.md#lora-低秩适配>) (Low-Rank Adaptation)**: 虽然不直接是“提示”调优，但它是常用的 PEFT 方法，通过在模型层中注入可训练的低秩矩阵来适配模型。有时与软提示方法结合，或作为软提示的替代方案。
 
 5.  **检索增强生成 (Retrieval Augmented Generation, [RAG](<RAG.md#rag>))**
     *   虽然RAG本身不是一个Prompt调优技术，但它极大地影响了输入到LLM的Prompt的上下文质量。

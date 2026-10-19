@@ -14,6 +14,7 @@
 | [高阶特征.md](<高阶特征.md>) | 从低层纹理到高层语义特征的表示层级。 |
 | [常见激活函数.md](<常见激活函数.md>) | Sigmoid、Tanh、ReLU、GELU、SiLU 的性质与选择，以及 GLU/SwiGLU 门控 FFN。 |
 | [常见分类损失函数.md](<常见分类损失函数.md>) | 交叉熵、Focal Loss、KL 散度等分类目标。 |
+| [KL 散度](<KL 散度.md>) | 概率分布差异、方向性、支撑集条件与交叉熵的关系。 |
 | [常见回归损失函数.md](<常见回归损失函数.md>) | MSE、MAE、Huber、分位数损失等回归目标。 |
 | [参数初始化与数值稳定性.md](<参数初始化与数值稳定性.md>) | Xavier/He 初始化、稳定 Softmax、LogSumExp 和融合交叉熵。 |
 | [Normalization.md](<Normalization.md>) | BatchNorm、LayerNorm 等归一化方法的目的和差异。 |

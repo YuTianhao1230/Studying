@@ -6,9 +6,9 @@
 
 **MLA (Multi-head Latent [Attention](<Self-Attention.md#self-attention>))**，全称**多头潜在注意力机制**。
 
-它是 DeepSeek 团队在 DeepSeek-V2 中首次提出，并在 V3 和 R1 中发扬光大的**核心创新技术**。如果说 [MoE](<MoE.md#moe>) 解决了大模型计算量的问题，那么 **MLA 则是彻底解决了大模型显存带宽（[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md#kvcache与prefilldecode>)）的问题。**
+它是 DeepSeek 团队在 DeepSeek-V2 中首次提出，并在 V3 和 R1 中发扬光大的**核心创新技术**。如果说 [MoE](<MoE.md#moe>) 解决了大模型计算量的问题，那么 **MLA 则是彻底解决了大模型显存带宽（[KV Cache](<../../05_推理部署与系统/推理工程/KV_Cache与Prefill_Decode.md>)）的问题。**
 
-你可以把它看作是 **[GQA](<GQA.md#mha-mqa-gqa>)（分组查询注意力）的超级进化版**。
+你可以把它看作是 **[GQA](<GQA.md>)（分组查询注意力）的超级进化版**。
 
 ### 为什么要搞 MLA？（痛点）
 
