@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1477" viewBox="0 0 1500 1477">
+<title>两晋南北朝人物关系图 · 第1/2部分</title>
+<desc>连接三国归晋、东晋士人、淝水之战和北朝政权，强调长期分裂中的多条并行历史。</desc>
+<rect width="1500" height="1477" fill="#f7f5ee"/>
+<text x="58.0" y="72.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="34" fill="#243640">两晋南北朝人物关系图 · 第1/2部分</text>
+<text x="58.0" y="109.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="18" fill="#66777d">连接三国归晋、东晋士人、淝水之战和北朝政权，强调长期分裂中的多条并行历史。</text>
+<line x1="58" y1="148" x2="1442" y2="148" stroke="#d5dcd6" stroke-width="3"/>
+<line x1="58" y1="182" x2="97" y2="182" stroke="#526981" stroke-width="3"/>
+<text x="108.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">亲属 / 世系</text>
+<line x1="413" y1="182" x2="452" y2="182" stroke="#9a5b78" stroke-width="3"/>
+<text x="463.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a5b78">婚姻 / 伴侣</text>
+<line x1="768" y1="182" x2="807" y2="182" stroke="#28766f" stroke-width="3"/>
+<text x="818.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">任用 / 辅佐 / 合作</text>
+<line x1="1123" y1="182" x2="1162" y2="182" stroke="#b75747" stroke-width="3"/>
+<text x="1173.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">战争 / 政治对立</text>
+<line x1="58" y1="213" x2="97" y2="213" stroke="#9a7327" stroke-width="3"/>
+<text x="108.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a7327">师友 / 学术 / 文化</text>
+<line x1="413" y1="213" x2="452" y2="213" stroke="#76558f" stroke-width="3"/>
+<text x="463.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#76558f">作者 / 文学人物</text>
+<line x1="768" y1="213" x2="807" y2="213" stroke="#8c795b" stroke-width="3" stroke-dasharray="8 7"/>
+<text x="818.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">跨代传承 / 政权延续</text>
+<text x="58.0" y="275.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">01</text>
+<text x="104.0" y="277.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">从司马氏掌魏到西晋建立</text>
+<text x="104.0" y="307.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">司马炎是司马昭之子、司马懿之孙；前两人归入三国时代。</text>
+<rect x="80.0" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#7b8588" stroke-width="2"/>
+<text x="158.0" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#7b8588">司马懿</text>
+<text x="164.0" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">曹魏权臣</text>
+<rect x="636.0" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#7b8588" stroke-width="2"/>
+<text x="714.0" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#7b8588">司马昭</text>
+<text x="712.5" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">司马懿之子</text>
+<rect x="1192.0" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1270.0" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">司马炎</text>
+<text x="1268.5" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">西晋建立者</text>
+<line x1="308.0" y1="419.0" x2="636.0" y2="419.0" stroke="#526981" stroke-width="3"/>
+<polygon points="636.0,419.0 625.2,424.2 625.2,413.8" fill="#526981"/>
+<rect x="436.953125" y="386" width="70.09375" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="446.0" y="404.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">父 → 子</text>
+<line x1="864.0" y1="419.0" x2="1192.0" y2="419.0" stroke="#526981" stroke-width="3"/>
+<polygon points="1192.0,419.0 1181.2,424.2 1181.2,413.8" fill="#526981"/>
+<rect x="955.6640625" y="386" width="144.671875" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="964.7" y="404.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">父 → 子 / 代魏建晋</text>
+<line x1="58" y1="522" x2="1442" y2="522" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="570.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">02</text>
+<text x="104.0" y="572.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">闻鸡起舞与晋末志向</text>
+<text x="104.0" y="602.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">祖逖与刘琨青年时相交，闻鸡起舞体现后世对二人志向的概括。</text>
+<rect x="80.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="170.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">祖逖</text>
+<text x="149.0" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">东晋北伐将领</text>
+<rect x="1192.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1282.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">刘琨</text>
+<text x="1253.5" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">西晋将领与诗人</text>
+<line x1="308.0" y1="714.0" x2="1192.0" y2="714.0" stroke="#9a7327" stroke-width="3"/>
+<rect x="688.7109375" y="681" width="122.578125" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="697.7" y="699.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a7327">友人 / 闻鸡起舞</text>
+<line x1="58" y1="817" x2="1442" y2="817" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="865.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">03</text>
+<text x="104.0" y="867.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">淝水之战双方</text>
+<text x="104.0" y="897.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">苻融是苻坚之弟；谢玄为谢安之侄，统率北府兵。</text>
+<rect x="80.0" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="170.0" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">苻融</text>
+<text x="164.0" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">前秦将领</text>
+<rect x="450.66666666666663" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="540.7" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">苻坚</text>
+<text x="534.7" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">前秦君主</text>
+<rect x="821.3333333333333" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="911.3" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">谢安</text>
+<text x="905.3" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">东晋执政</text>
+<rect x="1192.0" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1282.0" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">谢玄</text>
+<text x="1268.5" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">北府兵将领</text>
+<line x1="308.0" y1="1009.0" x2="450.66666666666663" y2="1009.0" stroke="#526981" stroke-width="3"/>
+<polygon points="450.7,1009.0 439.9,1014.2 439.9,1003.8" fill="#526981"/>
+<rect x="321.9973958333333" y="976" width="114.671875" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="331.0" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">弟 ← 兄 / 君臣</text>
+<line x1="678.6666666666666" y1="1009.0" x2="821.3333333333333" y2="1009.0" stroke="#b75747" stroke-width="3"/>
+<rect x="711.0" y="976" width="78.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="720.0" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">淝水对立</text>
+<line x1="1049.3333333333333" y1="1009.0" x2="1192.0" y2="1009.0" stroke="#526981" stroke-width="3"/>
+<rect x="1051.8776041666665" y="976" width="137.578125" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="1060.9" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">叔侄 / 前后方协作</text>
+<line x1="58" y1="1112" x2="1442" y2="1112" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="1160.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">04</text>
+<text x="104.0" y="1162.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">谢氏家族与山水诗</text>
+<text x="104.0" y="1192.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">谢灵运为谢玄之孙，家族声望与其仕途背景相关。</text>
+<rect x="80.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="170.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">谢安</text>
+<text x="164.0" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">东晋名臣</text>
+<rect x="636.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="726.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">谢玄</text>
+<text x="720.0" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">谢安之侄</text>
+<rect x="1192.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1270.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">谢灵运</text>
+<text x="1276.0" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">谢玄之孙</text>
+<line x1="308.0" y1="1304.0" x2="636.0" y2="1304.0" stroke="#526981" stroke-width="3"/>
+<polygon points="636.0,1304.0 625.2,1309.2 625.2,1298.8" fill="#526981"/>
+<rect x="436.953125" y="1271" width="70.09375" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="446.0" y="1289.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">叔 → 侄</text>
+<line x1="864.0" y1="1304.0" x2="1192.0" y2="1304.0" stroke="#526981" stroke-width="3"/>
+<polygon points="1192.0,1304.0 1181.2,1309.2 1181.2,1298.8" fill="#526981"/>
+<rect x="992.953125" y="1271" width="70.09375" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="1002.0" y="1289.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">祖 → 孙</text>
+<line x1="58" y1="1407" x2="1442" y2="1407" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="1454.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">同名人物在不同分组重复出现时，仍指同一人；每条线的文字说明优先于颜色。</text>
+</svg>

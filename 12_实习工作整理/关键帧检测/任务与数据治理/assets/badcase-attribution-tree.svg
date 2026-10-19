@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1130" viewBox="0 0 1440 1130" role="img" aria-labelledby="title desc">
+  <title id="title">关键帧 Bad Case 树状归因流程</title>
+  <desc id="desc">从预测与 GT 不一致开始，先人工独立复标，再依次判断人工标注错误、标准沉淀问题、数据质量问题和标准映射错误，最后分析真实模型能力问题。</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#2563EB"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#B91C1C"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 Z" fill="#0F766E"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#172033" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1440" height="1130" fill="#F5F7FA"/>
+  <g font-family="Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="72" y="64" fill="#172033" font-size="34" font-weight="700">关键帧 Bad Case：从人工复标开始逐层归因</text>
+    <text x="72" y="102" fill="#607086" font-size="18">人工标注 → 标准沉淀 → 数据质量 → 标准映射 → 模型能力。</text>
+
+    <!-- Start -->
+    <rect x="480" y="138" width="480" height="82" rx="8" fill="#172033" filter="url(#shadow)"/>
+    <text x="720" y="171" fill="#FFFFFF" font-size="21" font-weight="700" text-anchor="middle">候选 Bad Case</text>
+    <text x="720" y="198" fill="#D7DFEA" font-size="15" text-anchor="middle">模型预测与单点 GT 不一致</text>
+
+    <!-- Main decision 1 -->
+    <path d="M720 220 V260" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+    <rect x="500" y="270" width="440" height="82" rx="8" fill="#E8F0FF" stroke="#2563EB" stroke-width="2" filter="url(#shadow)"/>
+    <text x="720" y="304" fill="#172033" font-size="20" font-weight="700" text-anchor="middle">1. 人工复标能否确认原 GT 错误？</text>
+    <text x="720" y="332" fill="#607086" font-size="14" text-anchor="middle">按当前标准得到清晰标签，且与原 GT 有 gap</text>
+
+    <!-- Outcome 1 -->
+    <path d="M940 311 H1010" stroke="#B91C1C" stroke-width="3" fill="none" marker-end="url(#arrow-red)"/>
+    <text x="970" y="298" fill="#B91C1C" font-size="14" font-weight="700" text-anchor="middle">是</text>
+    <rect x="1020" y="256" width="350" height="110" rx="8" fill="#FDECEC" stroke="#B91C1C" stroke-width="2"/>
+    <text x="1195" y="289" fill="#B91C1C" font-size="19" font-weight="700" text-anchor="middle">人工标注错误</text>
+    <text x="1195" y="317" fill="#607086" font-size="14" text-anchor="middle">relabel 当前样本</text>
+    <text x="1195" y="341" fill="#607086" font-size="14" text-anchor="middle">抽查同批次或同标注员样本</text>
+
+    <!-- Main decision 2 -->
+    <path d="M720 352 V400" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+    <text x="744" y="382" fill="#2563EB" font-size="14" font-weight="700">否 / 无法确认</text>
+    <rect x="500" y="410" width="440" height="82" rx="8" fill="#E8F0FF" stroke="#2563EB" stroke-width="2" filter="url(#shadow)"/>
+    <text x="720" y="444" fill="#172033" font-size="20" font-weight="700" text-anchor="middle">2. 是否由标准沉淀错误导致？</text>
+    <text x="720" y="472" fill="#607086" font-size="14" text-anchor="middle">视频可看清，但现有规则无法得出合理结论</text>
+
+    <!-- Outcome 2 -->
+    <path d="M940 451 H1010" stroke="#B91C1C" stroke-width="3" fill="none" marker-end="url(#arrow-red)"/>
+    <text x="970" y="438" fill="#B91C1C" font-size="14" font-weight="700" text-anchor="middle">是</text>
+    <rect x="1020" y="396" width="350" height="110" rx="8" fill="#FFF4DD" stroke="#B45309" stroke-width="2"/>
+    <text x="1195" y="429" fill="#B45309" font-size="19" font-weight="700" text-anchor="middle">标准沉淀错误</text>
+    <text x="1195" y="457" fill="#607086" font-size="14" text-anchor="middle">重新与业务确认规则内容</text>
+    <text x="1195" y="481" fill="#607086" font-size="14" text-anchor="middle">版本化更新标准并统一重标</text>
+
+    <!-- Main decision 3 -->
+    <path d="M720 492 V540" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+    <text x="744" y="522" fill="#2563EB" font-size="14" font-weight="700">否</text>
+    <rect x="500" y="550" width="440" height="82" rx="8" fill="#E8F0FF" stroke="#2563EB" stroke-width="2" filter="url(#shadow)"/>
+    <text x="720" y="584" fill="#172033" font-size="20" font-weight="700" text-anchor="middle">3. 是否由视频数据质量差导致？</text>
+    <text x="720" y="612" fill="#607086" font-size="14" text-anchor="middle">缺帧 / 模糊 / 遮挡 / 状态不可见 / 链路异常</text>
+
+    <!-- Outcome 3 -->
+    <path d="M940 591 H1010" stroke="#B91C1C" stroke-width="3" fill="none" marker-end="url(#arrow-red)"/>
+    <text x="970" y="578" fill="#B91C1C" font-size="14" font-weight="700" text-anchor="middle">是</text>
+    <rect x="1020" y="536" width="350" height="110" rx="8" fill="#F1EAFE" stroke="#6D28D9" stroke-width="2"/>
+    <text x="1195" y="569" fill="#6D28D9" font-size="19" font-weight="700" text-anchor="middle">数据质量问题</text>
+    <text x="1195" y="597" fill="#607086" font-size="14" text-anchor="middle">修复链路、重采或剔除</text>
+    <text x="1195" y="621" fill="#607086" font-size="14" text-anchor="middle">必要时使用区间标签或补日志</text>
+
+    <!-- Main decision 4 -->
+    <path d="M720 632 V680" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+    <text x="744" y="662" fill="#2563EB" font-size="14" font-weight="700">否</text>
+    <rect x="500" y="690" width="440" height="82" rx="8" fill="#E8F0FF" stroke="#2563EB" stroke-width="2" filter="url(#shadow)"/>
+    <text x="720" y="724" fill="#172033" font-size="20" font-weight="700" text-anchor="middle">4. 标注标准映射是否错误？</text>
+    <text x="720" y="752" fill="#607086" font-size="14" text-anchor="middle">task_type / keyframe_type / 业务场景映射</text>
+
+    <!-- Outcome 4 -->
+    <path d="M940 731 H1010" stroke="#B91C1C" stroke-width="3" fill="none" marker-end="url(#arrow-red)"/>
+    <text x="970" y="718" fill="#B91C1C" font-size="14" font-weight="700" text-anchor="middle">是</text>
+    <rect x="1020" y="676" width="350" height="110" rx="8" fill="#FFF4DD" stroke="#B45309" stroke-width="2"/>
+    <text x="1195" y="709" fill="#B45309" font-size="19" font-weight="700" text-anchor="middle">标准映射错误</text>
+    <text x="1195" y="737" fill="#607086" font-size="14" text-anchor="middle">修正样本到标准的映射关系</text>
+    <text x="1195" y="761" fill="#607086" font-size="14" text-anchor="middle">回查同一映射键下的样本</text>
+
+    <!-- True model error -->
+    <path d="M720 772 V820" stroke="#0F766E" stroke-width="3" fill="none" marker-end="url(#arrow-teal)"/>
+    <text x="744" y="802" fill="#0F766E" font-size="14" font-weight="700">否</text>
+    <rect x="500" y="830" width="440" height="88" rx="8" fill="#E7F8F4" stroke="#0F766E" stroke-width="2" filter="url(#shadow)"/>
+    <text x="720" y="865" fill="#0F766E" font-size="21" font-weight="700" text-anchor="middle">确认是真实模型错误</text>
+    <text x="720" y="893" fill="#607086" font-size="14" text-anchor="middle">按稳定失败模式分类，再决定补数据或改模型</text>
+
+    <!-- Model error branches -->
+    <path d="M720 918 V948 H225 V975" stroke="#0F766E" stroke-width="3" fill="none" marker-end="url(#arrow-teal)"/>
+    <path d="M720 918 V948 H555 V975" stroke="#0F766E" stroke-width="3" fill="none" marker-end="url(#arrow-teal)"/>
+    <path d="M720 918 V948 H885 V975" stroke="#0F766E" stroke-width="3" fill="none" marker-end="url(#arrow-teal)"/>
+    <path d="M720 918 V948 H1215 V975" stroke="#0F766E" stroke-width="3" fill="none" marker-end="url(#arrow-teal)"/>
+
+    <rect x="72" y="985" width="306" height="86" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="225" y="1019" fill="#172033" font-size="18" font-weight="700" text-anchor="middle">局部 UI 漏看</text>
+    <text x="225" y="1047" fill="#607086" font-size="14" text-anchor="middle">角标 / 小图 / Banner / 边缘区域</text>
+
+    <rect x="402" y="985" width="306" height="86" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="555" y="1019" fill="#172033" font-size="18" font-weight="700" text-anchor="middle">时间边界错误</text>
+    <text x="555" y="1047" fill="#607086" font-size="14" text-anchor="middle">early / late / 二次刷新</text>
+
+    <rect x="732" y="985" width="306" height="86" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="885" y="1019" fill="#172033" font-size="18" font-weight="700" text-anchor="middle">状态或事件误判</text>
+    <text x="885" y="1047" fill="#607086" font-size="14" text-anchor="middle">loading / 白膜 / 弹窗 / 停稳</text>
+
+    <rect x="1062" y="985" width="306" height="86" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="1215" y="1019" fill="#172033" font-size="18" font-weight="700" text-anchor="middle">格式或协议错误</text>
+    <text x="1215" y="1047" fill="#607086" font-size="14" text-anchor="middle">空答案 / JSON / frame_id</text>
+
+    <text x="720" y="1110" fill="#607086" font-size="14" text-anchor="middle">归因原则：人工复标 → 标准沉淀 → 数据质量 → 标准映射 → 模型能力</text>
+  </g>
+</svg>

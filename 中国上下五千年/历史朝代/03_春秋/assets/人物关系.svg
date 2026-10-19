@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1477" viewBox="0 0 1500 1477">
+<title>春秋人物关系图</title>
+<desc>以齐国改革、晋楚争霸、吴越战争和孔门师生为主线，展示霸主政治与多国关系。</desc>
+<rect width="1500" height="1477" fill="#f7f5ee"/>
+<text x="58.0" y="72.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="34" fill="#243640">春秋人物关系图</text>
+<text x="58.0" y="109.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="18" fill="#66777d">以齐国改革、晋楚争霸、吴越战争和孔门师生为主线，展示霸主政治与多国关系。</text>
+<line x1="58" y1="148" x2="1442" y2="148" stroke="#d5dcd6" stroke-width="3"/>
+<line x1="58" y1="182" x2="97" y2="182" stroke="#526981" stroke-width="3"/>
+<text x="108.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#526981">亲属 / 世系</text>
+<line x1="413" y1="182" x2="452" y2="182" stroke="#9a5b78" stroke-width="3"/>
+<text x="463.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a5b78">婚姻 / 伴侣</text>
+<line x1="768" y1="182" x2="807" y2="182" stroke="#28766f" stroke-width="3"/>
+<text x="818.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">任用 / 辅佐 / 合作</text>
+<line x1="1123" y1="182" x2="1162" y2="182" stroke="#b75747" stroke-width="3"/>
+<text x="1173.0" y="187.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">战争 / 政治对立</text>
+<line x1="58" y1="213" x2="97" y2="213" stroke="#9a7327" stroke-width="3"/>
+<text x="108.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a7327">师友 / 学术 / 文化</text>
+<line x1="413" y1="213" x2="452" y2="213" stroke="#76558f" stroke-width="3"/>
+<text x="463.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#76558f">作者 / 文学人物</text>
+<line x1="768" y1="213" x2="807" y2="213" stroke="#8c795b" stroke-width="3" stroke-dasharray="8 7"/>
+<text x="818.0" y="218.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">跨代传承 / 政权延续</text>
+<text x="58.0" y="275.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">01</text>
+<text x="104.0" y="277.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">齐桓公集团与齐国政治</text>
+<text x="104.0" y="307.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">鲍叔牙理解并举荐管仲，管仲辅佐齐桓公；晏婴属于更晚的齐国政治世代。</text>
+<rect x="80.0" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="158.0" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">鲍叔牙</text>
+<text x="156.5" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">知人与举荐</text>
+<rect x="450.66666666666663" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="540.7" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">管仲</text>
+<text x="527.2" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">改革与霸政</text>
+<rect x="821.3333333333333" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="899.3" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">齐桓公</text>
+<text x="905.3" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">任用管仲</text>
+<rect x="1192.0" y="373" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1282.0" y="409.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">晏婴</text>
+<text x="1261.0" y="440.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">后世齐国大夫</text>
+<line x1="308.0" y1="419.0" x2="450.66666666666663" y2="419.0" stroke="#28766f" stroke-width="3"/>
+<polygon points="450.7,419.0 439.9,424.2 439.9,413.8" fill="#28766f"/>
+<rect x="355.3333333333333" y="386" width="48.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="364.3" y="404.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">举荐</text>
+<line x1="678.6666666666666" y1="419.0" x2="821.3333333333333" y2="419.0" stroke="#28766f" stroke-width="3"/>
+<polygon points="821.3,419.0 810.5,424.2 810.5,413.8" fill="#28766f"/>
+<rect x="703.7109375" y="386" width="92.578125" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="712.7" y="404.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">君臣 / 辅佐</text>
+<line x1="1049.3333333333333" y1="419.0" x2="1192.0" y2="419.0" stroke="#8c795b" stroke-width="3" stroke-dasharray="8 7"/>
+<polygon points="1192.0,419.0 1181.2,424.2 1181.2,413.8" fill="#8c795b"/>
+<rect x="1052.0182291666665" y="386" width="137.296875" height="50" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="1061.0" y="404.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">齐国政治传统 · 非</text>
+<text x="1090.7" y="426.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">直接君臣</text>
+<line x1="58" y1="522" x2="1442" y2="522" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="570.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">02</text>
+<text x="104.0" y="572.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">晋楚争霸与周室名义</text>
+<text x="104.0" y="602.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">子玉为楚将，与晋文公在城濮对阵；楚庄王问鼎时由周臣王孙满回应。</text>
+<rect x="80.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="158.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">晋文公</text>
+<text x="164.0" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">晋国霸主</text>
+<rect x="358.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="448.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">子玉</text>
+<text x="442.0" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">楚军主将</text>
+<rect x="636.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="714.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">楚成王</text>
+<text x="720.0" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">楚国君主</text>
+<rect x="914.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="992.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">楚庄王</text>
+<text x="998.0" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">后世楚君</text>
+<rect x="1192.0" y="668" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1270.0" y="704.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">王孙满</text>
+<text x="1268.5" y="735.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">周王室大夫</text>
+<line x1="308.0" y1="714.0" x2="358.0" y2="714.0" stroke="#b75747" stroke-width="3"/>
+<rect x="294.0" y="681" width="78.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="303.0" y="699.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">城濮对阵</text>
+<line x1="586.0" y1="714.0" x2="636.0" y2="714.0" stroke="#28766f" stroke-width="3"/>
+<rect x="587.0" y="681" width="48.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="596.0" y="699.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">君臣</text>
+<line x1="864.0" y1="714.0" x2="914.0" y2="714.0" stroke="#8c795b" stroke-width="3" stroke-dasharray="8 7"/>
+<polygon points="914.0,714.0 903.2,719.2 903.2,708.8" fill="#8c795b"/>
+<rect x="850.0" y="681" width="78.0" height="96" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="859.0" y="699.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">楚国王统</text>
+<text x="859.4" y="721.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">后继 · 省</text>
+<text x="859.0" y="743.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">略中间世</text>
+<text x="881.5" y="765.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#8c795b">代</text>
+<line x1="1142.0" y1="714.0" x2="1192.0" y2="714.0" stroke="#b75747" stroke-width="3"/>
+<rect x="1128.0" y="681" width="78.0" height="50" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="1137.0" y="699.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">问鼎时交</text>
+<text x="1159.5" y="721.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">锋</text>
+<line x1="58" y1="817" x2="1442" y2="817" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="865.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">03</text>
+<text x="104.0" y="867.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">吴越争霸</text>
+<text x="104.0" y="897.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">夫差战胜越国后，勾践在范蠡、文种等辅佐下恢复国力并最终灭吴。</text>
+<rect x="80.0" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="170.0" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">夫差</text>
+<text x="179.0" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">吴王</text>
+<rect x="450.66666666666663" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="540.7" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">勾践</text>
+<text x="549.7" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">越王</text>
+<rect x="821.3333333333333" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="911.3" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">范蠡</text>
+<text x="905.3" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">越国谋臣</text>
+<rect x="1192.0" y="963" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1282.0" y="999.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">文种</text>
+<text x="1276.0" y="1030.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">越国谋臣</text>
+<line x1="308.0" y1="1009.0" x2="450.66666666666663" y2="1009.0" stroke="#b75747" stroke-width="3"/>
+<rect x="310.5442708333333" y="976" width="137.578125" height="50" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="319.5" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">长期战争 / 最终越</text>
+<text x="364.3" y="1016.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#b75747">灭吴</text>
+<line x1="678.6666666666666" y1="1009.0" x2="821.3333333333333" y2="1009.0" stroke="#28766f" stroke-width="3"/>
+<rect x="711.0" y="976" width="78.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="720.0" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">辅佐复国</text>
+<line x1="1049.3333333333333" y1="1009.0" x2="1192.0" y2="1009.0" stroke="#28766f" stroke-width="3"/>
+<rect x="1081.6666666666665" y="976" width="78.0" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="1090.7" y="994.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#28766f">共同辅越</text>
+<line x1="58" y1="1112" x2="1442" y2="1112" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="1160.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="19" fill="#8c795b">04</text>
+<text x="104.0" y="1162.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#243640">孔门师生</text>
+<text x="104.0" y="1192.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="16" fill="#66777d">颜回、子路均为孔子弟子，性格与经历不同，不宜用单一标签概括孔门。</text>
+<rect x="80.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="170.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">颜回</text>
+<text x="156.5" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">好学与德行</text>
+<rect x="636.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="726.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">孔子</text>
+<text x="712.5" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">儒家思想家</text>
+<rect x="1192.0" y="1258" width="228.0" height="92" rx="14" fill="#ffffff" stroke="#526981" stroke-width="2"/>
+<text x="1282.0" y="1294.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="24" fill="#526981">子路</text>
+<text x="1276.0" y="1325.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">勇毅直率</text>
+<line x1="308.0" y1="1304.0" x2="636.0" y2="1304.0" stroke="#9a7327" stroke-width="3"/>
+<polygon points="636.0,1304.0 625.2,1309.2 625.2,1298.8" fill="#9a7327"/>
+<rect x="421.953125" y="1271" width="100.09375" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="431.0" y="1289.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a7327">弟子 ← 老师</text>
+<line x1="864.0" y1="1304.0" x2="1192.0" y2="1304.0" stroke="#9a7327" stroke-width="3"/>
+<polygon points="1192.0,1304.0 1181.2,1309.2 1181.2,1298.8" fill="#9a7327"/>
+<rect x="977.953125" y="1271" width="100.09375" height="27" rx="4" fill="#f7f5ee" stroke="#f7f5ee" stroke-width="0"/>
+<text x="987.0" y="1289.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#9a7327">老师 → 弟子</text>
+<line x1="58" y1="1407" x2="1442" y2="1407" stroke="#dfe3df" stroke-width="2"/>
+<text x="58.0" y="1454.0" font-family="DejaVu Sans,Droid Sans Fallback,Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="15" fill="#66777d">同名人物在不同分组重复出现时，仍指同一人；每条线的文字说明优先于颜色。</text>
+</svg>
