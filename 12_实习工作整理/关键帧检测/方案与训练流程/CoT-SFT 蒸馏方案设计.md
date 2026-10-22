@@ -11,7 +11,7 @@ Direct SFT checkpoint
   -> clean CoT 数据
   -> Structured CoT SFT
   -> 评估困难边界能力
-  -> 可选 RFT / GRPO
+  -> GRPO
 ```
 
 相关方法：[RFT](<../../../03_训练优化与对齐/后训练与对齐/RFT 拒绝采样微调.md#rft-拒绝采样微调>)、[GRPO](<../../../03_训练优化与对齐/后训练与对齐/GRPO 组相对策略优化.md#grpo-组相对策略优化>)。

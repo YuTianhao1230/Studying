@@ -17,7 +17,7 @@ Direct SFT
   -> 固定回归集和困难集验证
 ```
 
-GRPO 不是必做阶段。如果 Structured CoT SFT 已经达到业务目标，或者 reward 与真实 ACC 没有可靠相关性，应停止在 SFT 或先修 verifier，而不是直接增加 RL。
+本项目已经完成 GRPO 的方案实现和训练链路接入，它不是停留在规划阶段的扩展项。方法上的准入条件仍然成立：只有当 Structured CoT SFT 能稳定生成候选、reward 与真实 ACC 有可靠相关性且组内存在分差时，GRPO 才能提供有效学习信号；否则应先修 verifier 和数据，而不是直接扩大 RL 训练。
 
 ### 同一批 CoT 数据如何进入 GRPO
 

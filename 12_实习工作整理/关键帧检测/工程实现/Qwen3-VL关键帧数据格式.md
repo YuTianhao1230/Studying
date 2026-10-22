@@ -370,8 +370,8 @@ videos：告诉数据处理器从哪里读取视频
 
 ### 为什么答案用 `<answer>{"time": ...}</answer>`？
 
-回答思路：从可解析、监督目标单一、评测对齐和后续扩展回答。
+回答思路：从可解析、监督目标单一、评测对齐和多阶段协议兼容回答。
 
 回答模板：
 
-关键帧任务最终只需要一个时间点，所以答案采用 `<answer>{"time": 秒数}</answer>` 的固定结构。这样监督目标单一，SFT 更容易收敛；推理结果可以直接解析成 JSON，方便计算 frame error、time error 和 PASS；同时用标签包住答案，可以减少模型输出解释、Markdown 或额外文本。后续如果加入结构化 CoT，只需要扩展答案内部字段或替换 prompt 版本，外层的多模态对话格式不需要改变。
+关键帧任务最终只需要一个时间点，所以 Direct SFT 答案采用 `<answer>{"time": 秒数}</answer>` 的固定结构。这样监督目标单一，SFT 更容易收敛；推理结果可以直接解析成 JSON，方便计算 frame error、time error 和 PASS；同时用标签包住答案，可以减少模型输出解释、Markdown 或额外文本。Structured CoT SFT 和 GRPO 继续沿用相同的多模态对话外层结构，通过独立的 prompt 和 target 协议增加证据链与 reward 字段，不需要改变视频与对话的基本映射方式。

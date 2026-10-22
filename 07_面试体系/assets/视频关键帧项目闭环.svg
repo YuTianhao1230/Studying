@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">视频关键帧项目闭环</title>
+  <desc id="desc">从业务输入开始，经过任务定义与数据治理、分阶段模型训练、分桶评测和部署上线，输出结束帧与业务耗时，并通过错误回流持续迭代。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="#52606d"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="#0a9f58"/>
+    </marker>
+    <style>
+      .title { font: 600 28px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+      .subtitle { font: 400 16px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .heading { font: 600 20px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+      .body { font: 400 16px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .focus-heading { font: 600 20px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #00552c; }
+      .chip-text { font: 600 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+      .label { font: 500 15px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .boundary { fill: #f7f8fa; stroke: #cdd5df; stroke-width: 2; stroke-dasharray: 8 7; }
+      .node { fill: #ffffff; stroke: #cdd5df; stroke-width: 2; }
+      .focus { fill: #e7fff3; stroke: #0fbd6c; stroke-width: 2.5; }
+      .accent { fill: #eefbf9; stroke: #20b7a5; stroke-width: 2; }
+      .chip { fill: #f0f2f5; stroke: #cdd5df; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #52606d; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .main-arrow { fill: none; stroke: #0a9f58; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow-green); }
+      .loop { fill: none; stroke: #52606d; stroke-width: 2; stroke-dasharray: 7 6; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="650" fill="#ffffff"/>
+  <text class="title" x="55" y="52">视频关键帧项目闭环</text>
+  <text class="subtitle" x="55" y="82">主线：业务问题 → 标准与数据 → 分阶段训练 → 评测上线 → 业务结果</text>
+
+  <rect class="node" x="45" y="260" width="170" height="100" rx="12"/>
+  <text class="heading" x="130" y="297" text-anchor="middle">业务输入</text>
+  <text class="body" x="130" y="328" text-anchor="middle">操作录屏</text>
+  <text class="body" x="130" y="351" text-anchor="middle">任务类型</text>
+
+  <rect class="boundary" x="255" y="110" width="690" height="460" rx="18"/>
+  <text class="label" x="282" y="140">模型能力建设</text>
+
+  <rect class="focus" x="305" y="165" width="590" height="85" rx="12"/>
+  <text class="focus-heading" x="600" y="199" text-anchor="middle">任务定义与数据治理</text>
+  <text class="body" x="600" y="228" text-anchor="middle">完成态标准 · GT 复核 · bad case 归因 · 数据回流</text>
+
+  <rect class="node" x="305" y="290" width="590" height="125" rx="12"/>
+  <text class="heading" x="600" y="324" text-anchor="middle">分阶段模型训练</text>
+  <rect class="chip" x="355" y="347" width="130" height="43" rx="9"/>
+  <rect class="chip" x="535" y="347" width="130" height="43" rx="9"/>
+  <rect class="chip" x="715" y="347" width="130" height="43" rx="9"/>
+  <text class="chip-text" x="420" y="374" text-anchor="middle">SFT</text>
+  <text class="chip-text" x="600" y="374" text-anchor="middle">结构化 CoT</text>
+  <text class="chip-text" x="780" y="374" text-anchor="middle">GRPO</text>
+
+  <rect class="node" x="305" y="460" width="260" height="72" rx="12"/>
+  <text class="heading" x="435" y="489" text-anchor="middle">分桶评测</text>
+  <text class="body" x="435" y="516" text-anchor="middle">业务线 · task type · early/late</text>
+
+  <rect class="accent" x="635" y="460" width="260" height="72" rx="12"/>
+  <text class="heading" x="765" y="489" text-anchor="middle">部署上线</text>
+  <text class="body" x="765" y="516" text-anchor="middle">联调 · 压测 · 监控 · 回测</text>
+
+  <rect class="node" x="985" y="250" width="170" height="120" rx="12"/>
+  <text class="heading" x="1070" y="286" text-anchor="middle">业务输出</text>
+  <text class="body" x="1070" y="317" text-anchor="middle">结束帧 + 耗时</text>
+  <text class="body" x="1070" y="342" text-anchor="middle">降本 · 提效 · 上线</text>
+
+  <path class="main-arrow" d="M215 310 C248 310 267 207 305 207"/>
+  <path class="main-arrow" d="M600 250 V290"/>
+  <path class="main-arrow" d="M600 415 V438 Q600 448 610 448 H755 Q765 448 765 460"/>
+  <path class="main-arrow" d="M895 496 C955 496 955 310 985 310"/>
+  <path class="arrow" d="M565 496 H635"/>
+
+  <path class="loop" d="M435 532 V548 H275 Q265 548 265 538 V218 Q265 208 275 208 H305"/>
+  <rect x="267" y="392" width="92" height="28" rx="8" fill="#ffffff" stroke="#cdd5df"/>
+  <text class="label" x="313" y="412" text-anchor="middle">错误回流</text>
+</svg>

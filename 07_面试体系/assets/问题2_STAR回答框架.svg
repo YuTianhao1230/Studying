@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">问题 2 的 STAR 回答框架</title>
+  <desc id="desc">按照背景、任务、行动和结果四个阶段，在三到四分钟内介绍视频关键帧项目，其中行动部分占主要时间。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="#52606d"/>
+    </marker>
+    <style>
+      .title { font: 600 28px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+      .subtitle { font: 400 16px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .letter { font: 700 23px "Inter", "PingFang SC", sans-serif; fill: #17212b; }
+      .letter-focus { font: 700 23px "Inter", "PingFang SC", sans-serif; fill: #004d28; }
+      .heading { font: 600 20px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+      .body { font: 400 16px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .small { font: 500 14px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #52606d; }
+      .time { font: 600 14px "JetBrains Mono", "Microsoft YaHei", monospace; fill: #00552c; }
+      .card { fill: #ffffff; stroke: #cdd5df; stroke-width: 2; }
+      .action-card { fill: #ffffff; stroke: #0fbd6c; stroke-width: 3; }
+      .result-card { fill: #ffffff; stroke: #20b7a5; stroke-width: 2.5; }
+      .badge { fill: #f0f2f5; stroke: #cdd5df; }
+      .badge-focus { fill: #b7f6d7; stroke: #0fbd6c; }
+      .time-badge { fill: #e7fff3; stroke: #0fbd6c; }
+      .divider { stroke: #dce2e8; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #52606d; stroke-width: 2.5; stroke-linecap: round; marker-end: url(#arrow); }
+      .formula { fill: #f2f4f7; stroke: #cdd5df; }
+      .formula-text { font: 600 17px "PingFang SC", "Microsoft YaHei", sans-serif; fill: #17212b; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="470" fill="#ffffff"/>
+  <text class="title" x="45" y="48">3～4 分钟 STAR 回答路线</text>
+  <text class="subtitle" x="45" y="77">重点：Action 占一半以上时间，技术细节留给追问</text>
+
+  <rect class="card" x="40" y="112" width="220" height="235" rx="13"/>
+  <circle class="badge" cx="75" cy="151" r="22"/>
+  <text class="letter" x="75" y="159" text-anchor="middle">S</text>
+  <rect class="time-badge" x="145" y="132" width="92" height="34" rx="17"/>
+  <text class="time" x="191" y="154" text-anchor="middle">30～40 秒</text>
+  <text class="heading" x="65" y="205">背景</text>
+  <text class="body" x="65" y="238">
+    <tspan x="65" dy="0">人工逐帧标注</tspan>
+    <tspan x="65" dy="27">成本高、反馈慢</tspan>
+    <tspan x="65" dy="27">模型输出结束帧</tspan>
+  </text>
+
+  <path class="arrow" d="M270 229 H305"/>
+
+  <rect class="card" x="320" y="112" width="220" height="235" rx="13"/>
+  <circle class="badge" cx="355" cy="151" r="22"/>
+  <text class="letter" x="355" y="159" text-anchor="middle">T</text>
+  <rect class="time-badge" x="425" y="132" width="92" height="34" rx="17"/>
+  <text class="time" x="471" y="154" text-anchor="middle">20～30 秒</text>
+  <text class="heading" x="345" y="205">任务与难点</text>
+  <text class="body" x="345" y="238">
+    <tspan x="345" dy="0">几百个指标标准不同</tspan>
+    <tspan x="345" dy="27">标签存在噪声与冲突</tspan>
+    <tspan x="345" dy="27">负责训练并完成落地</tspan>
+  </text>
+
+  <path class="arrow" d="M550 229 H585"/>
+
+  <rect class="action-card" x="600" y="98" width="330" height="263" rx="13"/>
+  <circle class="badge-focus" cx="638" cy="139" r="24"/>
+  <text class="letter-focus" x="638" y="147" text-anchor="middle">A</text>
+  <rect class="time-badge" x="811" y="121" width="92" height="36" rx="18"/>
+  <text class="time" x="857" y="144" text-anchor="middle">约 2 分钟</text>
+  <text class="heading" x="630" y="194">个人行动</text>
+  <text class="body" x="630" y="230">1. 标准与数据：规则、归因、回流</text>
+  <line class="divider" x1="630" y1="250" x2="900" y2="250"/>
+  <text class="body" x="630" y="282">2. 模型训练：SFT → CoT → GRPO</text>
+  <line class="divider" x1="630" y1="302" x2="900" y2="302"/>
+  <text class="body" x="630" y="334">3. 评测落地：分桶、联调、回测</text>
+
+  <path class="arrow" d="M940 229 H975"/>
+
+  <rect class="result-card" x="990" y="112" width="170" height="235" rx="13"/>
+  <circle class="badge" cx="1025" cy="151" r="22"/>
+  <text class="letter" x="1025" y="159" text-anchor="middle">R</text>
+  <rect class="time-badge" x="1044" y="177" width="92" height="34" rx="17"/>
+  <text class="time" x="1090" y="199" text-anchor="middle">30～40 秒</text>
+  <text class="heading" x="1015" y="241">结果</text>
+  <text class="small" x="1015" y="271">
+    <tspan x="1015" dy="0">全量 89.98%</tspan>
+    <tspan x="1015" dy="24">高优 97.46%</tspan>
+    <tspan x="1015" dy="24">成本下降 19%</tspan>
+    <tspan x="1015" dy="24">完成线上接入</tspan>
+  </text>
+
+  <rect class="formula" x="150" y="395" width="900" height="48" rx="10"/>
+  <text class="formula-text" x="600" y="426" text-anchor="middle">记忆句式：为什么做 → 难点是什么 → 我做了哪三件事 → 结果如何证明</text>
+</svg>

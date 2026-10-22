@@ -8,7 +8,9 @@
 
 ```text
 关键帧 JSONL 数据
-  -> 视频多模态 SFT
+  -> Direct SFT
+  -> Structured CoT SFT
+  -> GRPO
   -> 保存 checkpoint
   -> 多卡切分测试数据
   -> 每张 GPU 独立推理
@@ -19,10 +21,10 @@
 当前主流程是：
 
 ```text
-Direct SFT -> Infer
+Direct SFT -> Structured CoT SFT -> GRPO -> Infer
 ```
 
-Structured CoT SFT 和 GRPO/RL 属于后续扩展方向，不是当前主流程的必经步骤。
+Structured CoT SFT 和 GRPO 已经完成实现并进入实际训练链路；Temporal-OPSD 是针对局部时间证据稀释问题的进一步研究方向。
 
 ### ms-swift 在这里负责什么
 
@@ -280,12 +282,12 @@ FPS 越高 / 帧数越多
 
 ### Structured CoT SFT 和 GRPO
 
-当前主流程是 Direct SFT，但可以继续扩展：
+当前训练链路是：
 
 ```text
 Direct SFT
   -> Structured CoT SFT
-  -> GRPO/RL
+  -> GRPO
 ```
 
 #### [Structured CoT SFT](<../方案与训练流程/CoT-SFT 蒸馏方案设计.md#关键帧检测cot-sft-蒸馏方案设计>)
@@ -303,7 +305,7 @@ Direct SFT
 
 #### [GRPO/RL](<../方案与训练流程/GRPO 训练方案设计.md#关键帧检测grpo-训练方案>)
 
-可以用结构化 reward 约束模型：
+项目中使用结构化 reward 约束模型：
 
 $$
 R
