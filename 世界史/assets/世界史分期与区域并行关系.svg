@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="907.2pt" height="446.832pt" viewBox="0 0 907.2 446.832" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-30T16:50:44.954858</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.3, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 446.832
+L 907.2 446.832
+L 907.2 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 150.048 103.632336
+L 233.0784 103.632336
+Q 240.2208 103.632336 240.2208 100.17288
+L 240.2208 62.551296
+Q 240.2208 59.09184 233.0784 59.09184
+L 150.048 59.09184
+Q 142.9056 59.09184 142.9056 62.551296
+L 142.9056 100.17288
+Q 142.9056 103.632336 150.048 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 238.4352 103.632336
+L 321.4656 103.632336
+Q 328.608 103.632336 328.608 100.17288
+L 328.608 62.551296
+Q 328.608 59.09184 321.4656 59.09184
+L 238.4352 59.09184
+Q 231.2928 59.09184 231.2928 62.551296
+L 231.2928 100.17288
+Q 231.2928 103.632336 238.4352 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 326.8224 103.632336
+L 409.8528 103.632336
+Q 416.9952 103.632336 416.9952 100.17288
+L 416.9952 62.551296
+Q 416.9952 59.09184 409.8528 59.09184
+L 326.8224 59.09184
+Q 319.68 59.09184 319.68 62.551296
+L 319.68 100.17288
+Q 319.68 103.632336 326.8224 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 415.2096 103.632336
+L 498.24 103.632336
+Q 505.3824 103.632336 505.3824 100.17288
+L 505.3824 62.551296
+Q 505.3824 59.09184 498.24 59.09184
+L 415.2096 59.09184
+Q 408.0672 59.09184 408.0672 62.551296
+L 408.0672 100.17288
+Q 408.0672 103.632336 415.2096 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 503.5968 103.632336
+L 586.6272 103.632336
+Q 593.7696 103.632336 593.7696 100.17288
+L 593.7696 62.551296
+Q 593.7696 59.09184 586.6272 59.09184
+L 503.5968 59.09184
+Q 496.4544 59.09184 496.4544 62.551296
+L 496.4544 100.17288
+Q 496.4544 103.632336 503.5968 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 591.984 103.632336
+L 675.0144 103.632336
+Q 682.1568 103.632336 682.1568 100.17288
+L 682.1568 62.551296
+Q 682.1568 59.09184 675.0144 59.09184
+L 591.984 59.09184
+Q 584.8416 59.09184 584.8416 62.551296
+L 584.8416 100.17288
+Q 584.8416 103.632336 591.984 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 680.3712 103.632336
+L 763.4016 103.632336
+Q 770.544 103.632336 770.544 100.17288
+L 770.544 62.551296
+Q 770.544 59.09184 763.4016 59.09184
+L 680.3712 59.09184
+Q 673.2288 59.09184 673.2288 62.551296
+L 673.2288 100.17288
+Q 673.2288 103.632336 680.3712 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 768.7584 103.632336
+L 851.7888 103.632336
+Q 858.9312 103.632336 858.9312 100.17288
+L 858.9312 62.551296
+Q 858.9312 59.09184 851.7888 59.09184
+L 768.7584 59.09184
+Q 761.616 59.09184 761.616 62.551296
+L 761.616 100.17288
+Q 761.616 103.632336 768.7584 103.632336
+z
+" clip-path="url(#p815cf626d7)" style="fill: #dce8ed; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 150.048 179.307936
+L 233.0784 179.307936
+Q 240.2208 179.307936 240.2208 175.84848
+L 240.2208 133.470144
+Q 240.2208 130.010688 233.0784 130.010688
+L 150.048 130.010688
+Q 142.9056 130.010688 142.9056 133.470144
+L 142.9056 175.84848
+Q 142.9056 179.307936 150.048 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 238.4352 179.307936
+L 321.4656 179.307936
+Q 328.608 179.307936 328.608 175.84848
+L 328.608 133.470144
+Q 328.608 130.010688 321.4656 130.010688
+L 238.4352 130.010688
+Q 231.2928 130.010688 231.2928 133.470144
+L 231.2928 175.84848
+Q 231.2928 179.307936 238.4352 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 326.8224 179.307936
+L 409.8528 179.307936
+Q 416.9952 179.307936 416.9952 175.84848
+L 416.9952 133.470144
+Q 416.9952 130.010688 409.8528 130.010688
+L 326.8224 130.010688
+Q 319.68 130.010688 319.68 133.470144
+L 319.68 175.84848
+Q 319.68 179.307936 326.8224 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 415.2096 179.307936
+L 498.24 179.307936
+Q 505.3824 179.307936 505.3824 175.84848
+L 505.3824 133.470144
+Q 505.3824 130.010688 498.24 130.010688
+L 415.2096 130.010688
+Q 408.0672 130.010688 408.0672 133.470144
+L 408.0672 175.84848
+Q 408.0672 179.307936 415.2096 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 503.5968 179.307936
+L 586.6272 179.307936
+Q 593.7696 179.307936 593.7696 175.84848
+L 593.7696 133.470144
+Q 593.7696 130.010688 586.6272 130.010688
+L 503.5968 130.010688
+Q 496.4544 130.010688 496.4544 133.470144
+L 496.4544 175.84848
+Q 496.4544 179.307936 503.5968 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 591.984 179.307936
+L 675.0144 179.307936
+Q 682.1568 179.307936 682.1568 175.84848
+L 682.1568 133.470144
+Q 682.1568 130.010688 675.0144 130.010688
+L 591.984 130.010688
+Q 584.8416 130.010688 584.8416 133.470144
+L 584.8416 175.84848
+Q 584.8416 179.307936 591.984 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 680.3712 179.307936
+L 763.4016 179.307936
+Q 770.544 179.307936 770.544 175.84848
+L 770.544 133.470144
+Q 770.544 130.010688 763.4016 130.010688
+L 680.3712 130.010688
+Q 673.2288 130.010688 673.2288 133.470144
+L 673.2288 175.84848
+Q 673.2288 179.307936 680.3712 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 768.7584 179.307936
+L 851.7888 179.307936
+Q 858.9312 179.307936 858.9312 175.84848
+L 858.9312 133.470144
+Q 858.9312 130.010688 851.7888 130.010688
+L 768.7584 130.010688
+Q 761.616 130.010688 761.616 133.470144
+L 761.616 175.84848
+Q 761.616 179.307936 768.7584 179.307936
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 150.048 231.199776
+L 233.0784 231.199776
+Q 240.2208 231.199776 240.2208 227.74032
+L 240.2208 185.361984
+Q 240.2208 181.902528 233.0784 181.902528
+L 150.048 181.902528
+Q 142.9056 181.902528 142.9056 185.361984
+L 142.9056 227.74032
+Q 142.9056 231.199776 150.048 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 238.4352 231.199776
+L 321.4656 231.199776
+Q 328.608 231.199776 328.608 227.74032
+L 328.608 185.361984
+Q 328.608 181.902528 321.4656 181.902528
+L 238.4352 181.902528
+Q 231.2928 181.902528 231.2928 185.361984
+L 231.2928 227.74032
+Q 231.2928 231.199776 238.4352 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 326.8224 231.199776
+L 409.8528 231.199776
+Q 416.9952 231.199776 416.9952 227.74032
+L 416.9952 185.361984
+Q 416.9952 181.902528 409.8528 181.902528
+L 326.8224 181.902528
+Q 319.68 181.902528 319.68 185.361984
+L 319.68 227.74032
+Q 319.68 231.199776 326.8224 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 415.2096 231.199776
+L 498.24 231.199776
+Q 505.3824 231.199776 505.3824 227.74032
+L 505.3824 185.361984
+Q 505.3824 181.902528 498.24 181.902528
+L 415.2096 181.902528
+Q 408.0672 181.902528 408.0672 185.361984
+L 408.0672 227.74032
+Q 408.0672 231.199776 415.2096 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 503.5968 231.199776
+L 586.6272 231.199776
+Q 593.7696 231.199776 593.7696 227.74032
+L 593.7696 185.361984
+Q 593.7696 181.902528 586.6272 181.902528
+L 503.5968 181.902528
+Q 496.4544 181.902528 496.4544 185.361984
+L 496.4544 227.74032
+Q 496.4544 231.199776 503.5968 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 591.984 231.199776
+L 675.0144 231.199776
+Q 682.1568 231.199776 682.1568 227.74032
+L 682.1568 185.361984
+Q 682.1568 181.902528 675.0144 181.902528
+L 591.984 181.902528
+Q 584.8416 181.902528 584.8416 185.361984
+L 584.8416 227.74032
+Q 584.8416 231.199776 591.984 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 680.3712 231.199776
+L 763.4016 231.199776
+Q 770.544 231.199776 770.544 227.74032
+L 770.544 185.361984
+Q 770.544 181.902528 763.4016 181.902528
+L 680.3712 181.902528
+Q 673.2288 181.902528 673.2288 185.361984
+L 673.2288 227.74032
+Q 673.2288 231.199776 680.3712 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_25">
+    <path d="M 768.7584 231.199776
+L 851.7888 231.199776
+Q 858.9312 231.199776 858.9312 227.74032
+L 858.9312 185.361984
+Q 858.9312 181.902528 851.7888 181.902528
+L 768.7584 181.902528
+Q 761.616 181.902528 761.616 185.361984
+L 761.616 227.74032
+Q 761.616 231.199776 768.7584 231.199776
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 150.048 283.091616
+L 233.0784 283.091616
+Q 240.2208 283.091616 240.2208 279.63216
+L 240.2208 237.253824
+Q 240.2208 233.794368 233.0784 233.794368
+L 150.048 233.794368
+Q 142.9056 233.794368 142.9056 237.253824
+L 142.9056 279.63216
+Q 142.9056 283.091616 150.048 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 238.4352 283.091616
+L 321.4656 283.091616
+Q 328.608 283.091616 328.608 279.63216
+L 328.608 237.253824
+Q 328.608 233.794368 321.4656 233.794368
+L 238.4352 233.794368
+Q 231.2928 233.794368 231.2928 237.253824
+L 231.2928 279.63216
+Q 231.2928 283.091616 238.4352 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 326.8224 283.091616
+L 409.8528 283.091616
+Q 416.9952 283.091616 416.9952 279.63216
+L 416.9952 237.253824
+Q 416.9952 233.794368 409.8528 233.794368
+L 326.8224 233.794368
+Q 319.68 233.794368 319.68 237.253824
+L 319.68 279.63216
+Q 319.68 283.091616 326.8224 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 415.2096 283.091616
+L 498.24 283.091616
+Q 505.3824 283.091616 505.3824 279.63216
+L 505.3824 237.253824
+Q 505.3824 233.794368 498.24 233.794368
+L 415.2096 233.794368
+Q 408.0672 233.794368 408.0672 237.253824
+L 408.0672 279.63216
+Q 408.0672 283.091616 415.2096 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 503.5968 283.091616
+L 586.6272 283.091616
+Q 593.7696 283.091616 593.7696 279.63216
+L 593.7696 237.253824
+Q 593.7696 233.794368 586.6272 233.794368
+L 503.5968 233.794368
+Q 496.4544 233.794368 496.4544 237.253824
+L 496.4544 279.63216
+Q 496.4544 283.091616 503.5968 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_31">
+    <path d="M 591.984 283.091616
+L 675.0144 283.091616
+Q 682.1568 283.091616 682.1568 279.63216
+L 682.1568 237.253824
+Q 682.1568 233.794368 675.0144 233.794368
+L 591.984 233.794368
+Q 584.8416 233.794368 584.8416 237.253824
+L 584.8416 279.63216
+Q 584.8416 283.091616 591.984 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_32">
+    <path d="M 680.3712 283.091616
+L 763.4016 283.091616
+Q 770.544 283.091616 770.544 279.63216
+L 770.544 237.253824
+Q 770.544 233.794368 763.4016 233.794368
+L 680.3712 233.794368
+Q 673.2288 233.794368 673.2288 237.253824
+L 673.2288 279.63216
+Q 673.2288 283.091616 680.3712 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_33">
+    <path d="M 768.7584 283.091616
+L 851.7888 283.091616
+Q 858.9312 283.091616 858.9312 279.63216
+L 858.9312 237.253824
+Q 858.9312 233.794368 851.7888 233.794368
+L 768.7584 233.794368
+Q 761.616 233.794368 761.616 237.253824
+L 761.616 279.63216
+Q 761.616 283.091616 768.7584 283.091616
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_34">
+    <path d="M 150.048 334.983456
+L 233.0784 334.983456
+Q 240.2208 334.983456 240.2208 331.524
+L 240.2208 289.145664
+Q 240.2208 285.686208 233.0784 285.686208
+L 150.048 285.686208
+Q 142.9056 285.686208 142.9056 289.145664
+L 142.9056 331.524
+Q 142.9056 334.983456 150.048 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_35">
+    <path d="M 238.4352 334.983456
+L 321.4656 334.983456
+Q 328.608 334.983456 328.608 331.524
+L 328.608 289.145664
+Q 328.608 285.686208 321.4656 285.686208
+L 238.4352 285.686208
+Q 231.2928 285.686208 231.2928 289.145664
+L 231.2928 331.524
+Q 231.2928 334.983456 238.4352 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_36">
+    <path d="M 326.8224 334.983456
+L 409.8528 334.983456
+Q 416.9952 334.983456 416.9952 331.524
+L 416.9952 289.145664
+Q 416.9952 285.686208 409.8528 285.686208
+L 326.8224 285.686208
+Q 319.68 285.686208 319.68 289.145664
+L 319.68 331.524
+Q 319.68 334.983456 326.8224 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_37">
+    <path d="M 415.2096 334.983456
+L 498.24 334.983456
+Q 505.3824 334.983456 505.3824 331.524
+L 505.3824 289.145664
+Q 505.3824 285.686208 498.24 285.686208
+L 415.2096 285.686208
+Q 408.0672 285.686208 408.0672 289.145664
+L 408.0672 331.524
+Q 408.0672 334.983456 415.2096 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_38">
+    <path d="M 503.5968 334.983456
+L 586.6272 334.983456
+Q 593.7696 334.983456 593.7696 331.524
+L 593.7696 289.145664
+Q 593.7696 285.686208 586.6272 285.686208
+L 503.5968 285.686208
+Q 496.4544 285.686208 496.4544 289.145664
+L 496.4544 331.524
+Q 496.4544 334.983456 503.5968 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_39">
+    <path d="M 591.984 334.983456
+L 675.0144 334.983456
+Q 682.1568 334.983456 682.1568 331.524
+L 682.1568 289.145664
+Q 682.1568 285.686208 675.0144 285.686208
+L 591.984 285.686208
+Q 584.8416 285.686208 584.8416 289.145664
+L 584.8416 331.524
+Q 584.8416 334.983456 591.984 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_40">
+    <path d="M 680.3712 334.983456
+L 763.4016 334.983456
+Q 770.544 334.983456 770.544 331.524
+L 770.544 289.145664
+Q 770.544 285.686208 763.4016 285.686208
+L 680.3712 285.686208
+Q 673.2288 285.686208 673.2288 289.145664
+L 673.2288 331.524
+Q 673.2288 334.983456 680.3712 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_41">
+    <path d="M 768.7584 334.983456
+L 851.7888 334.983456
+Q 858.9312 334.983456 858.9312 331.524
+L 858.9312 289.145664
+Q 858.9312 285.686208 851.7888 285.686208
+L 768.7584 285.686208
+Q 761.616 285.686208 761.616 289.145664
+L 761.616 331.524
+Q 761.616 334.983456 768.7584 334.983456
+z
+" clip-path="url(#p815cf626d7)" style="fill: #eaf1ee; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_42">
+    <path d="M 150.048 386.875296
+L 233.0784 386.875296
+Q 240.2208 386.875296 240.2208 383.41584
+L 240.2208 341.037504
+Q 240.2208 337.578048 233.0784 337.578048
+L 150.048 337.578048
+Q 142.9056 337.578048 142.9056 341.037504
+L 142.9056 383.41584
+Q 142.9056 386.875296 150.048 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_43">
+    <path d="M 238.4352 386.875296
+L 321.4656 386.875296
+Q 328.608 386.875296 328.608 383.41584
+L 328.608 341.037504
+Q 328.608 337.578048 321.4656 337.578048
+L 238.4352 337.578048
+Q 231.2928 337.578048 231.2928 341.037504
+L 231.2928 383.41584
+Q 231.2928 386.875296 238.4352 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_44">
+    <path d="M 326.8224 386.875296
+L 409.8528 386.875296
+Q 416.9952 386.875296 416.9952 383.41584
+L 416.9952 341.037504
+Q 416.9952 337.578048 409.8528 337.578048
+L 326.8224 337.578048
+Q 319.68 337.578048 319.68 341.037504
+L 319.68 383.41584
+Q 319.68 386.875296 326.8224 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_45">
+    <path d="M 415.2096 386.875296
+L 498.24 386.875296
+Q 505.3824 386.875296 505.3824 383.41584
+L 505.3824 341.037504
+Q 505.3824 337.578048 498.24 337.578048
+L 415.2096 337.578048
+Q 408.0672 337.578048 408.0672 341.037504
+L 408.0672 383.41584
+Q 408.0672 386.875296 415.2096 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_46">
+    <path d="M 503.5968 386.875296
+L 586.6272 386.875296
+Q 593.7696 386.875296 593.7696 383.41584
+L 593.7696 341.037504
+Q 593.7696 337.578048 586.6272 337.578048
+L 503.5968 337.578048
+Q 496.4544 337.578048 496.4544 341.037504
+L 496.4544 383.41584
+Q 496.4544 386.875296 503.5968 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_47">
+    <path d="M 591.984 386.875296
+L 675.0144 386.875296
+Q 682.1568 386.875296 682.1568 383.41584
+L 682.1568 341.037504
+Q 682.1568 337.578048 675.0144 337.578048
+L 591.984 337.578048
+Q 584.8416 337.578048 584.8416 341.037504
+L 584.8416 383.41584
+Q 584.8416 386.875296 591.984 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_48">
+    <path d="M 680.3712 386.875296
+L 763.4016 386.875296
+Q 770.544 386.875296 770.544 383.41584
+L 770.544 341.037504
+Q 770.544 337.578048 763.4016 337.578048
+L 680.3712 337.578048
+Q 673.2288 337.578048 673.2288 341.037504
+L 673.2288 383.41584
+Q 673.2288 386.875296 680.3712 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_49">
+    <path d="M 768.7584 386.875296
+L 851.7888 386.875296
+Q 858.9312 386.875296 858.9312 383.41584
+L 858.9312 341.037504
+Q 858.9312 337.578048 851.7888 337.578048
+L 768.7584 337.578048
+Q 761.616 337.578048 761.616 341.037504
+L 761.616 383.41584
+Q 761.616 386.875296 768.7584 386.875296
+z
+" clip-path="url(#p815cf626d7)" style="fill: #f1f5f7; stroke: #cbd5df; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 24px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="26.79546" transform="rotate(-0 7.2 26.79546)">世界史：分期与区域并行关系</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #586d80" x="7.2" y="49.43013" transform="rotate(-0 7.2 49.43013)">分期阅读示意；列宽不代表时间长度，各格列出区域选读主题。</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="191.5632" y="84.673338" transform="rotate(-0 191.5632 84.673338)">文明起源</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="191.5632" y="111.893884" transform="rotate(-0 191.5632 111.893884)">约前10000—前1200</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="279.9504" y="84.673338" transform="rotate(-0 279.9504 84.673338)">古代帝国</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="279.9504" y="111.893884" transform="rotate(-0 279.9504 111.893884)">约前1200—公元500</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="368.3376" y="84.673338" transform="rotate(-0 368.3376 84.673338)">中世纪区域</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="368.3376" y="111.893884" transform="rotate(-0 368.3376 111.893884)">约500—1400</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="456.7248" y="84.673338" transform="rotate(-0 456.7248 84.673338)">跨洋连接</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="456.7248" y="111.893884" transform="rotate(-0 456.7248 111.893884)">约1400—1750</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="545.112" y="84.673338" transform="rotate(-0 545.112 84.673338)">革命工业化</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="545.112" y="111.893884" transform="rotate(-0 545.112 111.893884)">约1750—1914</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="633.4992" y="84.673338" transform="rotate(-0 633.4992 84.673338)">世界大战</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="633.4992" y="111.893884" transform="rotate(-0 633.4992 111.893884)">1914—1945</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="721.8864" y="84.673338" transform="rotate(-0 721.8864 84.673338)">冷战独立</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="721.8864" y="111.893884" transform="rotate(-0 721.8864 111.893884)">1945—1991</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="810.2736" y="84.673338" transform="rotate(-0 810.2736 84.673338)">当代世界</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="810.2736" y="111.893884" transform="rotate(-0 810.2736 111.893884)">1991年至今</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="157.262192" transform="rotate(-0 7.2 157.262192)">西亚与北非</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 151.819781)">城市与文字</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 163.017593)">尼罗河王权</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 151.819781)">波斯帝国</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(254.9504 163.017593)">希腊化交流</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(343.3376 151.819781)">伊斯兰世界</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(343.3376 163.017593)">学术与贸易</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(431.7248 151.819781)">奥斯曼帝国</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(431.7248 163.017593)">港口与商路</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: middle; fill: #243746" x="545.112" y="157.418687" transform="rotate(-0 545.112 157.418687)">改革与列强压力</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(608.4992 151.819781)">奥斯曼终结</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(613.4992 163.017593)">边界重组</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 151.819781)">国家独立</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 163.017593)">区域冲突</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(785.2736 151.819781)">城市、资源</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 163.017593)">历史遗产</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="209.154032" transform="rotate(-0 7.2 209.154032)">欧洲与地中海</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 203.711621)">爱琴海聚落</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(171.5632 214.909433)">青铜时代</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 203.711621)">希腊城邦</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 214.909433)">罗马帝国</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(343.3376 203.711621)">东罗马延续</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(348.3376 214.909433)">地方政权</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(436.7248 203.711621)">宗教改革</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(436.7248 214.909433)">科学革命</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 203.711621)">政治革命</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(530.112 214.909433)">工业化</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(608.4992 203.711621)">总动员战争</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(603.4992 214.909433)">法西斯与抵抗</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 203.711621)">德国分裂</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 214.909433)">制度竞争</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 203.711621)">欧洲合作</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 214.909433)">社会变化</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="261.045872" transform="rotate(-0 7.2 261.045872)">南亚、东亚与东南亚</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 255.603461)">印度河城市</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(161.5632 266.801273)">东亚早期国家</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 255.603461)">南亚王朝</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(254.9504 266.801273)">秦汉与交流</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(348.3376 255.603461)">高棉吴哥</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(348.3376 266.801273)">区域贸易</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(426.7248 255.603461)">莫卧儿、明清</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(436.7248 266.801273)">海洋网络</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(520.112 255.603461)">殖民与改革</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 266.801273)">日本维新</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(608.4992 255.603461)">侵略与抵抗</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(613.4992 266.801273)">亚洲战争</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(696.8864 255.603461)">独立与分治</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 266.801273)">工业发展</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 255.603461)">都市扩展</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 266.801273)">区域联系</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="312.937712" transform="rotate(-0 7.2 312.937712)">撒哈拉以南非洲</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 307.495301)">农业与聚落</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(161.5632 318.693113)">各地阶段不同</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 307.495301)">区域社会</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(259.9504 318.693113)">贸易联系</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(348.3376 307.495301)">马里帝国</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(343.3376 318.693113)">大津巴布韦</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(426.7248 307.495301)">跨洋奴隶贸易</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(436.7248 318.693113)">本土政权</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 307.495301)">殖民扩张</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 318.693113)">本土抵抗</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(613.4992 307.495301)">战争动员</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(613.4992 318.693113)">殖民社会</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 307.495301)">独立浪潮</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(701.8864 318.693113)">社会转型</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 307.495301)">南非转型</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(785.2736 318.693113)">城市与遗产</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="364.829552" transform="rotate(-0 7.2 364.829552)">美洲与大洋洲</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(166.5632 359.387141)">农业与聚落</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(171.5632 370.584953)">海洋迁徙</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(249.9504 359.387141)">美洲区域中心</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(254.9504 370.584953)">太平洋社会</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(338.3376 359.387141)">玛雅与安第斯</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(348.3376 370.584953)">岛屿社会</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(431.7248 359.387141)">征服与交换</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(436.7248 370.584953)">本土抵抗</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 359.387141)">独立革命</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(525.112 370.584953)">定居殖民</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(613.4992 359.387141)">全球战争</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(608.4992 370.584953)">移民与资源</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(696.8864 359.387141)">冷战与发展</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(691.8864 370.584953)">太平洋新国家</text>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 359.387141)">全球联系</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; fill: #243746" transform="translate(790.2736 370.584953)">本土权益</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Droid Sans Fallback'; text-anchor: start; fill: #243746" x="7.2" y="425.094095" transform="rotate(-0 7.2 425.094095)">依据：本模块八篇历史时期概览。没有公元0年；同一时期不意味着各地区制度与发展路径相同。</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p815cf626d7">
+   <rect x="7.2" y="7.2" width="892.8" height="432.432"/>
+  </clipPath>
+ </defs>
+</svg>
